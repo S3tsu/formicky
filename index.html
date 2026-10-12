@@ -27481,13 +27481,13 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
 /* ===== Vlastní web (GitHub Pages): hlášení chyb, instalace do telefonu, offline, anonymní statistiky ===== */
 /* V artifactu na claude.ai se nic z toho nezapne (STANDALONE je false). */
 const WEB = {
-  form: '',      // https://docs.google.com/forms/d/e/<ID>/formResponse
-  entry: '',     // entry.123456789 – jediné pole „Hlášení“ (odstavec)
+  form: 'https://docs.google.com/forms/d/e/1FAIpQLSdefXGfOdIMNJJK31zCA00S9jhzKvVYepcgndDwrFaQcjrCfQ/formResponse',
+  entry: 'entry.1456317184',  // pole „Hlášení“
   gc: 's3tsu'    // kód GoatCounter (https://<kód>.goatcounter.com)
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610121936';
+const FH_VER = '202610121939';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
