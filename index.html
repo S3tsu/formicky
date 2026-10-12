@@ -619,6 +619,8 @@ body.sheet-file .sheet{position:static}
 .rep-msg:empty{display:none}
 .rep-done{margin:8px 0;font-size:1.05rem}
 #webBox p{margin:0 0 10px}
+.moved{background:var(--foam);color:var(--ink);border-bottom:2px solid var(--pink);padding:12px 16px;display:grid;gap:4px;font-size:.92rem;line-height:1.4}
+.moved a{color:var(--pink)}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -27481,15 +27483,20 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
 const WEB = {
   form: '',      // https://docs.google.com/forms/d/e/<ID>/formResponse
   entry: '',     // entry.123456789 – jediné pole „Hlášení“ (odstavec)
-  gc: ''         // kód GoatCounter (https://<kód>.goatcounter.com)
+  gc: 's3tsu'    // kód GoatCounter (https://<kód>.goatcounter.com)
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610121924';
+const FH_VER = '202610121936';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
 (function () {
+  if (!STANDALONE) {   // stará verze v Claude: odkaz na nový web
+    document.body.insertAdjacentHTML('afterbegin', `<div class="moved"><b>Formičky se přestěhovaly na nový web: <a href="https://s3tsu.github.io/formicky/" target="_blank" rel="noopener">s3tsu.github.io/formicky</a></b>
+      <span>Funguje bez účtu, jde nainstalovat do telefonu a funguje i offline. Tahle verze se už nebude aktualizovat. Pokrok si přeneseš takhle: tady dole na úvodní stránce v „Záloha pokroku“ vytvoř kód, zkopíruj ho a na novém webu ho vlož do „Načíst kód“.</span></div>`);
+    return;
+  }
   if (!WEB_ON) return;
 
   /* --- statistiky (GoatCounter: bez cookies, bez osobních údajů) --- */
