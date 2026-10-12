@@ -1,4 +1,4 @@
-<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické chemie pro farmaceuty"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style></head><body>
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické chemie pro farmaceuty"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style></head><body>
 <title>FormičkyHub</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -657,6 +657,8 @@ body.sheet-file .sheet{position:static}
 .ch-res{margin:10px 0}
 .ch-intro .st-nums{grid-template-columns:repeat(2,minmax(0,1fr));max-width:340px;margin:10px 0}
 .lk-drugchip{border-color:var(--pink)}
+.ch-prev img{display:block;width:100%;max-width:420px;border-radius:12px;border:1px solid var(--line);margin-top:4px}
+.ch-box .link{justify-self:start}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -27295,7 +27297,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
       ${L.miss.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="lk-miss">${L.miss.map(c => `<li>${esc(c.g.name)} <small>(${esc(TOPIC_BY[c.g.topic].label)})</small></li>`).join('')}</ul>` : ''}
       ${chEndHTML('lek', { sc: L.cash, ok: L.ok, of: L.n })}
       <div class="row"><button type="button" class="btn primary" data-hn="lkgo">Další směna</button><button type="button" class="btn" data-hn="lek">Změnit témata</button><button type="button" class="btn" data-hn="ward">Šatna</button></div>`;
-    CH = null;
+    CH = null; CARD = null; prepCard();
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
@@ -27458,7 +27460,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
       <ul class="lk-miss">${NL.items.map((it, k) => `<li>${esc(it.g.name)} <small>${NL.pts[k] ? '+' + NL.pts[k] + ' b.' : 'neuhodnuto'}</small></li>`).join('')}</ul>
       ${chEndHTML('nl', { sc: NL.score, ok: NL.pts.filter(x => x).length, of: NL.items.length, max })}
       <div class="row"><button type="button" class="btn primary" data-hn="nl">Nová hra</button></div>`;
-    CH = null;
+    CH = null; CARD = null; prepCard();
   }
 
   /* --- Album kartiček: zvládnuté látky --- */
@@ -27502,18 +27504,72 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
       h = `<div class="fb ${win ? 'ok' : tie ? 'info' : 'bad'} ch-res"><p><b>${win ? `Porazila jsi ${esc(CH.by || 'kamarádku')}! 🎉` : tie ? 'Remíza!' : `${esc(CH.by || 'Kamarádka')} zůstává před tebou.`}</b></p><p class="aside">Ty: ${chRes(LAST)} · ${esc(CH.by || 'ona')}: ${chRes(CH)}</p></div>`;
     }
     return h + `<div class="ch-box"><b>${CH ? 'Pošli výzvu zpátky' : 'Vyzvi kamarádku'}</b><p class="aside">Dostane přesně stejné otázky a uvidí tvůj výsledek.</p>
-      <div class="ch-row"><input id="chName" type="text" maxlength="30" placeholder="Tvoje jméno" value="${esc(myName())}" aria-label="Tvoje jméno"><button type="button" class="btn primary" data-hn="chshare">Poslat výzvu</button></div><p class="bk-msg" id="chMsg" hidden></p></div>`;
+      <div class="ch-row"><input id="chName" type="text" maxlength="24" placeholder="Tvoje jméno" value="${esc(myName())}" aria-label="Tvoje jméno"><button type="button" class="btn primary" data-hn="chshare">Poslat výzvu</button></div>
+      <div class="ch-prev" id="chPrev" hidden></div><button type="button" class="link" data-hn="chlink">Poslat jen odkaz bez obrázku</button><p class="bk-msg" id="chMsg" hidden></p></div>`;
   }
-  async function chShare() {
+  /* obrázek výzvy (kartička do chatu): kdo vyzývá a jaké má skóre */
+  let CARD = null, cardT = 0;
+  const loadImg = src => new Promise((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = src; });
+  function rr(x, X, Y, w, h, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
+  function fit(x, t, max, size, weight, fam) { let s = size; do { x.font = `${weight} ${s}px ${fam}`; s -= 2; } while (x.measureText(t).width > max && s > 20); return t; }
+  async function makeCard(by) {
+    const c = document.createElement('canvas'); c.width = 1200; c.height = 630;
+    const x = c.getContext('2d'), D = '"Bricolage Grotesque", system-ui, sans-serif', B = '"IBM Plex Sans", system-ui, sans-serif';
+    try { await Promise.all([document.fonts.load('700 80px "Bricolage Grotesque"'), document.fonts.load('500 30px "IBM Plex Sans"')]); } catch (e) { /* systémové písmo */ }
+    const g = x.createLinearGradient(0, 0, 1200, 630); g.addColorStop(0, '#fbe3ec'); g.addColorStop(1, '#dcefef');
+    x.fillStyle = g; x.fillRect(0, 0, 1200, 630);
+    x.fillStyle = '#ffffff'; rr(x, 40, 40, 1120, 550, 36); x.fill();
+    x.strokeStyle = '#d93a72'; x.lineWidth = 4; x.setLineDash([16, 12]); rr(x, 40, 40, 1120, 550, 36); x.stroke(); x.setLineDash([]);
+    // obrázek vlevo
+    x.fillStyle = '#f9edf1'; rr(x, 80, 120, 330, 385, 28); x.fill();
+    try {
+      const svg = LAST.g === 'lek' ? avatarSVG(null, 300) : `<svg viewBox="0 0 24 24" width="260" height="260"><g fill="none" stroke="#c04873" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2)"><line x1="4.75" y1="12.5" x2="15.25" y2="12.5"/><line x1="6.5" y1="3.5" x2="13.5" y2="3.5"/><path d="M7.5 3.5L12.5 3.5L12.5 8.5L16.385 14.15C17.069 15.145 16.356 16.5 15.148 16.5L4.852 16.5C3.644 16.5 2.931 15.145 3.615 14.15L7.5 8.5L7.5 3.5Z"/></g><text x="12" y="16" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="5" fill="#d93a72">?</text></svg>`;
+      const img = await loadImg('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"')));
+      const w = LAST.g === 'lek' ? 300 : 260, h = LAST.g === 'lek' ? 350 : 260; x.drawImage(img, 245 - w / 2, 312 - h / 2, w, h);
+    } catch (e) { /* bez obrázku */ }
+    // texty vpravo
+    const L0 = 460, W = 660;
+    x.fillStyle = '#d93a72'; x.font = `600 26px ${B}`; x.fillText('VÝZVA Z FORMIČEK', L0, 130);
+    x.fillStyle = '#172033'; const who = (by || 'Kamarádka').slice(0, 24) + ' tě vyzývá!'; fit(x, who, W, 64, 700, D); x.fillText(who, L0, 205);
+    x.fillStyle = '#596377'; const gl = (LAST.g === 'lek' ? 'Lékárna U Formičky' : 'Neznámá látka') + ' · ' + chDesc(LAST).replace(/ · .*/, ''); fit(x, gl, W, 32, 500, B); x.fillText(gl, L0, 255);
+    x.fillStyle = '#d93a72'; const big = LAST.g === 'lek' ? `${LAST.sc} Kč` : `${LAST.sc} b.`; fit(x, big, W, 120, 700, D); x.fillText(big, L0, 385);
+    x.fillStyle = '#172033'; x.font = `600 34px ${B}`; x.fillText(LAST.g === 'lek' ? `${LAST.ok} / ${LAST.of} spokojených zákazníků` : `uhodnuto ${LAST.ok} z ${LAST.of} látek`, L0, 440);
+    x.fillStyle = '#0b6870'; rr(x, L0, 478, 330, 70, 35); x.fill();
+    x.fillStyle = '#ffffff'; x.font = `700 32px ${D}`; x.fillText('Překonáš to? →', L0 + 34, 524);
+    x.fillStyle = '#596377'; x.font = `500 24px ${B}`; x.fillText('s3tsu.github.io/formicky', L0 + 360, 524);
+    return new Promise(r => c.toBlob(r, 'image/png'));
+  }
+  function prepCard() {
+    clearTimeout(cardT);
+    cardT = setTimeout(async () => {
+      const inp = $('#chName'); if (!inp || !LAST) return;
+      const by = inp.value.trim(), key = by + '|' + JSON.stringify(LAST);
+      if (CARD && CARD.key === key) return;
+      try { const blob = await makeCard(by); CARD = { key, blob, file: new File([blob], 'vyzva-formicky.png', { type: 'image/png' }) };
+        const pv = $('#chPrev'); if (pv) { if (pv.dataset.u) URL.revokeObjectURL(pv.dataset.u); const u = URL.createObjectURL(blob); pv.dataset.u = u; pv.innerHTML = `<img src="${u}" alt="Náhled výzvy">`; pv.hidden = false; }
+      } catch (e) { CARD = null; }
+    }, 250);
+  }
+  document.addEventListener('input', e => { if (e.target.id === 'chName') prepCard(); });
+  async function chShare(linkOnly) {
     if (!LAST) return;
     const by = ($('#chName').value || '').trim(); store.set('fg-chname', by);
     const url = location.origin + location.pathname + '#vyzva=' + b64e(Object.assign({ v: 1, by }, LAST));
     const txt = `${by || 'Kamarádka'} tě vyzývá v ${GNAME[LAST.g]} (FormičkyHub): ${chRes(LAST)}. Překonáš to?`;
     const msg = $('#chMsg'); msg.hidden = false;
     try { if (window.fhCount) fhCount('vyzva-odeslana', true); } catch (e) { /* nic */ }
-    if (navigator.share) { try { await navigator.share({ title: 'Výzva z Formiček', text: txt, url }); msg.textContent = 'Výzva odeslaná.'; return; } catch (e) { if (e && e.name === 'AbortError') { msg.hidden = true; return; } } }
-    try { await navigator.clipboard.writeText(txt + ' ' + url); msg.textContent = 'Odkaz je zkopírovaný, vlož ho kamarádce do chatu.'; }
-    catch (e) { msg.innerHTML = `Zkopíruj odkaz: <input class="ch-url" readonly value="${esc(url)}" onclick="this.select()">`; }
+    const key = by + '|' + JSON.stringify(LAST), file = !linkOnly && CARD && CARD.key === key ? CARD.file : null;
+    if (navigator.share) {
+      try {
+        if (file && navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text: txt + '\n' + url });
+        else await navigator.share({ title: 'Výzva z Formiček', text: txt, url });
+        msg.textContent = 'Výzva odeslaná.'; return;
+      } catch (e) { if (e && e.name === 'AbortError') { msg.hidden = true; return; } }
+    }
+    let copied = false;
+    try { await navigator.clipboard.writeText(txt + ' ' + url); copied = true; } catch (e) { /* nejde */ }
+    const dl = file ? ` <a href="${$('#chPrev').dataset.u}" download="vyzva-formicky.png">Stáhnout obrázek výzvy</a> a pošli ho s odkazem.` : '';
+    msg.innerHTML = copied ? `Odkaz je zkopírovaný, vlož ho kamarádce do chatu.${dl}` : `Zkopíruj odkaz: <input class="ch-url" readonly value="${esc(url)}" onclick="this.select()">${dl}`;
   }
   function chFromHash() {
     const m = location.hash.match(/^#vyzva=([\w-]+)/); if (!m) return;
@@ -27551,6 +27607,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     if (a === 'nlnext') { NL.i++; return nlRound(); }
     if (a === 'alb') { open(''); return album(); }
     if (a === 'chshare') return chShare();
+    if (a === 'chlink') return chShare(true);
     if (a === 'chgo') return chGo();
   });
   document.addEventListener('change', e => {
@@ -27785,7 +27842,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610122005';
+const FH_VER = '202610122017';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
