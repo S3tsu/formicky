@@ -532,17 +532,17 @@ body.sheet-file .sheet{position:static}
 
 .hn-hrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .hn-piece{flex:none;display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 .8rem/1 var(--f-body,system-ui);cursor:pointer;transition:color .2s,border-color .2s,background .2s}
-.hn-piece svg{width:22px;height:22px;overflow:visible}
-.hn-piece .cl path{fill:var(--foam);stroke:var(--pink);stroke-width:3;stroke-linejoin:round}
-.hn-piece .cr path{fill:var(--accent-soft);stroke:var(--accent);stroke-width:3;stroke-linejoin:round}
-.hn-piece .cl{animation:capL 4.5s ease-in-out infinite}
-.hn-piece .cr{animation:capR 4.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.hn-piece svg,.hn-ico svg{width:22px;height:22px;overflow:visible}
+.hn-piece .cl path,.hn-ico .cl path{fill:var(--foam);stroke:var(--pink);stroke-width:3;stroke-linejoin:round}
+.hn-piece .cr path,.hn-ico .cr path{fill:var(--accent-soft);stroke:var(--accent);stroke-width:3;stroke-linejoin:round}
+.hn-piece .cl,.hn-ico .cl{animation:capL 4.5s ease-in-out infinite}
+.hn-piece .cr,.hn-ico .cr{animation:capR 4.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes capL{0%,55%,100%{transform:translateX(0)}65%,78%{transform:translateX(-4.5px)}88%{transform:translateX(.6px)}}
 @keyframes capR{0%,55%,100%{transform:translateX(0)}65%{transform:translateX(4.5px) rotate(0)}70%{transform:translateX(4.5px) rotate(-8deg)}75%{transform:translateX(4.5px) rotate(6deg)}78%{transform:translateX(4.5px) rotate(0)}88%{transform:translateX(-.6px)}}
 .hn-piece:hover .cl,.hn-piece:focus-visible .cl{animation-duration:1.4s}
 .hn-piece:hover .cr,.hn-piece:focus-visible .cr{animation-duration:1.4s}
 .hn-piece:hover,.hn-piece:focus-visible{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-@media (prefers-reduced-motion:reduce){.hn-piece .cl,.hn-piece .cr{animation:none}}
+@media (prefers-reduced-motion:reduce){.hn-piece .cl,.hn-piece .cr,.hn-ico .cr{animation:none}}
 
 /* lékárna */
 .lk-game{border-color:var(--pink);background:linear-gradient(135deg,var(--surface) 60%,var(--foam))}
@@ -621,6 +621,42 @@ body.sheet-file .sheet{position:static}
 #webBox p{margin:0 0 10px}
 .moved{background:var(--foam);color:var(--ink);border-bottom:2px solid var(--pink);padding:12px 16px;display:grid;gap:4px;font-size:.92rem;line-height:1.4}
 .moved a{color:var(--pink)}
+
+/* Herna na úvodní stránce, Neznámá látka, Album, výzvy */
+.hn-hub{margin-top:18px}
+.hn-hub .hn-hrow{justify-content:flex-start;gap:8px}
+.hn-ico{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.hn-hub .hn-games{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.al-game{background:linear-gradient(135deg,var(--surface) 60%,var(--accent-soft))}
+.nl-clues{margin:8px 0 12px;padding:0;list-style:none;display:grid;gap:6px;counter-reset:nl}
+.nl-clues li{counter-increment:nl;padding:9px 12px 9px 40px;border-radius:10px;background:var(--accent-soft);position:relative;line-height:1.4}
+.nl-clues li::before{content:counter(nl);position:absolute;left:12px;top:9px;font-weight:700;color:var(--accent)}
+.nl-clues li.hid{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.nl-clues li.late{background:var(--bg);color:var(--muted)}
+.nl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:10px}
+.hn-rg.ok{border-color:#16a34a;background:#dcfce7;color:#14532d}
+.nl-reveal{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0}
+.nl-reveal b{font:700 1.15rem/1.2 var(--f-display)}
+.al-prog{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0 4px}
+.al-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--pink));border-radius:99px}
+.al-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+.al-card{position:relative;display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:14px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.al-card b{font-size:.88rem;line-height:1.25;overflow-wrap:anywhere}
+.al-card small{color:var(--muted);font-size:.75rem;line-height:1.3}
+.al-pic{display:flex;align-items:center;justify-content:center;min-height:90px;overflow:hidden}
+.al-pic svg{max-width:100%;height:auto;max-height:110px}
+.al-card.lock{background:repeating-linear-gradient(135deg,var(--bg) 0 8px,var(--surface) 8px 16px);color:var(--muted)}
+.al-card.lock b{color:var(--muted);font-weight:500}
+.al-card.lock .al-pic span{font:700 2.2rem/1 var(--f-display);color:var(--line)}
+.al-n{position:absolute;top:6px;right:9px;font-size:.7rem;color:var(--muted)}
+.ch-box{border:1px dashed var(--pink);border-radius:14px;padding:12px 14px;margin:12px 0;display:grid;gap:6px;background:var(--foam)}
+.ch-box p{margin:0}
+.ch-row{display:flex;gap:8px;flex-wrap:wrap}
+.ch-row input,.ch-url{flex:1 1 160px;min-width:0;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.ch-url{width:100%;margin-top:6px}
+.ch-res{margin:10px 0}
+.ch-intro .st-nums{grid-template-columns:repeat(2,minmax(0,1fr));max-width:340px;margin:10px 0}
+.lk-drugchip{border-color:var(--pink)}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -738,6 +774,16 @@ body.sheet-file .sheet{position:static}
         <li>Nahoře v Cvičení je ukazatel <b>Dnes 12/20</b>: kolik odpovědí máš dnes za sebou z denního cíle. Počítá se každá odpověď ve všech režimech i v testu.</li>
         <li><b>Série</b> jsou dny v řadě se splněným cílem. Když cíl splníš, Béďa se zaraduje.</li>
         <li>Na úvodní stránce v „Tvoje učení“ je kalendář posledních 12 týdnů a nastavení cíle (10, 20, 30, 50 odpovědí, nebo vypnuto).</li>
+      </ul></details>
+
+    <details class="g-item"><summary>Herna: hry na procvičení</summary>
+      <ul>
+        <li><b>Lékárna U Formičky:</b> obsluhuješ zákazníky za pultem. Témata si vybereš sama, „💊 Léčiva z přednášek“ přidá pacienty s recepty (paracetamol, ibuprofen, penicilin, morfin…). Za tržbu a nově naučené látky si v Šatně vylepšíš lékárnici.</li>
+        <li><b>Neznámá látka:</b> indicie od obecných po konkrétní (téma, počet atomů, reakce, vzorec…). Čím dřív látku uhodneš, tím víc bodů.</li>
+        <li><b>Syntézní puzzle</b> a <b>Seřaď to:</b> skládání syntéz po krocích a řazení podle hodnot ze slajdů.</li>
+        <li><b>Album kartiček:</b> každá zvládnutá látka se odemkne jako kartička. Posbírej celé album přednášky.</li>
+        <li><b>Výzva kamarádce:</b> po Lékárně nebo Neznámé látce pošli odkaz. Kamarádka dostane přesně stejné otázky a uvidí, koho porazila.</li>
+        <li>Hry se nepočítají do pokroku ani denního cíle.</li>
       </ul></details>
 
     <details class="g-item"><summary>Aplikace v telefonu a hlášení chyb</summary>
@@ -26845,9 +26891,10 @@ document.addEventListener('click', async e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet') && !$('#sheet').hidden) { const c = $('#shClose'); if (c) c.click(); } });
 renderStats(); renderBackup(); renderDay();
 window.addEventListener('hashchange', () => { renderStats(); renderDay(); const sh = $('#sheet'); if (sh && !sh.hidden) { sh.hidden = true; document.body.classList.remove('sheet-open'); } });
-/* ===== Herna (skrytá): Seřaď to + Syntézní puzzle. Odemkne se 5 klepnutími na Béďu na úvodní stránce. ===== */
+/* ===== Herna: Lékárna, Neznámá látka, Syntézní puzzle, Seřaď to, Album kartiček, výzvy kamarádkám ===== */
 (function () {
   const GS = Object.assign({ on: 0, best: {} }, store.get('fg-herna', {}));
+  let CH = null;   // právě hraná výzva od kamarádky
   const saveG = () => store.set('fg-herna', GS);
 
   /* --- data pro řazení: jen ověřené tabulky ze slajdů --- */
@@ -26894,6 +26941,10 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     return out;
   }
   let OS = null;
+  /* náhoda se semínkem: stejné semínko = stejné otázky (výzvy kamarádkám) */
+  const mulberry = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const newSeed = () => (Math.random() * 2147483647) | 0;
+  function withRng(rng, fn) { if (!rng) return fn(); const r = Math.random; Math.random = rng; try { return fn(); } finally { Math.random = r; } }
   const shuf = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
   /* --- overlay --- */
@@ -26903,16 +26954,20 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     return b;
   }
   function open(html) { clearInterval(L.timer); const b = box(); b.innerHTML = `<div class="hn-card"><div class="hn-top"><button type="button" class="link" data-hn="menu">← Herna</button><button type="button" class="m3d-x" data-hn="close" aria-label="Zavřít">×</button></div><div id="hnBody">${html}</div></div>`; b.hidden = false; document.body.classList.add('sheet-open'); b.scrollTop = 0; }
-  function close() { clearInterval(L.timer); const b = $('#herna'); if (b) b.hidden = true; document.body.classList.remove('sheet-open'); }
+  function close() { clearInterval(L.timer); const b = $('#herna'); if (b) b.hidden = true; document.body.classList.remove('sheet-open'); CH = null; renderEntry(); }
   const best = k => GS.best[k] || 0;
+  const GAMES = () => [
+    ['lek', 'Lékárna U Formičky', 'Obsluhuj zákazníky za pultem: míchání, recepty, léčiva z přednášek. Za tržbu a nově naučené látky si vylepšíš lékárnici.', `Nejlepší tržba ${best('lek')} Kč · v peněžence ${GS.coins} Kč`, 'lk-game'],
+    ['nl', 'Neznámá látka', 'Podle indicií uhodni, o jakou látku jde. Čím méně indicií potřebuješ, tím víc bodů.', `Nejlepší skóre ${best('nl')}`, ''],
+    ['syn', 'Syntézní puzzle', 'Z výchozí látky se dostaň k cíli. V každém kroku vyber správné činidlo.', `Nejlepší skóre ${best('syn')}`, ''],
+    ['ord', 'Seřaď to', 'Kyselost, rychlosti SN1/SN2, teploty varu… Řaď látky podle hodnot ze slajdů.', `Nejlepší série ${best('ord')}`, ''],
+    ['alb', 'Album kartiček', 'Každá látka, kterou zvládneš, se odemkne jako kartička. Posbírej celé album přednášky.', `Odemčeno ${albumCount()} z ${albumAll().length}`, 'al-game']
+  ];
+  const tiles = () => GAMES().map(([k, n, d, sm, cls]) => `<button type="button" class="hn-game ${cls}" data-hn="${k}"><b>${n}</b><span>${d}</span><small>${sm}</small></button>`).join('');
   function menu() {
-    open(`<h2 class="hn-h">Herna <span class="hn-beta">zkušebně</span></h2>
-      <p class="aside">Dvě hry na procvičení. Do pokroku ani denního cíle se nepočítají.</p>
-      <div class="hn-games">
-        <button type="button" class="hn-game" data-hn="ord"><b>Seřaď to</b><span>Kyselost, rychlosti SN1/SN2, teploty varu… Řaď látky podle hodnot ze slajdů.</span><small>Nejlepší série: ${best('ord')}</small></button>
-        <button type="button" class="hn-game lk-game" data-hn="lek"><b>Lékárna U Formičky</b><span>Obsluhuj zákazníky za pultem: míchání, recepty, dotazy, magistraliter. Za tržbu a nově naučené látky si vylepšíš lékárnici v šatně.</span><small>Nejlepší tržba: ${best('lek')} Kč · v peněžence ${GS.coins} Kč</small></button>
-        <button type="button" class="hn-game" data-hn="syn"><b>Syntézní puzzle</b><span>Z výchozí látky se dostaň k cíli. V každém kroku vyber správné činidlo.</span><small>Nejlepší skóre: ${best('syn')}</small></button>
-      </div>`);
+    open(`<h2 class="hn-h">Herna</h2>
+      <p class="aside">Hry na procvičení. Do pokroku ani denního cíle se nepočítají. Po Lékárně nebo Neznámé látce můžeš vyzvat kamarádku, ať tě překoná.</p>
+      <div class="hn-games">${tiles()}</div>`);
   }
 
   /* --- Seřaď to --- */
@@ -26997,13 +27052,6 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     synOpts(); synRender();
   }
 
-  /* --- vstup: nenápadný dílek puzzle v rohu úvodní stránky --- */
-  function renderEntry() {
-    const old = $('#hernaEntry'); if (old) old.remove();
-    const head = [...document.querySelectorAll('#hub h2.fam-h')].find(h => h.textContent.trim() === 'Předměty'); if (!head || $('#hnPiece')) return;
-    head.classList.add('hn-hrow');
-    head.insertAdjacentHTML('beforeend', `<button type="button" class="hn-piece" id="hnPiece" data-hn="menu" title="Herna" aria-label="Herna: hry na procvičení"><svg viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(-35 24 24)"><g class="cl"><path d="M24 13H15a11 11 0 0 0 0 22h9v-5a3 3 0 0 0 0-6a3 3 0 0 0 0-6z"/></g><g class="cr"><path d="M24 13h9a11 11 0 0 1 0 22h-9v-5a3 3 0 0 1 0-6a3 3 0 0 1 0-6z"/></g></g></svg><span>Herna</span></button>`);
-  }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
     const a = b.dataset.hn;
@@ -27019,7 +27067,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
   });
   document.addEventListener('change', e => { if (e.target.id === 'hnTopic') { P.topic = e.target.value; synNew(); } });
   document.addEventListener('keydown', e => { const b = $('#herna'); if (e.key === 'Escape' && b && !b.hidden) close(); });
-  window.addEventListener('hashchange', close);
+  window.addEventListener('hashchange', () => { if (/^#vyzva=/.test(location.hash)) return chFromHash(); close(); renderEntry(); });
   /* --- Lékárnice: šatna, peníze za směny, odemykání za nově naučené látky --- */
   GS.coins = GS.coins || 0; GS.own = GS.own || {}; GS.lr = GS.lr || {};
   GS.av = Object.assign({ skin: 's2', hair: 'bob', hairC: 'hc1', coat: 'c_white', pat: 'p_none', acc: [], bg: 'b_lek' }, GS.av || {});
@@ -27151,10 +27199,11 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     return out.length === 4 ? out : null;
   }
   function makeCustomer() {
-    const T = L.topics, inT = g => T.includes(g.topic);
-    const kinds = shuffle(['reag', 'prod', 'rx', 'name', 'theory', 'syn', 'reag', 'prod', 'rx', 'name', 'theory']);
+    const T = L.topics, inT = g => T.includes(g.topic), dr = T.includes('drugs'), onlyDr = dr && T.length === 1;
+    const kinds = onlyDr ? ['drug'] : shuffle(['reag', 'prod', 'rx', 'name', 'theory', 'syn', 'reag', 'prod', 'rx', 'name', 'theory'].concat(dr ? ['drug', 'drug', 'drug', 'drug'] : []));
     for (const k of kinds) {
       const who = pick(Object.keys(AV)), base = { who, hi: pick(LINES.hi) };
+      if (k === 'drug') { const c = drugCustomer(base); if (c) return c; continue; }
       if (k === 'reag' || k === 'prod') {
         const c = shuffle(GROUPS.filter(g => inT(g) && g.kind === 'q' && g.rx && !g.chain && (k === 'reag' ? /r$/.test(g.id) : /p$/.test(g.id))))[0]; if (!c) continue;
         const r = c.rx, fromN = namesOf(r.from), toN = namesOf(strParts(r.to).slice(0, 1));
@@ -27188,10 +27237,10 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
   }
   function lekSetup() {
     const have = TOPICS.filter(t => GROUPS.some(g => g.topic === t.id));
-    const sel = L.topics || [];
+    const sel = L.topics || [], allOn = have.every(t => sel.includes(t.id));
     $('#hnBody').innerHTML = `<h2 class="hn-h">Lékárna U Formičky</h2>
-      <p class="aside">Stojíš za pultem a chodí zákazníci: chtějí namíchat, poradit, najít správnou lahvičku nebo připravit magistraliter. Za rychlou a správnou obsluhu je tržba. Vyber, z čeho se budou ptát.</p>
-      <div class="chips" id="lkTopics"><button type="button" class="chip" data-hn="lkall" aria-pressed="${sel.length === have.length}">Všechna témata</button>${have.map(t => `<button type="button" class="chip" data-hn="lkt" data-t="${t.id}" aria-pressed="${sel.includes(t.id)}">${esc(t.label)}</button>`).join('')}</div>
+      <p class="aside">Stojíš za pultem a chodí zákazníci: chtějí namíchat, poradit, najít správnou lahvičku nebo připravit magistraliter. Za rychlou a správnou obsluhu je tržba. Vyber, z čeho se budou ptát. S „Léčivy z přednášek“ přijdou i pacienti s recepty na paracetamol, ibuprofen, penicilin a další.</p>
+      <div class="chips" id="lkTopics"><button type="button" class="chip" data-hn="lkall" aria-pressed="${allOn}">Všechna témata</button><button type="button" class="chip lk-drugchip" data-hn="lkt" data-t="drugs" aria-pressed="${sel.includes('drugs')}">💊 Léčiva z přednášek</button>${have.map(t => `<button type="button" class="chip" data-hn="lkt" data-t="${t.id}" aria-pressed="${sel.includes(t.id)}">${esc(t.label)}</button>`).join('')}</div>
       <div class="lk-len"><span class="eyebrow">Délka směny</span>${[5, 10, 15].map(n => `<button type="button" class="chip" data-hn="lkn" data-n="${n}" aria-pressed="${L.n === n}">${n} zákazníků</button>`).join('')}</div>
       <div class="row"><button type="button" class="btn primary" data-hn="lkgo"${sel.length ? '' : ' disabled'}>Otevřít lékárnu</button></div>
       <p class="aside">Nejlepší tržba: ${best('lek')} Kč · v peněžence ${GS.coins} Kč</p>
@@ -27200,7 +27249,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
   function lekNext() {
     clearInterval(L.timer);
     if (L.i >= L.n) return lekEnd();
-    L.cur = makeCustomer(); L.done = false;
+    L.cur = withRng(L.rng, makeCustomer); L.done = false;
     if (!L.cur) { L.n = L.i; return lekEnd(); }
     L.t0 = Date.now(); lekRender();
     L.timer = setInterval(() => {
@@ -27244,22 +27293,271 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
       <div class="st-nums lk-sum"><div><b>${L.cash} Kč</b><span>tržba</span></div><div><b>${L.ok} / ${L.n}</b><span>spokojených</span></div><div><b>★ ${st.toFixed(1)}</b><span>hodnocení</span></div><div><b>${best('lek')} Kč</b><span>nejlepší tržba</span></div></div>
       <div class="lk-endav">${avatarSVG(null, 90)}<div><p>${verdict}</p><p class="aside">V peněžence máš <b>${GS.coins} Kč</b>. Nově naučeno v této směně: <b>${L.newL}</b> karet.</p>${fresh.length ? `<p class="bk-msg">Odemčeno: ${fresh.map(x => esc(x[2])).join(', ')}!</p>` : ''}</div></div>
       ${L.miss.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="lk-miss">${L.miss.map(c => `<li>${esc(c.g.name)} <small>(${esc(TOPIC_BY[c.g.topic].label)})</small></li>`).join('')}</ul>` : ''}
+      ${chEndHTML('lek', { sc: L.cash, ok: L.ok, of: L.n })}
       <div class="row"><button type="button" class="btn primary" data-hn="lkgo">Další směna</button><button type="button" class="btn" data-hn="lek">Změnit témata</button><button type="button" class="btn" data-hn="ward">Šatna</button></div>`;
+    CH = null;
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
     const a = b.dataset.hn, have = TOPICS.filter(t => GROUPS.some(g => g.topic === t.id)).map(t => t.id);
-    if (a === 'lek') { open(''); L.topics = L.topics || store.get('fg-herna', {}).lkT || []; return lekSetup(); }
-    if (a === 'lkall') { L.topics = L.topics.length === have.length ? [] : have.slice(); return lekSetup(); }
+    if (a === 'lek') { open(''); CH = null; L.topics = L.topics || store.get('fg-herna', {}).lkT || []; return lekSetup(); }
+    if (a === 'lkall') { const d = L.topics.includes('drugs') ? ['drugs'] : []; L.topics = L.topics.filter(x => x !== 'drugs').length === have.length ? d : d.concat(have); return lekSetup(); }
     if (a === 'lkt') { const t = b.dataset.t; L.topics = L.topics.includes(t) ? L.topics.filter(x => x !== t) : L.topics.concat(t); return lekSetup(); }
     if (a === 'lkn') { L.n = +b.dataset.n; return lekSetup(); }
-    if (a === 'lkgo') { if (!L.topics.length) return; GS.lkT = L.topics; saveG(); Object.assign(L, { i: 0, cash: 0, ok: 0, miss: [], newL: 0, before: IT.filter(unlocked).map(x => x[1]) }); return lekNext(); }
+    if (a === 'lkgo') { if (!L.topics.length) return; if (!CH || CH.g !== 'lek') CH = null; GS.lkT = L.topics; saveG(); L.seed = CH ? CH.s : newSeed(); L.rng = mulberry(L.seed); Object.assign(L, { i: 0, cash: 0, ok: 0, miss: [], newL: 0, before: IT.filter(unlocked).map(x => x[1]) }); return lekNext(); }
     if (a === 'lka') return lekAnswer(+b.dataset.k);
     if (a === 'ward') { open(''); W.sel = null; W.msg = ''; return wardrobe(); }
     if (a === 'wc') { W.cat = b.dataset.c; W.sel = null; W.msg = ''; return wardrobe(); }
     if (a === 'wi') return wardClick(b.dataset.i);
     if (a === 'lknext') { L.i++; return lekNext(); }
   });
+  /* --- Léčiva z přednášek (Lékárna: pacienti s recepty) --- */
+  const FGL = { aldehyde: 'aldehydická skupina', ketone: 'keton (C=O mezi dvěma uhlíky)', ester: 'ester', acid: 'karboxylová kyselina', oh_phenol: 'fenolová OH skupina', oh_alc: 'alkoholová OH skupina',
+    amine1: 'primární amin', nitrile: 'nitrilová skupina', halogen: 'halogen', thiol: 'thiol (–SH)', nitro: 'nitroskupina', ether: 'ether', amide: 'amid' };
+  const DRUGS = [
+    { n: 'paracetamol', has: [['fenolová OH skupina', 'oh_phenol'], ['amid (acetamid na dusíku)', 'amide']], no: [],
+      f: [['Proč se k paracetamolu nemá pít alkohol?', 'Oba zatěžují játra a alkohol zvyšuje riziko jejich poškození.', 'Alkohol paracetamol v žaludku rozloží na kyselinu octovou.', 'Paracetamol s alkoholem vytvoří jedovatý ester.', 'Alkohol úplně zablokuje vstřebání paracetamolu.', 'Paracetamol se odbourává v játrech. S alkoholem nebo při předávkování vzniká víc toxického metabolitu (NAPQI).'],
+        ['Čím se paracetamol liší od ibuprofenu?', 'Prakticky nepůsobí protizánětlivě.', 'Nesnižuje horečku.', 'Je to karboxylová kyselina.', 'Je to opioid.', 'Paracetamol tlumí bolest a horečku, ale na rozdíl od NSAID (ibuprofen) skoro netlumí zánět.']] },
+    { n: 'kyselina acetylsalicylová', has: [['karboxylová kyselina', 'acid'], ['ester (acetylovaný fenol)', 'ester']], no: [],
+      f: [['Starší tablety kyseliny acetylsalicylové voní octem. Proč?', 'Ester se vlhkostí hydrolyzuje na kyselinu salicylovou a octovou.', 'Kyselina se vzduchem oxiduje na ethanol a ten na ocet.', 'Tablety obsahují ocet jako konzervant.', 'Karboxylová skupina se rozkládá na CO₂ a octan.', 'Acetyl je na fenolu navázaný esterovou vazbou a voda ho pomalu odštěpí.'],
+        ['Jak se kyselina acetylsalicylová připravuje?', 'Acetylací kyseliny salicylové acetanhydridem.', 'Oxidací salicylaldehydu kyselinou octovou.', 'Esterifikací kyseliny benzoové ethanolem.', 'Nitrací kyseliny octové.', 'Acetanhydrid acetyluje fenolovou OH kyseliny salicylové na ester.']] },
+    { n: 'ibuprofen', has: [['karboxylová kyselina', 'acid'], ['chirální uhlík (stereocentrum)', 'stereo']], no: [],
+      f: [['Ibuprofen se prodává jako racemát. Co to znamená?', 'Je to směs obou enantiomerů 1 : 1, účinný je hlavně (S)-ibuprofen.', 'Je to čistý (R)-enantiomer.', 'Je to mezo sloučenina bez optické aktivity.', 'Je to směs cis a trans izomerů.', '(R)-ibuprofen se navíc v těle z velké části převádí na účinný (S)-ibuprofen.'],
+        ['Proč se ibuprofen doporučuje brát s jídlem?', 'Jako NSAID dráždí žaludeční sliznici.', 'Bez jídla se vůbec nevstřebá.', 'Jídlo jeho účinek zdvojnásobí.', 'Na lačno se v žaludku hydrolyzuje.', 'Nesteroidní protizánětlivé léky tlumí i ochranné prostaglandiny v žaludku.']] },
+    { n: 'penicilin G', has: [['β-laktamový kruh', 'betalactam'], ['karboxylová kyselina', 'acid'], ['sekundární amid', 'amide'], ['thioether (síra v kruhu)', 'thioether']], no: ['ether'],
+      f: [['Proč se penicilin G nepodává ústy?', 'Rozloží ho kyselina v žaludku (hydrolýza β-laktamu).', 'Je úplně nerozpustný ve vodě.', 'Ústy podaný by působil jen na viry.', 'V tabletě by se síra oxidovala na SO₂.', 'Pnutý čtyřčlenný β-laktam se snadno hydrolyzuje. Ústy se podává acidostabilní penicilin V.']] },
+    { n: 'penicilin V', has: [['β-laktamový kruh', 'betalactam'], ['karboxylová kyselina', 'acid'], ['ether (fenoxyskupina)', 'ether'], ['thioether (síra v kruhu)', 'thioether']], no: ['amide'],
+      f: [['Čím se penicilin V liší od penicilinu G v praxi?', 'Je stálejší v kyselém prostředí, takže se dá užívat ústy.', 'Nemá β-laktamový kruh.', 'Působí jen na plísně.', 'Je to racemát.', 'Fenoxymethylová skupina snižuje citlivost na žaludeční kyselinu.']] },
+    { n: 'sulfanilamid', has: [['sulfonamid', 'sulfonamide'], ['primární aromatický amin', 'amine1']], no: ['amide'],
+      f: [['Jak sulfonamidy brzdí růst bakterií?', 'Napodobují kyselinu p-aminobenzoovou, kterou bakterie potřebují k syntéze kyseliny listové.', 'Rozrušují buněčnou stěnu jako β-laktamy.', 'Vážou se na DNA lidských buněk.', 'Okyselí prostředí tak, že bakterie zahynou.', 'Sulfanilamid je tvarem podobný PABA a blokuje enzym, který ji zabudovává.']] },
+    { n: 'morfin', has: [['fenolová OH skupina', 'oh_phenol'], ['alkoholová OH skupina', 'oh_alc'], ['terciární amin', 'amine3'], ['ether', 'ether']], no: [],
+      f: [['Kodein se od morfinu liší jedinou skupinou. Kterou?', 'Fenolová OH je u kodeinu methylovaná (methylether).', 'Kodein nemá dusík.', 'Kodein má místo etheru ester.', 'Kodein má o jeden kruh méně.', 'Kodein je 3-O-methylmorfin, v těle se z části demethyluje zpět na morfin.'],
+        ['Heroin (diacetylmorfin) vzniká z morfinu…', 'acetylací obou OH skupin na estery.', 'methylací dusíku.', 'oxidací alkoholu na keton.', 'hydrogenací dvojné vazby.', 'Dvě acetylové skupiny dělají molekulu lipofilnější, rychleji proniká do mozku.']] },
+    { n: 'nikotin', has: [['pyridinový kruh', 'pyridine'], ['terciární amin (pyrrolidin)', 'amine3']], no: [],
+      f: [['Oxidací nikotinu vzniká kyselina nikotinová. Jaký je to vitamin?', 'Niacin, vitamin B3.', 'Vitamin C.', 'Vitamin B12.', 'Vitamin K.', 'Pyrrolidinový kruh se oxidací odbourá a na pyridinu zůstane COOH.']] },
+    { n: 'kofein', has: [['purinový skelet', 'purine'], ['amid (laktam)', 'amide']], no: ['ketone'],
+      f: [['Kofein patří mezi methylxanthiny. Co to znamená?', 'Je to xanthin (purin) s methyly na dusících.', 'Je to xanthin s methoxyskupinami na uhlících.', 'Je to methylester kyseliny močové.', 'Je to methylovaný pyridin.', 'Kofein je 1,3,7-trimethylxanthin. Příbuzný theofylin a theobromin mají methyly jen dva.']] },
+    { n: 'serotonin', has: [['indolový kruh', 'indole'], ['fenolová OH skupina', 'oh_phenol'], ['primární amin', 'amine1']], no: [],
+      f: [['Z které aminokyseliny vzniká serotonin?', 'Z tryptofanu.', 'Z tyrosinu.', 'Z fenylalaninu.', 'Z histidinu.', 'Tryptofan se hydroxyluje na 5-hydroxytryptofan a ten se dekarboxyluje na serotonin.']] },
+    { n: 'adrenalin', has: [['fenolová OH skupina (katechol)', 'oh_phenol'], ['alkoholová OH skupina', 'oh_alc'], ['sekundární amin', 'amine2']], no: [],
+      f: [['Z které aminokyseliny se v těle tvoří adrenalin?', 'Z tyrosinu.', 'Z tryptofanu.', 'Z glycinu.', 'Z histidinu.', 'Tyrosin → DOPA → dopamin → noradrenalin → adrenalin.'],
+        ['Proč je roztok adrenalinu citlivý na vzduch a světlo?', 'Katechol (dvě OH na benzenu) se snadno oxiduje.', 'Amin se vzduchem hydrolyzuje.', 'Alkoholová skupina se odpaří.', 'Benzenové jádro se na světle rozpadá.', 'Oxidací vznikají barevné chinony, roztok pak růžoví až hnědne.']] },
+    { n: 'nikotinamid', has: [['pyridinový kruh', 'pyridine'], ['primární amid', 'amide']], no: [],
+      f: [['Nikotinamid je součástí koenzymu…', 'NAD⁺', 'FAD', 'koenzymu A', 'ATP', 'NAD⁺ = nikotinamidadenindinukleotid, přenašeč hydridu při redoxních reakcích.']] },
+    { n: 'kyselina nikotinová', has: [['pyridinový kruh', 'pyridine'], ['karboxylová kyselina', 'acid']], no: [],
+      f: [['Jak se jinak říká kyselině nikotinové?', 'Niacin (vitamin B3).', 'Nikotin.', 'Pyridoxin (vitamin B6).', 'Kyselina listová.', 'Na rozdíl od nikotinu nemá pyrrolidinový kruh, ale COOH na pyridinu.']] }
+  ];
+  let DRG = null;
+  const drugs = () => DRG || (DRG = DRUGS.map(d => Object.assign({}, d, { g: GROUPS.find(g => g.kind === 'mol' && g.name === d.n) })).filter(d => d.g));
+  const DRSAY = ['Mám tu recept na {n}. Paní magistro, ještě se zeptám:', 'Doktor mi předepsal {n} a já bych chtěl(a) vědět:', 'Beru {n} a v příbalovém letáku tomu nerozumím:'];
+  function drugCustomer(base) {
+    const D = drugs(); if (D.length < 4) return null;
+    const d = pick(D), g = d.g, k = pick(['fg', 'fg', 'fact', 'fact', 'pic']);
+    const pic = `<div class="lk-paper">${molSVG(g, 24)}</div>`, nm2 = esc(d.n);
+    const why = `<p class="aside"><b>${nm2}:</b> ${d.has.map(h => esc(h[0])).join(', ')}.</p>`;
+    if (k === 'pic') {
+      const o = [d].concat(shuffle(D.filter(x => x !== d)).slice(0, 3));
+      return Object.assign(base, { kind: 'drug', g, say: `Doktor mi předepsal ${nm2}. Která krabička to je?`, show: '', opts: shuffle(o.map(x => ({ html: molSVG(x.g, 20), ok: x === d, pic: true }))), why, price: 70, sec: 45 });
+    }
+    if (k === 'fg') {
+      const keys = d.has.map(h => h[1]).concat(d.no), absent = shuffle(Object.keys(FGL).filter(x => !keys.includes(x)));
+      if (d.has.length >= 3 && Math.random() < .5) {
+        const o = shuffle(d.has.slice()).slice(0, 3).map(h => ({ html: esc(h[0]), ok: false })).concat([{ html: esc(FGL[absent[0]]), ok: true }]);
+        return Object.assign(base, { kind: 'drug', g, say: `${pick(DRSAY).replace('{n}', nm2)} Kterou skupinu v něm <b>nenajdu</b>?`, show: pic, opts: shuffle(o), why, price: 90, sec: 50 });
+      }
+      const o = [{ html: esc(pick(d.has)[0]), ok: true }].concat(absent.slice(0, 3).map(x => ({ html: esc(FGL[x]), ok: false })));
+      return Object.assign(base, { kind: 'drug', g, say: `${pick(DRSAY).replace('{n}', nm2)} Kterou z těchhle skupin v něm najdu?`, show: pic, opts: shuffle(o), why, price: 80, sec: 45 });
+    }
+    const f = pick(d.f);
+    return Object.assign(base, { kind: 'drug', g, say: `${pick(DRSAY).replace('{n}', nm2)} ${esc(f[0])}`, show: pic,
+      opts: shuffle([1, 2, 3, 4].map(i => ({ html: esc(f[i]), ok: i === 1 }))), why: `<p class="aside">${esc(f[5])}</p>`, price: 90, sec: 50 });
+  }
+
+  /* --- Neznámá látka: indicie od obecných po konkrétní --- */
+  const SUB = { 0: '₀', 1: '₁', 2: '₂', 3: '₃', 4: '₄', 5: '₅', 6: '₆', 7: '₇', 8: '₈', 9: '₉' };
+  const ELN = { O: ['atom kyslíku', 'atomy kyslíku', 'atomů kyslíku'], N: ['atom dusíku', 'atomy dusíku', 'atomů dusíku'], S: ['atom síry', 'atomy síry', 'atomů síry'], Cl: ['atom chloru', 'atomy chloru', 'atomů chloru'],
+    Br: ['atom bromu', 'atomy bromu', 'atomů bromu'], F: ['atom fluoru', 'atomy fluoru', 'atomů fluoru'], I: ['atom jodu', 'atomy jodu', 'atomů jodu'], P: ['atom fosforu', 'atomy fosforu', 'atomů fosforu'] };
+  const cz = (n, f) => n === 1 ? f[0] : n < 5 ? f[1] : f[2];
+  function counts(g) { const c = {}; let q = 0; g.X.at.forEach(a => { c[a.el] = (c[a.el] || 0) + 1; if (a.h) c.H = (c.H || 0) + a.h; q += a.q || 0; }); return { c, q }; }
+  function formula(g) {
+    const { c, q } = counts(g), ks = Object.keys(c).filter(k => k !== 'C' && k !== 'H').sort();
+    const f = ['C', 'H'].filter(k => c[k]).concat(ks).map(k => k + (c[k] > 1 ? String(c[k]).replace(/\d/g, d => SUB[d]) : '')).join('');
+    return f + (q ? (Math.abs(q) > 1 ? Math.abs(q) : '') + (q > 0 ? '⁺' : '⁻') : '');
+  }
+  const nlOk = g => g.kind === 'mol' && g.X && g.topic !== 'fg' && !g.X.at.some(a => a.el === 'Rg') && g.name.length <= 60;
+  const arom = g => g.X.adj.some(m => Object.values(m).includes(4));
+  const maskName = (t, g) => { let s = t; [g.name].concat(g.syn || []).filter(Boolean).sort((a, b) => b.length - a.length).forEach(n => { s = s.replace(new RegExp(n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '…'); }); return s; };
+  function clues(g) {
+    const out = [], { c } = counts(g);
+    const fam = famName(g); out.push(`Patří do tématu <b>${esc(TOPIC_BY[g.topic].label)}</b>.`);
+    const het = Object.keys(ELN).filter(k => c[k]).map(k => `${c[k]} ${cz(c[k], ELN[k])}`);
+    out.push(`Má <b>${c.C || 0}</b> ${cz(c.C || 0, ['atom uhlíku', 'atomy uhlíku', 'atomů uhlíku'])}${het.length ? ' a ' + het.join(', ') : ' a žádné heteroatomy'}.`);
+    out.push(arom(g) ? 'Obsahuje <b>aromatický kruh</b>.' : 'Aromatický kruh <b>nemá</b>.');
+    if (fam) out.push(`V přednášce patří do okruhu <b>${esc(maskName(fam, g))}</b>.`);
+    const to = REACTIONS.filter(r => r.to.some(p => p.g === g.name)), from = REACTIONS.filter(r => r.from.some(p => p.g === g.name));
+    const r = to.length ? pick(to) : null, r2 = from.length ? pick(from) : null;
+    if (r) out.push(`Vzniká reakcí <b>${esc(maskName(r.title, g))}</b>${r.reag ? ` (${esc(maskName(reagLine(r.reag), g))})` : ''}.`);
+    else if (r2) out.push(`Vstupuje do reakce <b>${esc(maskName(r2.title, g))}</b>${r2.reag ? ` (${esc(maskName(reagLine(r2.reag), g))})` : ''}.`);
+    out.push(`Sumární vzorec: <b>${formula(g)}</b>.`);
+    if (g.tip) out.push(`Pomůcka: ${esc(maskName(g.tip, g))}`);
+    const nm0 = g.name; out.push(`Název začíná na <b>„${esc(nm0.slice(0, 2))}…“</b> a má ${nm0.length} znaků.`);
+    return out;
+  }
+  function nlOpts(g, pool) {
+    const f = formula(g), seen = new Set([norm(g.name)]), out = [g];
+    const nC = x => counts(x).c.C || 0, c0 = nC(g);
+    const same = shuffle(pool.filter(o => o.topic === g.topic && o.fam === g.fam)), rest = shuffle(pool.filter(o => o.topic === g.topic)).sort((a, b) => Math.abs(nC(a) - c0) - Math.abs(nC(b) - c0));
+    for (const o of same.slice(0, 12).concat(rest)) {
+      if (out.length >= 4) break;
+      if (seen.has(norm(o.name)) || formula(o) === f) continue;
+      seen.add(norm(o.name)); out.push(o);
+    }
+    return out.length === 4 ? shuffle(out) : null;
+  }
+  const NL = { topic: '*', n: 5, items: [], i: 0, shown: 1, wrong: new Set(), score: 0, done: false, pts: [], seed: 0 };
+  const nlTopics = () => TOPICS.filter(t => t.id !== 'fg' && GROUPS.some(g => g.topic === t.id && nlOk(g))).map(t => t.id);
+  function nlStart(seed) {
+    NL.seed = seed == null ? newSeed() : seed;
+    const pool = GROUPS.filter(g => nlOk(g) && (NL.topic === '*' || g.topic === NL.topic));
+    NL.items = withRng(mulberry(NL.seed), () => {
+      const out = [];
+      for (const g of shuffle(pool.slice())) { if (out.length >= NL.n) break; if (out.some(x => x.g.name === g.name)) continue; const o = nlOpts(g, pool); if (o) out.push({ g, o: o.map(x => x.id), c: clues(g) }); }
+      return out;
+    });
+    Object.assign(NL, { i: 0, score: 0, pts: [] }); nlRound();
+  }
+  function nlRound() { Object.assign(NL, { shown: 1, wrong: new Set(), done: false }); nlRender(); }
+  function nlRender() {
+    if (NL.i >= NL.items.length) return nlEnd();
+    const it = NL.items[NL.i], g = it.g, tot = it.c.length, maxP = tot - NL.shown + 1 - NL.wrong.size;
+    const sel = `<select id="nlTopic" aria-label="Téma"${CH ? ' disabled' : ''}>${['*'].concat(nlTopics()).map(t => `<option value="${t}"${t === NL.topic ? ' selected' : ''}>${t === '*' ? 'Všechna témata' : esc(TOPIC_BY[t].label)}</option>`).join('')}</select>`;
+    $('#hnBody').innerHTML = `<div class="hn-bar"><span class="eyebrow">Neznámá látka · ${NL.i + 1} / ${NL.items.length}</span><span>Skóre <b>${NL.score}</b> · nejlepší ${best('nl')}</span></div>
+      <div class="hn-sel">${sel}</div>
+      <ol class="nl-clues">${it.c.map((t, k) => k < NL.shown || NL.done ? `<li class="${k < NL.shown ? '' : 'late'}">${t}</li>` : `<li class="hid">Indicie ${k + 1}</li>`).join('')}</ol>
+      ${NL.done ? `<div class="nl-reveal">${molSVG(g, 30)}<b>${esc(label(g))}</b></div>` : ''}
+      <p class="q-text">${NL.done ? '' : 'Co je to za látku?'}</p>
+      <div class="nl-opts">${it.o.map(id => { const o = BYID[id], ok = o === g, w = NL.wrong.has(id);
+        return `<button type="button" class="hn-rg${NL.done && ok ? ' ok' : w ? ' bad' : ''}" data-hn="nlg" data-id="${id}"${NL.done || w ? ' disabled' : ''}>${esc(o.name)}</button>`; }).join('')}</div>
+      ${NL.done ? `<div class="fb ${NL.got ? 'ok' : 'bad'}"><p><b>${NL.got ? `Správně! +${NL.got} b.` : 'Tentokrát ne.'}</b> ${NL.got ? '' : 'Správná látka je zvýrazněná.'}</p></div>
+        <div class="row"><button type="button" class="btn primary" data-hn="nlnext">${NL.i + 1 >= NL.items.length ? 'Výsledky' : 'Další látka'}</button></div>`
+      : `<div class="row"><button type="button" class="btn" data-hn="nlmore"${NL.shown >= tot ? ' disabled' : ''}>Další indicie</button></div>
+        <p class="aside">Teď za ${Math.max(0, maxP)} b. Každá další indicie nebo špatný tip ubere bod.</p>`}`;
+  }
+  function nlGuess(id) {
+    const it = NL.items[NL.i];
+    if (id === it.g.id) { NL.got = Math.max(0, it.c.length - NL.shown + 1 - NL.wrong.size); NL.score += NL.got; NL.pts.push(NL.got); NL.done = true; if (!GS.lr[it.g.id]) GS.lr[it.g.id] = 1; if (typeof cheer === 'function') cheer(); }
+    else { NL.wrong.add(id); if (NL.shown < it.c.length) NL.shown++; if (NL.wrong.size >= 3) { NL.got = 0; NL.pts.push(0); NL.done = true; } }
+    if (NL.done && NL.score > best('nl')) { GS.best.nl = NL.score; }
+    if (NL.done) saveG();
+    nlRender();
+  }
+  function nlEnd() {
+    const max = NL.items.reduce((a, it) => a + it.c.length, 0);
+    $('#hnBody').innerHTML = `<h2 class="hn-h">Neznámá látka: výsledky</h2>
+      <div class="st-nums lk-sum"><div><b>${NL.score}</b><span>bodů</span></div><div><b>${NL.pts.filter(x => x).length} / ${NL.items.length}</b><span>uhodnuto</span></div><div><b>${best('nl')}</b><span>nejlepší</span></div></div>
+      <ul class="lk-miss">${NL.items.map((it, k) => `<li>${esc(it.g.name)} <small>${NL.pts[k] ? '+' + NL.pts[k] + ' b.' : 'neuhodnuto'}</small></li>`).join('')}</ul>
+      ${chEndHTML('nl', { sc: NL.score, ok: NL.pts.filter(x => x).length, of: NL.items.length, max })}
+      <div class="row"><button type="button" class="btn primary" data-hn="nl">Nová hra</button></div>`;
+    CH = null;
+  }
+
+  /* --- Album kartiček: zvládnuté látky --- */
+  const AB = { topic: null };
+  const albumAll = () => GROUPS.filter(g => g.kind === 'mol');
+  function masteredSet() {
+    const s = new Set(Object.keys(GS.lr || {}));
+    Object.values(prog).forEach(b => { if (b && typeof b === 'object') Object.keys(b).forEach(id => s.add(id)); });
+    return s;
+  }
+  const albumCount = () => { const s = masteredSet(); return albumAll().filter(g => s.has(g.id)).length; };
+  function album() {
+    const m = masteredSet(), all = albumAll();
+    const tps = TOPICS.filter(t => all.some(g => g.topic === t.id));
+    if (!AB.topic) { const best1 = tps.map(t => [t.id, all.filter(g => g.topic === t.id && m.has(g.id)).length]).sort((a, b) => b[1] - a[1])[0]; AB.topic = best1 ? best1[0] : tps[0].id; }
+    const cards = all.filter(g => g.topic === AB.topic), got = cards.filter(g => m.has(g.id)).length;
+    $('#hnBody').innerHTML = `<h2 class="hn-h">Album kartiček</h2>
+      <p class="aside">Kartička se odemkne, když látku zvládneš ve Studiu, Pojmenuj, Nakresli nebo v Testu, nebo když ji poprvé správně určíš v Lékárně či v Neznámé látce. Celkem odemčeno <b>${albumCount()}</b> z ${all.length}.</p>
+      <div class="hn-sel"><select id="alTopic" aria-label="Téma">${tps.map(t => { const n = all.filter(g => g.topic === t.id), k = n.filter(g => m.has(g.id)).length;
+        return `<option value="${t.id}"${t.id === AB.topic ? ' selected' : ''}>${esc(t.label)} (${k}/${n.length})${k === n.length ? ' ★' : ''}</option>`; }).join('')}</select></div>
+      <div class="al-prog"><i style="width:${cards.length ? 100 * got / cards.length : 0}%"></i></div>
+      <p class="aside">${got === cards.length ? '<b>Album tématu je kompletní! ★</b>' : `V tomhle tématu máš <b>${got}</b> z ${cards.length} kartiček.`}</p>
+      <div class="al-grid">${cards.map((g, k) => m.has(g.id) ? `<div class="al-card"><span class="al-n">${k + 1}</span><div class="al-pic">${molSVG(g, 16)}</div><b>${esc(g.name)}</b>${g.tip ? `<small>${esc(g.tip)}</small>` : ''}</div>`
+        : `<div class="al-card lock" aria-label="Zamčená kartička"><span class="al-n">${k + 1}</span><div class="al-pic"><span>?</span></div><b>${esc(famName(g) || 'Neznámá látka')}</b></div>`).join('')}</div>`;
+  }
+
+  /* --- Výzva kamarádce: odkaz se semínkem a výsledkem --- */
+  const GNAME = { lek: 'Lékárně U Formičky', nl: 'Neznámé látce' };
+  const b64e = o => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const b64d = s => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/')))));
+  const myName = () => store.get('fg-chname', '') || store.get('fg-repname', '');
+  const tLbl = t => t === '*' ? 'všechna témata' : t === 'drugs' ? 'léčiva z přednášek' : TOPIC_BY[t] ? TOPIC_BY[t].label : t;
+  const chDesc = c => c.g === 'lek' ? `${c.n} zákazníků · ${c.t.map(tLbl).join(', ')}` : `${c.n} látek · ${tLbl(c.t)}`;
+  const chRes = c => c.g === 'lek' ? `${c.sc} Kč, ${c.ok}/${c.of} spokojených` : `${c.sc} bodů, uhodnuto ${c.ok}/${c.of}`;
+  let LAST = null;
+  function chEndHTML(g, r) {
+    LAST = Object.assign({ g, s: g === 'lek' ? L.seed : NL.seed, t: g === 'lek' ? L.topics : NL.topic, n: g === 'lek' ? L.n : NL.items.length }, r);
+    let h = '';
+    if (CH && CH.g === g) {
+      const win = r.sc > CH.sc || (r.sc === CH.sc && r.ok > CH.ok), tie = r.sc === CH.sc && r.ok === CH.ok;
+      h = `<div class="fb ${win ? 'ok' : tie ? 'info' : 'bad'} ch-res"><p><b>${win ? `Porazila jsi ${esc(CH.by || 'kamarádku')}! 🎉` : tie ? 'Remíza!' : `${esc(CH.by || 'Kamarádka')} zůstává před tebou.`}</b></p><p class="aside">Ty: ${chRes(LAST)} · ${esc(CH.by || 'ona')}: ${chRes(CH)}</p></div>`;
+    }
+    return h + `<div class="ch-box"><b>${CH ? 'Pošli výzvu zpátky' : 'Vyzvi kamarádku'}</b><p class="aside">Dostane přesně stejné otázky a uvidí tvůj výsledek.</p>
+      <div class="ch-row"><input id="chName" type="text" maxlength="30" placeholder="Tvoje jméno" value="${esc(myName())}" aria-label="Tvoje jméno"><button type="button" class="btn primary" data-hn="chshare">Poslat výzvu</button></div><p class="bk-msg" id="chMsg" hidden></p></div>`;
+  }
+  async function chShare() {
+    if (!LAST) return;
+    const by = ($('#chName').value || '').trim(); store.set('fg-chname', by);
+    const url = location.origin + location.pathname + '#vyzva=' + b64e(Object.assign({ v: 1, by }, LAST));
+    const txt = `${by || 'Kamarádka'} tě vyzývá v ${GNAME[LAST.g]} (FormičkyHub): ${chRes(LAST)}. Překonáš to?`;
+    const msg = $('#chMsg'); msg.hidden = false;
+    try { if (window.fhCount) fhCount('vyzva-odeslana', true); } catch (e) { /* nic */ }
+    if (navigator.share) { try { await navigator.share({ title: 'Výzva z Formiček', text: txt, url }); msg.textContent = 'Výzva odeslaná.'; return; } catch (e) { if (e && e.name === 'AbortError') { msg.hidden = true; return; } } }
+    try { await navigator.clipboard.writeText(txt + ' ' + url); msg.textContent = 'Odkaz je zkopírovaný, vlož ho kamarádce do chatu.'; }
+    catch (e) { msg.innerHTML = `Zkopíruj odkaz: <input class="ch-url" readonly value="${esc(url)}" onclick="this.select()">`; }
+  }
+  function chFromHash() {
+    const m = location.hash.match(/^#vyzva=([\w-]+)/); if (!m) return;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* nic */ }
+    let c; try { c = b64d(m[1]); } catch (e) { return; }
+    if (!c || !GNAME[c.g]) return;
+    CH = c;
+    try { if (window.fhCount) fhCount('vyzva-otevrena', true); } catch (e) { /* nic */ }
+    open(`<h2 class="hn-h">Výzva!</h2><div class="ch-intro"><p><b>${esc(c.by || 'Kamarádka')}</b> tě vyzývá v <b>${GNAME[c.g]}</b>.</p>
+      <p class="aside">${esc(chDesc(c))}</p><div class="st-nums lk-sum"><div><b>${c.g === 'lek' ? c.sc + ' Kč' : c.sc + ' b.'}</b><span>její výsledek</span></div><div><b>${c.ok} / ${c.of}</b><span>${c.g === 'lek' ? 'spokojených' : 'uhodnuto'}</span></div></div>
+      <p class="aside">Dostaneš úplně stejné otázky. Překonáš ji?</p><div class="row"><button type="button" class="btn primary" data-hn="chgo">Přijmout výzvu</button><button type="button" class="btn" data-hn="menu">Radši ne</button></div></div>`);
+  }
+  function chGo() {
+    if (!CH) return;
+    if (CH.g === 'lek') { L.topics = CH.t.filter(t => t === 'drugs' || TOPIC_BY[t]); L.n = CH.n; const b = document.createElement('button'); b.dataset.hn = 'lkgo'; document.body.appendChild(b); b.click(); b.remove(); return; }
+    NL.topic = CH.t === '*' || TOPIC_BY[CH.t] ? CH.t : '*'; NL.n = CH.n; nlStart(CH.s);
+  }
+
+  /* --- vstup na úvodní stránce: sekce Herna --- */
+  function renderEntry() {
+    const sub = $('#subjects'); if (!sub) return;
+    let sec = $('#hernaHub');
+    if (!sec) {
+      sub.insertAdjacentHTML('afterend', `<section id="hernaHub" class="hn-hub" aria-labelledby="hnHubH"><h2 class="fam-h hn-hrow" id="hnHubH"><span class="hn-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><g transform="rotate(-35 24 24)"><g class="cl"><path d="M24 13H15a11 11 0 0 0 0 22h9v-5a3 3 0 0 0 0-6a3 3 0 0 0 0-6z"/></g><g class="cr"><path d="M24 13h9a11 11 0 0 1 0 22h-9v-5a3 3 0 0 1 0-6a3 3 0 0 1 0-6z"/></g></g></svg></span>Herna</h2><div class="hn-games" id="hnHubG"></div></section>`);
+      sec = $('#hernaHub');
+    }
+    $('#hnHubG').innerHTML = tiles();
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-hn]'); if (!b) return;
+    const a = b.dataset.hn;
+    if (a === 'nl') { open(''); CH = null; return nlStart(); }
+    if (a === 'nlmore') { NL.shown++; return nlRender(); }
+    if (a === 'nlg') return nlGuess(b.dataset.id);
+    if (a === 'nlnext') { NL.i++; return nlRound(); }
+    if (a === 'alb') { open(''); return album(); }
+    if (a === 'chshare') return chShare();
+    if (a === 'chgo') return chGo();
+  });
+  document.addEventListener('change', e => {
+    if (e.target.id === 'nlTopic') { NL.topic = e.target.value; nlStart(); }
+    if (e.target.id === 'alTopic') { AB.topic = e.target.value; album(); }
+  });
+  if (/^#vyzva=/.test(location.hash)) setTimeout(chFromHash, 0);
   renderEntry();
 })();
 /* ===== Logo Formičky: náhodně jedno ze čtyř, klik přepne na další ===== */
@@ -27487,7 +27785,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610121950';
+const FH_VER = '202610122005';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -27501,7 +27799,7 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
 
   /* --- statistiky (GoatCounter: bez cookies, bez osobních údajů) --- */
   const gcCount = (path, ev) => { try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path, title: path, event: !!ev }); } catch (e) { /* nic */ } };
-  const page = () => '/' + (location.hash.replace(/^#/, '') || 'hub');
+  const page = () => '/' + (location.hash.replace(/^#/, '').replace(/^vyzva=.*/, 'vyzva') || 'hub');
   if (WEB.gc) {
     window.goatcounter = { no_onload: true };
     const s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js';
