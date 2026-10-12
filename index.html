@@ -1,4 +1,4 @@
-<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické chemie pro farmaceuty"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style></head><body>
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické chemie pro farmaceuty"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="icon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style></head><body>
 <title>FormičkyHub</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -602,6 +602,23 @@ body.sheet-file .sheet{position:static}
 .sh-it.sel{border-color:var(--pink);background:var(--foam)}
 .sh-it.sel span{color:var(--pink);font-weight:700}
 .sh-it.lock{opacity:.7;border-style:dashed}
+
+/* vlastní web: hlášení chyb, instalace */
+.btn.rep{margin-left:auto;background:transparent;border-color:transparent;color:var(--muted);font-weight:500;padding:11px 8px}
+.btn.rep:hover{color:var(--pink)}
+.rep-card{width:min(520px,100%)}
+.rep-body{padding:12px 16px;overflow:auto;display:grid;gap:12px}
+.rep-body .aside{margin:0}
+.rep-types{border:0;margin:0;padding:0;display:grid;gap:6px}
+.rep-types legend{font-weight:600;margin-bottom:6px;padding:0}
+.rep-types label{display:flex;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.rep-types label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.rep-l{display:grid;gap:4px;font-weight:600;font-size:.92rem}
+.rep-l textarea,.rep-l input{font:inherit;font-weight:400;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);resize:vertical}
+.rep-msg{margin:0;color:var(--pink);min-height:1em}
+.rep-msg:empty{display:none}
+.rep-done{margin:8px 0;font-size:1.05rem}
+#webBox p{margin:0 0 10px}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -637,6 +654,11 @@ body.sheet-file .sheet{position:static}
   <section class="hubcard" aria-labelledby="bkH">
     <h2 class="fam-h" id="bkH">Záloha pokroku</h2>
     <div id="backupBox"></div>
+  </section>
+
+  <section class="hubcard" id="webSec" hidden aria-labelledby="webH">
+    <h2 class="fam-h" id="webH">Aplikace a připomínky</h2>
+    <div id="webBox"></div>
   </section>
 
   <section class="guide" id="navod" aria-labelledby="navodH">
@@ -716,12 +738,19 @@ body.sheet-file .sheet{position:static}
         <li>Na úvodní stránce v „Tvoje učení“ je kalendář posledních 12 týdnů a nastavení cíle (10, 20, 30, 50 odpovědí, nebo vypnuto).</li>
       </ul></details>
 
+    <details class="g-item"><summary>Aplikace v telefonu a hlášení chyb</summary>
+      <ul>
+        <li>Na webu <b>s3tsu.github.io/formicky</b> jdou Formičky přidat na plochu jako aplikace (na úvodní stránce v „Aplikace a připomínky“). Pak fungují i bez internetu a nové verze se stáhnou samy.</li>
+        <li><b>⚑ Nahlásit chybu</b> je po odpovědi u každé otázky. Stačí vybrat, co je špatně, otázka i možnosti se pošlou samy. Bez internetu se hlášení odešle později.</li>
+        <li>Web počítá jen anonymní návštěvy (bez cookies a bez jmen), aby bylo vidět, co se používá.</li>
+      </ul></details>
+
     <details class="g-item"><summary>Kde se ukládá pokrok a jak ho zálohovat</summary>
       <ul>
         <li>Pokrok, opakování i nastavení se ukládají <b>jen v tomhle prohlížeči na tomhle zařízení</b>. Mobil a notebook mají každý svůj.</li>
         <li>V anonymním okně se nic neuloží. Smazání dat prohlížeče pokrok vynuluje.</li>
         <li><b>Záloha pokroku</b> na úvodní stránce: „Vytvořit kód zálohy“ dá kód, který si zkopíruješ (třeba do zpráv sama sobě). Na jiném zařízení ho vložíš do „Načíst kód“ a pokrok se sloučí: nic se nesmaže, jen doplní.</li>
-        <li>Nic se neodesílá. Každá z vás má svůj pokrok jen u sebe.</li>
+        <li>Pokrok se nikam neodesílá. Každá z vás má svůj pokrok jen u sebe.</li>
       </ul></details>
   </section>
 </section>
@@ -25447,7 +25476,7 @@ function srcEmpty() {
 
 function nextRow() {
   const g = Q.cur, d3 = g && g.kind === 'mol' && typeof M3D !== 'undefined' && M3D[g.id] ? `<button class="btn" type="button" data-3d="${g.id}">Zobrazit ve 3D</button>` : '';
-  return `<div class="row"><button class="btn primary" id="next" type="button">Další</button>${d3}</div>`;
+  return `<div class="row"><button class="btn primary" id="next" type="button">Další</button>${d3}${repBtn()}</div>`;
 }
 function refBox(g, cap) { return `<div class="ref"><span>${cap}</span>${molSVG(g, 34)}</div>`; }
 
@@ -25713,7 +25742,7 @@ function renderMech(g) {
 }
 function mechNextRow(g) {
   const last = Q.mech.i >= g.rx.steps.length - 1;
-  return `<div class="row"><button class="btn primary" id="${last ? 'mechDone' : 'mechNext'}" type="button">${last ? 'Hotovo, další' : 'Další krok'}</button></div>`;
+  return `<div class="row"><button class="btn primary" id="${last ? 'mechDone' : 'mechNext'}" type="button">${last ? 'Hotovo, další' : 'Další krok'}</button>${repBtn()}</div>`;
 }
 function answerMech(btn) {
   const g = Q.cur, M = Q.mech, k = +btn.dataset.id.slice(1), ok = M.opts[k].ok, st = g.rx.steps[M.i];
@@ -27446,6 +27475,148 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('span[data-3d]')) { e.preventDefault(); e.stopPropagation(); open(e.target.dataset['3d'], e.target); }
   }, true);
   window.addEventListener('resize', () => { if (viewer && !document.getElementById('m3d').hidden) { viewer.resize(); viewer.render(); } });
+})();
+/* ===== Vlastní web (GitHub Pages): hlášení chyb, instalace do telefonu, offline, anonymní statistiky ===== */
+/* V artifactu na claude.ai se nic z toho nezapne (STANDALONE je false). */
+const WEB = {
+  form: '',      // https://docs.google.com/forms/d/e/<ID>/formResponse
+  entry: '',     // entry.123456789 – jediné pole „Hlášení“ (odstavec)
+  gc: ''         // kód GoatCounter (https://<kód>.goatcounter.com)
+};
+const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
+const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
+const FH_VER = '202610121924';
+
+function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
+
+(function () {
+  if (!WEB_ON) return;
+
+  /* --- statistiky (GoatCounter: bez cookies, bez osobních údajů) --- */
+  const gcCount = (path, ev) => { try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path, title: path, event: !!ev }); } catch (e) { /* nic */ } };
+  const page = () => '/' + (location.hash.replace(/^#/, '') || 'hub');
+  if (WEB.gc) {
+    window.goatcounter = { no_onload: true };
+    const s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js';
+    s.dataset.goatcounter = 'https://' + WEB.gc + '.goatcounter.com/count';
+    s.onload = () => { gcCount(page()); if (matchMedia('(display-mode: standalone)').matches) gcCount('aplikace-spustena', true); };
+    document.head.appendChild(s);
+    let last = page();
+    window.addEventListener('hashchange', () => { const p = page(); if (p !== last) { last = p; gcCount(p); } });
+    document.addEventListener('click', e => { if (e.target.closest('#hnPiece')) gcCount('herna', true); });
+  }
+  window.fhCount = gcCount;
+
+  /* --- offline režim --- */
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+
+  /* --- karta na úvodní stránce: instalace + připomínky --- */
+  let deferred = null;
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const installed = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  function renderWeb() {
+    const box = $('#webBox'), sec = $('#webSec'); if (!box || !sec) return;
+    let inst;
+    if (installed()) inst = '<p>Aplikace je nainstalovaná. Funguje i bez internetu, nové verze se stáhnou samy při připojení.</p>';
+    else if (deferred) inst = '<p>Přidej si Formičky na plochu jako aplikaci. Spustí se bez prohlížeče a fungují i bez internetu.</p><div class="row"><button type="button" class="btn primary" id="webInstall">Nainstalovat aplikaci</button></div>';
+    else if (isIOS) inst = '<p>Přidej si Formičky na plochu jako aplikaci: v Safari klepni na <b>Sdílet</b> (čtvereček se šipkou) a pak <b>Přidat na plochu</b>. Pak fungují i bez internetu.</p>';
+    else inst = '<p>Formičky jdou přidat na plochu jako aplikace: v menu prohlížeče zvol <b>Instalovat aplikaci</b> nebo <b>Přidat na plochu</b>. Pak fungují i bez internetu.</p>';
+    box.innerHTML = inst + (REP_ON ? '<p class="aside">Narazila jsi na chybu nebo máš nápad? U každé otázky je po odpovědi tlačítko „⚑ Nahlásit chybu“. Obecnou připomínku pošli tady:</p><div class="row"><button type="button" class="btn" data-rep="general">Napsat připomínku</button></div>' : '');
+    sec.hidden = false;
+  }
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; renderWeb(); });
+  window.addEventListener('appinstalled', () => { deferred = null; renderWeb(); gcCount('nainstalovano', true); });
+  document.addEventListener('click', async e => {
+    if (!e.target.closest('#webInstall') || !deferred) return;
+    const d = deferred; deferred = null;
+    try { await d.prompt(); await d.userChoice; } catch (er) { /* zrušeno */ }
+    renderWeb();
+  });
+  renderWeb();
+
+  /* --- hlášení chyb --- */
+  if (!REP_ON) return;
+  const QK = 'fg-repq', NK = 'fg-repname';
+  const TYPES = ['Špatně označená správná odpověď', 'Chybný vzorec nebo obrázek', 'Chyba v názvu nebo textu', 'Nesmyslná možnost', 'Jiné / nápad'];
+  let ctx = null;
+  const modeName = () => ({ study: 'Studium', name: 'Pojmenuj', draw: 'Nakresli', test: 'Test', browse: 'Přehled' }[S.mode] || S.mode);
+  function cardCtx() {
+    const g = Q.cur, t = TOPIC_BY[S.topic];
+    let raw = '';
+    try {
+      const c = view.cloneNode(true), tmp = document.createElement('div');
+      c.querySelectorAll('svg').forEach(v => v.replaceWith(document.createTextNode(' [obrázek] ')));
+      c.querySelectorAll('button.rep,[data-3d],#next,#mechNext,#mechDone').forEach(v => v.remove());
+      tmp.style.cssText = 'position:fixed;left:-9999px;top:0;width:600px'; tmp.appendChild(c); document.body.appendChild(tmp);
+      raw = tmp.innerText; tmp.remove();
+    } catch (e) { raw = view ? view.textContent : ''; }
+    const shown = raw.replace(/\n{2,}/g, '\n').trim().slice(0, 900);
+    return {
+      title: g ? (g.name || g.title || g.id) : 'Otázka',
+      lines: [`Karta: ${g ? g.id : '?'}${g && (g.name || g.title) ? ' (' + (g.name || g.title) + ')' : ''}`, `Téma: ${S.mixOn ? 'Mix' : (t ? t.label : S.topic)}`, `Režim: ${modeName()}`, 'Na obrazovce:', shown]
+    };
+  }
+  function send(text) {
+    const body = new URLSearchParams(); body.append(WEB.entry, text);
+    return fetch(WEB.form, { method: 'POST', mode: 'no-cors', body });
+  }
+  let flushing = false;
+  async function flush() {
+    if (flushing) return;
+    const q = store.get(QK, []); if (!q.length || !navigator.onLine) return;
+    flushing = true; store.set(QK, []);
+    const left = [];
+    for (const t of q) { try { await send(t); } catch (e) { left.push(t); } }
+    if (left.length) store.set(QK, left.concat(store.get(QK, [])).slice(-30));
+    flushing = false;
+  }
+  function openRep(kind) {
+    ctx = kind === 'card' ? cardCtx() : { title: 'Připomínka k webu', lines: [`Stránka: ${location.hash || '#hub'}`] };
+    let box = $('#repBox');
+    if (!box) { box = document.createElement('div'); box.id = 'repBox'; box.className = 'm3d rep'; document.body.appendChild(box); }
+    const gen = kind !== 'card';
+    box.innerHTML = `<form class="m3d-card rep-card" role="dialog" aria-modal="true" aria-labelledby="repT" id="repForm">
+      <div class="m3d-head"><h2 id="repT">${gen ? 'Připomínka nebo nápad' : 'Nahlásit chybu'}</h2><button type="button" class="m3d-x" data-rep="close" aria-label="Zavřít">×</button></div>
+      <div class="rep-body">
+        ${gen ? '' : `<p class="aside">K otázce: <b>${esc(ctx.title)}</b>. Otázka i možnosti se pošlou automaticky.</p>
+        <fieldset class="rep-types"><legend>Co je špatně?</legend>${TYPES.map((t, i) => `<label><input type="radio" name="rt" value="${esc(t)}"${i ? '' : ' checked'}> ${esc(t)}</label>`).join('')}</fieldset>`}
+        <label class="rep-l">${gen ? 'Co bys chtěla vylepšit nebo co nefunguje?' : 'Popis (nepovinné, ale hodně pomůže)'}<textarea id="repTxt" rows="4" maxlength="1500" placeholder="${gen ? 'Napiš cokoli…' : 'Např. správně je C, protože…'}"></textarea></label>
+        <label class="rep-l">Podpis (nepovinné)<input id="repName" type="text" maxlength="40" value="${esc(store.get(NK, ''))}" placeholder="aby se ti dalo odpovědět"></label>
+        <p class="rep-msg" id="repMsg" aria-live="polite"></p>
+      </div>
+      <div class="m3d-foot"><button type="submit" class="btn primary" id="repSend">Odeslat</button><button type="button" class="btn" data-rep="close">Zrušit</button></div>
+    </form>`;
+    box.hidden = false; document.body.classList.add('m3d-open');
+    setTimeout(() => { const f = gen ? $('#repTxt') : box.querySelector('input[name=rt]'); if (f) f.focus(); }, 30);
+  }
+  function closeRep() { const b = $('#repBox'); if (b) b.hidden = true; if (!($('#m3d') && !$('#m3d').hidden)) document.body.classList.remove('m3d-open'); }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-rep]');
+    if (b) { if (b.dataset.rep === 'close') closeRep(); else openRep(b.dataset.rep); return; }
+    if (e.target.id === 'repBox') closeRep();
+  });
+  document.addEventListener('keydown', e => {
+    const box = $('#repBox'); if (!box || box.hidden) return;
+    e.stopPropagation();                       // klávesy patří formuláři, ne otázce pod ním
+    if (e.key === 'Escape') closeRep();
+  }, true);
+  document.addEventListener('submit', async e => {
+    if (e.target.id !== 'repForm') return;
+    e.preventDefault();
+    const rt = $('#repForm input[name=rt]:checked'), txt = $('#repTxt').value.trim(), name = $('#repName').value.trim();
+    if (!rt && !txt) { $('#repMsg').textContent = 'Napiš prosím pár slov.'; return; }
+    store.set(NK, name);
+    const text = [rt ? 'Typ: ' + rt.value : 'Typ: Připomínka', 'Popis: ' + (txt || '–'), 'Od: ' + (name || 'anonym')].concat(ctx.lines)
+      .concat([`Verze: ${FH_VER}`, `Zařízení: ${installed() ? 'aplikace' : 'prohlížeč'}, ${innerWidth}×${innerHeight}`]).join('\n');
+    const btn = $('#repSend'); btn.disabled = true; btn.textContent = 'Odesílám…';
+    let ok = true;
+    try { if (!navigator.onLine) throw new Error('offline'); await send(text); } catch (er) { ok = false; const q = store.get(QK, []); q.push(text); store.set(QK, q.slice(-30)); }
+    gcCount('hlaseni', true);
+    $('#repForm .rep-body').innerHTML = `<p class="rep-done">${ok ? 'Děkujeme, hlášení je odeslané. 💗' : 'Teď nejsi připojená. Hlášení se odešle samo, až budeš online.'}</p>`;
+    $('#repForm .m3d-foot').innerHTML = '<button type="button" class="btn primary" data-rep="close">Zavřít</button>';
+  });
+  window.addEventListener('online', flush);
+  setTimeout(flush, 3000);
 })();
 </script>
 </body></html>
