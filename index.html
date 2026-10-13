@@ -27505,7 +27505,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     }
     return h + `<div class="ch-box"><b>${CH ? 'Pošli výzvu zpátky' : 'Vyzvi kamarádku'}</b><p class="aside">Dostane přesně stejné otázky a uvidí tvůj výsledek.</p>
       <div class="ch-row"><input id="chName" type="text" maxlength="24" placeholder="Tvoje jméno" value="${esc(myName())}" aria-label="Tvoje jméno"><button type="button" class="btn primary" data-hn="chshare">Poslat výzvu</button></div>
-      <div class="ch-prev" id="chPrev" hidden></div><button type="button" class="link" data-hn="chlink">Poslat jen odkaz bez obrázku</button><p class="bk-msg" id="chMsg" hidden></p></div>`;
+      <div class="ch-prev" id="chPrev" hidden></div><button type="button" class="link" data-hn="chlink">Poslat jen odkaz (třeba pro Instagram)</button><p class="bk-msg" id="chMsg" hidden></p></div>`;
   }
   /* obrázek výzvy (kartička do chatu): kdo vyzývá a jaké má skóre */
   let CARD = null, cardT = 0;
@@ -27560,10 +27560,14 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     try { if (window.fhCount) fhCount('vyzva-odeslana', true); } catch (e) { /* nic */ }
     const key = by + '|' + JSON.stringify(LAST), file = !linkOnly && CARD && CARD.key === key ? CARD.file : null;
     if (navigator.share) {
+      const withImg = file && navigator.canShare && navigator.canShare({ files: [file] });
+      let clip = null;
+      if (withImg) { try { clip = navigator.clipboard.writeText(txt + ' ' + url).then(() => true, () => false); } catch (e) { clip = null; } }   // pojistka pro aplikace, které pošlou jen obrázek (Instagram)
       try {
-        if (file && navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text: txt + '\n' + url });
+        if (withImg) await navigator.share({ files: [file], text: txt + '\n' + url });
         else await navigator.share({ title: 'Výzva z Formiček', text: txt, url });
-        msg.textContent = 'Výzva odeslaná.'; return;
+        msg.textContent = withImg && clip && await clip ? 'Výzva odeslaná. Odkaz máš navíc zkopírovaný: když aplikace (třeba Instagram) poslala jen obrázek, vlož ho do zprávy za něj.' : 'Výzva odeslaná.';
+        return;
       } catch (e) { if (e && e.name === 'AbortError') { msg.hidden = true; return; } }
     }
     let copied = false;
@@ -27842,7 +27846,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610130144';
+const FH_VER = '202610130146';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
