@@ -27501,7 +27501,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     let h = '';
     if (CH && CH.g === g) {
       const win = r.sc > CH.sc || (r.sc === CH.sc && r.ok > CH.ok), tie = r.sc === CH.sc && r.ok === CH.ok;
-      h = `<div class="fb ${win ? 'ok' : tie ? 'info' : 'bad'} ch-res"><p><b>${win ? `Porazila jsi ${esc(CH.by || 'kamarádku')}! 🎉` : tie ? 'Remíza!' : `${esc(CH.by || 'Kamarádka')} zůstává před tebou.`}</b></p><p class="aside">Ty: ${chRes(LAST)} · ${esc(CH.by || 'ona')}: ${chRes(CH)}</p></div>`;
+      h = `<div class="fb ${win ? 'ok' : tie ? 'info' : 'bad'} ch-res"><p><b>${win ? `Porazila jsi ${esc(CH.by || 'X')}! 🎉` : tie ? 'Remíza!' : `${esc(CH.by || 'X')} zůstává před tebou.`}</b></p><p class="aside">Ty: ${chRes(LAST)} · ${esc(CH.by || 'X')}: ${chRes(CH)}</p></div>`;
     }
     return h + `<div class="ch-box"><b>${CH ? 'Pošli výzvu zpátky' : 'Vyzvi kamarádku'}</b><p class="aside">Dostane přesně stejné otázky a uvidí tvůj výsledek.</p>
       <div class="ch-row"><input id="chName" type="text" maxlength="24" placeholder="Tvoje jméno" value="${esc(myName())}" aria-label="Tvoje jméno"><button type="button" class="btn primary" data-hn="chshare">Poslat výzvu</button></div>
@@ -27530,7 +27530,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     // texty vpravo
     const L0 = 460, W = 660;
     x.fillStyle = '#d93a72'; x.font = `600 26px ${B}`; x.fillText('VÝZVA Z FORMIČEK', L0, 130);
-    x.fillStyle = '#172033'; const who = (by || 'Kamarádka').slice(0, 24) + ' tě vyzývá!'; fit(x, who, W, 64, 700, D); x.fillText(who, L0, 205);
+    x.fillStyle = '#172033'; const who = (by || 'X').slice(0, 24) + ' tě vyzývá!'; fit(x, who, W, 64, 700, D); x.fillText(who, L0, 205);
     x.fillStyle = '#596377'; const gl = (LAST.g === 'lek' ? 'Lékárna U Formičky' : 'Neznámá látka') + ' · ' + chDesc(LAST).replace(/ · .*/, ''); fit(x, gl, W, 32, 500, B); x.fillText(gl, L0, 255);
     x.fillStyle = '#d93a72'; const big = LAST.g === 'lek' ? `${LAST.sc} Kč` : `${LAST.sc} b.`; fit(x, big, W, 120, 700, D); x.fillText(big, L0, 385);
     x.fillStyle = '#172033'; x.font = `600 34px ${B}`; x.fillText(LAST.g === 'lek' ? `${LAST.ok} / ${LAST.of} spokojených zákazníků` : `uhodnuto ${LAST.ok} z ${LAST.of} látek`, L0, 440);
@@ -27555,7 +27555,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     if (!LAST) return;
     const by = ($('#chName').value || '').trim(); store.set('fg-chname', by);
     const url = location.origin + location.pathname + '#vyzva=' + b64e(Object.assign({ v: 1, by }, LAST));
-    const txt = `${by || 'Kamarádka'} tě vyzývá v ${GNAME[LAST.g]} (FormičkyHub): ${chRes(LAST)}. Překonáš to?`;
+    const txt = `${by || 'X'} tě vyzývá v ${GNAME[LAST.g]} (FormičkyHub): ${chRes(LAST)}. Překonáš to?`;
     const msg = $('#chMsg'); msg.hidden = false;
     try { if (window.fhCount) fhCount('vyzva-odeslana', true); } catch (e) { /* nic */ }
     const key = by + '|' + JSON.stringify(LAST), file = !linkOnly && CARD && CARD.key === key ? CARD.file : null;
@@ -27578,7 +27578,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); const 
     if (!c || !GNAME[c.g]) return;
     CH = c;
     try { if (window.fhCount) fhCount('vyzva-otevrena', true); } catch (e) { /* nic */ }
-    open(`<h2 class="hn-h">Výzva!</h2><div class="ch-intro"><p><b>${esc(c.by || 'Kamarádka')}</b> tě vyzývá v <b>${GNAME[c.g]}</b>.</p>
+    open(`<h2 class="hn-h">Výzva!</h2><div class="ch-intro"><p><b>${esc(c.by || 'X')}</b> tě vyzývá v <b>${GNAME[c.g]}</b>.</p>
       <p class="aside">${esc(chDesc(c))}</p><div class="st-nums lk-sum"><div><b>${c.g === 'lek' ? c.sc + ' Kč' : c.sc + ' b.'}</b><span>její výsledek</span></div><div><b>${c.ok} / ${c.of}</b><span>${c.g === 'lek' ? 'spokojených' : 'uhodnuto'}</span></div></div>
       <p class="aside">Dostaneš úplně stejné otázky. Překonáš ji?</p><div class="row"><button type="button" class="btn primary" data-hn="chgo">Přijmout výzvu</button><button type="button" class="btn" data-hn="menu">Radši ne</button></div></div>`);
   }
@@ -27842,7 +27842,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610122017';
+const FH_VER = '202610130144';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
