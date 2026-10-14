@@ -877,6 +877,18 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-meme{margin:0;position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#3a3550,#1d1a28);padding:12px 12px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
 .ac-meme-pic{width:min(220px,70%);line-height:0;--ink:#f4f1f7;--muted:#a8a0b8;--surface:#2a2638;--accent-soft:#4a3f66}
+#acMode{flex-wrap:wrap;border-radius:20px}
+.ac-tg{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
+.ac-tg > b{font-size:.8rem;color:var(--muted);font-weight:600}
+.ac-name{font:600 .88rem/1.2 var(--f-body);min-width:0}
+.ac-log li.pos{border-left:4px solid var(--ok)}
+.ac-log li.neg{border-left:4px solid var(--line)}
+.ac-po{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ac-po .hn-n{width:22px;flex:none;color:var(--muted);font-variant-numeric:tabular-nums}
+.ac-po-rest{display:flex;flex-direction:column;gap:6px;padding-top:6px;border-top:1px dashed var(--line)}
+.ac-mp{display:flex;justify-content:space-between;gap:4px;flex-wrap:wrap}
+.ac-mp .ac-tube svg{width:34px;height:76px}
+.ac-mp .ac-tube figcaption{max-width:78px}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -27298,6 +27310,9 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     ['acvz', 'Neznámý vzorek', 'Analytická chemie: přidávej do zkumavky činidla a podle sraženin a barev poznej kationt nebo aniont.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best() : 0}`, 'ac-game-tile'],
     ['acrz', 'Třída rozpustnosti', 'Analytická chemie: zkoušej vodu, ether, louh, sodu a kyseliny a zařaď organickou látku do třídy.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best('rz') : 0}`, 'ac-game-tile'],
     ['acir', 'Čti IČ spektrum', 'Analytická chemie: podle pásů v IČ spektru poznej, jestli jde o alkohol, keton, ester nebo nitril.', `Nejdelší série ${window.FH_AC ? FH_AC.best('ir') : 0}`, 'ac-game-tile'],
+    ['acol', 'Neznámá organická látka', 'Analytická chemie: důkazy prvků, rozpustnost a funkční skupiny. Poznej, která z 24 látek je ve zkumavce.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best('ol') : 0}`, 'ac-game-tile'],
+    ['acpo', 'Seřaď postup', 'Analytická chemie: poskládej kroky laboratorních postupů ve správném pořadí.', `Nejdelší série ${window.FH_AC ? FH_AC.best('po') : 0}`, 'ac-game-tile'],
+    ['acmp', 'Bodotávek', 'Analytická chemie: odečti teplotu tání z kapiláry a posuď, jestli je látka čistá.', `Nejdelší série ${window.FH_AC ? FH_AC.best('mp') : 0}`, 'ac-game-tile'],
     ['alb', 'Album kartiček', 'Každá látka, kterou zvládneš, se odemkne jako kartička. Posbírej celé album přednášky.', `Odemčeno ${albumCount()} z ${albumAll().length}`, 'al-game']
   ];
   const tiles = () => GAMES().map(([k, n, d, sm, cls]) => `<button type="button" class="hn-game ${cls}" data-hn="${k}"><b>${n}</b><span>${d}</span><small>${sm}</small></button>`).join('');
@@ -29046,8 +29061,9 @@ function sheetView() { return ST.ch === 'org' ? sheetOrg() : ST.ch === 'fyz' ? s
 const RZ = { s: null, log: [], wrong: new Set(), done: false };
 const RZT = [['voda', 'voda'], ['ether', 'ether'], ['naoh', '5% NaOH'], ['nahco3', '5% NaHCO₃'], ['hcl', '5% HCl'], ['ns', 'důkaz N a S'], ['h2so4', 'konc. H₂SO₄']];
 function rzNew() { const p = RZ.s; let s; do { s = pick(AC_SUBST); } while (s === p); RZ.s = s; RZ.log = []; RZ.wrong = new Set(); RZ.done = false; }
-function rzResult(k) {
-  const [, c, ns] = RZ.s, ws = c === 'S1' || c === 'S2', Y = 'rozpustí se', N = 'nerozpustí se';
+const rzResult = k => solRes(RZ.s[1], RZ.s[2], k);
+function solRes(c, ns, k) {
+  const ws = c === 'S1' || c === 'S2', Y = 'rozpustí se', N = 'nerozpustí se';
   if (k === 'voda') return ws ? Y : N;
   if (k === 'ether') return c === 'S2' ? N : Y;
   if (k === 'ns') return ns ? 'obsahuje N nebo S' : 'bez N a S';
@@ -29111,6 +29127,173 @@ function bedaBox(m) { return m ? `<div class="ac-beda"><div class="ac-beda-pic">
 function memeCard() {
   const L = AC_MEMES.filter(x => x[2] === ST.ch), m = L.length ? pick(L) : pick(AC_MEMES);
   return `<figure class="ac-meme" aria-label="Vtip: ${escA(m[0])}, ${escA(m[1])}"><span class="mt">${escA(m[0])}</span><div class="ac-meme-pic">${bedaSVG()}</div><span class="mb">${escA(m[1])}</span></figure>`;
+}
+
+/* ===== Analytická chemie: hry Neznámá organická látka, Seřaď postup a Bodotávek ===== */
+/* --- Neznámá organická látka: [název, třída rozpustnosti, obsahuje N nebo S, pozitivní zkoušky, vlastní výsledky] --- */
+const OL = [
+  ['ethanol', 'S1', 0, 'jodo nessal dichdnph dichsch ferrox'],
+  ['propan-2-ol', 'S1', 0, 'jodo nessal dichdnph lucas2 ferrox'],
+  ['2-methylpropan-2-ol', 'S1', 0, 'jodo lucas3 ferrox'],
+  ['glycerol', 'S2', 0, 'jodo borax nessal dichdnph dichsch ferrox'],
+  ['glukosa', 'S2', 0, 'jodo borax nessal tollens ferrox'],
+  ['fenol', 'S1', 0, 'jodo fecn diazof ferrox'],
+  ['hydrochinon', 'S1', 0, 'jodo fecn diazof naohf tollens ferrox'],
+  ['benzaldehyd', 'N', 0, 'jodo dnph tollens schiff ferrox'],
+  ['aceton', 'S1', 0, 'jodo dnph ferrox'],
+  ['kyselina octová', 'S1', 0, 'jodo hydk ester agsul ferrox'],
+  ['kyselina šťavelová', 'S2', 0, 'jodo hydk agsul casul ferrox'],
+  ['kyselina benzoová', 'A1', 0, 'jodo hydk ester agsul ferrox'],
+  ['ethyl-acetát', 'S1', 0, 'jodo hyde hydk hydrol ferrox'],
+  ['diethylether', 'S1', 0, 'jodo ferrox'],
+  ['hexan', 'I', 0, ''],
+  ['anilin', 'B', 1, 'prus natron pikr hno21ar dmaba isonit acetyl lignin'],
+  ['diethylamin', 'S1', 1, 'prus natron nidmg pikr hno22 simon acetyl'],
+  ['triethylamin', 'S1', 1, 'prus natron nidmg pikr dragen'],
+  ['acetamid', 'S2', 1, 'prus natron hno2am naoham hyde hydk ferrox'],
+  ['sulfanilamid', 'A2B', 1, 'prus nitroprus natron hno21ar dmaba lignin acetyl'],
+  ['nitrobenzen', 'M', 1, 'prus znred ferrox'],
+  ['chlorbenzen', 'I', 0, 'beil agcl'],
+  ['1-chlorbutan', 'I', 0, 'beil agcl aghot'],
+  ['benzylchlorid', 'I', 0, 'beil agcl agcold']
+].map(([n, c, ns, p]) => ({ n, c, ns, p: new Set(p.split(' ').filter(Boolean)) }));
+const OLG = []; AC_OT.forEach(t => { if (!OLG.includes(t[1])) OLG.push(t[1]); });
+const OLC = 4, OLW = 15;
+/* stejný postup s různými výsledky = jedno tlačítko */
+const OLM = { lucas3: ['lucas3', 'lucas2'], clbr: ['clbr', 'cli'], agcold: ['agcold', 'aghot'], hno21al: ['hno21al', 'hno22', 'hno2am'] };
+const OLNEG = { lucas3: 'žádný zákal', clbr: 'chloroformová vrstva zůstane bezbarvá', agcold: 'sraženina nevznikne ani za tepla', hno21al: 'beze změny' };
+const OLHIDE = new Set(['lucas2', 'cli', 'aghot', 'hno22', 'hno2am']);
+const OLS = { cuo: 'C: CuO a Ba(OH)₂', cuoh: 'H: CuO, kapky vody', prus: 'N: berlínská modř', nitroprus: 'S: nitroprusid', caf2: 'F: CaCl₂', agcl: 'Cl: AgNO₃ a NH₃', clbr: 'Br, I: chloramin T', jodo: 'O: jódová zkouška', natron: 'N: natronové vápno',
+  beil: 'Beilsteinova zkouška', agcold: 'ethanolický AgNO₃', nessal: 'Nesslerovo činidlo', dichdnph: 'K₂Cr₂O₇, pak 2,4-DNPH', dichsch: 'K₂Cr₂O₇, pak Schiff', lucas3: 'Lucasovo činidlo', borax: 'tetraboritan a fenolftalein',
+  fecn: 'FeCl₃ a K₃[Fe(CN)₆]', diazof: 'diazotovaná kys. sulfanilová', naohf: '20% NaOH', dnph: '2,4-DNPH', tollens: 'Tollensovo činidlo', schiff: 'Schiffovo činidlo', hydk: 'SOCl₂, hydroxamová reakce', ester: 'ethanol a H₂SO₄ (vůně)',
+  agsul: 'pH 7–8, AgNO₃', casul: 'pH 7–8, CaCl₂', hyde: 'hydroxylamin a FeCl₃', hydrol: 'fenolftalein a NaOH, zahřát', ferrox: 'ferroxový test', naoham: 'povařit s 20% NaOH', nidmg: 'Ni-dimethylglyoxim',
+  pikr: 'kyselina pikrová', hno21al: 'NaNO₂ a HCl', hno21ar: 'NaNO₂, HCl, pak 2-naftol', dmaba: '4-dimethylaminobenzaldehyd', isonit: 'isonitrilová reakce', simon: 'Simonova reakce', acetyl: 'acetylchlorid',
+  lignin: 'novinový papír a HCl', dragen: 'Dragendorffovo činidlo', lieb: 'Liebermannova reakce', znred: 'Zn a HCl, pak důkaz aminu' };
+const OG = { s: null, log: [], wrong: new Set(), done: false };
+function olNew() { const p = OG.s; let s; do { s = pick(OL); } while (s === p); OG.s = s; OG.log = []; OG.wrong = new Set(); OG.done = false; }
+function olRes(k) {
+  const s = OG.s;
+  if (k.startsWith('r:')) return solRes(s.c, s.ns, k.slice(2));
+  const t = AC_OT.find(x => x[0] === k);
+  if (k === 'cuo' || k === 'cuoh') return t[3];
+  if (k === 'jodo') return s.ns ? 'nedá se použít, látka obsahuje dusík nebo síru' : s.p.has(k) ? t[3] : 'jód se rozpustí fialově (bez kyslíku)';
+  if (OLM[k]) { const hit = OLM[k].find(id => s.p.has(id)); return hit ? AC_OT.find(x => x[0] === hit)[3] : OLNEG[k]; }
+  if (k === 'beil' && !s.p.has('beil')) return 'plamen se nezbarví zeleně';
+  return s.p.has(k) ? t[3] : 'negativní, beze změny';
+}
+const olScore = () => Math.max(10, 100 - OLC * OG.log.length - OLW * OG.wrong.size);
+function olTry(k) {
+  if (OG.done || OG.log.some(l => l.k === k)) return;
+  const t = AC_OT.find(x => x[0] === k), r = RZT.find(x => 'r:' + x[0] === k);
+  OG.log.push({ k, n: t ? OLS[k] : r[1], v: olRes(k), pos: t ? ((OLM[k] || [k]).some(id => OG.s.p.has(id)) || k === 'cuo' || k === 'cuoh') : null });
+  render();
+  const l = document.querySelector('.ac-log li:last-child'); if (l) l.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+function olGuess(n) {
+  if (OG.done) return;
+  if (n === OG.s.n) { OG.done = true; OG.last = olScore(); ST.best = ST.best || {}; OG.rec = OG.last > (ST.best.ol || 0); ST.best.ol = Math.max(ST.best.ol || 0, OG.last); save(); }
+  else OG.wrong.add(n);
+  render();
+}
+function neorgView() {
+  if (!OG.s) olNew();
+  const s = OG.s, used = k => OG.log.some(l => l.k === k), nTests = AC_OT.length - OLHIDE.size + RZT.length;
+  const head = `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Neznámá organická látka</span><span class="ac-score">Body ${OG.done ? OG.last : olScore()} · nejlepší ${(ST.best && ST.best.ol) || 0}</span></div>
+    <div class="ac-sample">${tubeSVG({ sol: '' }, 'vzorek')}<p>Ve zkumavce je jedna z ${OL.length} organických látek. Máš ${nTests} zkoušek: důkazy prvků, rozpustnost a důkazy funkčních skupin. Každá stojí ${OLC} body, špatný tip ${OLW}. Body neklesnou pod 10, takže můžeš zkoušet, dokud nepoznáš, co to je.</p></div></div>`;
+  const log = OG.log.length ? `<ol class="ac-log">${OG.log.map(l => `<li class="${l.pos === true ? 'pos' : l.pos === false ? 'neg' : ''}"><div><b>${escA(l.n)}</b><span>${escA(l.v)}</span></div></li>`).join('')}</ol>` : '';
+  if (OG.done) {
+    const pos = AC_OT.filter(t => s.p.has(t[0])).map(t => `<li>${escA(t[2])} → <b>${escA(t[3])}</b> (${escA(t[4])})</li>`).join('');
+    return `${head}${log}<div class="card"><div class="fb ok"><p><b>Je to ${escA(s.n)}!</b> ${OG.last} bodů${OG.rec ? ', nový rekord' : ''}.</p></div>
+      <p>Třída rozpustnosti <b>${s.c}</b>${s.ns ? ', obsahuje N nebo S' : ''}.</p>${pos ? `<span class="eyebrow">Pozitivní zkoušky</span><ul class="ac-ul">${pos}</ul>` : '<p class="aside">Kromě uhlíku a vodíku nedá žádnou pozitivní zkoušku.</p>'}
+      ${bedaBox(AC_BEDA['sol' + s.c])}<div class="row"><button type="button" class="btn primary" data-ac="olnew">Další látka</button></div></div>`;
+  }
+  const btn = (k, n) => `<button type="button" class="ac-rg" data-ac="oltry" data-v="${k}"${used(k) ? ' disabled' : ''}>${escA(n)}</button>`;
+  const groups = [['Rozpustnost', RZT.map(([k, n]) => btn('r:' + k, n))]].concat(OLG.filter(g => AC_OT.some(t => t[1] === g && !OLHIDE.has(t[0]))).map(g => [g, AC_OT.filter(t => t[1] === g && !OLHIDE.has(t[0])).map(t => btn(t[0], OLS[t[0]]))]));
+  return `${head}${log}<div class="card"><span class="eyebrow">Zkoušky</span>${groups.map(([g, b]) => `<div class="ac-tg"><b>${g}</b><div class="ac-rgs">${b.join('')}</div></div>`).join('')}
+    <span class="eyebrow">Tvůj tip</span><div class="ac-chips">${OL.map(o => `<button type="button" class="ac-ion ac-name${OG.wrong.has(o.n) ? ' wrong' : ''}" data-ac="olguess" data-v="${escA(o.n)}"${OG.wrong.has(o.n) ? ' disabled' : ''}>${escA(o.n)}</button>`).join('')}</div>
+    <p class="aside">Výsledky vycházejí z popisu reakcí ve skriptech. Negativní výsledek znamená, že zkouška danou skupinu nedokázala.</p></div>`;
+}
+
+/* --- Seřaď postup: [id, kapitola, název, kroky ve správném pořadí] --- */
+const AC_POR = [
+  ['rozp', 'org', 'Zařazení do třídy rozpustnosti', ['voda', 'ether (u látek rozpustných ve vodě)', '5% NaOH', '5% NaHCO₃', '5% HCl', 'důkaz N a S', 'konc. H₂SO₄ (jen bez N a S)']],
+  ['prus', 'org', 'Důkaz dusíku berlínskou modří', ['vzorek žíhat s Mg a K₂CO₃', 'zbytek vyloužit vodou a zfiltrovat', 'k výluhu přidat FeSO₄', 'okyselit HCl', 'modrá sraženina = dusík']],
+  ['lucas', 'org', 'Lucasova zkouška: kdo se zakalí dřív', ['terciární alkohol (hned)', 'sekundární alkohol (2–5 minut)', 'primární alkohol (vůbec)']],
+  ['dich', 'org', 'Důkaz primárního alkoholu oxidací', ['k alkoholu přidat K₂Cr₂O₇ v H₂SO₄', 'zahřát a oddestilovat produkt', 'destilát smíchat se Schiffovým činidlem', 'fialové zbarvení = vznikl aldehyd']],
+  ['tani', 'fyz', 'Stanovení teploty tání', ['látku vysušit a rozetřít', 'naplnit kapiláru do výšky 2–4 mm', 'kapiláru a teploměr upevnit do bodotávku', 'zahřívat 4–6 °C za minutu', 'u teploty tání zpomalit na 1–2 °C za minutu', 'odečíst teplotu při vzniku taveniny']],
+  ['ph', 'fyz', 'Kalibrace pH metru dvěma pufry', ['sundat kryt, opláchnout elektrodu a osušit', 'ponořit do pufru pH 7', 'nastavit OFFSET', 'opláchnout a osušit', 'ponořit do druhého pufru', 'nastavit SLOPE', 'opláchnout, osušit a měřit vzorek']],
+  ['pol', 'fyz', 'Určení cukru polarimetrem', ['naplnit kyvetu roztokem cukru bez bublin', 'vložit kyvetu do polarimetru', 'otáčet analyzátorem na stejnoměrně šedé pole', 'odečíst úhel na obou stupnicích s noniem', 'zprůměrovat a spočítat [α]', 'porovnat s tabulkou a určit cukr']],
+  ['cukr', 'fyz', 'Cukry podle specifické otáčivosti od nejnižší', ['D-fruktosa (−92)', 'xylosa (+19)', 'D-glukosa (+53)', 'laktosa (+55)', 'sacharosa (+67)', 'D-galaktosa (+80)', 'rafinosa (+105)', 'maltosa (+130)']],
+  ['uv', 'uv', 'Měření UV-VIS spekter standardů', ['nastavit rozsah 210–410 nm', 'připravit roztoky standardů 20 mg/l', 'změřit blank', 'změřit standardy a odečíst maxima', 'změřit spektrum vzorku']],
+  ['ind', 'uv', 'Indikátory podle pH přechodu od nejnižšího', ['methyloranž 3,1–4,4', 'methylčerveň 4,4–6,2', 'bromthymolová modř 6,0–7,6', 'fenolftalein 8,2–10,0', 'alizarinová žluť 10,1–12,0']],
+  ['abs', 'uv', 'Od nejnižší absorbance', ['T = 100 % (A = 0)', 'T = 50 % (A ≈ 0,3)', 'T = 10 % (A = 1)', 'T = 1 % (A = 2)']],
+  ['kbr', 'ir', 'Příprava KBr tablety', ['vysušit KBr při 120–130 °C', 'odvážit 0,1–0,2 mg vzorku a 400–500 mg KBr', 'homogenizovat roztíráním v třecí misce', 'nasypat směs mezi kotoučky do raznice', 'natlakovat na 40 kN a počkat asi 10 s', 'dotlakovat na 80–90 kN a počkat asi 20 s', 'uvolnit lis a vyjmout tabletu']],
+  ['ftir', 'ir', 'Měření FT-IR spektra', ['vybrat experiment KBr nebo ATR', 'změřit pozadí (Collect Bkg)', 'vložit vzorek (Collect Smp)', 'zkontrolovat, jestli spektrum vyhovuje', 'spustit měření (Start Collection)', 'přidat spektrum do okna a uložit']],
+  ['co', 'ir', 'C=O od nejvyššího vlnočtu', ['ester ~1735', 'aldehyd ~1725', 'keton ~1715', 'kyselina ~1710', 'amid ~1650']],
+  ['obl', 'ir', 'IČ oblasti od nejvyšší energie', ['NIR 12 800–4000 cm⁻¹', 'MIR 4000–200 cm⁻¹', 'FIR 200–5 cm⁻¹']]
+];
+const PO = { s: null, sh: [], pick: [], done: false, streak: 0 };
+function poNew() {
+  const L = AC_POR.filter(x => x[1] === ST.ch), pool = L.length ? L : AC_POR, p = PO.s; let s;
+  do { s = pick(pool); } while (pool.length > 1 && s === p);
+  PO.s = s; PO.pick = []; PO.done = false; PO.ch = ST.ch;
+  do { PO.sh = mix(s[3].map((t, i) => i)); } while (PO.sh.every((v, i) => v === i));
+}
+function poCheck() {
+  PO.done = true; PO.ok = PO.pick.every((v, i) => v === i);
+  PO.streak = PO.ok ? PO.streak + 1 : 0; ST.best = ST.best || {};
+  if (PO.streak > (ST.best.po || 0)) { ST.best.po = PO.streak; save(); }
+  render();
+}
+function porView() {
+  if (!PO.s || PO.ch !== ST.ch) poNew();
+  const [, , nm, steps] = PO.s, n = steps.length;
+  const slots = steps.map((_, k) => { const i = PO.pick[k], right = PO.done ? i === k : null;
+    return i === undefined ? `<li class="hn-slot empty"><span class="hn-n">${k + 1}.</span></li>` : `<li class="hn-slot${right === true ? ' ok' : right === false ? ' bad' : ''}"><span class="hn-n">${k + 1}.</span><button type="button" class="hn-it" data-ac="poun" data-v="${k}"${PO.done ? ' disabled' : ''}>${escA(steps[i])}${PO.done && !right ? `<small>správně: ${escA(steps[k])}</small>` : ''}</button></li>`; }).join('');
+  const rest = PO.sh.filter(i => !PO.pick.includes(i)).map(i => `<button type="button" class="hn-it" data-ac="popk" data-v="${i}">${escA(steps[i])}</button>`).join('');
+  return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Seřaď postup</span><span class="ac-score">Série ${PO.streak} · nejlepší ${(ST.best && ST.best.po) || 0}</span></div>
+    <h2 class="q-name ac-long">${escA(nm)}</h2><p class="ac-sub">Klepej na kroky ve správném pořadí. Klepnutím na už zařazený krok ho vrátíš zpět.</p>
+    <ol class="ac-po">${slots}</ol>${rest ? `<div class="ac-po-rest">${rest}</div>` : ''}
+    ${PO.done ? `<div class="fb ${PO.ok ? 'ok' : 'bad'}"><p><b>${PO.ok ? 'Přesně tak!' : 'Některé kroky jsou jinde.'}</b></p></div><div class="row"><button type="button" class="btn primary" data-ac="ponew">Další postup</button></div>`
+      : `<div class="row"><button type="button" class="btn primary" data-ac="pocheck"${PO.pick.length < n ? ' disabled' : ''}>Zkontrolovat</button></div>`}</div>`;
+}
+
+/* --- Bodotávek: [látka, teplota tání podle tabulek] --- */
+const AC_MP = [['kyselina benzoová', 122], ['acetanilid', 114], ['naftalen', 80], ['močovina', 133], ['kyselina salicylová', 159], ['kyselina acetylsalicylová', 135], ['vanilin', 82], ['benzofenon', 48], ['paracetamol', 169], ['kyselina skořicová', 133]];
+const MPV = [['cista', 'čistá látka'], ['mirne', 'mírně znečištěná'], ['silne', 'silně znečištěná'], ['jina', 'jiná látka, než je na štítku']];
+const MP = { c: null, step: 0, done: false, streak: 0 };
+const rndR = (a, b) => a + Math.random() * (b - a), half = x => Math.round(x * 2) / 2;
+function mpNew() {
+  const s = pick(AC_MP), v = pick(MPV)[0], L = s[1]; let melt, first, last;
+  if (v === 'cista') { melt = half(L + rndR(-0.5, 0.5)); first = melt - 0.5; last = melt + pick([2, 2.5, 3]); }
+  else if (v === 'mirne') { melt = half(L - rndR(2, 4)); first = half(melt - rndR(2, 3)); last = half(melt + rndR(3.5, 5)); }
+  else if (v === 'silne') { melt = half(L - rndR(7, 11)); first = half(melt - rndR(4, 6)); last = half(melt + rndR(6, 9)); }
+  else { melt = half(L + rndR(6, 14)); first = melt - 0.5; last = melt + pick([2, 2.5, 3]); }
+  MP.c = { s, v, melt, first, last }; MP.step = 0; MP.done = false; MP.a1 = null; MP.a2 = null;
+  MP.o1 = mix([melt, last, first, L].filter((x, i, a) => a.indexOf(x) === i));
+}
+function capSVG(st, t) {
+  const fill = st === 0 ? '<g fill="var(--surface)" stroke="var(--muted)" stroke-width=".6">' + [[18, 70], [24, 68], [21, 74], [17, 78], [25, 77], [20, 82], [24, 83], [19, 64], [23, 63]].map(([x, y]) => `<rect x="${x - 2.4}" y="${y - 2.4}" width="4.8" height="4.8" transform="rotate(${x * 7} ${x} ${y})"/>`).join('') + '</g>'
+    : st === 1 ? '<path d="M15 76 Q21 73 28 77 V86 H15 Z" fill="var(--ac-water)" stroke="var(--muted)" stroke-width=".6"/><g fill="var(--surface)" stroke="var(--muted)" stroke-width=".6"><rect x="17" y="66" width="4.4" height="4.4" transform="rotate(20 19 68)"/><rect x="23" y="69" width="4" height="4" transform="rotate(50 25 71)"/></g>'
+      : '<path d="M15 70 Q21 68 28 70 V86 H15 Z" fill="var(--ac-water)" stroke="var(--muted)" stroke-width=".6"/>';
+  return `<figure class="ac-tube"><svg viewBox="0 0 43 96" aria-hidden="true"><path d="M15 8 V84 Q15 89 21.5 89 Q28 89 28 84 V8" fill="none" stroke="var(--ink)" stroke-width="1.8"/>${fill}</svg><figcaption>${t}</figcaption></figure>`;
+}
+function mpAns(k) {
+  if (MP.step === 0) { MP.a1 = +k; MP.step = 1; }
+  else { MP.a2 = k; MP.done = true; MP.ok = MP.c.v === k && MP.o1[MP.a1] === MP.c.melt; MP.streak = MP.ok ? MP.streak + 1 : 0; ST.best = ST.best || {}; if (MP.streak > (ST.best.mp || 0)) { ST.best.mp = MP.streak; save(); } }
+  render();
+}
+function taniView() {
+  if (!MP.c) mpNew();
+  const { s, v, melt, first, last } = MP.c, T = x => `${num(x, 1)} °C`, okT = MP.step > 0 ? MP.o1[MP.a1] === melt : null;
+  const obs = `<div class="ac-mp">${capSVG(0, `do ${T(first - 1)}`)}${capSVG(1, `${T(first)} první krystalky tají`)}${capSVG(2, `${T(melt)} vznikla tavenina`)}${capSVG(2, `${T(last)} zmizel poslední krystal`)}</div>`;
+  const q1 = `<span class="eyebrow">1. Jakou teplotu tání zapíšeš do protokolu?</span><div class="opts${MP.step > 0 ? ' done' : ''}">${MP.o1.map((x, k) => `<button type="button" class="opt${MP.step > 0 ? (x === melt ? ' right' : k === MP.a1 ? ' wrong' : '') : ''}" data-ac="mpa" data-v="${k}"${MP.step > 0 ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${T(x)}</span></button>`).join('')}</div>`;
+  const q2 = MP.step > 0 ? `${okT ? '' : `<p class="aside">Odečítá se v okamžiku vzniku taveniny, tedy ${T(melt)}. Poslední krystal mizí zpravidla o 2–3 °C výš.</p>`}<span class="eyebrow">2. Co z toho plyne o vzorku?</span><div class="opts${MP.done ? ' done' : ''}">${MPV.map(([k, n], i) => `<button type="button" class="opt${MP.done ? (k === v ? ' right' : k === MP.a2 ? ' wrong' : '') : ''}" data-ac="mpa" data-v="${k}"${MP.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[i]}</span><span class="txt">${n}</span></button>`).join('')}</div>` : '';
+  const why = { cista: `Tavenina vznikla u tabulkové hodnoty ${T(s[1])} a látka tála v úzkém rozmezí. Čistá látka má ostrou teplotu tání.`, mirne: `Teplota tání je o pár stupňů nižší než ${T(s[1])} a látka taje v širším rozmezí. Už malá nečistota teplotu tání sníží.`,
+    silne: `Teplota tání je výrazně pod ${T(s[1])} a rozmezí tání je široké. Hodně nečistot = velký pokles.`, jina: `Teplota tání je výš než ${T(s[1])}. Nečistota teplotu tání nikdy nezvýší, takže ve zkumavce je jiná látka.` }[v];
+  return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Bodotávek</span><span class="ac-score">Série ${MP.streak} · nejlepší ${(ST.best && ST.best.mp) || 0}</span></div>
+    <h2 class="q-name ac-long">${escA(s[0])}</h2><p class="ac-sub">Na štítku je ${escA(s[0])}, podle tabulek taje při ${T(s[1])}. Zahříváš 1–2 °C za minutu a pozoruješ kapiláru:</p>${obs}${q1}${q2}
+    ${MP.done ? `<div class="fb ${MP.ok ? 'ok' : 'bad'}"><p><b>${MP.ok ? 'Správně!' : 'Tohle ne úplně.'}</b> ${escA(why)}</p></div>${bedaBox(AC_BEDA.tani)}<div class="row"><button type="button" class="btn primary" data-ac="mpnew">Další vzorek</button></div>` : ''}</div>`;
 }
 
 /* ===== Analytická chemie: procvičování, tabulka, přehled iontů a hra Neznámý vzorek ===== */
@@ -29402,16 +29585,16 @@ function gameView() {
   const log = G.log.length ? `<ol class="ac-log">${G.log.map(l => `<li>${l.pic}<div><b>${escA(l.n)}</b><span>${escA(l.v)}</span></div></li>`).join('')}</ol>` : '';
   if (G.done) return `${head}${log}<div class="card"><div class="fb ok"><p><b>Je to ${ion.f}, ${ion.nm}!</b> ${G.last} bodů${G.rec ? ', nový rekord' : ''}.</p></div>${ionCard(ion).replace('class="card ac-ion-card"', 'class="ac-ion-card ac-flat"')}<div class="row"><button type="button" class="btn primary" data-ac="gnew">Další vzorek</button></div></div>`;
   return `${head}${log}<div class="card"><span class="eyebrow">Skupinová činidla</span><div class="ac-rgs">${RG[G.c].map(r => `<button type="button" class="ac-rg" data-ac="gtry" data-k="g" data-v="${r[0]}"${used('g' + r[0]) ? ' disabled' : ''}>${r[1]}</button>`).join('')}</div>
-    <details class="ac-more"><summary>Selektivní činidla</summary><div class="ac-rgs">${selKeys.map(k => `<button type="button" class="ac-rg" data-ac="gtry" data-k="s" data-v="${k}"${used('s' + k) ? ' disabled' : ''}>${AC_SK[k]}</button>`).join('')}</div></details>
+    <details class="ac-more" open><summary>Selektivní činidla</summary><div class="ac-rgs">${selKeys.map(k => `<button type="button" class="ac-rg" data-ac="gtry" data-k="s" data-v="${k}"${used('s' + k) ? ' disabled' : ''}>${AC_SK[k]}</button>`).join('')}</div></details>
     <span class="eyebrow">Tvůj tip</span><div class="ac-chips">${ions(G.c).map(o => `<button type="button" class="ac-ion${G.wrong.has(o.id) ? ' wrong' : ''}" data-ac="guess" data-v="${o.id}"${G.wrong.has(o.id) ? ' disabled' : ''}>${o.f}</button>`).join('')}</div>
     <p class="aside">Ve hře platí jen reakce ze skript. Když činidlo u daného iontu ve skriptech není, ukáže se „${NONE}“.</p></div>`;
 }
 
 /* --- vykreslení a ovládání --- */
-const MODEN = { quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Třída rozpustnosti', spek: 'Čti IČ spektrum' };
-const CHM = { ka: ['quiz', 'table', 'ions', 'game'], org: ['quiz', 'sheet', 'rozp'], fyz: ['quiz', 'sheet'], uv: ['quiz', 'sheet'], ir: ['quiz', 'sheet', 'spek'] };
-const HASH = { quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum' };
-const MODECH = { table: 'ka', ions: 'ka', game: 'ka', rozp: 'org', spek: 'ir' };
+const MODEN = { quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Rozpustnost', spek: 'Čti spektrum', neorg: 'Neznámá látka', por: 'Seřaď postup', tani: 'Bodotávek' };
+const CHM = { ka: ['quiz', 'table', 'ions', 'game'], org: ['quiz', 'sheet', 'rozp', 'neorg', 'por'], fyz: ['quiz', 'sheet', 'tani', 'por'], uv: ['quiz', 'sheet', 'por'], ir: ['quiz', 'sheet', 'spek', 'por'] };
+const HASH = { quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum', neorg: 'analyticka-latka', por: 'analyticka-postup', tani: 'analyticka-bodotavek' };
+const MODECH = { table: 'ka', ions: 'ka', game: 'ka', rozp: 'org', spek: 'ir', neorg: 'org', tani: 'fyz' };
 const LEAD = { ka: 'Kvalitativní analýza podle skript ke cvičení 1 a 2: jak kationty a anionty reagují se skupinovými činidly a jak je dokážeš selektivně.',
   org: 'Cvičení 3: důkazy prvků, třídy rozpustnosti a důkazy funkčních skupin organických látek.', fyz: 'Cvičení 4: teplota tání, index lomu, pH a polarimetrie, včetně výpočtů.',
   uv: 'Cvičení 5: absorbance, Lambertův–Beerův zákon, spektrofotometry a acidobazické indikátory.', ir: 'Cvičení 6: IČ oblasti, FT-IR spektrometr, techniky měření a tabulka vibrací.' };
@@ -29426,13 +29609,14 @@ function render() {
   const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz' || ST.ch !== 'ka';
   tb.innerHTML = `<span class="eyebrow">Otázky</span><div class="chips">${TYPES.map(([v, n]) => `<button type="button" class="chip" data-ac="type" data-v="${v}" aria-pressed="${ST.types.includes(v)}">${n}</button>`).join('')}</div>`;
   const nd = dueCount(ST.ch); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
-  const V = { table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView };
+  const V = { table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView };
   box.innerHTML = (V[ST.mode] || quizView)();
 }
 function show() {
   const h = (location.hash || '').replace('#', '');
   const m = Object.keys(HASH).find(k => HASH[k] === h);
   if (m && m !== ST.mode) { ST.mode = m; save(); }
+  if (ST.mode === 'por' && ST.ch === 'ka') { ST.ch = 'fyz'; save(); Q.deck = []; Q.empty = false; }
   if (MODECH[ST.mode] && ST.ch !== MODECH[ST.mode]) { ST.ch = MODECH[ST.mode]; save(); Q.deck = []; Q.empty = false; }
   if (!CHM[ST.ch].includes(ST.mode)) { ST.mode = 'quiz'; save(); }
   if (ST.mode === 'quiz' && !Q.deck.length && !Q.empty) newDeck();
@@ -29464,6 +29648,15 @@ document.addEventListener('click', e => {
   if (a === 'rznew') { rzNew(); render(); return window.scrollTo(0, 0); }
   if (a === 'spg') return spGuess(v);
   if (a === 'spnew') { spNew(); render(); return window.scrollTo(0, 0); }
+  if (a === 'oltry') return olTry(v);
+  if (a === 'olguess') return olGuess(v);
+  if (a === 'olnew') { olNew(); render(); return window.scrollTo(0, 0); }
+  if (a === 'popk') { if (!PO.done) { PO.pick.push(+v); render(); } return; }
+  if (a === 'poun') { if (!PO.done) { PO.pick.splice(+v, 1); render(); } return; }
+  if (a === 'pocheck') return poCheck();
+  if (a === 'ponew') { poNew(); render(); return window.scrollTo(0, 0); }
+  if (a === 'mpa') return mpAns(v);
+  if (a === 'mpnew') { mpNew(); render(); return window.scrollTo(0, 0); }
 });
 function setCh(ch) {
   if (!CHN[ch] || ch === ST.ch) return;
@@ -29486,7 +29679,7 @@ window.FH_AC = {
 };
 
 /* napojení na zbytek webu */
-document.addEventListener('click', e => { const b = e.target.closest('[data-hn^="ac"]'); if (!b) return; const m = { acvz: 'game', acrz: 'rozp', acir: 'spek' }[b.dataset.hn]; if (m) { ST.mode = m; save(); location.hash = '#' + HASH[m]; } });
+document.addEventListener('click', e => { const b = e.target.closest('[data-hn^="ac"]'); if (!b) return; const m = { acvz: 'game', acrz: 'rozp', acir: 'spek', acol: 'neorg', acpo: 'por', acmp: 'tani' }[b.dataset.hn]; if (m) { ST.mode = m; save(); location.hash = '#' + HASH[m]; } });
 document.addEventListener('click', e => { const b = e.target.closest('[data-td="ac"]'); if (b) FH_AC.goDue(); });
 window.addEventListener('hashchange', () => { if (/^#analyticka/.test(location.hash)) show(); });
 try { if (typeof renderToday === 'function') renderToday(); } catch (e) { /* nic */ }
