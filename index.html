@@ -765,6 +765,92 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .td-help{font-size:.9rem;color:var(--muted);margin:0}
 .td-help a{color:var(--accent);font-weight:600}
 .g-end .btn{text-decoration:none}
+/* ===== Analytická chemie ===== */
+:root{--ac-water:#e6f1f6;--ac-paper:#fbfaf6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ac-water:#24343c;--ac-paper:#2c2630}}
+:root[data-theme="dark"]{--ac-water:#24343c;--ac-paper:#2c2630}
+#appAC .top{grid-template-columns:1fr auto}
+.ac-logo{grid-column:2;grid-row:1;line-height:0}
+.ac-logo svg{width:56px;height:56px}
+#acDue:empty{display:none}
+#acView{display:flex;flex-direction:column;gap:12px;min-width:0}
+.ac-sub{margin:0;color:var(--muted)}
+.q-name.ac-long{font-size:clamp(1.15rem,4.6vw,1.45rem);line-height:1.3}
+.ac-new{font-size:.75rem;font-weight:600;color:var(--pink);border:1px solid currentColor;border-radius:999px;padding:1px 8px}
+.opt.ac-chem .txt{font:700 1.15rem/1.2 var(--f-chem)}
+.ac-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ac-ion{font:700 1rem/1 var(--f-chem);min-width:58px;padding:10px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.ac-ion[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ac-ion.right{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.ac-ion.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad);text-decoration:line-through}
+.ac-ion.miss{border-color:var(--ok);border-style:dashed;color:var(--ok)}
+.ac-ion:disabled{cursor:default}
+#acFb{display:flex;flex-direction:column;gap:12px}
+#acFb:empty{display:none}
+.ac-ans{display:flex;gap:14px;align-items:flex-start;min-width:0}
+.ac-ans-t{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.ac-ans-t p{margin:0}
+.ac-pics{display:flex;align-items:center;gap:4px;flex:none}
+.ac-tube{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px;flex:none}
+.ac-tube svg{width:40px;height:86px;display:block}
+.ac-tube figcaption{font-size:.72rem;color:var(--muted);text-align:center;max-width:72px;line-height:1.15}
+.ac-arr{display:flex;flex-direction:column;align-items:center;color:var(--muted);font-size:1.2rem;line-height:1}
+.ac-arr small{font-size:.68rem}
+@media (max-width:460px){.ac-ans{flex-direction:column}}
+.ac-ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.ac-sp{font-size:.72rem;font-weight:600;color:var(--accent);border:1px solid currentColor;border-radius:999px;padding:0 7px;white-space:nowrap}
+.ac-end .q-name{margin:0}
+/* tabulka */
+.ac-tbar{align-items:center;gap:6px 16px}
+.ac-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.82rem;color:var(--muted)}
+.ac-legend span{display:inline-flex;align-items:center;gap:5px}
+.ac-tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);-webkit-overflow-scrolling:touch}
+.ac-tab{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem}
+.ac-tab th,.ac-tab td{padding:3px;border-bottom:1px solid var(--line);text-align:center}
+.ac-tab thead th{font:600 .82rem/1.2 var(--f-chem);color:var(--muted);padding:8px 3px;position:sticky;top:0;background:var(--surface)}
+.ac-tab tbody th{position:sticky;left:0;background:var(--surface);z-index:1}
+.ac-tab tr:last-child th,.ac-tab tr:last-child td{border-bottom:0}
+.ac-rowh{border:0;background:none;font:700 .95rem/1 var(--f-chem);color:var(--ink);padding:8px 6px;white-space:nowrap}
+.ac-cell{position:relative;width:100%;min-width:44px;height:36px;border-radius:8px;border:1px dashed var(--line);background:transparent;font:700 .85rem/1 var(--f-chem);color:var(--muted)}
+.ac-cell.on{border:1px solid color-mix(in srgb,var(--ink) 22%,transparent)}
+.ac-cell.veil{background:var(--grid);border-style:solid;color:var(--muted)}
+.ac-cell.sel{outline:2.5px solid var(--accent);outline-offset:1px}
+.ac-x{display:inline-block;width:13px;height:13px;border-radius:50%;border:2px solid currentColor;vertical-align:middle}
+.ac-cell .ac-x{position:absolute;right:3px;top:3px;width:11px;height:11px;border-width:1.5px}
+.ac-tip{margin:0}
+.ac-det{gap:8px}
+/* ionty */
+.ac-jump{display:flex;flex-wrap:wrap;gap:4px}
+.ac-jump a{font:700 .9rem/1 var(--f-chem);color:var(--accent);text-decoration:none;padding:7px 9px;border-radius:9px;border:1px solid var(--line);background:var(--surface)}
+.ac-ion-card{gap:8px;scroll-margin-top:12px}
+.ac-ion-card.ac-flat{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:10px}
+.ac-ionh{margin:0;font:700 1.45rem/1.2 var(--f-chem)}
+.ac-ionh small{font:400 .95rem var(--f-body);color:var(--muted);margin-left:6px}
+.ac-solc{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
+.ac-solc i,.ac-dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.18);flex:none}
+.ac-rl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+.ac-rl li{display:block;padding-left:20px;position:relative;line-height:1.4}
+.ac-rl .ac-dot{position:absolute;left:0;top:.3em}
+.ac-rl b{font-family:var(--f-chem)}
+.ac-rl small{color:var(--muted);font-family:var(--f-chem)}
+/* hra */
+.ac-game .ac-score{font-size:.86rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.ac-sample{display:flex;gap:14px;align-items:center}
+.ac-sample p{margin:0;font-size:.95rem}
+.ac-log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ac-log li{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 12px}
+.ac-log li > .ac-pics,.ac-log li > .ac-tube{flex:none;flex-wrap:nowrap}
+.ac-log .ac-tube svg{width:30px;height:64px}
+.ac-log .ac-tube figcaption{display:none}
+.ac-log .ac-arr small{display:none}
+.ac-log li > div{display:flex;flex-direction:column;min-width:0}
+.ac-log li span{color:var(--muted);font-size:.92rem}
+.ac-rgs{display:flex;flex-wrap:wrap;gap:6px}
+.ac-rg{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:8px 11px;font:600 .88rem/1.2 var(--f-chem)}
+.ac-rg:disabled{opacity:.4;cursor:default;text-decoration:line-through}
+.ac-more summary{cursor:pointer;color:var(--accent);font-weight:600;padding:4px 0 8px}
+.ac-game-tile{background:linear-gradient(135deg,var(--surface) 60%,color-mix(in srgb,#2f8ad6 18%,var(--surface)))}
+.today .td-ac{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted);margin:0}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -916,6 +1002,23 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   </section>
 </section>
 
+<div class="app" id="appAC" hidden>
+  <div class="backrow"><a class="back" href="#">← FormičkyHub</a><span class="br-r"><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
+  <header class="top">
+    <h1>Analytická chemie</h1>
+    <span class="ac-logo" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M14 6h12M17 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M19 30h6v16a3 3 0 0 1-6 0z" fill="#2f8ad6"/><path d="M19 42h6v4a3 3 0 0 1-6 0z" fill="#86c8ee"/><path d="M38 6h12M41 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M43 26h6v20a3 3 0 0 1-6 0z" fill="#f2cd1f" opacity=".55"/><path d="M43 40h6v6a3 3 0 0 1-6 0z" fill="#f2cd1f"/></svg></span>
+    <p>Kvalitativní analýza podle skript k laboratorním cvičením 1 a 2: jak kationty a anionty reagují se skupinovými činidly a jak je dokážeš selektivně.</p>
+  </header>
+  <div class="controls">
+    <div class="seg" id="acCls" role="group" aria-label="Ionty"></div>
+  </div>
+  <div class="controls">
+    <div class="seg" id="acMode" role="group" aria-label="Režim"></div>
+  </div>
+  <div class="kindbox" id="acTypes"></div>
+  <div id="acDue"></div>
+  <main id="acView"></main>
+</div>
 <div class="app" id="appOC" hidden>
   <div class="backrow"><a class="back" href="#">← FormičkyHub</a><div class="daybox" id="dayBox" hidden></div><span class="br-r"><a class="back help" href="#navod">Jak to funguje?</a><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
   <header class="top">
@@ -26849,6 +26952,7 @@ function renderToday() {
       ${due ? `<button type="button" class="btn primary" data-td="due">Zopakovat ${due} ${karet(due)}<small>${dueT.length === 1 ? esc(TOPIC_BY[dueT[0]].label) : `z ${dueT.length} témat najednou`}</small></button>` : ''}
       <button type="button" class="btn${due ? '' : ' primary'}" data-td="go">${started ? 'Pokračovat' : 'Začít'}<small>${esc(cur)} · ${MODE_NAME[C.mode]}</small></button>
       ${weak ? `<button type="button" class="btn" data-td="weak">Slabá místa<small>${weak} ${karet(weak)}, kde chybuješ</small></button>` : ''}
+      ${window.FH_AC && FH_AC.due() ? `<button type="button" class="btn" data-td="ac">Analytická chemie<small>${FH_AC.due()} ${karet(FH_AC.due())} k opakování</small></button>` : ''}
     </div>
     ${started ? '' : '<p class="td-help">Nevíš, jak začít? <a href="#navod">Přečti si krátký návod</a>.</p>'}
     <details class="tp" id="tpBox"${store.get('fg-tpopen', false) ? ' open' : ''}><summary>Témata a tvůj pokrok<small>zvládnuto ${done} z ${all} z přednášek</small></summary>
@@ -26861,6 +26965,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('[data-td]'); if (!b) return;
   const a = b.dataset.td, box = $('#today'), pick = L => L.length === 1 ? { topic: L[0] } : { mixOn: true, mixT: L };
   if ((a === 'due' || a === 'weak') && !S.ret) S.ret = { topic: S.topic, mixOn: !!S.mixOn, mixT: S.mixT, mode: S.mode, set: S.set, fams: S.fams };
+  if (a === 'ac') return;
   if (a === 'go' || a === 't') { const r = a === 'go' && S.ret; delete S.ret; if (r) return goStudy(Object.assign(r, { src: 'all' })); }
   if (a === 'due') goStudy(Object.assign({ mode: 'study', src: 'due', set: 'all', fams: null }, pick(box._dueT)));
   if (a === 'weak') goStudy(Object.assign({ mode: 'study', src: 'weak', set: 'all', fams: null }, pick(box._weakT)));
@@ -26878,7 +26983,7 @@ async function zip(bytes, dir) {
   return new Uint8Array(await new Response(st).arrayBuffer());
 }
 async function makeBackup() {
-  const data = { v: 1, t: Date.now(), p: store.get('fg-progress', {}), r: store.get('fg-srs', {}), d: store.get('fg-daily', {}), h: store.get('fg-herna', {}) };
+  const data = { v: 1, t: Date.now(), p: store.get('fg-progress', {}), r: store.get('fg-srs', {}), d: store.get('fg-daily', {}), h: store.get('fg-herna', {}), a: store.get('fg-ac', {}) };
   const raw = new TextEncoder().encode(JSON.stringify(data));
   if (typeof CompressionStream === 'function') { try { return 'FH1-' + b64u.enc(await zip(raw, true)); } catch (e) { /* bez komprese */ } }
   return 'FH0-' + b64u.enc(raw);
@@ -26914,6 +27019,12 @@ function mergeBackup(d) {
     if (!H0.av && h.av) H0.av = h.av;
     if (!H0.lkT && h.lkT) H0.lkT = h.lkT;
     store.set('fg-herna', H0);
+  }
+  if (d.a && typeof d.a === 'object' && d.a.r) {          // Analytická chemie: kartičky a rekord ve hře
+    const A0 = store.get('fg-ac', {}); A0.r = A0.r || {}; A0.best = A0.best || {};
+    Object.entries(d.a.r).forEach(([id, r]) => { const a = A0.r[id]; if (r && typeof r === 'object' && (!a || (r.ok || 0) + (r.bad || 0) > (a.ok || 0) + (a.bad || 0))) { A0.r[id] = r; nR++; } });
+    Object.entries(d.a.best || {}).forEach(([k, v]) => { A0.best[k] = Math.max(A0.best[k] || 0, +v || 0); });
+    store.set('fg-ac', A0);
   }
   return { nP, nR };
 }
@@ -27155,6 +27266,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     ['nl', 'Neznámá látka', 'Podle indicií uhodni, o jakou látku jde. Čím méně indicií potřebuješ, tím víc bodů.', `Nejlepší skóre ${best('nl')}`, ''],
     ['syn', 'Syntézní puzzle', 'Z výchozí látky se dostaň k cíli. V každém kroku vyber správné činidlo.', `Nejlepší skóre ${best('syn')}`, ''],
     ['ord', 'Seřaď to', 'Kyselost, rychlosti SN1/SN2, teploty varu… Řaď látky podle hodnot ze slajdů.', `Nejlepší série ${best('ord')}`, ''],
+    ['acvz', 'Neznámý vzorek', 'Analytická chemie: přidávej do zkumavky činidla a podle sraženin a barev poznej kationt nebo aniont.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best() : 0}`, 'ac-game-tile'],
     ['alb', 'Album kartiček', 'Každá látka, kterou zvládneš, se odemkne jako kartička. Posbírej celé album přednášky.', `Odemčeno ${albumCount()} z ${albumAll().length}`, 'al-game']
   ];
   const tiles = () => GAMES().map(([k, n, d, sm, cls]) => `<button type="button" class="hn-game ${cls}" data-hn="${k}"><b>${n}</b><span>${d}</span><small>${sm}</small></button>`).join('');
@@ -27794,6 +27906,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     }
     $('#hnHubG').innerHTML = tiles();
   }
+  window.FH_HERNA = renderEntry;
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
     const a = b.dataset.hn;
@@ -27835,6 +27948,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     leaf: '<svg class="ico" viewBox="0 0 48 48"><path d="M10 38C10 18 22 9 40 8c0 18-9 30-28 30z"/><path d="M10 38l17-17"/></svg>',
     planet: '<svg class="ico" viewBox="0 0 48 48"><circle cx="24" cy="24" r="10"/><ellipse cx="24" cy="24" rx="20" ry="7" transform="rotate(-20 24 24)"/></svg>',
     book: '<svg class="ico" viewBox="0 0 48 48"><path d="M8 10h12a4 4 0 0 1 4 4v24a3 3 0 0 0-3-3H8zM40 10H28a4 4 0 0 0-4 4v24a3 3 0 0 1 3-3h13z"/></svg>',
+    tube: '<svg class="ico" viewBox="0 0 48 48"><path d="M14 6h20M18 6v30a6 6 0 0 0 12 0V6"/><path d="M18 24h12"/><circle cx="22" cy="32" r="1.6"/><circle cx="26.5" cy="28.5" r="1.3"/></svg>',
     atom: '<svg class="ico" viewBox="0 0 48 48"><circle cx="24" cy="24" r="3"/><ellipse cx="24" cy="24" rx="18" ry="7"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="18" ry="7" transform="rotate(120 24 24)"/></svg>'
   };
   // [látka z cvičení, nadpis, text]; obrázek = vzorec té látky
@@ -27928,13 +28042,15 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   const nQ = GROUPS.filter(g => g.kind === 'q').length, nM = GROUPS.filter(g => g.kind === 'mol').length;
   $('#subjects').innerHTML = `
     <a class="subj" href="#organicka">${ICON.flask}<b>Organická chemie</b><span>${TOPICS.length} témat podle přednášek: ${nM} látek, ${nQ} otázek, kreslení vzorců a test nanečisto.</span><span class="go">Otevřít →</span></a>
+    <a class="subj" href="#analyticka">${ICON.tube}<b>Analytická chemie</b><span>Důkazy kationtů a aniontů: reakce se skupinovými činidly, selektivní reakce, interaktivní tabulka a hra Neznámý vzorek.</span><span class="go">Otevřít →</span></a>
     <div class="subj soon" aria-disabled="true">${ICON.book}<b>Další předmět</b><span>Tady přibudou další předměty.</span><span class="go">Brzy</span></div>`;
 
   const APP = new Set(['organicka', 'nove', 'prehled', 'kresleni', 'studium', 'test'].concat(TOPICS.map(t => t.hash).filter(Boolean)));
   const route = () => {
-    const h = (location.hash || '').replace('#', ''), app = APP.has(h);
-    $('#hub').hidden = app; $('#appOC').hidden = !app;
-    document.title = app ? 'Cvičení · FormičkyHub' : 'FormičkyHub';
+    const h = (location.hash || '').replace('#', ''), app = APP.has(h), ac = /^analyticka/.test(h);
+    $('#hub').hidden = app || ac; $('#appOC').hidden = !app; $('#appAC').hidden = !ac;
+    document.title = app ? 'Cvičení · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : 'FormičkyHub';
+    if (ac && window.FH_AC) FH_AC.show();
     if (app) { try { refresh(); } catch (e) { /* vykreslí se při další akci */ } }
     $('#hub').classList.toggle('guide', h === 'navod');
     window.scrollTo(0, 0);
@@ -28197,6 +28313,623 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
     apply(t);
     try { if (window.fhCount) fhCount('rezim-' + t, true); } catch (er) { /* nic */ }
   });
+})();
+</script>
+<script>
+(function () {
+/* ===== Analytická chemie: data z Laboratorních cvičení 1 a 2 (důkazy kationtů a aniontů, skripta MUNI) ===== */
+/* Barvy sraženin a roztoků pro zkumavky. Klíč = název barvy, jak ho píšou skripta. */
+const AC_COL = {
+  bila: '#f4f1ea', cerna: '#1d1a1b', sedocerna: '#4b4a4c', hneda: '#6e3f1d', tmhneda: '#3f2414', rezava: '#a54c15',
+  zluta: '#f2cd1f', svzluta: '#f4e68e', zlutozelena: '#bfbf35', zlutooranz: '#f6b65a', oranzova: '#ee7b1a', cervena: '#d02a1c',
+  cervenohneda: '#8f351a', telova: '#f0cbbd', ruzova: '#f3a7c0', modra: '#2f8ad6', svmodra: '#86c8ee', tmmodra: '#1c3ea0',
+  zelena: '#3fae5a', svzelena: '#9ad466', sedozelena: '#7d9a73', modrozelena: '#2b8b86', fialova: '#7b3fa6',
+  modrofialova: '#8d86f0', zlutohneda: '#d6a038', karmin: '#d0143c', cihlova: '#d9592a', svfialova: '#b28ae0', malinova: '#e0457b'
+};
+/* skupinová činidla kationtů: [klíč, do tabulky, celý název] */
+const AC_RC = [
+  ['HCl', 'HCl', '3% HCl'], ['H2SO4', 'H₂SO₄', '35% H₂SO₄'], ['H2S', 'H₂S', 'H₂S (sulfan, kyselé prostředí)'], ['NH4HS', 'NH₄HS', 'NH₄HS (hydrogensulfid amonný)'],
+  ['NaOH', 'NaOH', 'NaOH'], ['NH3', 'NH₃', 'NH₃ (hydroxid amonný)'], ['KI', 'KI', 'KI'], ['AcO', 'octan', 'CH₃COONa (octan sodný)']
+];
+/* skupinová činidla aniontů */
+const AC_RA = [
+  ['BaCl2', 'BaCl₂', 'BaCl₂ (neutrální prostředí)'], ['AgNO3', 'AgNO₃', 'AgNO₃'], ['KMnO4', 'KMnO₄', 'KMnO₄ v kyselém prostředí'],
+  ['I2', 'I₂', 'I₂ se škrobem'], ['KI', 'KI', 'KI se škrobem, kyselé prostředí']
+];
+/* Reakce: s = 2 (++ úplné srážení) / 1 (+ neúplné, jen z konc. roztoků) / 0 (beze sraženiny, jen změna barvy roztoku)
+   p = barva sraženiny, sol = barva roztoku po reakci, x = barva roztoku po rozpuštění v nadbytku činidla ('' = bezbarvý)
+   v = co uvidíš (bez vzorce, ať možnosti neprozradí odpověď), f = co vzniká, n = poznámka ze skript */
+const R = (s, p, v, f, o) => Object.assign({ s, p, v, f }, o || {});
+const AC_ION = [
+  /* --- kationty --- */
+  { id: 'ag', c: 'k', f: 'Ag⁺', nm: 'stříbrný kationt', r: {
+    HCl: R(2, 'bila', 'bílá sraženina', 'AgCl', { n: 'Na světle šedne (Ag⁰). Ve 2M NH₃ se rozpustí na [Ag(NH₃)₂]⁺, okyselením HNO₃ se AgCl znovu vyloučí.' }),
+    H2S: R(2, 'cerna', 'černá sraženina', 'Ag₂S'), NH4HS: R(2, 'cerna', 'černá sraženina', 'Ag₂S'),
+    NaOH: R(2, 'hneda', 'hnědá sraženina', 'Ag₂O'),
+    NH3: R(2, 'hneda', 'hnědá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Ag₂O → [Ag(NH₃)₂]⁺', { x: '' }),
+    KI: R(2, 'zluta', 'žlutá sraženina', 'AgI') } },
+  { id: 'hg1', c: 'k', f: 'Hg₂²⁺', nm: 'rtuťný kationt', r: {
+    HCl: R(2, 'bila', 'bílá sraženina', 'Hg₂Cl₂', { n: 'S amoniakem zčerná: Hg₂Cl₂ + 2 NH₃ → Hg⁰ + [Hg(NH₂)]Cl + NH₄⁺ + Cl⁻.' }),
+    H2S: R(2, 'cerna', 'černá sraženina', 'HgS + Hg⁰'), NH4HS: R(2, 'cerna', 'černá sraženina', 'HgS + Hg⁰'),
+    NaOH: R(2, 'sedocerna', 'šedočerná sraženina', 'Hg⁰ + HgO', { n: 'Rtuťné ionty v zásaditém prostředí dismutují na Hg²⁺ a černou elementární rtuť.' }),
+    NH3: R(2, 'sedocerna', 'šedočerná sraženina', 'Hg⁰ + bílá amidosůl', { n: 'Vzniká bílá amidosůl a zároveň černá elementární rtuť.' }),
+    KI: R(2, 'zlutozelena', 'žlutozelená sraženina, v nadbytku se rozpustí a vyloučí se černá rtuť', 'Hg₂I₂ → [HgI₄]²⁻ + Hg⁰', { x: '', xp: 'cerna' }),
+    AcO: R(2, 'bila', 'bílá sraženina', 'málo rozpustný octan rtuťný') } },
+  { id: 'pb', c: 'k', f: 'Pb²⁺', nm: 'olovnatý kationt', r: {
+    HCl: R(1, 'bila', 'bílá sraženina (neúplně)', 'PbCl₂', { n: 'PbCl₂ je relativně rozpustnější, nesráží se kvantitativně a v horké vodě se rozpustí.' }),
+    H2SO4: R(2, 'bila', 'bílá sraženina', 'PbSO₄', { n: 'Na rozdíl od ostatních síranů po přidání NH₄HS zčerná (vznikne PbS).' }),
+    H2S: R(2, 'cerna', 'černá sraženina', 'PbS'), NH4HS: R(2, 'cerna', 'černá sraženina', 'PbS'),
+    NaOH: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Pb(OH)₂ → [Pb(OH)₄]²⁻', { x: '', n: 'Amfoterní hydroxid, v 2M NaOH vznikne olovnatan.' }),
+    NH3: R(2, 'bila', 'bílá sraženina', 'Pb(OH)₂', { n: 'V nadbytku amoniaku se nerozpustí.' }),
+    KI: R(2, 'zluta', 'žlutá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'PbI₂ → [PbI₄]²⁻', { x: '' }) } },
+  { id: 'ca', c: 'k', f: 'Ca²⁺', nm: 'vápenatý kationt', r: {
+    H2SO4: R(1, 'bila', 'bílá sraženina (jen z koncentrovanějších roztoků)', 'CaSO₄', { n: 'CaSO₄ je ze síranů nejrozpustnější.' }),
+    NaOH: R(1, 'bila', 'bílá sraženina (jen z koncentrovanějších roztoků)', 'Ca(OH)₂') } },
+  { id: 'ba', c: 'k', f: 'Ba²⁺', nm: 'barnatý kationt', r: {
+    H2SO4: R(2, 'bila', 'bílá sraženina', 'BaSO₄', { n: 'BaSO₄ je ze síranů nejméně rozpustný.' }) } },
+  { id: 'hg2', c: 'k', f: 'Hg²⁺', nm: 'rtuťnatý kationt', r: {
+    H2S: R(2, 'cerna', 'černá sraženina', 'HgS'), NH4HS: R(2, 'cerna', 'černá sraženina', 'HgS'),
+    NaOH: R(2, 'zluta', 'žlutá sraženina', 'HgO'),
+    NH3: R(2, 'bila', 'bílá sraženina', '[Hg(NH₂)]Cl'),
+    KI: R(2, 'cervena', 'červená sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'HgI₂ → [HgI₄]²⁻', { x: '' }) } },
+  { id: 'cu', c: 'k', f: 'Cu²⁺', nm: 'měďnatý kationt', sol: 'svmodra', r: {
+    H2S: R(2, 'cerna', 'černá sraženina', 'CuS'), NH4HS: R(2, 'cerna', 'černá sraženina', 'CuS'),
+    NaOH: R(2, 'modra', 'modrá sraženina', 'Cu(OH)₂'),
+    NH3: R(2, 'svmodra', 'světle modrá sraženina, v nadbytku tmavě modrý roztok', 'Cu(OH)₂ → [Cu(NH₃)₄]²⁺', { x: 'tmmodra' }),
+    KI: R(2, 'hneda', 'sraženina zbarvená vyloučeným jódem hnědě', 'CuI + I₂', { n: 'Jodid redukuje Cu²⁺ na Cu⁺. Bílý CuI zbarví vzniklý jód hnědě.' }) } },
+  { id: 'cd', c: 'k', f: 'Cd²⁺', nm: 'kademnatý kationt', r: {
+    H2S: R(2, 'zluta', 'žlutá sraženina', 'CdS'), NH4HS: R(2, 'zluta', 'žlutá sraženina', 'CdS'),
+    NaOH: R(2, 'bila', 'bílá sraženina', 'Cd(OH)₂'),
+    NH3: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Cd(OH)₂ → [Cd(NH₃)₄]²⁺', { x: '' }) } },
+  { id: 'bi', c: 'k', f: 'Bi³⁺', nm: 'bismutitý kationt', r: {
+    H2S: R(2, 'hneda', 'hnědá sraženina', 'Bi₂S₃'), NH4HS: R(2, 'hneda', 'hnědá sraženina', 'Bi₂S₃'),
+    NaOH: R(2, 'bila', 'bílá sraženina', 'Bi(OH)₃'), NH3: R(2, 'bila', 'bílá sraženina', 'Bi(OH)₃'),
+    KI: R(2, 'tmhneda', 'černohnědá sraženina, v nadbytku oranžový roztok', 'BiI₃ → [BiI₄]⁻', { x: 'oranzova' }),
+    AcO: R(2, 'bila', 'bílá sraženina (hydrolýza)', 'zásaditá sůl (oxidosůl)', { n: 'Bi³⁺ hydrolyzuje už v mírně zásaditém prostředí, někdy stačí jen zředit vodou.' }) } },
+  { id: 'sb', c: 'k', f: 'Sb³⁺', nm: 'antimonitý kationt', r: {
+    H2S: R(2, 'oranzova', 'oranžová sraženina', 'Sb₂S₃'),
+    NH4HS: R(2, 'oranzova', 'oranžová sraženina, v nadbytku se rozpustí', 'Sb₂S₃ → thioantimonitan', { x: '', n: 'Okyselením roztoku HCl se oranžový Sb₂S₃ znovu vyloučí.' }),
+    NaOH: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Sb(OH)₃ → antimonitan', { x: '', n: 'Amfoterní hydroxid.' }),
+    NH3: R(2, 'bila', 'bílá sraženina', 'Sb(OH)₃'),
+    KI: R(1, 'zlutooranz', 'žlutooranžová sraženina (jen z koncentrovanějších roztoků)', 'SbI₃'),
+    AcO: R(2, 'bila', 'bílá sraženina (hydrolýza)', 'zásaditá sůl (oxidosůl)') } },
+  { id: 'fe3', c: 'k', f: 'Fe³⁺', nm: 'železitý kationt', sol: 'zlutohneda', r: {
+    HCl: R(0, null, 'sraženina nevzniká, roztok zežloutne', 'chlorokomplexy Fe³⁺', { sol: 'zluta' }),
+    H2S: R(1, 'bila', 'bílý zákal', 'S (síra)', { n: 'Fe³⁺ oxiduje sulfan na síru a redukuje se na Fe²⁺. Zákal síry nezaměň se sraženinou sulfidu.' }),
+    NH4HS: R(2, 'cerna', 'černá sraženina', 'FeS (+ S)'),
+    NaOH: R(2, 'rezava', 'rezavě hnědá sraženina', 'Fe(OH)₃'), NH3: R(2, 'rezava', 'rezavě hnědá sraženina', 'Fe(OH)₃'),
+    KI: R(0, null, 'sraženina nevzniká, roztok zhnědne', 'I₂ (Fe³⁺ se redukuje na Fe²⁺)', { sol: 'hneda', n: 'Jód se ověří odbarvením po přidání siřičitanu.' }),
+    AcO: R(0, null, 'sraženina nevzniká, roztok zčervená', 'acetátokomplexy Fe³⁺', { sol: 'cervena' }) } },
+  { id: 'cr3', c: 'k', f: 'Cr³⁺', nm: 'chromitý kationt', sol: 'fialova', r: {
+    NH4HS: R(2, 'sedozelena', 'šedozelená sraženina', 'Cr(OH)₃', { n: 'Cr³⁺ hydrolyzuje, takže místo sulfidu vznikne hydroxid.' }),
+    NaOH: R(2, 'sedozelena', 'šedozelená sraženina, v nadbytku zelený roztok', 'Cr(OH)₃ → chromitan [Cr(OH)₄]⁻', { x: 'zelena', n: 'Jediný amfoterní hydroxid, který se rozpustí na barevný (zelený) roztok.' }),
+    NH3: R(2, 'modrozelena', 'modrozelená sraženina', 'Cr(OH)₃'),
+    AcO: R(2, 'sedozelena', 'šedozelená sraženina, rozpustí se na modrofialový roztok', 'acetátokomplexy Cr³⁺', { x: 'modrofialova' }) } },
+  { id: 'al', c: 'k', f: 'Al³⁺', nm: 'hlinitý kationt', r: {
+    NH4HS: R(2, 'bila', 'bílá sraženina', 'Al(OH)₃', { n: 'Al³⁺ hydrolyzuje, takže místo sulfidu vznikne hydroxid.' }),
+    NaOH: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Al(OH)₃ → hlinitan [Al(OH)₄]⁻', { x: '' }),
+    NH3: R(2, 'bila', 'bílá sraženina', 'Al(OH)₃') } },
+  { id: 'co', c: 'k', f: 'Co²⁺', nm: 'kobaltnatý kationt', sol: 'ruzova', r: {
+    NH4HS: R(2, 'cerna', 'černá sraženina', 'CoS', { n: 'CoS stárnutím polymeruje a nerozpustí se ani v kyselinách.' }),
+    NaOH: R(2, 'modra', 'modrá sraženina', 'zásaditá sůl Co²⁺', { n: 'Přejde na růžový Co(OH)₂, který se vzduchem oxiduje na hnědý Co(OH)₃.' }),
+    NH3: R(2, 'modra', 'modrá sraženina, v nadbytku žlutohnědý roztok', '→ [Co(NH₃)₆]³⁺', { x: 'zlutohneda', n: 'Co(OH)₂ se v zásaditém prostředí postupně oxiduje vzdušným kyslíkem.' }) } },
+  { id: 'ni', c: 'k', f: 'Ni²⁺', nm: 'nikelnatý kationt', sol: 'zelena', r: {
+    NH4HS: R(2, 'cerna', 'černá sraženina', 'NiS'),
+    NaOH: R(2, 'svzelena', 'světle zelená sraženina', 'Ni(OH)₂'),
+    NH3: R(2, 'svzelena', 'světle zelená sraženina, v nadbytku modrý roztok', 'Ni(OH)₂ → [Ni(NH₃)₆]²⁺', { x: 'svmodra' }) } },
+  { id: 'mn', c: 'k', f: 'Mn²⁺', nm: 'manganatý kationt', r: {
+    NH4HS: R(2, 'telova', 'tělově růžová sraženina', 'MnS'),
+    NaOH: R(2, 'bila', 'bílá sraženina, na vzduchu hnědne až černá', 'Mn(OH)₂ → MnO₂', { p2: 'tmhneda', n: 'Oxidace vzdušným kyslíkem.' }),
+    NH3: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Mn(OH)₂ → [Mn(NH₃)₆]²⁺', { x: '' }) } },
+  { id: 'zn', c: 'k', f: 'Zn²⁺', nm: 'zinečnatý kationt', r: {
+    H2S: R(1, 'bila', 'bílá sraženina (neúplně)', 'ZnS'), NH4HS: R(2, 'bila', 'bílá sraženina', 'ZnS'),
+    NaOH: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Zn(OH)₂ → zinečnatan [Zn(OH)₄]²⁻', { x: '' }),
+    NH3: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Zn(OH)₂ → [Zn(NH₃)₆]²⁺', { x: '' }) } },
+  { id: 'mg', c: 'k', f: 'Mg²⁺', nm: 'hořečnatý kationt', r: {
+    NaOH: R(2, 'bila', 'bílá sraženina', 'Mg(OH)₂', { n: 'Jen bez přítomnosti NH₄⁺.' }),
+    NH3: R(1, 'bila', 'bílá sraženina (neúplně)', 'Mg(OH)₂') } },
+  { id: 'nh4', c: 'k', f: 'NH₄⁺', nm: 'amonný kationt', r: {}, note: 'Dokazuje se jako první, přímo v původním vzorku, protože ruší jiné důkazy.' },
+  { id: 'li', c: 'k', f: 'Li⁺', nm: 'lithný kationt', r: {} },
+  { id: 'na', c: 'k', f: 'Na⁺', nm: 'sodný kationt', r: {} },
+  { id: 'k', c: 'k', f: 'K⁺', nm: 'draselný kationt', r: {} },
+  /* --- anionty --- */
+  { id: 'so4', c: 'a', f: 'SO₄²⁻', nm: 'síran', r: {
+    BaCl2: R(2, 'bila', 'bílá sraženina, nerozpustná ani v HCl', 'BaSO₄'),
+    AgNO3: R(1, 'bila', 'bílá sraženina (jen z koncentrovaných roztoků)', 'Ag₂SO₄') } },
+  { id: 'so3', c: 'a', f: 'SO₃²⁻', nm: 'siřičitan', r: {
+    BaCl2: R(2, 'bila', 'bílá sraženina, rozpustná v HCl, ne v kyselině octové', 'BaSO₃'),
+    AgNO3: R(2, 'bila', 'bílá sraženina, rozpustná v HNO₃', 'Ag₂SO₃'),
+    KMnO4: R(0, null, 'fialový roztok se odbarví', 'SO₃²⁻ se oxiduje na SO₄²⁻', { sol0: 'fialova', sol: '' }),
+    I2: R(0, null, 'modrý roztok se odbarví', 'I₂ → I⁻', { sol0: 'tmmodra', sol: '' }) } },
+  { id: 's2o3', c: 'a', f: 'S₂O₃²⁻', nm: 'thiosíran', r: {
+    BaCl2: R(1, 'bila', 'bílá sraženina (neúplně), rozpustná v HCl, ne v kyselině octové', 'BaS₂O₃'),
+    AgNO3: R(2, 'bila', 'bílá sraženina, postupně tmavne; rozpustná v HNO₃', 'Ag₂S₂O₃ → Ag₂S', { p2: 'cerna' }),
+    KMnO4: R(0, null, 'fialový roztok se odbarví', 'S₂O₃²⁻ se oxiduje', { sol0: 'fialova', sol: '' }),
+    I2: R(0, null, 'modrý roztok se odbarví', '2 S₂O₃²⁻ + I₂ → 2 I⁻ + S₄O₆²⁻', { sol0: 'tmmodra', sol: '' }) } },
+  { id: 'po4', c: 'a', f: 'PO₄³⁻', nm: 'fosforečnan', r: {
+    BaCl2: R(2, 'bila', 'bílá sraženina, rozpustná už v kyselině octové', 'fosforečnan barnatý'),
+    AgNO3: R(2, 'zluta', 'žlutá sraženina, rozpustná v HNO₃', 'Ag₃PO₄') } },
+  { id: 'bo2', c: 'a', f: 'BO₂⁻', nm: 'boritan', r: {
+    BaCl2: R(1, 'bila', 'bílá sraženina (až po kapce NH₃), rozpustná v kyselině octové', 'boritan barnatý', { n: 'Boritan je sůl velmi slabé kyseliny, sraženina vznikne až po přidání kapky 0,1M NH₃.' }),
+    AgNO3: R(1, 'bila', 'bílá sraženina (z koncentrovaných roztoků), rozpustná v HNO₃', 'boritan stříbrný') } },
+  { id: 'co3', c: 'a', f: 'CO₃²⁻', nm: 'uhličitan', r: {
+    BaCl2: R(2, 'bila', 'bílá sraženina, rozpustná už v kyselině octové', 'BaCO₃'),
+    AgNO3: R(2, 'svzluta', 'světle žlutá sraženina, rozpustná v HNO₃', 'Ag₂CO₃') } },
+  { id: 'cro4', c: 'a', f: 'CrO₄²⁻', nm: 'chroman', sol: 'zluta', r: {
+    BaCl2: R(2, 'zluta', 'žlutá sraženina, rozpustná v HCl, ne v kyselině octové', 'BaCrO₄', { n: 'Jediná barevná barnatá sůl ze skupinové reakce.' }),
+    AgNO3: R(2, 'cervenohneda', 'červenohnědá sraženina, rozpustná v HNO₃', 'Ag₂CrO₄'),
+    KI: R(0, null, 'roztok se škrobem zmodrá', 'I₂ (Cr⁶⁺ se redukuje na Cr³⁺)', { sol: 'tmmodra' }) },
+    note: 'V kyselém prostředí přechází žlutý chroman na oranžový dichroman Cr₂O₇²⁻, v zásaditém zpět.' },
+  { id: 'cl', c: 'a', f: 'Cl⁻', nm: 'chlorid', r: {
+    AgNO3: R(2, 'bila', 'bílá sraženina, nerozpustná v HNO₃, rozpustná ve 2M NH₃', 'AgCl'),
+    KMnO4: R(0, null, 'fialový roztok se odbarví (jen z koncentrovaných roztoků)', 'Cl⁻ se oxiduje', { weak: 1, sol0: 'fialova', sol: 'svfialova' }) } },
+  { id: 'br', c: 'a', f: 'Br⁻', nm: 'bromid', r: {
+    AgNO3: R(2, 'svzluta', 'světle žlutá sraženina, nerozpustná v HNO₃ ani ve 2M NH₃, rozpustná až v 25% NH₃', 'AgBr'),
+    KMnO4: R(0, null, 'fialový roztok se odbarví', 'Br⁻ se oxiduje na Br₂', { sol0: 'fialova', sol: '' }) } },
+  { id: 'i', c: 'a', f: 'I⁻', nm: 'jodid', r: {
+    AgNO3: R(2, 'zluta', 'žlutá sraženina, nerozpustná v HNO₃ ani v 25% NH₃', 'AgI'),
+    KMnO4: R(0, null, 'fialový roztok se odbarví', 'I⁻ se oxiduje na I₂', { sol0: 'fialova', sol: '' }) } },
+  { id: 'scn', c: 'a', f: 'SCN⁻', nm: 'thiokyanatan', r: {
+    AgNO3: R(2, 'bila', 'bílá sraženina, nerozpustná v HNO₃ ani ve 2M NH₃, rozpustná až v 25% NH₃', 'AgSCN'),
+    KMnO4: R(0, null, 'fialový roztok se odbarví', 'SCN⁻ se oxiduje', { sol0: 'fialova', sol: '' }),
+    I2: R(0, null, 'modrý roztok se odbarví (jen z koncentrovaných roztoků)', 'I₂ → I⁻', { weak: 1, sol0: 'tmmodra', sol: 'svmodra' }) } },
+  { id: 'no2', c: 'a', f: 'NO₂⁻', nm: 'dusitan', r: {
+    AgNO3: R(1, 'bila', 'bílá sraženina (z koncentrovaných roztoků), rozpustná v HNO₃', 'AgNO₂'),
+    KMnO4: R(0, null, 'fialový roztok se odbarví', 'NO₂⁻ se oxiduje na NO₃⁻', { sol0: 'fialova', sol: '' }),
+    KI: R(0, null, 'roztok se škrobem zmodrá', '2 I⁻ + 2 NO₂⁻ + 4 H⁺ → 2 NO + I₂ + 2 H₂O', { sol: 'tmmodra' }) } },
+  { id: 'no3', c: 'a', f: 'NO₃⁻', nm: 'dusičnan', r: {}, note: 'Se skupinovými činidly nereaguje, dokazuje se jen selektivně.' }
+];
+/* Selektivní reakce: k = činidlo (stejné k = stejné činidlo ve hře Neznámý vzorek), r = jak, v = co uvidíš,
+   c = barva (do zkumavky), f = co vzniká, sp = specifická reakce, g = jen pro hru, ne jako kartička */
+const S = (i, k, r, v, c, o) => Object.assign({ i, k, r, v, c }, o || {});
+const AC_SEL = [
+  S('nh4', 'naoh_t', 'NaOH (2M) a zahřátí, nad zkumavku navlhčený indikátorový papírek', 'papírek zmodrá (uniká NH₃)', 'modra', { f: 'NH₃' }),
+  S('nh4', 'nessler', 'Nesslerovo činidlo (K₂[HgI₄] v KOH) na papírku nad zkumavkou s NaOH', 'papírek zhnědne', 'hneda', { f: '[Hg(NH₂)I]' }),
+  S('li', 'flame', 'plamenová zkouška', 'karmínově červený plamen', 'karmin'),
+  S('na', 'flame', 'plamenová zkouška', 'intenzivně žlutý plamen', 'zluta', { n: 'Reakce je velmi citlivá.' }),
+  S('k', 'flame', 'plamenová zkouška (přes kobaltové sklo)', 'světle fialový plamen', 'svfialova', { n: 'Žluté zbarvení od sodíku potlačí modré kobaltové sklo.' }),
+  S('k', 'dpa', 'dipikrylamin (sodná sůl hexanitrodifenylaminu)', 'oranžově červená sraženina', 'oranzova', { n: 'Ruší NH₄⁺.' }),
+  S('k', 'cono2', 'hexanitrokobaltitan sodný Na₃[Co(NO₂)₆]', 'žlutá sraženina', 'zluta', { n: 'S Na⁺ nevzniká. NH₄⁺ ruší, odstraní se odkouřením s HCl.' }),
+  S('mg', 'magneson', 'magneson a NaOH', 'chrpově modrá sraženina („lak“)', 'modra', { n: 'Ruší NH₄⁺.' }),
+  S('mg', 'hpo4', 'NH₄Cl, Na₂HPO₄ a po kapkách NH₃', 'bílá krystalická sraženina', 'bila', { f: 'MgNH₄PO₄', n: 'Vyloučení urychlí tření stěn zkumavky tyčinkou.' }),
+  S('ba', 'flame', 'plamenová zkouška', 'zelený plamen', 'zelena'),
+  S('ba', 'k2cro4', 'K₂CrO₄ v prostředí kyseliny octové', 'žlutá sraženina', 'zluta', { f: 'BaCrO₄', n: 'Ca²⁺ neruší.' }),
+  S('ba', 'rhodiz', 'rhodizonan sodný na papíře, pak 3% HCl', 'hnědá skvrna, po HCl zčervená', 'cervena'),
+  S('ca', 'flame', 'plamenová zkouška', 'cihlově červený plamen', 'cihlova'),
+  S('ca', 'ox', 'kyselina šťavelová', 'bílá krystalická sraženina', 'bila', { f: 'šťavelan vápenatý', n: 'Ba²⁺ ani alkalické kovy neruší.' }),
+  S('ag', 'chelki', 'Chelaton III, 2M NH₃ a KI', 'žlutá sraženina', 'zluta', { f: 'AgI', sp: 1, n: 'Chelaton III maskuje rušivé kovové ionty.' }),
+  S('ag', 'k2cro4', 'K₂CrO₄ na papíře, pak NH₃ a kyselina octová', 'červený prstenec', 'cervena', { f: 'Ag₂CrO₄' }),
+  S('pb', 'h2so4p', 'H₂SO₄ na papíře, promýt vodou, pak (NH₄)₂S', 'bílá sraženina, po sulfidu zčerná', 'cerna', { f: 'PbSO₄ → PbS' }),
+  S('pb', 'kigold', 'KI, zahřát a nechat vychladnout', 'žlutá sraženina se teplem rozpustí a ochlazením se vyloučí jako žluté šupinky („zlatý déšť“)', 'zluta', { f: 'PbI₂' }),
+  S('pb', 'k2cro4', 'K₂CrO₄', 'žlutá sraženina, rozpustná v HNO₃ i NaOH', 'zluta', { f: 'PbCrO₄' }),
+  S('hg1', 'agno2', 'NaNO₂ a AgNO₃ na filtračním papíře', 'černá skvrna', 'cerna', { f: 'Hg⁰', n: 'Málo rozpustný AgNO₂ redukuje rtuťné soli na elementární rtuť.' }),
+  S('hg2', 'cuhgi', 'KI, Na₂SO₃, CuSO₄ a HCl na filtračním papíře', 'oranžově červená skvrna', 'oranzova', { f: 'tetrajodortuťnatan měďný' }),
+  S('hg1', 'alfoil', 'kapka na odmaštěný hliníkový plíšek (alobal)', 'šedobílý povlak', 'bila', { f: 'Al₂O₃·xH₂O', n: 'Stejně reagují Hg₂²⁺ i Hg²⁺.' }),
+  S('hg2', 'alfoil', 'kapka na odmaštěný hliníkový plíšek (alobal)', 'šedobílý povlak', 'bila', { f: 'Al₂O₃·xH₂O', n: 'Stejně reagují Hg₂²⁺ i Hg²⁺.' }),
+  S('hg1', 'sncl2', 'SnCl₂ a anilin na filtračním papíře', 'tmavá skvrna', 'cerna', { f: 'Hg⁰', n: 'Dokáže Hg₂²⁺ i Hg²⁺, Sb³⁺ neruší.' }),
+  S('hg2', 'sncl2', 'SnCl₂ a anilin na filtračním papíře', 'tmavá skvrna', 'cerna', { f: 'Hg⁰', n: 'Dokáže Hg₂²⁺ i Hg²⁺, Sb³⁺ neruší.' }),
+  S('hg1', 'dpc', 'difenylkarbazid', 'modrofialové zbarvení', 'modrofialova', { n: 'Stejně reagují Hg₂²⁺ i Hg²⁺.' }),
+  S('hg2', 'dpc', 'difenylkarbazid', 'modrofialové zbarvení', 'modrofialova', { n: 'Stejně reagují Hg₂²⁺ i Hg²⁺.' }),
+  S('cu', 'flame', 'plamenová zkouška', 'zelený plamen', 'zelena', { n: 'Barví těkavá sůl, třeba CuCl₂.' }),
+  S('cu', 'fecn', 'HCl a K₄[Fe(CN)₆] na filtračním papíře', 'hnědá sraženina (Hatchettova hněď)', 'cervenohneda'),
+  S('cu', 'kupron', 'vínan sodno-draselný, kupron (benzoinoxim) a páry NH₃', 'zelená skvrna', 'zelena', { sp: 1, n: 'Vínan maskuje ostatní kationty.' }),
+  S('cd', 'h2shcl', '10% HCl a roztok sulfanu', 'žlutá sraženina', 'zluta', { f: 'CdS', n: 'Rušivé Cu²⁺, Co²⁺, Ni²⁺ je někdy potřeba maskovat.' }),
+  S('cd', 'cadion', 'HCl, Cadion S a NaOH na filtračním papíře', 'fialová skvrna přejde na růžovou', 'ruzova'),
+  S('bi', 'thiom', 'krystalek thiomočoviny pokápnutý vzorkem', 'žluté zbarvení', 'zluta'),
+  S('bi', 'bismutiol', 'bismutiol na filtračním papíře', 'jasně červená sraženina', 'cervena'),
+  S('sb', 'thiom', 'krystalek thiomočoviny pokápnutý vzorkem', 'žluté zbarvení (slabší než u Bi³⁺)', 'svzluta'),
+  S('sb', 'nh4shcl', 'sulfid amonný, filtrát okyselit 10% HCl', 'oranžová sraženina', 'oranzova', { f: 'Sb₂S₃', n: 'Ve filtrátu je rozpustný thioantimonitan.' }),
+  S('sb', 's2o3', 'Na₂S₂O₃, Na₂CO₃ a opatrně zahřát', 'červená sraženina (antimonová rumělka)', 'cervena', { f: 'Sb₂S₃ + Sb₂O₃' }),
+  S('fe3', 'fecn', 'K₄[Fe(CN)₆] na filtračním papíře', 'tmavě modrá sraženina (berlínská modř)', 'tmmodra', { f: 'KFe[Fe(CN)₆]' }),
+  S('fe3', 'scn', 'thiokyanatan amonný NH₄SCN', 'krvavě červený roztok', 'cervena', { f: 'thiokyanatoželezitý komplex' }),
+  S('fe3', 'sulfosal', '5% kyselina sulfosalicylová', 'fialový roztok', 'fialova'),
+  S('al', 'alizarin', 'alizarin S, okyselit HCl, pak po kapkách 2M NH₃', 'červeně zbarvená sraženina („lak“)', 'cervena', { f: 'Al(OH)₃ s alizarinem', n: 'Dělá se i slepý pokus pro srovnání.' }),
+  S('al', 'morin', 'morin na papíře, vzorek, HCl, pod UV lampou', 'intenzivní zelená fluorescence', 'svzelena', { n: 'Dělá se i slepý pokus pro srovnání.' }),
+  S('cr3', 'amyl', 'oxidace (NaOH + H₂O₂) na žlutý CrO₄²⁻, pak H₂O₂, H₂SO₄ a amylalkohol', 'modrá alkoholová vrstva', 'modra', { sp: 1 }),
+  S('cr3', 'dpc', 'oxidace na CrO₄²⁻, pak HCl a difenylkarbazid', 'fialově červené zbarvení', 'malinova'),
+  S('zn', 'fecn', 'HCl a K₄[Fe(CN)₆]', 'bílá sraženina', 'bila', { f: 'Zn₂[Fe(CN)₆]', n: 'Stopy železa ji zabarví do modra (berlínská modř).' }),
+  S('co', 'hcldry', 'konc. HCl na papíře, skvrnu vysušit nad plamenem', 'modrá skvrna', 'modra', { f: 'Co[CoCl₄]' }),
+  S('co', 'scn', 'thiokyanatan amonný a amylalkohol, protřepat', 'modrá alkoholová vrstva', 'modra', { f: '(NH₄)₂[Co(SCN)₄]', n: 'Fe³⁺ ruší (červené zbarvení), maskuje se NaF.' }),
+  S('ni', 'thiom', 'krystalek thiomočoviny pokápnutý vzorkem', 'žluté zbarvení', 'zluta'),
+  S('ni', 'dmg', 'Čugajevovo činidlo (diacetyldioxim) a páry NH₃', 'červená sraženina', 'cervena', { sp: 1, n: 'Barevné komplexy Fe²⁺, Co²⁺ a Cu²⁺ se dají vymýt zředěným NH₃.' }),
+  S('mn', 'naohp', '0,1M NaOH na filtračním papíře', 'skvrna postupně tmavne (oxidace vzduchem)', 'hneda'),
+  S('mn', 'persulf', 'HNO₃, K₂S₂O₈ a kapka AgNO₃, lehce povařit', 'fialový roztok', 'fialova', { f: 'MnO₄⁻', sp: 1, n: 'Ag⁺ oxidaci katalyzuje.' }),
+  /* anionty */
+  S('so4', 'bahcl', '10% HCl a BaCl₂', 'bílá mikrokrystalická sraženina', 'bila', { f: 'BaSO₄' }),
+  S('so3', 'nioh', 'H₂SO₄ a zahřát, páry na papírek s Ni(OH)₂', 'černá skvrna', 'cerna', { f: 'SO₂ → Ni(OH)₃', n: 'Stejně reaguje S₂O₃²⁻.' }),
+  S('so3', 'i2ph', 'roztok I₂, pak pH papírek', 'jód se odbarví a roztok zkysne', 'svzluta', { f: 'SO₃²⁻ + I₂ + H₂O → 2 I⁻ + 2 H⁺ + SO₄²⁻' }),
+  S('so3', 'votocek', 'Votočkovo činidlo (fuchsin + malachitová zeleň)', 'činidlo se odbarví', 'bila'),
+  S('s2o3', 'nioh', 'okyselit H₂SO₄ a zahřát, páry na papírek s Ni(OH)₂', 'černá skvrna, roztok se navíc bíle zakalí', 'cerna', { f: 'SO₂ a koloidní S' }),
+  S('s2o3', 'i2ph', 'roztok I₂, pak pH papírek', 'jód se odbarví, roztok zůstane neutrální', 'svzluta', { f: '2 S₂O₃²⁻ + I₂ → 2 I⁻ + S₄O₆²⁻' }),
+  S('s2o3', 'azid', 'azid sodný, I₂ a škrob (jod-azidová reakce)', 'modrý roztok se odbarví a šumí', 'bila', { f: '2 N₃⁻ + I₂ → 3 N₂ + 2 I⁻', n: 'Katalyzuje „sulfidická síra“. Odliší thiosíran od síranu a siřičitanu.' }),
+  S('cro4', 'acid', 'okyselení', 'žlutý roztok zoranžoví', 'oranzova', { f: 'Cr₂O₇²⁻' }),
+  S('cro4', 'amyl', 'H₂O₂, H₂SO₄ a amylalkohol', 'modrá alkoholová vrstva', 'modra', { sp: 1 }),
+  S('cro4', 'dpc', 'HCl a difenylkarbazid', 'fialově červené zbarvení', 'malinova'),
+  S('po4', 'mgsol', 'hořečnatá soluce (MgCl₂ + NH₄Cl + NH₃)', 'bílá krystalická sraženina, s AgNO₃ zežloutne', 'bila', { f: 'NH₄MgPO₄·6H₂O' }),
+  S('po4', 'molyb', 'molybdenová soluce ((NH₄)₂MoO₄ + HNO₃), lehce zahřát', 'žlutá sraženina', 'zluta', { f: 'molybdátofosforečnan amonný' }),
+  S('bo2', 'ester', 'odparek, ethanol a konc. H₂SO₄, zapálit', 'zelený plamen', 'zelena', { f: 'těkavý ester kyseliny borité' }),
+  S('bo2', 'kurkuma', 'kurkumový papírek a 3% HCl, vysušit', 'červenohnědá skvrna, s NaOH zezelená', 'cervenohneda'),
+  S('bo2', 'mannitol', 'fenolftalein, pak mannitol', 'malinové zbarvení zmizí', 'bila', { n: 'Boritan s mannitolem tvoří chelát, vznikne silnější kyselina.' }),
+  S('co3', 'baoh2', 'chromsírová směs, nad zkumavku kapka barytové vody', 'roztok šumí a kapka zbělá', 'bila', { f: 'CO₂ → BaCO₃', n: 'Pro uhličitany selektivní.' }),
+  S('co3', 'hgcl2', 'HgCl₂', 'červenohnědá sraženina', 'cervenohneda', { f: 'HgCO₃·3HgO', n: 'Hydrogenuhličitan dá jen bílý zákal.' }),
+  S('cl', 'agnh3', 'HNO₃ a AgNO₃, pak zředěný NH₃', 'bílá sraženina, ve zředěném NH₃ se rozpustí', 'bila', { f: 'AgCl' }),
+  S('cl', 'mno2', 'konc. H₂SO₄ a MnO₂, zahřát, nad zkumavku papírek s NaOH, fenolem a anilinem', 'papírek zmodrá', 'modra', { f: 'Cl₂ → indofenolát' }),
+  S('cl', 'chromyl', 'odparek s K₂Cr₂O₇ a konc. H₂SO₄, páry na papírek s NaOH, pak difenylkarbazid', 'hnědé páry, papírek nakonec červenofialový', 'malinova', { f: 'CrO₂Cl₂ → CrO₄²⁻', sp: 1 }),
+  S('br', 'chloramin', 'H₂SO₄, chloroform a chloramin T, protřepat', 'spodní chloroformová vrstva žlutá až hnědá', 'oranzova', { f: 'Br₂' }),
+  S('br', 'fluor', 'H₂SO₄ a KMnO₄, zahřát, páry na papírek s fluoresceinem', 'papírek zčervená', 'cervena', { f: 'eosin', n: 'Stejně reagují jodidy.' }),
+  S('i', 'nitrit', 'kyselina octová, NaNO₂ a škrob', 'modré zbarvení', 'tmmodra', { f: 'I₂', n: 'Dusitan ve slabě kyselém prostředí oxiduje jen jodid, Cl⁻ ani Br⁻ ne.' }),
+  S('i', 'hg', 'roztok Hg²⁺', 'červená sraženina, v nadbytku jodidu se rozpustí', 'cervena', { f: 'HgI₂ → [HgI₄]²⁻' }),
+  S('i', 'chloramin', 'H₂SO₄, chloroform a chloramin T, protřepat', 'spodní chloroformová vrstva fialová', 'fialova', { f: 'I₂', n: 'Nadbytkem chloraminu se jód oxiduje dál. Když je přítomen i Br⁻, vrstva pak zhnědne.' }),
+  S('i', 'fluor', 'H₂SO₄ a KMnO₄, zahřát, páry na papírek s fluoresceinem', 'papírek zčervená', 'cervena', { g: 1 }),
+  S('scn', 'fecl3', '3% HCl a FeCl₃', 'krvavě červený roztok', 'cervena', { f: '[Fe(SCN)]²⁺' }),
+  S('scn', 'azid', 'azid sodný, I₂ a škrob (jod-azidová reakce)', 'modrý roztok se odbarví a šumí', 'bila', { f: '2 N₃⁻ + I₂ → 3 N₂ + 2 I⁻', n: 'Katalyzuje „sulfidická síra“, stejně jako u thiosíranu.' }),
+  S('no2', 'kiskrob', 'KI, 10% kyselina octová a škrob', 'ihned modré zbarvení', 'tmmodra', { f: 'I₂' }),
+  S('no2', 'griess', 'kyselina octová, kyselina sulfanilová a 1-naftol v NaOH, za chladu', 'červený roztok azobarviva', 'cervena', { sp: 1, n: 'Diazotace a kopulace.' }),
+  S('no2', 'devarda', 'práškový Al a 2M NaOH, zahřát, nad směsí vlhký pH papírek (Devardova reakce)', 'papírek zezelenomodrá', 'modrozelena', { g: 1 }),
+  S('no2', 'zngriess', 'Zn v kyselině octové, pak diazotace a kopulace', 'červený roztok azobarviva', 'cervena', { g: 1 }),
+  S('no3', 'fsulf', 'odparek s fenolsulfonovou kyselinou, zředit a zalkalizovat NH₃', 'intenzivně žlutý roztok', 'zluta', { f: 'nitrofenolsulfonáty' }),
+  S('no3', 'zngriess', 'redukce Zn v kyselině octové na dusitan, pak diazotace a kopulace', 'červený roztok azobarviva', 'cervena', { n: 'Dusitany se musí předem odstranit močovinou.' }),
+  S('no3', 'devarda', 'práškový Al a 2M NaOH, zahřát, nad směsí vlhký pH papírek (Devardova reakce)', 'papírek zezelenomodrá', 'modrozelena', { f: 'NH₃', n: 'Pozor, stejně reagují dusitany a amonné ionty.' })
+];
+/* krátké názvy činidel ze selektivních reakcí pro hru Neznámý vzorek */
+const AC_SK = {
+  naoh_t: 'NaOH + teplo, pH papírek', nessler: 'Nesslerovo činidlo', flame: 'Plamenová zkouška', dpa: 'Dipikrylamin', cono2: 'Na₃[Co(NO₂)₆]',
+  magneson: 'Magneson + NaOH', hpo4: 'NH₄Cl + Na₂HPO₄ + NH₃', k2cro4: 'K₂CrO₄', rhodiz: 'Rhodizonan sodný', ox: 'Kyselina šťavelová',
+  chelki: 'Chelaton III + NH₃ + KI', h2so4p: 'H₂SO₄, pak (NH₄)₂S', kigold: 'KI, zahřát a ochladit', agno2: 'NaNO₂ + AgNO₃', cuhgi: 'KI + Na₂SO₃ + CuSO₄',
+  alfoil: 'Hliníková fólie', sncl2: 'SnCl₂ + anilin', dpc: 'Difenylkarbazid', fecn: 'K₄[Fe(CN)₆]', kupron: 'Kupron', h2shcl: 'HCl + sulfan',
+  cadion: 'Cadion S', thiom: 'Thiomočovina', bismutiol: 'Bismutiol', nh4shcl: '(NH₄)₂S, pak HCl', s2o3: 'Na₂S₂O₃ + Na₂CO₃, teplo',
+  scn: 'NH₄SCN', sulfosal: 'Kyselina sulfosalicylová', alizarin: 'Alizarin S', morin: 'Morin + UV', amyl: 'H₂O₂ + H₂SO₄ + amylalkohol',
+  hcldry: 'Konc. HCl, vysušit', dmg: 'Čugajevovo činidlo', naohp: 'NaOH na papíře', persulf: 'K₂S₂O₈ + AgNO₃',
+  bahcl: 'HCl + BaCl₂', nioh: 'H₂SO₄, papírek s Ni(OH)₂', i2ph: 'I₂, pak pH papírek', votocek: 'Votočkovo činidlo', azid: 'Jod-azidová reakce',
+  acid: 'Okyselení', mgsol: 'Hořečnatá soluce', molyb: 'Molybdenová soluce', ester: 'Ethanol + H₂SO₄, zapálit', kurkuma: 'Kurkumový papírek',
+  mannitol: 'Fenolftalein + mannitol', baoh2: 'Chromsírová směs + Ba(OH)₂', hgcl2: 'HgCl₂', agnh3: 'AgNO₃, pak zředěný NH₃', mno2: 'MnO₂ + H₂SO₄',
+  chromyl: 'Chromylchloridová reakce', chloramin: 'Chloramin T + chloroform', fluor: 'KMnO₄, papírek s fluoresceinem', nitrit: 'NaNO₂ + kys. octová + škrob',
+  hg: 'Roztok Hg²⁺', fecl3: 'FeCl₃', kiskrob: 'KI + kys. octová + škrob', griess: 'Kys. sulfanilová + 1-naftol', devarda: 'Devardova reakce',
+  zngriess: 'Zn, pak diazotace', fsulf: 'Fenolsulfonová kyselina'
+};
+
+/* ===== Analytická chemie: procvičování, tabulka, přehled iontů a hra Neznámý vzorek ===== */
+const store0 = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* bez úložiště to jede dál */ } } };
+const ST = Object.assign({ r: {}, best: {}, cls: 'k', mode: 'quiz', types: ['obs', 'ion', 'grp', 'sel'], hide: false }, store0.get('fg-ac', {}));
+const save = () => store0.set('fg-ac', ST);
+const $a = s => document.querySelector(s);
+const escA = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const day = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 864e5); };
+const mix = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const ION = {}; AC_ION.forEach(x => { ION[x.id] = x; });
+const RG = { k: AC_RC, a: AC_RA };
+const RGN = {}; AC_RC.forEach(r => { RGN['k' + r[0]] = r; }); AC_RA.forEach(r => { RGN['a' + r[0]] = r; });
+const rg = (c, k) => RGN[c + k];
+const ions = c => AC_ION.filter(x => c === 'b' || x.c === c);
+const KIND = { k: ['kationt', 'kationty', 'kationtů'], a: ['aniont', 'anionty', 'aniontů'] };
+const NONE = 'bez viditelné změny';
+const XS = { NaOH: 'v nadbytku 2M NaOH', NH3: 'v nadbytku 2M NH₃', KI: 'v nadbytku 1M KI', NH4HS: 'v nadbytku činidla', AcO: 'v nadbytku činidla' };
+
+/* --- zkumavka a další obrázky výsledku --- */
+const col = k => k ? AC_COL[k] || k : null;
+let tid = 0;
+function tubeSVG(o, cap) {
+  const id = 'act' + (++tid), sol = col(o.sol), p = col(o.p);
+  const dots = [], rnd = i => { const v = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
+  if (p && o.s) {
+    const n = o.s === 2 ? 34 : 16, top = o.s === 2 ? 52 : 40;
+    for (let i = 0; i < n; i++) { const x = 11.5 + rnd(i) * 25, y = top + rnd(i + 99) * (88 - top); dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.1 + rnd(i + 7) * 1.3).toFixed(1)}" fill="${p}" stroke="rgba(0,0,0,.18)" stroke-width=".4"/>`); }
+  }
+  const pile = p && o.s === 2 ? `<path d="M9 74 Q16 68 24 71 Q32 67 39 73 V82 Q39 97 24 97 Q9 97 9 82 Z" fill="${p}" stroke="rgba(0,0,0,.22)" stroke-width=".8"/>` : p && o.s ? `<rect x="0" y="40" width="48" height="60" fill="${p}" opacity=".28"/>` : '';
+  return `<figure class="ac-tube"><svg viewBox="0 0 48 104" aria-hidden="true"><defs><clipPath id="${id}"><path d="M9 6 V82 Q9 97 24 97 Q39 97 39 82 V6 Z"/></clipPath></defs>
+    <g clip-path="url(#${id})"><rect x="0" y="30" width="48" height="80" fill="${sol || 'var(--ac-water)'}" opacity="${sol ? .78 : 1}"/>${dots.join('')}${pile}</g>
+    <path d="M6 5 H42 M9 5 V82 Q9 97 24 97 Q39 97 39 82 V5" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M14 34 V80" stroke="#fff" stroke-opacity=".5" stroke-width="2.5" stroke-linecap="round"/></svg>${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
+}
+function flameSVG(c, cap) {
+  return `<figure class="ac-tube"><svg viewBox="0 0 48 104" aria-hidden="true"><path d="M24 14 C34 32 40 46 36 64 C33 78 15 78 12 64 C8 48 16 36 24 14 Z" fill="${col(c)}" opacity=".9"/>
+    <path d="M24 44 C28 52 29 58 27 66 C25 72 22 72 21 66 C19 58 21 52 24 44 Z" fill="#fff" opacity=".55"/>
+    <rect x="17" y="80" width="14" height="18" rx="2" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M15 80 H33" stroke="var(--ink)" stroke-width="2"/></svg>${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
+}
+function spotSVG(c, cap) {
+  return `<figure class="ac-tube"><svg viewBox="0 0 64 104" aria-hidden="true"><rect x="4" y="22" width="56" height="60" rx="3" fill="var(--ac-paper)" stroke="var(--line)"/>
+    <circle cx="32" cy="52" r="16" fill="${col(c)}" opacity=".85"/><circle cx="32" cy="52" r="22" fill="none" stroke="${col(c)}" stroke-opacity=".25" stroke-width="5"/></svg>${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
+}
+const arrow = t => `<span class="ac-arr"><small>${t}</small>→</span>`;
+/* obrázek skupinové reakce: zkumavka, případně druhá po nadbytku / po chvíli / před a po */
+function rxPic(ion, rx) {
+  if (!rx) return tubeSVG({ sol: ion.sol }, NONE);
+  const base = { sol: rx.sol !== undefined ? rx.sol : ion.sol, p: rx.p, s: rx.s };
+  if (rx.sol0) return `<div class="ac-pics">${tubeSVG({ sol: rx.sol0 }, 'činidlo')}${arrow('vzorek')}${tubeSVG(base, rx.weak ? 'jen z konc.' : 'po reakci')}</div>`;
+  if (rx.x !== undefined) return `<div class="ac-pics">${tubeSVG(base, 'po kapkách')}${arrow('nadbytek')}${tubeSVG({ sol: rx.x || '', p: rx.xp, s: rx.xp ? 1 : 0 })}</div>`;
+  if (rx.p2) return `<div class="ac-pics">${tubeSVG(base)}${arrow('po chvíli')}${tubeSVG({ sol: base.sol, p: rx.p2, s: 2 })}</div>`;
+  return `<div class="ac-pics">${tubeSVG(base)}</div>`;
+}
+function selPic(x) {
+  if (/plamen/.test(x.v)) return flameSVG(x.c);
+  if (/skvrn|papírek|prstenec/.test(x.v)) return spotSVG(x.c);
+  if (/sraženin/.test(x.v)) return tubeSVG({ p: x.c, s: 2 });
+  if (/vrstva/.test(x.v)) return `<figure class="ac-tube"><svg viewBox="0 0 48 104" aria-hidden="true"><path d="M9 6 V82 Q9 97 24 97 Q39 97 39 82 V6" fill="none" stroke="var(--ink)" stroke-width="2"/><rect x="11" y="34" width="26" height="22" fill="${col(x.c)}" opacity=".85"/><path d="M11 56 V82 Q11 95 24 95 Q37 95 37 82 V56 Z" fill="var(--ac-water)"/></svg></figure>`;
+  return tubeSVG({ sol: x.c === 'bila' ? '' : x.c });
+}
+
+/* --- kartičky --- */
+const okGrp = rx => rx && rx.s > 0 && !rx.weak && !rx.nogrp;
+const okRedox = rx => rx && !rx.weak;
+const isRedox = rk => ['KMnO4', 'I2'].includes(rk) || false;
+function grpTest(c, rk, rx) { return c === 'a' && ['KMnO4', 'I2', 'KI'].includes(rk) ? okRedox(rx) : okGrp(rx); }
+ION.fe3.r.H2S.nogrp = 1;
+const SELQ = AC_SEL.filter(x => !x.g);
+function buildCards() {
+  const out = [];
+  ['k', 'a'].forEach(c => {
+    const L = ions(c);
+    RG[c].forEach(([rk]) => {
+      L.forEach(ion => {
+        const rx = ion.r[rk]; if (!rx) return;
+        out.push({ id: `o:${ion.id}:${rk}`, t: 'obs', c, ion, rk, rx });
+        if (L.filter(o => o.r[rk] && o.r[rk].v === rx.v).length === 1) out.push({ id: `i:${ion.id}:${rk}`, t: 'ion', c, ion, rk, rx });
+      });
+      out.push({ id: `g:${c}:${rk}`, t: 'grp', c, rk, set: L.filter(o => grpTest(c, rk, o.r[rk])).map(o => o.id) });
+      if (c === 'k' && ['NaOH', 'NH3', 'KI'].includes(rk)) out.push({ id: `x:${c}:${rk}`, t: 'grp', c, rk, ex: 1, set: L.filter(o => o.r[rk] && o.r[rk].x !== undefined).map(o => o.id) });
+    });
+    out.push({ id: `n:${c}`, t: 'grp', c, none: 1, set: L.filter(o => !Object.keys(o.r).length).map(o => o.id) });
+  });
+  SELQ.forEach(x => { const c = ION[x.i].c; out.push({ id: `s:${x.i}:${x.k}`, t: 'sel', c, x, ion: ION[x.i] }); });
+  AC_ION.forEach(ion => { if (SELQ.some(x => x.i === ion.id)) out.push({ id: `h:${ion.id}`, t: 'how', c: ion.c, ion }); });
+  return out;
+}
+const CARDS = buildCards();
+const TYPE_OF = { obs: 'obs', ion: 'ion', grp: 'grp', sel: 'sel', how: 'sel' };
+const TYPES = [['obs', 'Co uvidíš'], ['ion', 'Který iont'], ['grp', 'Skupinová činidla'], ['sel', 'Selektivní důkazy']];
+const inPool = cd => (ST.cls === 'b' || cd.c === ST.cls) && ST.types.includes(TYPE_OF[cd.t]);
+const due = id => ST.r[id] && ST.r[id].d <= day();
+const dueCount = () => CARDS.filter(cd => due(cd.id)).length;
+const SRI = [0, 1, 2, 4, 8, 16, 32];
+function mark(id, ok) {
+  const t = day(), r = ST.r[id] || { b: 0, d: t, ok: 0, bad: 0 };
+  if (ok) { r.ok++; r.b = Math.min(r.b + 1, 6); r.d = t + SRI[r.b]; } else { r.bad++; r.b = 1; r.d = t; }
+  ST.r[id] = r; save();
+  try { if (typeof dailyTick === 'function') dailyTick(); } catch (e) { /* denní cíl je jen v organice */ }
+}
+const Q = { deck: [], i: 0, ok: 0, cur: null, done: false, pick: new Set(), opts: null };
+function newDeck(onlyDue) {
+  const pool = CARDS.filter(inPool), t = day();
+  const d = mix(pool.filter(cd => due(cd.id))), fresh = mix(pool.filter(cd => !ST.r[cd.id])), rest = mix(pool.filter(cd => ST.r[cd.id] && !due(cd.id))).sort((a, b) => ST.r[a.id].b - ST.r[b.id].b);
+  Q.deck = (onlyDue ? d : d.concat(fresh, rest)).slice(0, 15); Q.i = 0; Q.ok = 0; Q.missed = [];
+  Q.empty = !Q.deck.length;
+  next(true);
+}
+function next(first) { if (!first) Q.i++; Q.cur = Q.deck[Q.i] || null; Q.done = false; Q.pick = new Set(); Q.opts = null; render(); }
+const uniq = a => [...new Set(a)];
+function optsFor(cd) {
+  if (cd.t === 'obs') {
+    const L = ions(cd.c).filter(o => o.id !== cd.ion.id);
+    let d = uniq(L.map(o => o.r[cd.rk] ? o.r[cd.rk].v : NONE)).filter(v => v !== cd.rx.v);
+    d = mix(d).slice(0, 3);
+    return mix([cd.rx.v].concat(d)).map(v => ({ t: v, ok: v === cd.rx.v }));
+  }
+  if (cd.t === 'ion') {
+    const L = ions(cd.c).filter(o => o.id !== cd.ion.id), react = mix(L.filter(o => o.r[cd.rk])), other = mix(L.filter(o => !o.r[cd.rk]));
+    return mix([cd.ion].concat(react.concat(other).slice(0, 3))).map(o => ({ t: o.f, ok: o.id === cd.ion.id, chem: 1 }));
+  }
+  if (cd.t === 'sel') {
+    const same = SELQ.filter(y => y.k === cd.x.k && y.v === cd.x.v).map(y => y.i);
+    const L = mix(ions(cd.c).filter(o => !same.includes(o.id)));
+    return mix([cd.ion].concat(L.slice(0, 3))).map(o => ({ t: o.f, ok: o.id === cd.ion.id, chem: 1 }));
+  }
+  if (cd.t === 'how') {
+    const mine = SELQ.filter(x => x.i === cd.ion.id), right = mine.find(x => x.sp) || mix(mine.slice())[0];
+    const keys = new Set(AC_SEL.filter(x => x.i === cd.ion.id).map(x => x.k));
+    const wrong = mix(SELQ.filter(x => ION[x.i].c === cd.c && x.i !== cd.ion.id && !keys.has(x.k))).filter((x, i, a) => a.findIndex(y => y.i === x.i) === i).slice(0, 3);
+    return mix([right].concat(wrong)).map(x => ({ t: `${x.r} → ${x.v}`, ok: x === right, x }));
+  }
+  return null;
+}
+function qHead(cd) {
+  const K = KIND[cd.c];
+  if (cd.t === 'obs') { const r = rg(cd.c, cd.rk); return { eb: 'Co uvidíš?', h: `${cd.ion.f} + ${r[1]}`, sub: `${cd.ion.nm} a ${r[2]}${XS[cd.rk] && cd.c === 'k' ? ', přidávej po kapkách až do nadbytku' : ''}` }; }
+  if (cd.t === 'ion') { const r = rg(cd.c, cd.rk); return { eb: `Který ${K[0]}?`, h: `${r[1]}: ${cd.rx.v}`, sub: `Skupinové činidlo ${r[2]}. Který ${K[0]} takhle reaguje?`, long: 1 }; }
+  if (cd.t === 'sel') return { eb: 'Selektivní důkaz', h: cd.x.v, sub: `Činidlo: ${cd.x.r}. Který ${K[0]} jsi dokázala?`, long: 1 };
+  if (cd.t === 'how') return { eb: 'Selektivní důkaz', h: `Jak dokážeš ${cd.ion.f}?`, sub: `Vyber reakci, která dokazuje ${cd.ion.nm}.` };
+  if (cd.none) return { eb: 'Skupinová činidla', h: `Které ${K[1]} nereagují s žádným skupinovým činidlem?`, sub: 'Označ všechny, pak dej Zkontrolovat.', long: 1 };
+  const r = rg(cd.c, cd.rk);
+  if (cd.ex) return { eb: 'Rozpouštění v nadbytku', h: cd.rk === 'NaOH' ? 'Které sraženiny se rozpustí v nadbytku NaOH?' : cd.rk === 'NH3' ? 'Které sraženiny se rozpustí v nadbytku NH₃?' : 'Které sraženiny se rozpustí v nadbytku KI?', sub: cd.rk === 'NaOH' ? 'Amfoterní hydroxidy. Označ všechny, pak dej Zkontrolovat.' : cd.rk === 'NH3' ? 'Vznikají rozpustné amminkomplexy. Označ všechny, pak dej Zkontrolovat.' : 'Vznikají rozpustné jodokomplexy. Označ všechny, pak dej Zkontrolovat.', long: 1 };
+  const verb = cd.c === 'a' && cd.rk === 'KMnO4' ? 'Které anionty odbarví KMnO₄ v kyselém prostředí?' : cd.c === 'a' && cd.rk === 'I2' ? 'Které anionty odbarví roztok jódu se škrobem?' : cd.c === 'a' && cd.rk === 'KI' ? 'Které anionty vyloučí z KI jód (škrob zmodrá)?' : `Které ${K[1]} dávají sraženinu s ${r[1]}?`;
+  return { eb: 'Skupinová činidla', h: verb, sub: `${r[2]}. Počítají se i neúplná srážení (+). Označ všechny, pak dej Zkontrolovat.`, long: 1 };
+}
+function feedback(cd, ok) {
+  let body = '', pic = '';
+  if (cd.t === 'obs' || cd.t === 'ion') {
+    const r = rg(cd.c, cd.rk); pic = rxPic(cd.ion, cd.rx);
+    body = `<p><b>${cd.ion.f} + ${r[1]}:</b> ${escA(cd.rx.v)}. Vzniká <b>${cd.rx.f}</b>.</p>${cd.rx.n ? `<p class="aside">${cd.rx.n}</p>` : ''}`;
+  } else if (cd.t === 'sel') {
+    pic = selPic(cd.x);
+    const same = SELQ.filter(y => y.k === cd.x.k && y.v === cd.x.v && y.i !== cd.x.i).map(y => ION[y.i].f);
+    body = `<p><b>${cd.ion.f}</b> (${cd.ion.nm}): ${escA(cd.x.r)} → ${escA(cd.x.v)}${cd.x.f ? `, vzniká <b>${cd.x.f}</b>` : ''}.${cd.x.sp ? ' Specifická reakce.' : ''}</p>${same.length ? `<p class="aside">Stejně reaguje i ${same.join(', ')}.</p>` : ''}${cd.x.n ? `<p class="aside">${cd.x.n}</p>` : ''}`;
+  } else if (cd.t === 'how') {
+    const L = SELQ.filter(x => x.i === cd.ion.id);
+    body = `<p><b>Důkazy ${cd.ion.f}:</b></p><ul class="ac-ul">${L.map(x => `<li>${escA(x.r)} → <b>${escA(x.v)}</b>${x.sp ? ' <span class="ac-sp">specifická</span>' : ''}</li>`).join('')}</ul>`;
+  } else {
+    body = `<p>${cd.set.length ? `Správně: <b>${cd.set.map(i => ION[i].f).join(', ')}</b>` : 'Správně: žádný.'}</p>${cd.ex && cd.rk === 'NaOH' ? '<p class="aside">Vzniklé roztoky jsou bezbarvé, jen chromitan je zelený.</p>' : ''}${cd.rk === 'H2S' && cd.c === 'k' && !cd.ex ? '<p class="aside">Pozor na Fe³⁺: oxiduje sulfan a vznikne jen bílý zákal síry, ne sraženina sulfidu.</p>' : ''}`;
+  }
+  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>`;
+}
+function quizView() {
+  if (Q.empty) return `<div class="card"><p>${ST.types.length ? 'V tomhle výběru teď nic není.' : 'Vyber aspoň jeden druh otázek.'}</p></div>`;
+  if (!Q.cur) {
+    const n = Q.deck.length;
+    return `<div class="card ac-end"><span class="eyebrow">Kolo hotové</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
+      ${Q.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${Q.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
+      <div class="row"><button type="button" class="btn primary" data-ac="again">Další kolo</button><button type="button" class="btn" data-ac="mode" data-v="table">Projít tabulku</button></div></div>`;
+  }
+  const cd = Q.cur, h = qHead(cd);
+  if (!Q.opts) Q.opts = optsFor(cd);
+  const prog = `<div class="progress"><span class="cnt">${Q.i + 1} / ${Q.deck.length}</span><span class="bar"><i style="width:${100 * Q.i / Q.deck.length}%"></i></span><span class="cnt">${Q.ok} ✓</span></div>`;
+  let ans;
+  if (cd.t === 'grp') {
+    const L = ions(cd.c);
+    ans = `<div class="ac-chips">${L.map(o => { const on = Q.pick.has(o.id), cls = !Q.done ? '' : cd.set.includes(o.id) ? (on ? ' right' : ' miss') : on ? ' wrong' : ''; return `<button type="button" class="ac-ion${cls}" data-ac="pk" data-v="${o.id}" aria-pressed="${on}"${Q.done ? ' disabled' : ''}>${o.f}</button>`; }).join('')}</div>
+      ${Q.done ? '' : '<div class="row"><button type="button" class="btn primary" data-ac="check">Zkontrolovat</button></div>'}`;
+  } else {
+    ans = `<div class="opts${Q.done ? ' done' : ''}">${Q.opts.map((o, k) => `<button type="button" class="opt${Q.done ? (o.ok ? ' right' : o.picked ? ' wrong' : '') : ''}${o.chem ? ' ac-chem' : ''}" data-ac="opt" data-v="${k}"${Q.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${escA(o.t)}</span></button>`).join('')}</div>`;
+  }
+  return `${prog}<div class="card ac-q"><div class="card-head"><span class="eyebrow">${h.eb}</span>${ST.r[cd.id] ? '' : '<span class="ac-new">nová</span>'}</div>
+    <h2 class="q-name${h.long ? ' ac-long' : ''}">${escA(h.h)}</h2><p class="ac-sub">${escA(h.sub)}</p>${ans}
+    <div id="acFb">${Q.done ? Q.fb + '<div class="row"><button type="button" class="btn primary" id="acNext" data-ac="next">Další</button></div>' : ''}</div></div>`;
+}
+function answer(ok, missText) {
+  const cd = Q.cur; Q.done = true; if (ok) Q.ok++; else Q.missed.push(missText);
+  mark(cd.id, ok); Q.fb = feedback(cd, ok); render();
+  const b = $a('#acNext'); if (b) b.focus({ preventScroll: true });
+}
+const missTxt = cd => cd.t === 'obs' || cd.t === 'ion' ? `${cd.ion.f} + ${rg(cd.c, cd.rk)[1]}: ${escA(cd.rx.v)} (${cd.rx.f})` : cd.t === 'sel' ? `${cd.ion.f}: ${escA(cd.x.r)} → ${escA(cd.x.v)}` : cd.t === 'how' ? `Důkazy ${cd.ion.f}` : `${escA(qHead(cd).h)} ${cd.set.map(i => ION[i].f).join(', ')}`;
+
+/* --- tabulka --- */
+const lum = hex => { const n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) / 255; };
+const TB = { open: null, shown: new Set() };
+function cellHTML(ion, rk, c) {
+  const rx = ion.r[rk], key = ion.id + ':' + rk;
+  const hid = ST.hide && !TB.shown.has(key);
+  if (hid) return `<td><button type="button" class="ac-cell veil" data-ac="cell" data-v="${key}" aria-label="${ion.f} a ${rg(c, rk)[1]}: odkrýt">?</button></td>`;
+  if (!rx) return `<td><button type="button" class="ac-cell" data-ac="cell" data-v="${key}" aria-label="${ion.f} a ${rg(c, rk)[1]}: ${NONE}"></button></td>`;
+  const bg = rx.s ? col(rx.p) : rx.sol ? col(rx.sol) : null, soft = !bg && rx.sol === '';
+  const sym = rx.s === 2 ? '++' : rx.s === 1 ? '+' : rx.weak ? '*' : c === 'a' ? '**' : '•';
+  const ring = rx.x !== undefined ? `<i class="ac-x" style="background:${rx.x ? col(rx.x) : 'var(--surface)'}"></i>` : '';
+  const st = bg ? `background:${bg};color:${lum(bg) < .55 ? '#fff' : '#1d1a1b'}` : soft ? 'background:var(--accent-soft);color:var(--ink)' : '';
+  return `<td><button type="button" class="ac-cell on${TB.open === key ? ' sel' : ''}" style="${st}" data-ac="cell" data-v="${key}" aria-label="${ion.f} a ${rg(c, rk)[1]}: ${escA(rx.v)}">${sym}${ring}</button></td>`;
+}
+function tableOne(c) {
+  const R0 = RG[c];
+  return `<div class="ac-tw"><table class="ac-tab"><thead><tr><th scope="col">${c === 'k' ? 'Kationt' : 'Aniont'}</th>${R0.map(r => `<th scope="col">${r[1]}</th>`).join('')}</tr></thead>
+    <tbody>${ions(c).map(ion => `<tr><th scope="row"${ion.sol ? ` style="box-shadow:inset 4px 0 0 ${col(ion.sol)}"` : ''}><button type="button" class="ac-rowh" data-ac="ionopen" data-v="${ion.id}">${ion.f}</button></th>${R0.map(r => cellHTML(ion, r[0], c)).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function cellDetail() {
+  if (!TB.open) return `<p class="aside ac-tip">Klepni na políčko a uvidíš, co se ve zkumavce děje.${ST.hide ? ' Schovaná políčka se odkryjí po klepnutí.' : ''}</p>`;
+  const [id, rk] = TB.open.split(':'), ion = ION[id], rx = ion.r[rk], r = rg(ion.c, rk);
+  return `<div class="card ac-det"><span class="eyebrow">${ion.f} + ${r[2]}</span><div class="ac-ans">${rxPic(ion, rx)}<div class="ac-ans-t">${rx ? `<p><b>${escA(rx.v)}</b></p><p>Vzniká ${rx.f}.</p>${rx.n ? `<p class="aside">${rx.n}</p>` : ''}` : `<p><b>${NONE}</b></p><p class="aside">${ion.f} s tímhle činidlem nereaguje.</p>`}</div></div></div>`;
+}
+function tableView() {
+  const cls = ST.cls === 'b' ? ['k', 'a'] : [ST.cls];
+  return `<div class="row ac-tbar"><label class="switch"><input type="checkbox" id="acHide"${ST.hide ? ' checked' : ''}> Schovat políčka a zkoušet se</label>${ST.hide ? '<button type="button" class="link" data-ac="reveal">Odkrýt vše</button> <button type="button" class="link" data-ac="rehide">Schovat znovu</button>' : ''}</div>
+    <div class="ac-legend"><span><b>++</b> úplné srážení</span><span><b>+</b> neúplné, z konc. roztoků</span><span><i class="ac-x" style="background:var(--surface)"></i> v nadbytku se rozpustí (barva = roztok)</span>${cls.includes('k') ? '<span><b>•</b> beze sraženiny, jen barva roztoku</span>' : ''}${cls.includes('a') ? '<span><b>**</b> redoxní reakce proběhne, <b>*</b> jen z konc. roztoků</span>' : ''}<span>barva políčka = barva sraženiny</span></div>
+    ${cls.map(c => `<h3 class="fam-h">${c === 'k' ? 'Kationty' : 'Anionty'}</h3>${tableOne(c)}`).join('')}<div id="acDet">${cellDetail()}</div>`;
+}
+
+/* --- přehled iontů --- */
+function ionCard(ion) {
+  const R0 = RG[ion.c], sel = AC_SEL.filter(x => x.i === ion.id && !x.g);
+  const grp = R0.filter(r => ion.r[r[0]]);
+  return `<article class="card ac-ion-card" id="ac-${ion.id}"><div class="card-head"><h3 class="ac-ionh">${ion.f} <small>${ion.nm}</small></h3>${ion.sol ? `<span class="ac-solc"><i style="background:${col(ion.sol)}"></i>${ion.c === 'k' ? 'barevný roztok' : 'žlutý roztok'}</span>` : ''}</div>
+    ${ion.note ? `<p class="aside">${ion.note}</p>` : ''}
+    <span class="eyebrow">Skupinová činidla</span>
+    ${grp.length ? `<ul class="ac-rl">${grp.map(r => { const rx = ion.r[r[0]], c = rx.s ? col(rx.p) : col(rx.sol) || 'var(--ac-water)'; return `<li><i class="ac-dot" style="background:${c}"></i><b>${r[1]}</b> ${escA(rx.v)} <small>${rx.f}</small></li>`; }).join('')}</ul>` : '<p class="aside">Se skupinovými činidly nereaguje.</p>'}
+    <span class="eyebrow">Selektivní důkazy</span>
+    <ul class="ac-rl">${sel.map(x => `<li><i class="ac-dot" style="background:${col(x.c)}"></i>${escA(x.r)} → <b>${escA(x.v)}</b>${x.f ? ` <small>${x.f}</small>` : ''}${x.sp ? ' <span class="ac-sp">specifická</span>' : ''}</li>`).join('')}</ul></article>`;
+}
+function ionsView() {
+  const L = ions(ST.cls);
+  return `<nav class="ac-jump" aria-label="Skok na iont">${L.map(o => `<a href="#analyticka-ionty" data-ac="jump" data-v="${o.id}">${o.f}</a>`).join('')}</nav>${L.map(ionCard).join('')}`;
+}
+
+/* --- hra Neznámý vzorek --- */
+const G = { ion: null, log: [], wrong: new Set(), done: false, c: 'k' };
+function gNew() {
+  G.c = ST.cls === 'b' ? (Math.random() < .55 ? 'k' : 'a') : ST.cls;
+  const L = ions(G.c), prev = G.ion; let x;
+  do { x = L[Math.floor(Math.random() * L.length)]; } while (L.length > 1 && x === prev);
+  G.ion = x; G.log = []; G.wrong = new Set(); G.done = false;
+}
+const gScore = () => Math.max(10, 100 - G.log.reduce((a, l) => a + (l.sel ? 10 : 6), 0) - 20 * G.wrong.size);
+function gTry(kind, k) {
+  if (G.done || G.log.some(l => l.k === kind + k)) return;
+  const ion = G.ion;
+  if (kind === 'g') { const rx = ion.r[k], r = rg(G.c, k); G.log.push({ k: kind + k, n: r[2], v: rx ? rx.v : NONE, pic: rxPic(ion, rx) }); }
+  else { const x = AC_SEL.find(y => y.i === ion.id && y.k === k); G.log.push({ k: kind + k, sel: 1, n: AC_SK[k], v: x ? x.v : NONE, pic: x ? selPic(x) : tubeSVG({ sol: ion.sol }) }); }
+  render();
+  const l = document.querySelector('.ac-log li:last-child'); if (l) l.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+function gGuess(id) {
+  if (G.done) return;
+  if (id === G.ion.id) {
+    G.done = true; const sc = gScore(); G.last = sc;
+    ST.best = ST.best || {}; G.rec = sc > (ST.best.vz || 0); ST.best.vz = Math.max(ST.best.vz || 0, sc); save();
+  } else G.wrong.add(id);
+  render();
+}
+function gameView() {
+  if (!G.ion || (ST.cls !== 'b' && G.c !== ST.cls)) gNew();
+  const ion = G.ion, K = KIND[G.c];
+  const selKeys = [...new Set(AC_SEL.filter(x => ION[x.i].c === G.c).map(x => x.k))].sort((a, b) => a === 'flame' ? -1 : b === 'flame' ? 1 : AC_SK[a].localeCompare(AC_SK[b], 'cs'));
+  const used = k => G.log.some(l => l.k === k);
+  const head = `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Neznámý vzorek · ${K[0]}</span><span class="ac-score">Body ${G.done ? G.last : gScore()} · nejlepší ${ST.best.vz || 0}</span></div>
+    <div class="ac-sample">${tubeSVG({ sol: ion.sol }, 'vzorek')}<p>Ve zkumavce je roztok jednoho ${K[2].replace(/ů$/, 'u')}. Roztok je ${ion.sol ? 'zbarvený' : 'bezbarvý'}. Přidávej činidla a podle toho, co uvidíš, urči, co to je. Skupinové činidlo stojí 6 bodů, selektivní 10, špatný tip 20.</p></div></div>`;
+  const log = G.log.length ? `<ol class="ac-log">${G.log.map(l => `<li>${l.pic}<div><b>${escA(l.n)}</b><span>${escA(l.v)}</span></div></li>`).join('')}</ol>` : '';
+  if (G.done) return `${head}${log}<div class="card"><div class="fb ok"><p><b>Je to ${ion.f}, ${ion.nm}!</b> ${G.last} bodů${G.rec ? ', nový rekord' : ''}.</p></div>${ionCard(ion).replace('class="card ac-ion-card"', 'class="ac-ion-card ac-flat"')}<div class="row"><button type="button" class="btn primary" data-ac="gnew">Další vzorek</button></div></div>`;
+  return `${head}${log}<div class="card"><span class="eyebrow">Skupinová činidla</span><div class="ac-rgs">${RG[G.c].map(r => `<button type="button" class="ac-rg" data-ac="gtry" data-k="g" data-v="${r[0]}"${used('g' + r[0]) ? ' disabled' : ''}>${r[1]}</button>`).join('')}</div>
+    <details class="ac-more"><summary>Selektivní činidla</summary><div class="ac-rgs">${selKeys.map(k => `<button type="button" class="ac-rg" data-ac="gtry" data-k="s" data-v="${k}"${used('s' + k) ? ' disabled' : ''}>${AC_SK[k]}</button>`).join('')}</div></details>
+    <span class="eyebrow">Tvůj tip</span><div class="ac-chips">${ions(G.c).map(o => `<button type="button" class="ac-ion${G.wrong.has(o.id) ? ' wrong' : ''}" data-ac="guess" data-v="${o.id}"${G.wrong.has(o.id) ? ' disabled' : ''}>${o.f}</button>`).join('')}</div>
+    <p class="aside">Ve hře platí jen reakce ze skript. Když činidlo u daného iontu ve skriptech není, ukáže se „${NONE}“.</p></div>`;
+}
+
+/* --- vykreslení a ovládání --- */
+const MODES = [['quiz', 'Procvičování'], ['table', 'Tabulka'], ['ions', 'Ionty'], ['game', 'Neznámý vzorek']];
+const HASH = { quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek' };
+function render() {
+  const box = $a('#acView'); if (!box || $a('#appAC').hidden) return;
+  $a('#acCls').innerHTML = [['k', 'Kationty'], ['a', 'Anionty'], ['b', 'Obojí']].map(([v, n]) => `<button type="button" data-ac="cls" data-v="${v}" aria-pressed="${ST.cls === v}">${n}</button>`).join('');
+  $a('#acMode').innerHTML = MODES.map(([v, n]) => `<button type="button" data-ac="mode" data-v="${v}" aria-pressed="${ST.mode === v}">${n}</button>`).join('');
+  const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz';
+  tb.innerHTML = `<span class="eyebrow">Otázky</span><div class="chips">${TYPES.map(([v, n]) => `<button type="button" class="chip" data-ac="type" data-v="${v}" aria-pressed="${ST.types.includes(v)}">${n}</button>`).join('')}</div>`;
+  const nd = dueCount(); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
+  box.innerHTML = ST.mode === 'table' ? tableView() : ST.mode === 'ions' ? ionsView() : ST.mode === 'game' ? gameView() : quizView();
+}
+function show() {
+  const h = (location.hash || '').replace('#', '');
+  const m = Object.keys(HASH).find(k => HASH[k] === h);
+  if (m && m !== ST.mode) { ST.mode = m; save(); }
+  if (ST.mode === 'quiz' && !Q.deck.length && !Q.empty) newDeck();
+  render();
+}
+function setMode(m) { ST.mode = m; save(); if (location.hash !== '#' + HASH[m]) history.replaceState(null, '', '#' + HASH[m]); render(); window.scrollTo(0, 0); }
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-ac]'); if (!b) return;
+  const a = b.dataset.ac, v = b.dataset.v;
+  if (a === 'cls') { if (ST.cls === v) return; ST.cls = v; save(); TB.open = null; if (ST.mode === 'quiz') newDeck(); else render(); return; }
+  if (a === 'mode') return setMode(v);
+  if (a === 'type') { ST.types = ST.types.includes(v) ? ST.types.filter(x => x !== v) : ST.types.concat(v); save(); return newDeck(); }
+  if (a === 'due') { if (ST.mode !== 'quiz') setMode('quiz'); return newDeck(true); }
+  if (a === 'again') return newDeck();
+  if (a === 'next') return next();
+  if (a === 'opt') { if (Q.done) return; const o = Q.opts[+v]; o.picked = 1; return answer(o.ok, missTxt(Q.cur)); }
+  if (a === 'pk') { if (Q.done) return; Q.pick.has(v) ? Q.pick.delete(v) : Q.pick.add(v); b.setAttribute('aria-pressed', Q.pick.has(v)); return; }
+  if (a === 'check') { const s = Q.cur.set, ok = s.length === Q.pick.size && s.every(i => Q.pick.has(i)); return answer(ok, missTxt(Q.cur)); }
+  if (a === 'cell') { TB.open = v; TB.shown.add(v); render(); const d = $a('#acDet'); if (d && d.getBoundingClientRect().top > innerHeight - 80) d.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); return; }
+  if (a === 'reveal') { ions('b').forEach(o => RG[o.c].forEach(r => TB.shown.add(o.id + ':' + r[0]))); return render(); }
+  if (a === 'rehide') { TB.shown.clear(); TB.open = null; return render(); }
+  if (a === 'ionopen') { if (ST.cls !== 'b' && ST.cls !== ION[v].c) ST.cls = ION[v].c; setMode('ions'); const el = document.getElementById('ac-' + v); if (el) el.scrollIntoView({ block: 'start' }); return; }
+  if (a === 'jump') { e.preventDefault(); const el = document.getElementById('ac-' + v); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
+  if (a === 'gtry') return gTry(b.dataset.k, v);
+  if (a === 'guess') return gGuess(v);
+  if (a === 'gnew') { gNew(); render(); return window.scrollTo(0, 0); }
+});
+document.addEventListener('change', e => { if (e.target.id === 'acHide') { ST.hide = e.target.checked; TB.shown.clear(); TB.open = null; save(); render(); } });
+document.addEventListener('keydown', e => {
+  if ($a('#appAC').hidden || ST.mode !== 'quiz' || !Q.cur) return;
+  if (e.key === 'Enter' && Q.done && document.activeElement !== $a('#acNext')) { e.preventDefault(); next(); }
+  const k = '1234abcd'.indexOf(e.key.toLowerCase()); if (k < 0 || Q.done || Q.cur.t === 'grp' || /input|textarea|select/i.test(document.activeElement.tagName)) return;
+  const btn = document.querySelectorAll('#acView .opt')[k % 4]; if (btn) { e.preventDefault(); btn.click(); }
+});
+window.FH_AC = {
+  show, due: dueCount, best: () => (ST.best && ST.best.vz) || 0, cards: CARDS.length,
+  started: () => Object.keys(ST.r).length > 0,
+  stats: () => { const ids = CARDS.map(c => c.id); return { all: ids.length, done: ids.filter(id => ST.r[id] && ST.r[id].b >= 2).length }; },
+  goDue: () => { ST.mode = 'quiz'; save(); Q.deck = []; Q.empty = false; location.hash = '#analyticka'; newDeck(true); }
+};
+
+/* napojení na zbytek webu */
+document.addEventListener('click', e => { const b = e.target.closest('[data-hn="acvz"]'); if (b) { ST.mode = 'game'; save(); location.hash = '#analyticka-vzorek'; } });
+document.addEventListener('click', e => { const b = e.target.closest('[data-td="ac"]'); if (b) FH_AC.goDue(); });
+window.addEventListener('hashchange', () => { if (/^#analyticka/.test(location.hash)) show(); });
+try { if (typeof renderToday === 'function') renderToday(); } catch (e) { /* nic */ }
+try { const g = document.getElementById('hnHubG'); if (g && window.FH_HERNA) FH_HERNA(); } catch (e) { /* nic */ }
+if (/^#analyticka/.test(location.hash)) show();
 })();
 </script>
 </body></html>
