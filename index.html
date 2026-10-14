@@ -28324,7 +28324,7 @@ const AC_COL = {
   zluta: '#f2cd1f', svzluta: '#f4e68e', zlutozelena: '#bfbf35', zlutooranz: '#f6b65a', oranzova: '#ee7b1a', cervena: '#d02a1c',
   cervenohneda: '#8f351a', telova: '#f0cbbd', ruzova: '#f3a7c0', modra: '#2f8ad6', svmodra: '#86c8ee', tmmodra: '#1c3ea0',
   zelena: '#3fae5a', svzelena: '#9ad466', sedozelena: '#7d9a73', modrozelena: '#2b8b86', fialova: '#7b3fa6',
-  modrofialova: '#8d86f0', zlutohneda: '#d6a038', karmin: '#d0143c', cihlova: '#d9592a', svfialova: '#b28ae0', malinova: '#e0457b'
+  modrofialova: '#8d86f0', zlutohneda: '#d6a038', karmin: '#d0143c', cihlova: '#d9592a', zelenobila: '#d9e8c8', svzelena2: '#cfeac0', svfialova: '#b28ae0', malinova: '#e0457b'
 };
 /* skupinová činidla kationtů: [klíč, do tabulky, celý název] */
 const AC_RC = [
@@ -28367,6 +28367,8 @@ const AC_ION = [
     NaOH: R(1, 'bila', 'bílá sraženina (jen z koncentrovanějších roztoků)', 'Ca(OH)₂') } },
   { id: 'ba', c: 'k', f: 'Ba²⁺', nm: 'barnatý kationt', r: {
     H2SO4: R(2, 'bila', 'bílá sraženina', 'BaSO₄', { n: 'BaSO₄ je ze síranů nejméně rozpustný.' }) } },
+  { id: 'sr', c: 'k', f: 'Sr²⁺', nm: 'strontnatý kationt', r: {
+    H2SO4: R(1, 'bila', 'bílá sraženina (jen z koncentrovanějších roztoků)', 'SrSO₄', { n: 'Rozpustnost síranů: BaSO₄ < SrSO₄ < CaSO₄.' }) } },
   { id: 'hg2', c: 'k', f: 'Hg²⁺', nm: 'rtuťnatý kationt', r: {
     H2S: R(2, 'cerna', 'černá sraženina', 'HgS'), NH4HS: R(2, 'cerna', 'černá sraženina', 'HgS'),
     NaOH: R(2, 'zluta', 'žlutá sraženina', 'HgO'),
@@ -28393,6 +28395,11 @@ const AC_ION = [
     NH3: R(2, 'bila', 'bílá sraženina', 'Sb(OH)₃'),
     KI: R(1, 'zlutooranz', 'žlutooranžová sraženina (jen z koncentrovanějších roztoků)', 'SbI₃'),
     AcO: R(2, 'bila', 'bílá sraženina (hydrolýza)', 'zásaditá sůl (oxidosůl)') } },
+  { id: 'sn', c: 'k', f: 'Sn²⁺', nm: 'cínatý kationt', r: {
+    H2S: R(2, 'hneda', 'hnědá sraženina', 'SnS'), NH4HS: R(2, 'hneda', 'hnědá sraženina', 'SnS'),
+    NaOH: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Sn(OH)₂ → cínatan [Sn(OH)₄]²⁻', { x: '', n: 'Amfoterní hydroxid.' }),
+    NH3: R(2, 'bila', 'bílá sraženina', 'Sn(OH)₂'),
+    AcO: R(1, 'bila', 'bílá sraženina (hydrolýza, neúplně)', 'zásaditá sůl') } },
   { id: 'fe3', c: 'k', f: 'Fe³⁺', nm: 'železitý kationt', sol: 'zlutohneda', r: {
     HCl: R(0, null, 'sraženina nevzniká, roztok zežloutne', 'chlorokomplexy Fe³⁺', { sol: 'zluta' }),
     H2S: R(1, 'bila', 'bílý zákal', 'S (síra)', { n: 'Fe³⁺ oxiduje sulfan na síru a redukuje se na Fe²⁺. Zákal síry nezaměň se sraženinou sulfidu.' }),
@@ -28400,6 +28407,10 @@ const AC_ION = [
     NaOH: R(2, 'rezava', 'rezavě hnědá sraženina', 'Fe(OH)₃'), NH3: R(2, 'rezava', 'rezavě hnědá sraženina', 'Fe(OH)₃'),
     KI: R(0, null, 'sraženina nevzniká, roztok zhnědne', 'I₂ (Fe³⁺ se redukuje na Fe²⁺)', { sol: 'hneda', n: 'Jód se ověří odbarvením po přidání siřičitanu.' }),
     AcO: R(0, null, 'sraženina nevzniká, roztok zčervená', 'acetátokomplexy Fe³⁺', { sol: 'cervena' }) } },
+  { id: 'fe2', c: 'k', f: 'Fe²⁺', nm: 'železnatý kationt', sol: 'svzelena2', r: {
+    NH4HS: R(2, 'cerna', 'černá sraženina', 'FeS'),
+    NaOH: R(2, 'zelenobila', 'zelenavě bílá sraženina, na vzduchu rezaví', 'Fe(OH)₂ → Fe(OH)₃', { p2: 'rezava', n: 'Fe(OH)₂ se vzdušným kyslíkem oxiduje na rezavě hnědý Fe(OH)₃.' }),
+    NH3: R(2, 'zelenobila', 'zelenavě bílá sraženina, na vzduchu rezaví', 'Fe(OH)₂ → Fe(OH)₃', { p2: 'rezava' }) } },
   { id: 'cr3', c: 'k', f: 'Cr³⁺', nm: 'chromitý kationt', sol: 'fialova', r: {
     NH4HS: R(2, 'sedozelena', 'šedozelená sraženina', 'Cr(OH)₃', { n: 'Cr³⁺ hydrolyzuje, takže místo sulfidu vznikne hydroxid.' }),
     NaOH: R(2, 'sedozelena', 'šedozelená sraženina, v nadbytku zelený roztok', 'Cr(OH)₃ → chromitan [Cr(OH)₄]⁻', { x: 'zelena', n: 'Jediný amfoterní hydroxid, který se rozpustí na barevný (zelený) roztok.' }),
@@ -28496,6 +28507,7 @@ const AC_SEL = [
   S('ba', 'k2cro4', 'K₂CrO₄ v prostředí kyseliny octové', 'žlutá sraženina', 'zluta', { f: 'BaCrO₄', n: 'Ca²⁺ neruší.' }),
   S('ba', 'rhodiz', 'rhodizonan sodný na papíře, pak 3% HCl', 'hnědá skvrna, po HCl zčervená', 'cervena'),
   S('ca', 'flame', 'plamenová zkouška', 'cihlově červený plamen', 'cihlova'),
+  S('sr', 'flame', 'plamenová zkouška', 'karmínově červený plamen', 'karmin', { n: 'Podobně barví plamen lithium.' }),
   S('ca', 'ox', 'kyselina šťavelová', 'bílá krystalická sraženina', 'bila', { f: 'šťavelan vápenatý', n: 'Ba²⁺ ani alkalické kovy neruší.' }),
   S('ag', 'chelki', 'Chelaton III, 2M NH₃ a KI', 'žlutá sraženina', 'zluta', { f: 'AgI', sp: 1, n: 'Chelaton III maskuje rušivé kovové ionty.' }),
   S('ag', 'k2cro4', 'K₂CrO₄ na papíře, pak NH₃ a kyselina octová', 'červený prstenec', 'cervena', { f: 'Ag₂CrO₄' }),
