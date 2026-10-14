@@ -890,6 +890,8 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
 .ac-meme-pic{width:min(220px,70%);line-height:0;--ink:#f4f1f7;--muted:#a8a0b8;--surface:#2a2638;--accent-soft:#4a3f66}
 #acMode{flex-wrap:wrap;border-radius:20px}
+@media (max-width:520px){#acMode[data-n="5"] button{flex:1 1 30%}#acMode button{padding:8px 6px}}
+@media (max-width:400px){#acMode[data-n="4"]{flex-wrap:nowrap}#acMode[data-n="4"] button{padding:8px 3px;font-size:.78rem;min-width:0}}
 .ac-tg{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
 .ac-tg > b{font-size:.8rem;color:var(--muted);font-weight:600}
 .ac-name{font:600 .88rem/1.2 var(--f-body);min-width:0}
@@ -949,7 +951,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <a class="back" href="#">← FormičkyHub</a>
     <h2 class="fam-h" id="navodH">Jak to funguje</h2>
     <div class="g-start">
-      <span class="eyebrow">Doporučený postup</span>
+      <span class="eyebrow">Doporučený postup v Organické chemii</span>
       <ol>
         <li><b>Přehled:</b> projdi si látky a reakce tématu, zapni „Jak si je zapamatovat“.</li>
         <li><b>Studium:</b> výběr ze čtyř možností, dokud nemáš všechno „Zvládnuto“.</li>
@@ -959,6 +961,14 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       </ol>
       <p class="aside">Rozklikni si, co tě zajímá:</p>
     </div>
+
+    <details class="g-item"><summary>Analytická chemie</summary>
+      <ul>
+        <li>Nahoře vybereš <b>cvičení</b>: 1–2 Kationty a anionty, 3 Organická analýza, 4 Fyzikální vlastnosti, 5 Fotometrie UV-VIS a 6 IČ spektrometrie.</li>
+        <li><b>Procvičování</b> jsou kartičky, které se opakují v rozestupech. Karty na dnešek najdeš v aplikaci („Zopakovat … na dnešek“) i na úvodní stránce v panelu Dnes.</li>
+        <li><b>Tabulka</b> a <b>Ionty</b> (u cvičení 1–2) ukazují reakce iontů se skupinovými činidly, <b>Tahák</b> (u cvičení 3–6) shrnuje celé cvičení na jednu stránku.</li>
+        <li>Zbylé záložky jsou hry, stejné jako v Herně. Odpovědi z analytiky se počítají do denního cíle.</li>
+      </ul></details>
 
     <details class="g-item"><summary>Téma, sada a okruhy</summary>
       <ul>
@@ -1050,12 +1060,12 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
         <li><b>Záloha pokroku</b> na úvodní stránce v „Nastavení a pomoc“: „Vytvořit kód zálohy“ dá kód, který si zkopíruješ (třeba do zpráv sama sobě). Na jiném zařízení ho vložíš do „Načíst kód“ a pokrok se sloučí: nic se nesmaže, jen doplní.</li>
         <li>Pokrok se nikam neodesílá. Každá z vás má svůj pokrok jen u sebe.</li>
       </ul></details>
-    <div class="row g-end"><a class="btn primary" href="#organicka">Jít procvičovat</a><a class="btn" href="#">Zpět na úvod</a></div>
+    <div class="row g-end"><a class="btn primary" href="#organicka">Organická chemie</a><a class="btn primary" href="#analyticka">Analytická chemie</a><a class="btn" href="#">Zpět na úvod</a></div>
   </section>
 </section>
 
 <div class="app" id="appAC" hidden>
-  <div class="backrow"><a class="back" id="acBack" href="#">← FormičkyHub</a><span class="br-r"><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
+  <div class="backrow"><a class="back" id="acBack" href="#">← FormičkyHub</a><div class="daybox" id="acDayBox" hidden></div><span class="br-r"><a class="back help" href="#navod">Jak to funguje?</a><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
   <header class="top">
     <h1>Analytická chemie</h1>
     <span class="ac-logo" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M14 6h12M17 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M19 30h6v16a3 3 0 0 1-6 0z" fill="#2f8ad6"/><path d="M19 42h6v4a3 3 0 0 1-6 0z" fill="#86c8ee"/><path d="M38 6h12M41 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M43 26h6v20a3 3 0 0 1-6 0z" fill="#f2cd1f" opacity=".55"/><path d="M43 40h6v6a3 3 0 0 1-6 0z" fill="#f2cd1f"/></svg></span>
@@ -26931,13 +26941,16 @@ function bestStreak() {
 }
 const dny = n => n === 1 ? 'den' : n >= 2 && n <= 4 ? 'dny' : 'dní';
 function renderDay(hit) {
-  const el = $('#dayBox'); if (!el) return;
+  ['#dayBox', '#acDayBox'].forEach(id => { const el = $(id); if (el) dayBoxFill(el, hit); });   // Organická i Analytická
+  if (hit && DAILY.goal && typeof cheer === 'function') cheer();
+}
+function dayBoxFill(el, hit) {
   if (!DAILY.goal) { el.hidden = true; return; }
   const n = DAILY.c[today()] || 0, s = streak();
   el.hidden = false;
   el.innerHTML = `<span class="dbar"><i style="width:${Math.min(100, 100 * n / DAILY.goal)}%"></i></span><span>Dnes <b>${n}</b>/${DAILY.goal}</span>${s ? `<span class="dstreak">série ${s} ${dny(s)}</span>` : ''}`;
   el.classList.toggle('done', n >= DAILY.goal);
-  if (hit) { el.classList.add('hit'); setTimeout(() => el.classList.remove('hit'), 2200); if (typeof cheer === 'function') cheer(); }
+  if (hit) { el.classList.add('hit'); setTimeout(() => el.classList.remove('hit'), 2200); }
 }
 function renderStats() {
   const box = $('#statsBox'); if (!box) return;
@@ -29637,6 +29650,7 @@ function render() {
   $a('#acLead').textContent = LEAD[ST.ch];
   $a('#acCls').parentNode.hidden = ST.ch !== 'ka';
   $a('#acCls').innerHTML = [['k', 'Kationty'], ['a', 'Anionty'], ['b', 'Obojí']].map(([v, n]) => `<button type="button" data-ac="cls" data-v="${v}" aria-pressed="${ST.cls === v}">${n}</button>`).join('');
+  $a('#acMode').dataset.n = CHM[ST.ch].length;
   $a('#acMode').innerHTML = CHM[ST.ch].map(v => [v, MODEN[v]]).map(([v, n]) => `<button type="button" data-ac="mode" data-v="${v}" aria-pressed="${ST.mode === v}">${n}</button>`).join('');
   const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz' || ST.ch !== 'ka';
   tb.innerHTML = `<span class="eyebrow">Otázky</span><div class="chips">${TYPES.map(([v, n]) => `<button type="button" class="chip" data-ac="type" data-v="${v}" aria-pressed="${ST.types.includes(v)}">${n}</button>`).join('')}</div>`;
