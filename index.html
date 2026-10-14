@@ -629,7 +629,19 @@ body.sheet-file .sheet{position:static}
 .hn-hub{margin-top:18px}
 .hn-hub .hn-hrow{justify-content:flex-start;gap:8px}
 .hn-ico{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
-.hn-hub .hn-games{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.hn-hub .hn-games{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.hn-wrap{display:flex;flex-direction:column;gap:12px}
+.hn-flt{align-self:flex-start;width:auto}
+.hn-gh{margin:4px 0 6px}
+.hn-game{position:relative}
+.hn-game.sm{padding:12px 14px;gap:4px}
+.hn-game.sm b{font-size:1rem}
+.hn-game.sm span{font-size:.84rem;line-height:1.35}
+.hn-game.sm small{font-size:.8rem}
+.hn-game.last{border-color:var(--accent)}
+.hn-game.last b{padding-right:74px}
+.hn-last{position:absolute;top:10px;right:10px;font:600 .68rem/1 var(--f-body,system-ui);font-style:normal;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:3px 7px;background:var(--surface)}
+@media (max-width:520px){.hn-wrap .hn-games{grid-template-columns:1fr 1fr;gap:8px}.hn-game.sm{padding:11px 12px}.hn-game.sm b{font-size:.95rem}.hn-game.sm span{font-size:.8rem}.hn-game.last b{padding-right:0;margin-top:16px}.hn-flt{width:100%}}
 .al-game{background:linear-gradient(135deg,var(--surface) 60%,var(--accent-soft))}
 .nl-clues{margin:8px 0 12px;padding:0;list-style:none;display:grid;gap:6px;counter-reset:nl}
 .nl-clues li{counter-increment:nl;padding:9px 12px 9px 40px;border-radius:10px;background:var(--accent-soft);position:relative;line-height:1.4}
@@ -1018,6 +1030,8 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
         <li><b>Neznámá látka:</b> indicie od obecných po konkrétní (téma, počet atomů, reakce, vzorec…). Čím dřív látku uhodneš, tím víc bodů.</li>
         <li><b>Syntézní puzzle</b> a <b>Seřaď to:</b> skládání syntéz po krocích a řazení podle hodnot ze slajdů.</li>
         <li><b>Album kartiček:</b> každá zvládnutá látka se odemkne jako kartička. Posbírej celé album přednášky.</li>
+        <li><b>Analytická chemie:</b> Neznámý vzorek, Neznámá organická látka, Třída rozpustnosti, Čti IČ spektrum, Bodotávek a Seřaď postup. Otevřou se v Analytické chemii, odkaz „← Herna“ tě vrátí zpátky.</li>
+        <li>Nahoře v Herně si přepneš <b>Vše / Organická / Analytická</b>, volba se pamatuje. Hra, kterou jsi hrála naposledy, má štítek „naposledy“.</li>
         <li><b>Výzva kamarádce:</b> po Lékárně nebo Neznámé látce pošli odkaz. Kamarádka dostane přesně stejné otázky a uvidí, koho porazila.</li>
         <li>Hry se nepočítají do pokroku ani denního cíle.</li>
       </ul></details>
@@ -1041,7 +1055,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 </section>
 
 <div class="app" id="appAC" hidden>
-  <div class="backrow"><a class="back" href="#">← FormičkyHub</a><span class="br-r"><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
+  <div class="backrow"><a class="back" id="acBack" href="#">← FormičkyHub</a><span class="br-r"><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
   <header class="top">
     <h1>Analytická chemie</h1>
     <span class="ac-logo" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M14 6h12M17 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M19 30h6v16a3 3 0 0 1-6 0z" fill="#2f8ad6"/><path d="M19 42h6v4a3 3 0 0 1-6 0z" fill="#86c8ee"/><path d="M38 6h12M41 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M43 26h6v20a3 3 0 0 1-6 0z" fill="#f2cd1f" opacity=".55"/><path d="M43 40h6v6a3 3 0 0 1-6 0z" fill="#f2cd1f"/></svg></span>
@@ -27302,25 +27316,42 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   function open(html) { clearInterval(L.timer); const b = box(); b.innerHTML = `<div class="hn-card"><div class="hn-top"><button type="button" class="link" data-hn="menu">← Herna</button><button type="button" class="m3d-x" data-hn="close" aria-label="Zavřít">×</button></div><div id="hnBody">${html}</div></div>`; b.hidden = false; document.body.classList.add('sheet-open'); b.scrollTop = 0; }
   function close() { clearInterval(L.timer); const b = $('#herna'); if (b) b.hidden = true; document.body.classList.remove('sheet-open'); CH = null; renderEntry(); }
   const best = k => GS.best[k] || 0;
+  /* rozložení Herny: filtr předmětu a naposledy hraná hra (jen vzhled, mimo zálohu) */
+  const HUI = Object.assign({ f: '*', last: '' }, store.get('fg-hn-ui', {}));
+  const saveUI = () => store.set('fg-hn-ui', HUI);
+  const SUBJ = [['o', 'Organická chemie', 'Organická'], ['a', 'Analytická chemie', 'Analytická']];
+  const acb = k => window.FH_AC ? FH_AC.best(k) : 0;
+  /* [klíč, název, popis, rekord, třída, předmět, krátký popis] */
   const GAMES = () => [
-    ['lek', 'Lékárna U Formičky', 'Obsluhuj zákazníky za pultem: míchání, recepty, léčiva z přednášek. Za tržbu a nově naučené látky si vylepšíš lékárnici.', `Nejlepší tržba ${best('lek')} Kč · v peněžence ${GS.coins} Kč`, 'lk-game'],
-    ['nl', 'Neznámá látka', 'Podle indicií uhodni, o jakou látku jde. Čím méně indicií potřebuješ, tím víc bodů.', `Nejlepší skóre ${best('nl')}`, ''],
-    ['syn', 'Syntézní puzzle', 'Z výchozí látky se dostaň k cíli. V každém kroku vyber správné činidlo.', `Nejlepší skóre ${best('syn')}`, ''],
-    ['ord', 'Seřaď to', 'Kyselost, rychlosti SN1/SN2, teploty varu… Řaď látky podle hodnot ze slajdů.', `Nejlepší série ${best('ord')}`, ''],
-    ['acvz', 'Neznámý vzorek', 'Analytická chemie: přidávej do zkumavky činidla a podle sraženin a barev poznej kationt nebo aniont.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best() : 0}`, 'ac-game-tile'],
-    ['acrz', 'Třída rozpustnosti', 'Analytická chemie: zkoušej vodu, ether, louh, sodu a kyseliny a zařaď organickou látku do třídy.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best('rz') : 0}`, 'ac-game-tile'],
-    ['acir', 'Čti IČ spektrum', 'Analytická chemie: podle pásů v IČ spektru poznej, jestli jde o alkohol, keton, ester nebo nitril.', `Nejdelší série ${window.FH_AC ? FH_AC.best('ir') : 0}`, 'ac-game-tile'],
-    ['acol', 'Neznámá organická látka', 'Analytická chemie: důkazy prvků, rozpustnost a funkční skupiny. Poznej, která z 24 látek je ve zkumavce.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best('ol') : 0}`, 'ac-game-tile'],
-    ['acpo', 'Seřaď postup', 'Analytická chemie: poskládej kroky laboratorních postupů ve správném pořadí.', `Nejdelší série ${window.FH_AC ? FH_AC.best('po') : 0}`, 'ac-game-tile'],
-    ['acmp', 'Bodotávek', 'Analytická chemie: odečti teplotu tání z kapiláry a posuď, jestli je látka čistá.', `Nejdelší série ${window.FH_AC ? FH_AC.best('mp') : 0}`, 'ac-game-tile'],
-    ['alb', 'Album kartiček', 'Každá látka, kterou zvládneš, se odemkne jako kartička. Posbírej celé album přednášky.', `Odemčeno ${albumCount()} z ${albumAll().length}`, 'al-game']
+    ['lek', 'Lékárna U Formičky', 'Obsluhuj zákazníky za pultem: míchání, recepty, léčiva z přednášek. Za tržbu a nově naučené látky si vylepšíš lékárnici.', `Nejlepší tržba ${best('lek')} Kč · v peněžence ${GS.coins || 0} Kč`, 'lk-game', 'o', 'Obsluhuj zákazníky a vylepšuj lékárnici.'],
+    ['nl', 'Neznámá látka', 'Podle indicií uhodni, o jakou látku jde. Čím méně indicií potřebuješ, tím víc bodů.', `Nejlepší skóre ${best('nl')}`, '', 'o', 'Uhodni látku z co nejméně indicií.'],
+    ['syn', 'Syntézní puzzle', 'Z výchozí látky se dostaň k cíli. V každém kroku vyber správné činidlo.', `Nejlepší skóre ${best('syn')}`, '', 'o', 'Vyber činidlo pro každý krok syntézy.'],
+    ['ord', 'Seřaď to', 'Kyselost, rychlosti SN1/SN2, teploty varu… Řaď látky podle hodnot ze slajdů.', `Nejlepší série ${best('ord')}`, '', 'o', 'Řaď látky podle pKa, rychlostí a teplot.'],
+    ['alb', 'Album kartiček', 'Každá látka, kterou zvládneš, se odemkne jako kartička. Posbírej celé album přednášky.', `Odemčeno ${albumCount()} z ${albumAll().length}`, 'al-game', 'o', 'Sbírej kartičky zvládnutých látek.'],
+    ['acvz', 'Neznámý vzorek', 'Přidávej do zkumavky činidla a podle sraženin a barev poznej kationt nebo aniont.', `Nejlepší skóre ${acb()}`, 'ac-game-tile', 'a', 'Poznej kationt nebo aniont podle reakcí.'],
+    ['acol', 'Neznámá organická látka', 'Důkazy prvků, rozpustnost a funkční skupiny. Poznej, která z 24 látek je ve zkumavce.', `Nejlepší skóre ${acb('ol')}`, 'ac-game-tile', 'a', 'Která z 24 látek je ve zkumavce?'],
+    ['acrz', 'Třída rozpustnosti', 'Zkoušej vodu, ether, louh, sodu a kyseliny a zařaď organickou látku do třídy.', `Nejlepší skóre ${acb('rz')}`, 'ac-game-tile', 'a', 'Zařaď látku do třídy rozpustnosti.'],
+    ['acir', 'Čti IČ spektrum', 'Podle pásů v IČ spektru poznej, jestli jde o alkohol, keton, ester nebo nitril.', `Nejdelší série ${acb('ir')}`, 'ac-game-tile', 'a', 'Poznej skupinu podle pásů ve spektru.'],
+    ['acmp', 'Bodotávek', 'Odečti teplotu tání z kapiláry a posuď, jestli je látka čistá.', `Nejdelší série ${acb('mp')}`, 'ac-game-tile', 'a', 'Odečti teplotu tání a posuď čistotu.'],
+    ['acpo', 'Seřaď postup', 'Poskládej kroky laboratorních postupů ve správném pořadí.', `Nejdelší série ${acb('po')}`, 'ac-game-tile', 'a', 'Poskládej kroky laboratorních postupů.']
   ];
-  const tiles = () => GAMES().map(([k, n, d, sm, cls]) => `<button type="button" class="hn-game ${cls}" data-hn="${k}"><b>${n}</b><span>${d}</span><small>${sm}</small></button>`).join('');
+  const tile = ([k, n, d, sm, cls, , sh], sm2) => `<button type="button" class="hn-game ${cls}${sm2 ? ' sm' : ''}${HUI.last === k ? ' last' : ''}" data-hn="${k}">${HUI.last === k ? '<i class="hn-last">naposledy</i>' : ''}<b>${n}</b><span>${sm2 ? sh : d}</span><small>${sm}</small></button>`;
+  function tiles(sm2) {
+    const G = GAMES(), f = SUBJ.some(([s]) => s === HUI.f) ? HUI.f : '*';
+    const seg = `<div class="seg small hn-flt" role="group" aria-label="Předmět">${[['*', 'Vše', G.length]].concat(SUBJ.map(([s, , l]) => [s, l, G.filter(g => g[5] === s).length])).map(([v, l, c]) => `<button type="button" data-hnf="${v}" aria-pressed="${f === v}">${l}<span class="n">${c}</span></button>`).join('')}</div>`;
+    return seg + SUBJ.filter(([s]) => f === '*' || f === s).map(([s, l]) => `<div class="hn-grp">${f === '*' ? `<h3 class="eyebrow hn-gh">${l}</h3>` : ''}<div class="hn-games">${G.filter(g => g[5] === s).map(g => tile(g, sm2)).join('')}</div></div>`).join('');
+  }
   function menu() {
     open(`<h2 class="hn-h">Herna</h2>
       <p class="aside">Hry na procvičení. Do pokroku ani denního cíle se nepočítají. Po Lékárně nebo Neznámé látce můžeš vyzvat kamarádku, ať tě překoná.</p>
-      <div class="hn-games">${tiles()}</div>`);
+      <div class="hn-wrap" id="hnMenuG">${tiles(true)}</div>`);
   }
+  document.addEventListener('click', e => {
+    const f = e.target.closest('[data-hnf]');
+    if (f) { HUI.f = f.dataset.hnf; saveUI(); renderEntry(); const m = $('#hnMenuG'); if (m) m.innerHTML = tiles(true); return; }
+    const g = e.target.closest('.hn-game[data-hn]');
+    if (g && HUI.last !== g.dataset.hn) { HUI.last = g.dataset.hn; saveUI(); }
+  }, true);
 
   /* --- Seřaď to --- */
   const O = { set: null, items: [], pick: [], streak: 0, done: false };
@@ -27947,12 +27978,13 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const sub = $('#subjects'); if (!sub) return;
     let sec = $('#hernaHub');
     if (!sec) {
-      sub.insertAdjacentHTML('afterend', `<section id="hernaHub" class="hn-hub" aria-labelledby="hnHubH"><h2 class="fam-h hn-hrow" id="hnHubH"><span class="hn-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><g transform="rotate(-35 24 24)"><g class="cl"><path d="M24 13H15a11 11 0 0 0 0 22h9v-5a3 3 0 0 0 0-6a3 3 0 0 0 0-6z"/></g><g class="cr"><path d="M24 13h9a11 11 0 0 1 0 22h-9v-5a3 3 0 0 1 0-6a3 3 0 0 1 0-6z"/></g></g></svg></span>Herna</h2><div class="hn-games" id="hnHubG"></div></section>`);
+      sub.insertAdjacentHTML('afterend', `<section id="hernaHub" class="hn-hub" aria-labelledby="hnHubH"><h2 class="fam-h hn-hrow" id="hnHubH"><span class="hn-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><g transform="rotate(-35 24 24)"><g class="cl"><path d="M24 13H15a11 11 0 0 0 0 22h9v-5a3 3 0 0 0 0-6a3 3 0 0 0 0-6z"/></g><g class="cr"><path d="M24 13h9a11 11 0 0 1 0 22h-9v-5a3 3 0 0 1 0-6a3 3 0 0 1 0-6z"/></g></g></svg></span>Herna</h2><div class="hn-wrap" id="hnHubG"></div></section>`);
       sec = $('#hernaHub');
     }
-    $('#hnHubG').innerHTML = tiles();
+    $('#hnHubG').innerHTML = tiles(true);
   }
   window.FH_HERNA = renderEntry;
+  window.addEventListener('hashchange', () => { if (!location.hash || location.hash === '#') renderEntry(); });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
     const a = b.dataset.hn;
@@ -29679,7 +29711,13 @@ window.FH_AC = {
 };
 
 /* napojení na zbytek webu */
-document.addEventListener('click', e => { const b = e.target.closest('[data-hn^="ac"]'); if (!b) return; const m = { acvz: 'game', acrz: 'rozp', acir: 'spek', acol: 'neorg', acpo: 'por', acmp: 'tani' }[b.dataset.hn]; if (m) { ST.mode = m; save(); location.hash = '#' + HASH[m]; } });
+/* hra spuštěná z Herny: odkaz zpět vede do Herny */
+let fromHn = false;
+const GAMEM = ['game', 'rozp', 'spek', 'neorg', 'por', 'tani'];
+const backLbl = () => { const a = $a('#acBack'); if (a) a.textContent = fromHn ? '← Herna' : '← FormičkyHub'; };
+document.addEventListener('click', e => { const b = e.target.closest('[data-hn^="ac"]'); if (!b) return; const m = { acvz: 'game', acrz: 'rozp', acir: 'spek', acol: 'neorg', acpo: 'por', acmp: 'tani' }[b.dataset.hn]; if (m) { fromHn = true; backLbl(); ST.mode = m; save(); location.hash = '#' + HASH[m]; } });
+document.addEventListener('click', e => { if (!e.target.closest('#acBack') || !fromHn) return; fromHn = false; backLbl(); setTimeout(() => { const h = document.getElementById('hernaHub'); if (h) h.scrollIntoView({ block: 'start' }); }, 60); });
+window.addEventListener('hashchange', () => { const h = location.hash.replace('#', ''); if (fromHn && /^analyticka/.test(h) && !GAMEM.some(m => HASH[m] === h)) { fromHn = false; backLbl(); } });
 document.addEventListener('click', e => { const b = e.target.closest('[data-td="ac"]'); if (b) FH_AC.goDue(); });
 window.addEventListener('hashchange', () => { if (/^#analyticka/.test(location.hash)) show(); });
 try { if (typeof renderToday === 'function') renderToday(); } catch (e) { /* nic */ }
