@@ -851,6 +851,32 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-more summary{cursor:pointer;color:var(--accent);font-weight:600;padding:4px 0 8px}
 .ac-game-tile{background:linear-gradient(135deg,var(--surface) 60%,color-mix(in srgb,#2f8ad6 18%,var(--surface)))}
 .today .td-ac{display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted);margin:0}
+/* kapitoly 3–6 */
+#appAC .topicpick{margin-bottom:10px}
+.ac-sec{gap:10px}
+.ac-sec .fam-h{margin:0}
+.ac-sheet{border-collapse:collapse;width:100%;font-size:.88rem}
+.ac-sheet th,.ac-sheet td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.35}
+.ac-sheet thead th{font-size:.78rem;color:var(--muted);font-weight:600;background:var(--surface)}
+.ac-sheet tbody th{font-weight:700;min-width:70px}
+.ac-sheet tr:last-child th,.ac-sheet tr:last-child td{border-bottom:0}
+.ac-tree{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:.93rem}
+.ac-formula{margin:0;font:700 1.1rem/1.4 var(--f-chem);text-align:center;padding:8px;border-radius:10px;background:var(--accent-soft)}
+.ac-btip{margin:0;font-size:.9rem;padding:8px 12px;border-left:3px solid var(--pink);background:color-mix(in srgb,var(--pink) 8%,transparent);border-radius:0 10px 10px 0}
+.ac-ind,.ac-spec{width:100%;height:auto;display:block}
+.ac-ct{font:500 9px var(--f-body);fill:var(--muted)}
+.ac-pk{fill:var(--ink);font-weight:700}
+.ac-spec{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.ac-uni{display:grid;grid-template-columns:repeat(15,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.ac-uni span{height:40px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px}
+.ac-uni b{font-size:.7rem;color:#fff;text-shadow:0 0 2px #000}
+.ac-beda{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1.5px dashed var(--pink);background:color-mix(in srgb,var(--pink) 6%,var(--surface))}
+.ac-beda p{margin:0;font-size:.93rem}
+.ac-beda-pic{flex:none;width:78px;line-height:0}
+.ac-beda-pic svg,.ac-meme-pic svg{width:100%;height:auto}
+.ac-meme{margin:0;position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#3a3550,#1d1a28);padding:12px 12px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
+.ac-meme-pic{width:min(220px,70%);line-height:0;--ink:#f4f1f7;--muted:#a8a0b8;--surface:#2a2638;--accent-soft:#4a3f66}
 </style>
 
 <section class="hub" id="hub" hidden>
@@ -1007,8 +1033,11 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <header class="top">
     <h1>Analytická chemie</h1>
     <span class="ac-logo" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M14 6h12M17 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M19 30h6v16a3 3 0 0 1-6 0z" fill="#2f8ad6"/><path d="M19 42h6v4a3 3 0 0 1-6 0z" fill="#86c8ee"/><path d="M38 6h12M41 6v40a5 5 0 0 0 10 0V6" fill="none" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/><path d="M43 26h6v20a3 3 0 0 1-6 0z" fill="#f2cd1f" opacity=".55"/><path d="M43 40h6v6a3 3 0 0 1-6 0z" fill="#f2cd1f"/></svg></span>
-    <p>Kvalitativní analýza podle skript k laboratorním cvičením 1 a 2: jak kationty a anionty reagují se skupinovými činidly a jak je dokážeš selektivně.</p>
+    <p id="acLead"></p>
   </header>
+  <label class="topicpick"><span class="eyebrow">Cvičení</span>
+    <select id="acChSel" aria-label="Cvičení"></select>
+  </label>
   <div class="controls">
     <div class="seg" id="acCls" role="group" aria-label="Ionty"></div>
   </div>
@@ -27267,6 +27296,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     ['syn', 'Syntézní puzzle', 'Z výchozí látky se dostaň k cíli. V každém kroku vyber správné činidlo.', `Nejlepší skóre ${best('syn')}`, ''],
     ['ord', 'Seřaď to', 'Kyselost, rychlosti SN1/SN2, teploty varu… Řaď látky podle hodnot ze slajdů.', `Nejlepší série ${best('ord')}`, ''],
     ['acvz', 'Neznámý vzorek', 'Analytická chemie: přidávej do zkumavky činidla a podle sraženin a barev poznej kationt nebo aniont.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best() : 0}`, 'ac-game-tile'],
+    ['acrz', 'Třída rozpustnosti', 'Analytická chemie: zkoušej vodu, ether, louh, sodu a kyseliny a zařaď organickou látku do třídy.', `Nejlepší skóre ${window.FH_AC ? FH_AC.best('rz') : 0}`, 'ac-game-tile'],
+    ['acir', 'Čti IČ spektrum', 'Analytická chemie: podle pásů v IČ spektru poznej, jestli jde o alkohol, keton, ester nebo nitril.', `Nejdelší série ${window.FH_AC ? FH_AC.best('ir') : 0}`, 'ac-game-tile'],
     ['alb', 'Album kartiček', 'Každá látka, kterou zvládneš, se odemkne jako kartička. Posbírej celé album přednášky.', `Odemčeno ${albumCount()} z ${albumAll().length}`, 'al-game']
   ];
   const tiles = () => GAMES().map(([k, n, d, sm, cls]) => `<button type="button" class="hn-game ${cls}" data-hn="${k}"><b>${n}</b><span>${d}</span><small>${sm}</small></button>`).join('');
@@ -28042,7 +28073,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   const nQ = GROUPS.filter(g => g.kind === 'q').length, nM = GROUPS.filter(g => g.kind === 'mol').length;
   $('#subjects').innerHTML = `
     <a class="subj" href="#organicka">${ICON.flask}<b>Organická chemie</b><span>${TOPICS.length} témat podle přednášek: ${nM} látek, ${nQ} otázek, kreslení vzorců a test nanečisto.</span><span class="go">Otevřít →</span></a>
-    <a class="subj" href="#analyticka">${ICON.tube}<b>Analytická chemie</b><span>Důkazy kationtů a aniontů: reakce se skupinovými činidly, selektivní reakce, interaktivní tabulka a hra Neznámý vzorek.</span><span class="go">Otevřít →</span></a>
+    <a class="subj" href="#analyticka">${ICON.tube}<b>Analytická chemie</b><span>Důkazy kationtů a aniontů, organická analýza, fyzikální vlastnosti, UV-VIS a IČ: kartičky, taháky, výpočty a hry.</span><span class="go">Otevřít →</span></a>
     <div class="subj soon" aria-disabled="true">${ICON.book}<b>Další předmět</b><span>Tady přibudou další předměty.</span><span class="go">Brzy</span></div>`;
 
   const APP = new Set(['organicka', 'nove', 'prehled', 'kresleni', 'studium', 'test'].concat(TOPICS.map(t => t.hash).filter(Boolean)));
@@ -28600,10 +28631,493 @@ const AC_SK = {
   zngriess: 'Zn, pak diazotace', fsulf: 'Fenolsulfonová kyselina'
 };
 
+/* ===== Analytická chemie: cvičení 3–6 (organická analýza, fyzikální vlastnosti, UV-VIS, IČ) + Béďovy pomůcky a memy ===== */
+const AC_CH = [['ka', '1–2 · Kationty a anionty'], ['org', '3 · Organická analýza'], ['fyz', '4 · Fyzikální vlastnosti'], ['uv', '5 · Fotometrie UV-VIS'], ['ir', '6 · IČ spektrometrie']];
+/* Béďovy pomůcky: klíč = iont, test nebo téma */
+const AC_BEDA = {
+  ag: 'Stříbro má rádo čpavek: AgCl se ve zředěném NH₃ rozpustí jako cukr v čaji, AgBr až v koncentrovaném a AgI vůbec. Čím těžší halogen, tím tvrdohlavější.',
+  hg1: 'Hg₂²⁺ jsou dvojčata. Stačí trocha zásady a pohádají se: jedno zčerná na Hg⁰, druhé zůstane Hg²⁺. Kalomel + NH₃ = černá.',
+  pb: 'Zlatý déšť: PbI₂ se za tepla rozpustí a při chladnutí padají zlaté šupinky. Olovo je nejglamóznější jed v laborce.',
+  ca: 'Šťavelan vápenatý jsou ledvinové kameny. Ca²⁺ + kyselina šťavelová dá bílou sraženinu i v tobě, tak pij vodu.',
+  ba: 'BaSO₄ je tak nerozpustný, že se pije jako kontrast na rentgen. Ba²⁺ by tě otrávil, BaSO₄ projde jako turista.',
+  sr: 'Sr²⁺ a Li⁺ barví plamen karmínově. Stroncium dělá červenou v ohňostrojích na Silvestra.',
+  hg2: 'HgI₂ je rudý jako obličej u zkoušky, ale v nadbytku KI se tak stydí, že zbledne do bezbarva.',
+  cu: 'Měď v amoniaku = královská modř. Tmavě modrý roztok s NH₃ je Cu²⁺ s korunkou [Cu(NH₃)₄]²⁺.',
+  cd: 'Kadmium je jediný žluťásek mezi černými sulfidy. CdS je pigment kadmiová žluť, malovali s ním i impresionisti.',
+  bi: 'Bi³⁺ s KI: černá sraženina, v nadbytku oranžový [BiI₄]⁻. To je přesně Dragendorffovo činidlo na alkaloidy ze cvičení 3.',
+  sb: 'Antimon se převlíká do oranžové: Sb₂S₃ je jediný sulfid v barvě dýně. Halloween na kapkovací destičce.',
+  sn: 'SnS je hnědý, ne černý. Cín si potrpí na čokoládu.',
+  fe3: 'Fe³⁺ + SCN⁻ = krev na destičce, Fe³⁺ + žlutá krevní sůl = berlínská modř. Železitý kationt je upír s modrou krví.',
+  fe2: 'Fe(OH)₂ je zelenavý jen chvilku, pak zrezaví. Jako kolo, které necháš přes zimu venku.',
+  cr3: 'Chrom je chameleon: fialový roztok, zelený hydroxid i chromitan, žlutý chroman, oranžový dichroman a modrá vrstva s H₂O₂. Řecky chróma = barva.',
+  al: 'Al(OH)₃ je bílý nudný rosol, ale s alizarinem si oblékne červený lak. Hliník jde na rande.',
+  co: 'Kobalt je ve vodě růžový a nasucho modrý. Proto modrý silikagel zrůžoví, když navlhne.',
+  ni: 'Nikl je zelený, ale s Čugajevem se červená jak jahoda. Čugajev = jahodová sraženina.',
+  mn: 'Mn²⁺ sní o tom být fialovým manganistanem. Stačí K₂S₂O₈ a kapka stříbra jako sponzor.',
+  zn: 'Zinek se chce zalíbit všem: rozpustí se v nadbytku NaOH i NH₃ a zůstane bílý a bezbarvý.',
+  mg: 'Magneson + Mg(OH)₂ = chrpově modrý lak. Mg²⁺ nesnáší NH₄⁺, ten mu kazí každé srážení.',
+  nh4: 'NH₄⁺ prozradí nos: NaOH, zahřát a už to čpí. Papírek zmodrá a Nessler zhnědne.',
+  li: 'Lithium a stroncium barví plamen karmínově. Li jako lipstick.', na: 'Sodík barví plamen žlutě vždycky a všude, i když nechceš. Proto se draslík kouká přes kobaltové sklo.',
+  k: 'Draslík je v plameni fialový, ale sodík ho přeřve žlutou. Modré kobaltové sklo funguje jako sluchátka s potlačením hluku.',
+  so4: 'BaSO₄ se nerozpustí ani v HCl. Síran je nejtvrdší chlapík celé skupiny.',
+  so3: 'Siřičitan odbarví jód a roztok zkysne. Thiosíran taky odbarví, ale zůstane v klidu neutrální.',
+  s2o3: 'Thiosíran po okyselení zakalí roztok sírou. Fotograf by řekl ustalovač, chemik řekne koloidní síra.',
+  po4: 'Molybdenová soluce + fosforečnan = žlutý kaviár molybdátofosforečnanu.',
+  bo2: 'Boritan hoří zeleně jako ester. Zelený plamen může být bor, měď nebo baryum. Zelená je zkrátka populární.',
+  co3: 'Uhličitan šumí jako perlivá voda a kapka barytové vody zbělá jako knír od pěny.',
+  cro4: 'Žlutý chroman v kyselině zoranžoví na dichroman. Zredukovaný Cr³⁺ je zelený, takže chrom umí celý semafor.',
+  cl: 'Chlorid stříbrný se rozpustí už ve zředěném amoniaku. Cl je ze stříbrných halogenidů nejpovolnější.',
+  br: 'Bromid: AgBr se rozpustí až v 25% NH₃ a s chloraminem obarví chloroform do hněda jako čaj.',
+  i: 'Jód v chloroformu je fialový. I jako Iris, kosatec je taky fialový.',
+  scn: 'SCN⁻ s Fe³⁺ = krvavě červená. Stejná krev jako u důkazu Fe³⁺, jen z druhé strany stolu.',
+  no2: 'Dusitan s kyselinou sulfanilovou a naftolem dá červené azobarvivo. Dusitany jsou i v párcích, proto jsou růžové.',
+  no3: 'Dusičnan se nesráží s ničím, je to introvert. Musíš ho zredukovat, aby promluvil.',
+  flame: 'Plamen jako ohňostroj: Li a Sr karmínová, Na žlutá, K fialová (přes kobaltové sklo), Ca cihlová, Ba a Cu zelená.',
+  NaOH: 'Amfoterní pětka, co se rozpustí v nadbytku NaOH: Pb, Al, Zn, Sb, Sn, Cr. Jen chromitan je zelený.',
+  NH3: 'Amminkomplexy tvoří Ag, Cd, Zn, Cu, Ni, Co, Mn. Barevné jsou jen Cu (tmavě modrá), Ni (modrá) a Co (žlutohnědá).',
+  KI: 'S jodidem se v nadbytku rozpustí Pb, Bi, Hg²⁺ i Hg₂²⁺. Bi dá oranžový roztok, ostatní bezbarvý.',
+  HCl: 'Nerozpustné chloridy jsou tři: Ag⁺, Hg₂²⁺, Pb²⁺. Stříbro, rtuť, olovo – SRO, jako společnost s ručením omezeným.',
+  H2SO4: 'Sírany: Ba nejméně rozpustný, Ca nejvíc. Baryum je v síranu doma, vápník jen na návštěvě.',
+  H2S: 'Sulfan v kyselém sráží jen „těžké“ sulfidy. Pozor na Fe³⁺: udělá jen bílý zákal síry a tváří se nevinně.',
+  NH4HS: 'NH₄HS sráží skoro všechno kromě alkalických kovů, kovů alkalických zemin a Mg. Al a Cr podvádějí a dají hydroxid.',
+  AcO: 'Octan sodný: hydrolyzují jen Bi, Sb (a Sn). Bi a Sb jsou bratři, co se rozpadnou už ve vodě.',
+  BaCl2: 'Barnaté soli: SO₄²⁻ nepovolí ani HCl, SO₃²⁻ a CrO₄²⁻ povolí HCl, CO₃²⁻ a PO₄³⁻ povolí už kyselinu octovou.',
+  AgNO3: 'Halogenidy stříbra drží i v HNO₃. Ostatní stříbrné soli se v kyselině rozpustí.',
+  KMnO4: 'KMnO₄ odbarví redukující anionty: siřičitan, thiosíran, bromid, jodid, thiokyanatan, dusitan.',
+  I2: 'Jód je slabší oxidovadlo: odbarví ho jen siřičitan a thiosíran (a SCN⁻ z koncentrovaných roztoků).',
+  sol: 'Třídění jako vyhazovač v klubu: voda, ether, louh, soda, kyselina. Kdo neprojde nikam a nemá N ani S, jde na konc. H₂SO₄. Kdo nereaguje ani tam, je I jako Ignoruju.',
+  solS1: 'S1 jsou malé molekuly do pěti uhlíků. Rozpustí se ve vodě i v etheru, kamarádí se všemi.',
+  solS2: 'S2 jsou tak polární, že ether nesnášejí. Cukry a soli zůstanou ve vodě.',
+  solA1: 'A1 šumí se sodou: karboxylová kyselina je dost silná na NaHCO₃.',
+  solA2: 'A2 jsou fenoly, slabé kyseliny. NaOH je rozpustí, na NaHCO₃ jsou moc líné.',
+  solA1B: 'Aminokyseliny jsou obojživelníci: rozpustí je kyselina i zásada.',
+  solA2B: 'Aminofenol: fenol se rozpustí v NaOH, amin v HCl, jen soda na něj nestačí.',
+  solB: 'B jako báze: aminy se v HCl promění na sůl a rozpustí se.',
+  solM: 'M jako Mix: nerozpustné, ale s N nebo S. Nitrobenzen, difenylamin, azobenzen.',
+  solN: 'N jako Nenasycený: konc. H₂SO₄ s ním reaguje, zahřeje se nebo zbarví.',
+  solI: 'I jako Inertní nebo Ignoruju: hexan a toluen nehne ani konc. H₂SO₄.',
+  kyveta: 'Kyveta 20 cm jsou 2 dm. Kdo dosadí 20, objeví cukr, který neexistuje.',
+  tani: 'Nečistota snižuje bod tání jako sůl led na silnici. A interval se roztáhne.',
+  ph: 'pH je minus logaritmus. Desetkrát víc kyseliny = pH o jedničku níž. Zásada: spočítej pOH a odečti od 14.',
+  abs: 'Absorbance 1 = projde 10 %, absorbance 2 = projde 1 %. Každá jednička je nula navíc.',
+  ind: 'Fenolftalein je malinový jen v zásadě, v kyselém je neviditelný jako duch. Methyloranž je červená v kyselém jako rozzlobený obličej.',
+  'ind:fenolftalein': 'Fenolftalein je malinový jen v zásadě, v kyselém je neviditelný jako duch.',
+  'ind:methyloranž': 'Methyloranž je v kyselém červená a nad pH 4,4 oranžově žlutá. Kyselina ji naštve.',
+  'ind:lakmus': 'Lakmus: kyselina červená, zásada modrá. Klasika ze základky.',
+  'ind:bromthymolová modř': 'Bromthymolová modř přechází kolem neutrálu 6,0–7,6: žlutá kyselá, modrá zásaditá.',
+  co: 'Karbonyly podle vlnočtu: ester 1735, aldehyd 1725, keton 1715, kyselina 1710, amid 1650. „Eva Absolvovala Ke Kafi Analytiku.“',
+  'ir:ohh': 'O–H s vodíkovými můstky je široký jak úsměv po zápočtu. 3400–3200 cm⁻¹.',
+  'ir:ohf': 'Volný O–H je ostrý a vysoko, protože nikoho nedrží za ruku.',
+  'ir:c3n': 'Pásmo 2300–2000 je tiché. Kdo tam křičí, má trojnou vazbu: nitril nebo alkyn.',
+  'ir:c3c': 'Pásmo 2300–2000 je tiché. Kdo tam křičí, má trojnou vazbu: nitril nebo alkyn.',
+  'ir:chald': 'Aldehyd má dvojpás C–H 2850–2700, říká se mu Fermiho dvojče. Keton ho nemá.',
+  'ir:chalk': 'Hranice 3000 cm⁻¹: pod ní C–H alkanů, nad ní C–H alkenů a aromátů.',
+  'ir:chen': 'Hranice 3000 cm⁻¹: pod ní C–H alkanů, nad ní C–H alkenů a aromátů.',
+  'ir:no2': 'Nitroskupina má dva silné pásy, 1550 a 1370. Dvě kyslíkové uši.',
+  'sp:kyselina': 'Kyselina má O–H tak široký, že spolkne celou oblast 3300–2500. Vypadá to jako vousy.'
+};
+/* Memy na konci kola: [horní text, spodní text, kapitola] */
+const AC_MEMES = [
+  ['Když přidáš NH₃ k Cu²⁺', 'a ono to zmodrá jak Šmoula', 'ka'], ['Já: přidám jen kapku NaOH', 'Pb, Al, Zn: rozpustíme se v nadbytku, ať to víš', 'ka'],
+  ['Fe³⁺ a sulfan', 'čekal jsi sulfid, máš síru', 'ka'], ['Sodík v plameni', 'když jsi chtěla vidět draslík', 'ka'],
+  ['Dusičnan se skupinovými činidly', 'nic, ticho, žádná reakce', 'ka'], ['Ag⁺ + Cl⁻', 'bílá jako tvoje stránka v protokolu před deadlinem', 'ka'],
+  ['Lucasovo činidlo a primární alkohol', 'ještě pořád čekám na zákal', 'org'], ['Tollens', 'aldehyd si udělal selfie na stěně zkumavky', 'org'],
+  ['Isonitrilová reakce', 'tu si zapamatuješ nosem, ne hlavou', 'org'], ['Třída I', 'nerozpustím se ani v kyselině sírové, jsem inert', 'org'],
+  ['Kyveta 20 cm', 'a ty jsi do vzorce dosadila 20', 'fyz'], ['Nečistota v krystalu', 'teplota tání: tak to půjdu o kus níž', 'fyz'],
+  ['Absorbance 2', 'propustí jen 1 % světla, jako sluneční brýle na zkoušce', 'uv'], ['Fenolftalein v kyselém', 'bezbarvý jako moje motivace v pondělí', 'uv'],
+  ['Pás 1715 cm⁻¹', 'karbonyl, nejhlasitější člen kapely', 'ir'], ['O–H s vodíkovými můstky', 'široký jak úsměv po zápočtu', 'ir']
+];
+
+/* --- 3. Organická analýza: [id, skupina, činidlo / postup, co uvidíš, co to dokazuje, poznámka, pomůcka] --- */
+const AC_OT = [
+  ['cuo', 'Prvky', 'žíhání s CuO, plyny do barytové vody Ba(OH)₂', 'bílý zákal BaCO₃', 'uhlík', 'Každá organická látka obsahuje uhlík, často stačí černý zbytek v žíhačce.'],
+  ['cuoh', 'Prvky', 'žíhání s CuO, pozorovat chladnější stěny žíhačky', 'kapky vody', 'vodík', 'U nesušených vzorků nemá smysl.'],
+  ['prus', 'Prvky', 'výluh po žíhání s Mg + K₂CO₃, FeSO₄, okyselit HCl', 'modrá sraženina berlínské modři', 'dusík (převedený na kyanid)', 'Síra vytvoří nejdřív černou sraženinu sulfidů železa, ta se v HCl rozpustí.', 'Dusík se schová do kyanidu a prozradí ho berlínská modř, stejná jako u důkazu Fe³⁺.'],
+  ['nitroprus', 'Prvky', 'výluh po žíhání s Mg + K₂CO₃, nitroprusid sodný', 'purpurově červené až fialové zbarvení', 'síra (převedená na sulfid)', 'Citlivější než černý FeS.'],
+  ['caf2', 'Prvky', 'výluh okyselený kyselinou octovou, CaCl₂', 'bílá sraženina CaF₂', 'fluor'],
+  ['agcl', 'Prvky', 'výluh okyselený HNO₃, AgNO₃, pak 2M NH₃', 'bílá sraženina, v amoniaku se rozpustí', 'chlor', 'AgBr se rozpustí jen částečně, AgI vůbec.'],
+  ['clbr', 'Prvky', 'výluh, H₂SO₄, chloroform a po kapkách chloramin T', 'spodní vrstva žlutá až hnědá', 'brom'],
+  ['cli', 'Prvky', 'výluh, H₂SO₄, chloroform a po kapkách chloramin T', 'spodní vrstva růžová až fialová', 'jód'],
+  ['jodo', 'Prvky', 'krystalek jódu a kapka kapalného vzorku (jódová zkouška)', 'jód se rozpustí hnědě (žlutě)', 'kyslík (kyslíkatá látka)', 'Bezkyslíkatá látka dá fialový roztok. Nejde, když látka obsahuje N, S nebo I.', 'Jód jako čaj: hnědý znamená, že v tom něco (kyslík) je. Fialový = čistý uhlovodík.'],
+  ['natron', 'Prvky', 'žíhání s natronovým vápnem, nad tím vlhký pH papírek nebo Nesslerovo činidlo', 'papírek zelenomodrý, Nessler zhnědne', 'dusík (uvolněný jako NH₃)', 'Negativní výsledek dusík nevylučuje: azo-, nitro- a nitrososloučeniny nereagují.'],
+  ['beil', 'Prvky', 'vzorek na vyžíhaném měděném drátku do plamene (Beilsteinova zkouška)', 'zelený až zelenomodrý plamen', 'halogeny Cl, Br, I (orientačně)', 'Negativní zkouška halogeny vylučuje. Pozitivní mohou být i enoly, oximy, močovina a thiomočovina.', 'Beilstein: měď se v plameni chlubí zelenou, když má po ruce halogen.'],
+  ['agcold', 'Halogenderiváty', 'ethanolický AgNO₃ za chladu', 'sraženina hned za studena', 'reaktivní halogen (acylhalogenidy, jodalkany, benzylové a allylové halogenidy, terciární alkylbromidy)', 'Za tepla reagují ostatní halogenalkany, aryl- a vinylhalogenidy nereagují vůbec.'],
+  ['aghot', 'Halogenderiváty', 'ethanolický AgNO₃ až za tepla', 'sraženina až po zahřátí', 'běžný halogenalkan', 'Ryze aromatické halogenderiváty a monotopické polychlorderiváty nereagují ani za tepla.'],
+  ['nessal', 'Alkoholy', 'Nesslerovo činidlo, povařit', 'žlutohnědá sraženina, po chvíli šedne', 'primární nebo sekundární alkohol', 'Mají redukční vlastnosti.'],
+  ['dichdnph', 'Alkoholy', 'oxidace K₂Cr₂O₇ v H₂SO₄, destilát + 2,4-DNPH', 'žluté nebo oranžové krystalky hydrazonu', 'primární nebo sekundární alkohol (oxidací vznikl karbonyl)'],
+  ['dichsch', 'Alkoholy', 'oxidace K₂Cr₂O₇ v H₂SO₄, destilát + Schiffovo činidlo', 'fialové zbarvení', 'primární alkohol (oxidací vznikl aldehyd)', 'Keton ze sekundárního alkoholu se Schiffem nereaguje.'],
+  ['lucas3', 'Alkoholy', 'Lucasovo činidlo (ZnCl₂ + konc. HCl)', 'zákal hned', 'terciární alkohol', 'Sekundární se zakalí za 2–5 minut, primární vůbec.', 'Lucas jako ranní přednáška: terciární alkohol je tam hned, sekundární přijde za pět minut, primární nedorazí vůbec.'],
+  ['lucas2', 'Alkoholy', 'Lucasovo činidlo (ZnCl₂ + konc. HCl)', 'zákal za 2–5 minut', 'sekundární alkohol', 'Terciární se zakalí hned, primární vůbec.', 'Lucas jako ranní přednáška: terciární alkohol je tam hned, sekundární přijde za pět minut, primární nedorazí vůbec.'],
+  ['borax', 'Polyoly', 'tetraboritan sodný s fenolftaleinem (malinový), přidat vzorek', 'malinové zbarvení zmizí', 'polyol (vícesytný alkohol)', 'Polyol tvoří s kyselinou boritou chelát, vznikne kyselina. Vzorek nesmí být kyselý.'],
+  ['fecn', 'Fenoly', 'FeCl₃ a K₃[Fe(CN)₆] na filtračním papíře', 'tmavě modrá skvrna (berlínská modř)', 'fenol', 'Vždy slepý pokus, činidlo samo časem zelená.'],
+  ['diazof', 'Fenoly', 'diazotovaná kyselina sulfanilová a NaOH', 'žluté až červené azobarvivo', 'fenol s volnou para- nebo ortho-polohou'],
+  ['naohf', 'Fenoly', '20% NaOH', 'hnědé až fialové zbarvení', 'vícemocný fenol nebo aminofenol', 'Oxidace na chinoidní produkty. 1,3-dihydroxybenzeny reagují hůř než 1,2- a 1,4-.'],
+  ['dnph', 'Karbonylové sloučeniny', '2,4-DNPH a NaOH na filtračním papíře', 'fialové zbarvení', 'karbonylová skupina (aldehyd nebo keton)', 'Keton se dokazuje nepřímo: karbonyl ano, aldehyd ne.', '2,4-DNPH miluje C=O. Keton poznáš tak, že DNPH reaguje a Tollens se Schiffem ne.'],
+  ['tollens', 'Aldehydy', 'Tollensovo činidlo [Ag(NH₃)₂]⁺, mírně zahřát', 'stříbrné zrcadlo na stěně zkumavky', 'aldehyd (redukující látka)', 'Při příliš rychlé reakci vznikne černá sraženina. Reagují i polyfenoly, aminofenoly a redukující cukry.', 'Tollens: aldehyd si udělá selfie na stěně zkumavky.'],
+  ['schiff', 'Aldehydy', 'Schiffovo činidlo (fuchsin odbarvený siřičitanem), pH asi 3', 'modrofialové zbarvení', 'aldehyd', 'Ketony nereagují.', 'Schiff zfialoví jen s aldehydem, ketony má na ignore.'],
+  ['hydk', 'Karboxylové kyseliny', 'SOCl₂ na acylchlorid, pak hydroxylamin, NaOH, HCl a FeCl₃ (hydroxamová reakce)', 'červené, červenohnědé až fialové zbarvení', 'karboxylová kyselina', 'Deriváty (estery, anhydridy, laktony, amidy) reagují i bez SOCl₂.'],
+  ['ester', 'Karboxylové kyseliny', 'ethanol a konc. H₂SO₄, zahřát, neutralizovat', 'ovocná vůně esteru', 'nízkomolekulární karboxylová kyselina'],
+  ['agsul', 'Karboxylové kyseliny', 'neutralizovat na pH 7–8, pak AgNO₃', 'bílá sraženina stříbrné soli', 'karboxylová skupina', 'Neutrální prostředí je podmínka.'],
+  ['casul', 'Karboxylové kyseliny', 'neutralizovat na pH 7–8, pak CaCl₂', 'bílá sraženina vápenaté soli', 'dikarboxylová kyselina'],
+  ['hyde', 'Estery', 'hydroxylamin a NaOH, pak HCl a FeCl₃ (bez SOCl₂)', 'červené až fialové zbarvení', 'ester (nebo jiný derivát kyseliny)'],
+  ['hydrol', 'Estery', 'fenolftalein a NaOH do růžova, zahřát', 'růžové zbarvení zmizí', 'ester (hydrolýzou spotřeboval OH⁻)', 'Má smysl, jen když látka sama není kyselá.'],
+  ['ferrox', 'Ethery', 'ferroxový test: krystalky Fe³⁺ soli a KSCN na tyčince do vzorku', 'červenofialové zbarvení', 'kyslíkatá látka (např. ether)', 'Není specifický, reagují všechny kyslíkaté funkční skupiny. Diarylethery se poznají v IČ (C–O 1230–1270 cm⁻¹).'],
+  ['hno2am', 'Amidy', 'pevný NaNO₂ a HCl, pak krystalky vzorku', 'unikají bublinky dusíku', 'primární amid', 'Podobně reagují primární alifatické aminy.'],
+  ['naoham', 'Amidy', 'povařit s 20% NaOH, nad zkumavkou vlhký pH papírek', 'papírek zmodrá (uniká NH₃)', 'amid', 'Těžko hydrolyzovatelné amidy dají negativní výsledek.'],
+  ['nidmg', 'Aminy', 'dimethylglyoximát nikelnatý na kapkovací desce', 'růžová sraženina', 'bazický amin', 'Takzvané neutrální aminy nereagují.'],
+  ['pikr', 'Aminy', 'ethanolická kyselina pikrová, zahřát a ochladit', 'intenzivně žluté krystalky pikrátu', 'amin (tvoří sůl)'],
+  ['hno21al', 'Aminy', 'NaNO₂ a HCl', 'bublinky dusíku', 'primární alifatický amin'],
+  ['hno21ar', 'Aminy', 'NaNO₂ a HCl za chladu, pak 2-naftol v NaOH', 'oranžové až červené azobarvivo', 'primární aromatický amin', 'Diazotace a kopulace.'],
+  ['hno22', 'Aminy', 'NaNO₂ a HCl', 'žluté nitrosaminy', 'sekundární alifatický amin', 'Liebermannova reakce pak dá červenou, po alkalizaci zelenou až modrofialovou.', 'Kyselina dusitá třídí aminy: primární bublá dusíkem (alifatický) nebo dá azobarvivo (aromatický), sekundární zežloutne, terciární nedělá nic.'],
+  ['dmaba', 'Aminy', '4-dimethylaminobenzaldehyd na filtračním papíře', 'žluté, oranžové nebo červené zbarvení', 'primární aromatický amin'],
+  ['isonit', 'Aminy', 'chloroform a NaOH v ethanolu, mírně zahřát', 'odporný zápach isonitrilu', 'primární amin', 'Pracuje se v digestoři.', 'Isonitrilovou reakci si zapamatuješ nosem, ne hlavou.'],
+  ['simon', 'Aminy', 'nitroprusid sodný v acetaldehydu a Na₂CO₃ (Simonova reakce)', 'modré až fialové zbarvení', 'sekundární alifatický amin'],
+  ['acetyl', 'Aminy', 'acetylchlorid', 'bílá sraženina amidu', 'primární nebo sekundární amin'],
+  ['lignin', 'Aminy', 'kapka na novinový papír, pak HCl (lignin)', 'oranžová až červená skvrna', 'primární nebo sekundární aromatický amin', 'Reagují i neutrální aminy.', 'Noviny poznají aromatický amin. Konečně k něčemu, když už je nikdo nečte.'],
+  ['dragen', 'Aminy', 'Dragendorffovo činidlo (tetrajodobismutitan draselný)', 'oranžové až červené zbarvení nebo sraženina', 'terciární amin (a alkaloidy)', 'Činidlo je [BiI₄]⁻, ten oranžový roztok z důkazu Bi³⁺ s nadbytkem KI.', 'Dragendorff je oranžový [BiI₄]⁻ z kationtů. Terciární aminy s ním zoranžoví.'],
+  ['lieb', 'Nitrososloučeniny', 'fenol a konc. H₂SO₄, zahřát, pak NaOH (Liebermannova reakce)', 'červené zbarvení, po alkalizaci zelené až modrofialové', 'nitrososloučenina'],
+  ['znred', 'Nitrosloučeniny', 'redukce práškovým Zn v HCl, pak důkazy aminů', 'vznikne primární aromatický amin (dá azobarvivo)', 'aromatická nitrosloučenina']
+];
+/* Třídy rozpustnosti: [třída, profil, typické látky] */
+const AC_SOL = [
+  ['S1', 'rozpustná ve vodě i v etheru', 'monofunkční látky do C5: alkoholy, aldehydy, ketony, estery, karboxylové kyseliny, nízkomolekulární aminy'],
+  ['S2', 'rozpustná ve vodě, ne v etheru', 'silně polární látky: cukry, polykarboxylové a sulfonové kyseliny, formamid, acetamid, soli, polyaminy'],
+  ['A1', 'nerozpustná ve vodě, rozpustná v NaOH i NaHCO₃, ne v HCl', 'silně kyselé: aromatické karboxylové kyseliny, negativně substituované fenoly'],
+  ['A2', 'nerozpustná ve vodě, rozpustná v NaOH, ne v NaHCO₃ ani HCl', 'slabě kyselé: fenoly, vyšší alifatické karboxylové kyseliny, enoly, thioly, imidy, oximy, sulfonamidy'],
+  ['A1B', 'nerozpustná ve vodě, rozpustná v NaOH, NaHCO₃ i HCl', 'amfoterní: aminokyseliny'],
+  ['A2B', 'nerozpustná ve vodě, rozpustná v NaOH a HCl, ne v NaHCO₃', 'amfoterní: aminofenoly, aminosulfonamidy'],
+  ['B', 'nerozpustná ve vodě a NaOH, rozpustná v HCl', 'zásadité: aminy (hlavně aromatické), alkaloidy'],
+  ['M', 'nerozpustná ve vodě, NaOH i HCl, obsahuje N nebo S', 'neutrální aminy (diaryl-, triaryl-), vyšší amidy, nitro-, nitroso- a azosloučeniny, sulfony'],
+  ['N', 'nerozpustná ve vodě, NaOH i HCl, bez N a S, reaguje s konc. H₂SO₄', 'vyšší alkoholy, aldehydy, ketony, estery, nenasycené uhlovodíky'],
+  ['I', 'nerozpustná ve vodě, NaOH i HCl, bez N a S, nereaguje ani s konc. H₂SO₄', 'nasycené uhlovodíky včetně aromatických, diarylethery']
+];
+/* látky do hry Třída rozpustnosti: [název, třída, obsahuje N nebo S] */
+const AC_SUBST = [
+  ['ethanol', 'S1', 0], ['aceton', 'S1', 0], ['kyselina octová', 'S1', 0], ['fenol', 'S1', 0], ['diethylamin', 'S1', 1],
+  ['glukosa', 'S2', 0], ['kyselina šťavelová', 'S2', 0], ['acetamid', 'S2', 1],
+  ['kyselina benzoová', 'A1', 0], ['kyselina ftalová', 'A1', 0], ['2,4-dinitrofenol', 'A1', 1],
+  ['4-terc-butylfenol', 'A2', 0], ['kyselina stearová', 'A2', 0], ['kyselina antranilová', 'A1B', 1], ['4-aminofenol', 'A2B', 1],
+  ['anilin', 'B', 1], ['N,N-dimethylanilin', 'B', 1], ['difenylamin', 'M', 1], ['nitrobenzen', 'M', 1], ['azobenzen', 'M', 1],
+  ['oktan-1-ol', 'N', 0], ['cyklohexen', 'N', 0], ['benzaldehyd', 'N', 0], ['ethyl-benzoát', 'N', 0],
+  ['hexan', 'I', 0], ['toluen', 'I', 0], ['difenylether', 'I', 0]
+];
+/* --- 6. IČ: [id, vazba, typ látky, rozsah, intenzita, od, do] --- */
+const AC_IRT = [
+  ['chalk', 'C–H', 'alkany (valenční)', '2965–2840', 'silná', 2840, 2965], ['ch3', 'C–H v CH₃', 'alkany (deformační)', '1450 a 1380', 'střední', 1380, 1450],
+  ['ch2', 'C–H v CH₂', 'alkany (deformační)', '1465', 'střední', 1460, 1470], ['chen', '=C–H', 'alkeny', '3095–3010', 'střední', 3010, 3095],
+  ['chald', 'C–H', 'aldehydy', '2850–2700', 'slabá', 2700, 2850], ['char', 'C–H', 'na benzenovém kruhu', '900–650', 'silná', 650, 900],
+  ['cc', 'C–C', 'alkany', '1200–700', 'slabá', 700, 1200], ['c2c', 'C=C', 'alkeny', '1680–1620', 'proměnlivá', 1620, 1680],
+  ['c3c', 'C≡C', 'alkiny', '2260–2100', 'proměnlivá', 2100, 2260], ['ccar', 'C=C', 'aromáty', '1670–1450', 'střední', 1450, 1670],
+  ['coam', 'C=O', 'amidy', '~1650', 'silná', 1640, 1660], ['coac', 'C=O', 'karboxylové kyseliny', '~1710', 'silná', 1705, 1712],
+  ['coket', 'C=O', 'ketony', '~1715', 'silná', 1713, 1718], ['coald', 'C=O', 'aldehydy', '~1725', 'silná', 1720, 1728],
+  ['coest', 'C=O', 'estery', '~1735', 'silná', 1730, 1740], ['coh', 'C–OH', 'alkoholy', '1150–1040', 'silná', 1040, 1150],
+  ['oco', 'O=C–O', 'estery karboxylových kyselin', '1300–1100', 'silná', 1100, 1300], ['coc', 'C–O–C', 'ethery', '1150–1070', 'silná', 1070, 1150],
+  ['ohf', 'O–H', 'alkohol volný', '3650–3590', 'proměnlivá, ostrý pás', 3590, 3650], ['ohh', 'O–H', 'alkohol s vodíkovým můstkem', '3400–3200', 'silná, široký pás', 3200, 3400],
+  ['nh1', 'N–H', 'primární amin nebo amid', '3500–3300', 'střední', 3300, 3500], ['cn', 'C–N', 'aminy', '1350–1000', 'střední', 1000, 1350],
+  ['c3n', 'C≡N', 'nitrily', '2280–2200', 'silná', 2200, 2280], ['no2', 'NO₂', 'nitroskupina', '1550 a 1370', 'silná', 1370, 1550]
+];
+/* simulovaná spektra do hry: [id, název, pásy [vlnočet, hloubka 0–1, šířka], co si všimnout] */
+const AC_SPEC = [
+  ['alkan', 'alkan (hexan)', [[2930, .8, 40], [2860, .6, 30], [1465, .4, 14], [1380, .3, 10]], 'Jen C–H pod 3000 a deformace 1465 a 1380 cm⁻¹. Nic dalšího.'],
+  ['alken', 'alken', [[3080, .35, 22], [2930, .7, 40], [1645, .35, 14], [990, .6, 14], [910, .65, 14]], '=C–H nad 3000, C=C kolem 1645 a silné pásy 1000–700 cm⁻¹.'],
+  ['alkyn', 'alkyn', [[2930, .7, 40], [2120, .35, 16], [1465, .3, 12]], 'Osamělý pás v tichém pásmu 2260–2100 cm⁻¹ = C≡C.'],
+  ['arom', 'aromát (toluen)', [[3030, .3, 25], [2920, .35, 30], [1605, .35, 12], [1495, .5, 12], [1455, .35, 12], [730, .8, 14], [695, .75, 12]], 'C=C aromátu 1600 a 1500, silné pásy 900–650 cm⁻¹ od C–H na kruhu.'],
+  ['alkohol', 'alkohol', [[3330, .85, 170], [2930, .7, 40], [1460, .3, 14], [1050, .8, 30]], 'Široký O–H 3400–3200 a silný C–OH 1150–1040 cm⁻¹.'],
+  ['aldehyd', 'aldehyd', [[2930, .55, 40], [2820, .35, 14], [2720, .35, 14], [1725, .9, 22], [1390, .3, 12]], 'C=O 1725 a k tomu slabý dvojpás C–H 2850–2700 cm⁻¹.'],
+  ['keton', 'keton', [[2960, .5, 40], [1715, .92, 22], [1360, .4, 12], [1220, .4, 18]], 'Silný C=O 1715 cm⁻¹, žádné O–H ani C–H aldehydu.'],
+  ['kyselina', 'karboxylová kyselina', [[3000, .7, 380], [1710, .9, 24], [1290, .5, 20], [940, .4, 20]], 'Velmi široký O–H přes celou oblast 3300–2500 a C=O 1710 cm⁻¹.'],
+  ['ester', 'ester', [[2980, .45, 40], [1735, .92, 22], [1240, .85, 30], [1050, .6, 20]], 'C=O 1735 a silný O=C–O 1300–1100 cm⁻¹.'],
+  ['ether', 'ether', [[2970, .7, 40], [2860, .5, 30], [1120, .9, 30]], 'Bez C=O a bez O–H, jen silný C–O–C 1150–1070 cm⁻¹.'],
+  ['amin', 'primární amin', [[3370, .45, 26], [3290, .4, 26], [2930, .6, 40], [1610, .4, 20], [1280, .5, 24]], 'Dva ostřejší pásy N–H 3500–3300 a C–N 1350–1000 cm⁻¹.'],
+  ['amid', 'amid', [[3350, .55, 40], [3180, .5, 40], [1650, .92, 26], [1410, .4, 16]], 'C=O amidu nízko kolem 1650 a N–H nad 3100 cm⁻¹.'],
+  ['nitril', 'nitril', [[2940, .5, 40], [2250, .7, 14], [1450, .3, 12]], 'Silný ostrý C≡N 2280–2200 cm⁻¹.'],
+  ['nitro', 'nitrosloučenina', [[3080, .25, 20], [1525, .9, 22], [1350, .88, 20], [850, .4, 14], [700, .5, 14]], 'Dva silné pásy NO₂ kolem 1550 a 1370 cm⁻¹.']
+];
+/* --- 5. Indikátory: [název, pH od, pH do, barva v kyselém, barva v zásaditém, hex kyselá, hex zásaditá] --- */
+const AC_IND = [
+  ['thymolová modř (1. přechod)', 1.2, 2.8, 'červená', 'žlutá', '#d93025', '#f2cd1f'], ['methyloranž', 3.1, 4.4, 'červená', 'žlutooranžová', '#d93025', '#f6b13a'],
+  ['bromkresolová zeleň', 3.8, 5.4, 'žlutá', 'modrá', '#f2cd1f', '#2b3a8f'], ['methylčerveň', 4.4, 6.2, 'červená', 'žlutá', '#d93025', '#f2cd1f'],
+  ['lakmus', 5.0, 8.0, 'červená', 'modrá', '#d93025', '#2b3a8f'], ['bromthymolová modř', 6.0, 7.6, 'žlutá', 'modrá', '#f2cd1f', '#2b3a8f'],
+  ['thymolová modř (2. přechod)', 8.0, 9.6, 'žlutá', 'modrá', '#f2cd1f', '#2b3a8f'], ['fenolftalein', 8.2, 10.0, 'bezbarvý', 'malinově fialová', '#ffffff', '#e04aa8'],
+  ['thymolftalein', 9.3, 10.5, 'bezbarvý', 'modrá', '#ffffff', '#2b3a8f'], ['alizarinová žluť', 10.1, 12.0, 'žlutá', 'oranžová', '#f6e36a', '#e8761e']
+];
+const AC_SUGAR = [['D-fruktosa', -92.25, '−91,0 až −93,5'], ['D-galaktosa', 80, '+79,0 až +81,0'], ['D-glukosa', 52.9, '+52,5 až +53,3'], ['laktosa', 55.15, '+54,4 až +55,9'],
+  ['maltosa', 130, '+128,0 až +132,0'], ['rafinosa', 105, '+103,0 až +107,0'], ['sacharosa', 66.65, '+66,3 až +67,0'], ['xylosa', 19, '+18,5 až +19,5']];
+
+/* teorie: [id, kapitola, otázka, správně, [špatně…], vysvětlení, pomůcka] */
+const AC_TH = [
+  ['o_sol_s', 'org', 'Co znamenají písmena tříd rozpustnosti S, A, B, M, N, I?', 'soluble, acid, basic, miscellaneous, neutral, inert', ['sůl, alkohol, báze, molekula, nitro, iont', 'silná, alkalická, bazická, minerální, nerozpustná, iontová', 'síra, amin, brom, methyl, nitril, jod'], 'S = rozpustný, A = kyselý, B = zásaditý, M = rozmanitý, N = neutrální, I = nereaktivní.', 'I jako Ignoruju všechno: nerozpustí se ani v konc. H₂SO₄.'],
+  ['o_h2so4', 'org', 'Kdy se zkouška s konc. H₂SO₄ při třídění neprovádí?', 'když látka obsahuje N nebo S (zařadí se do M), nebo Br či I', ['vždy, když je látka kapalná', 'když je látka rozpustná v etheru', 'když látka obsahuje kyslík'], 'S N nebo S jde rovnou do M. Brom a jód by s kyselinou reagovaly a zkreslily zařazení, pak připadá v úvahu N nebo I.'],
+  ['o_nahco3', 'org', 'Čím se odliší třída A1 od A2?', 'rozpustností v 5% NaHCO₃: A1 ano, A2 ne', ['rozpustností v etheru', 'rozpustností v HCl', 'reakcí s konc. H₂SO₄'], 'Hydrogenuhličitan je slabá zásada a rozpustí jen silnější kyseliny (karboxylové, A1). Fenoly (A2) ne.', 'NaHCO₃ je slabá zásada. Silné kyseliny (A1) s ní šumí, fenoly (A2) ji ignorují.'],
+  ['o_mineral', 'org', 'Proč se organická látka před důkazem prvků mineralizuje?', 'aby se prvky převedly na ionty dokazatelné anorganickými reakcemi', ['aby se odstranila voda', 'aby se zvýšila rozpustnost v etheru', 'aby se látka vyčistila krystalizací'], 'Oxidační (CuO) nebo redukční (Mg + K₂CO₃) mineralizace převede C, N, S a halogeny na CO₂, kyanid, sulfid a halogenidy.'],
+  ['o_dvakroky', 'org', 'Ze kterých kroků se skládá klasická organická analýza?', 'důkaz prvků, důkaz funkčních skupin a doplňkově třída rozpustnosti', ['jen IČ spektrum a bod tání', 'titrace a vážková analýza', 'jen skupinová činidla jako u kationtů'], 'Kvůli izomerům nestačí znát prvky, je nutné dokázat i funkční skupiny.'],
+  ['o_keton', 'org', 'Jak se v laboratoři dokáže keton?', 'nepřímo: 2,4-DNPH potvrdí karbonyl a Tollens se Schiffem vyloučí aldehyd', ['Tollensovým stříbrným zrcadlem', 'Lucasovým činidlem', 'Beilsteinovou zkouškou'], 'Ketony nemají redukční vlastnosti, takže nemají vlastní pozitivní důkaz.'],
+  ['o_aminy', 'org', 'Které aminy nereagují s kyselinou dusitou?', 'terciární', ['primární alifatické', 'primární aromatické', 'sekundární alifatické'], 'Primární alifatické uvolní N₂, primární aromatické dají azobarvivo, sekundární žluté nitrosaminy, terciární nic.'],
+  ['f_cist', 'fyz', 'Jak se projeví nečistota na teplotě tání?', 'teplota tání klesne a interval tání se rozšíří', ['teplota tání stoupne', 'nijak, pokud nečistota taje výš', 'látka přestane tát úplně'], 'Malé znečištění teplotu tání výrazně sníží, i když nečistota sama taje výš.', 'Nečistota snižuje bod tání jako sůl led na silnici.'],
+  ['f_rychl', 'fyz', 'Jak rychle se zahřívá v bodotávku těsně před teplotou tání?', '1–2 °C za minutu', ['4–6 °C za minutu', '10 °C za minutu', '0,1 °C za minutu'], 'Nejdřív 4–6 °C/min, v blízkosti teploty tání 1–2 °C/min.'],
+  ['f_krystal', 'fyz', 'Teplota, kdy zmizí poslední krystal, je oproti teplotě tání…', 'asi o 2–3 °C vyšší, proto se odečítá', ['stejná', 'o 2–3 °C nižší', 'o 10 °C vyšší'], 'Teplota tání se odečte v okamžiku vzniku taveniny. Údaj je reprodukovatelný na ±0,5 °C.'],
+  ['f_kap', 'fyz', 'Jak vysoká má být vrstva látky v kapiláře bodotávku?', '2–4 mm', ['1–2 cm', '0,1 mm', 'celá kapilára'], 'Kapilára je na jednom konci zatavená, průměr 1–1,5 mm, délka asi 5 cm.'],
+  ['f_snell', 'fyz', 'Jak je definován index lomu n?', 'n = c₁/c₂ = sin α / sin β', ['n = sin β / sin α', 'n = c₂/c₁', 'n = α/β'], 'Snellův zákon: poměr rychlostí světla v obou prostředích = poměr sinů úhlu dopadu a lomu.'],
+  ['f_nd20', 'fyz', 'Co znamená zápis n_D²⁰?', 'index lomu při sodíkové čáře D a 20 °C', ['index lomu při 20 nm', 'index lomu 20% roztoku', 'dvacáté měření indexu lomu'], 'Dolní index = vlnová délka (sodíková čára D), horní = teplota.'],
+  ['f_teplo', 'fyz', 'Jak se mění index lomu kapaliny s rostoucí teplotou?', 'klesá, asi o 0,0003–0,0008 na 1 °C', ['roste o 0,01 na 1 °C', 'nemění se', 'roste jen u vody'], 'Proto se měří při definované teplotě (20 nebo 25 °C), termostat ±0,2 °C.', 'Teplá kapalina je řidší, i pro světlo. Index lomu klesá.'],
+  ['f_abbe', 'fyz', 'Na čem je založen Abbého refraktometr?', 'na mezním úhlu úplného odrazu', ['na otáčení polarizované roviny', 'na absorpci UV záření', 'na Nernstově rovnici'], 'Rozsah 1,300–1,700, přesnost ±0,0001, lze měřit i za denního světla.'],
+  ['f_ph', 'fyz', 'Jak je definováno pH?', 'pH = −log a(H₃O⁺)', ['pH = log c(OH⁻)', 'pH = −ln a(H₃O⁺)', 'pH = 14 − log c(H₃O⁺)'], 've zředěných roztocích lze aktivitu nahradit koncentrací.'],
+  ['f_kw', 'fyz', 'Kolik je iontový součin vody Kw?', '10⁻¹⁴', ['10⁻⁷', '10⁻¹²', '14'], 'Kw = [H₃O⁺]·[OH⁻] = 10⁻¹⁴, v čisté vodě je obojího 10⁻⁷ mol/l.'],
+  ['f_elektr', 'fyz', 'Jaký typ elektrody je skleněná elektroda?', 'membránová iontově selektivní elektroda', ['kovová elektroda prvního druhu', 'kalomelová referentní elektroda', 'platinová redoxní elektroda'], 'Uvnitř je pufr a vnitřní referentní (argentchloridová) elektroda.'],
+  ['f_kalib', 'fyz', 'Jak se kalibruje pH metr dvěma pufry?', 'v pufru pH 7 se nastaví OFFSET, v pufru pH 4 (nebo 10) SLOPE', ['v pufru pH 4 OFFSET, v pufru pH 7 SLOPE', 'jen jedním pufrem pH 7', 've vodě a v 0,1M HCl'], 'Kalibrace má přesahovat rozsah pH vzorků. Mezi pufry se elektroda oplachuje a osuší.', 'Nejdřív OFFSET na sedmičce, pak SLOPE. O–S jako Oběd, pak Spánek.'],
+  ['f_hammett', 'fyz', 'Čím se popisuje kyselost nevodných roztoků?', 'Hammettovou funkcí', ['pH skleněnou elektrodou', 'indexem lomu', 'specifickou otáčivostí'], 'Zjišťuje se z poměru kyselé a zásadité formy indikátoru.'],
+  ['f_pravot', 'fyz', 'Kdy je látka pravotočivá?', 'stáčí rovinu polarizovaného světla ve směru hodinových ručiček, když se díváme proti světlu', ['otáčí se v kyvetě doprava', 'má index lomu nad 1,5', 'absorbuje pravou polovinu spektra'], 'Pravotočivé (+), levotočivé (−).'],
+  ['f_polost', 'fyz', 'Na co se nastavuje kruhový polarimetr s polostínovou metodou?', 'na stejnoměrně šedé (homogenní) zorné pole', ['na úplnou tmu', 'na nejjasnější světlo', 'na žlutou barvu pole'], 'Oko líp srovná jas dvou ploch než najde minimum jasu.'],
+  ['f_nonius', 'fyz', 'Jakou přesnost dává nonius kruhového polarimetru?', '0,05°', ['1°', '0,5°', '0,001°'], 'Stupnice 360 dílků po 1°, nonius 20 dílků po 0,05°. Odečítá se na obou stranách a průměruje.'],
+  ['f_kyveta', 'fyz', 'V jakých jednotkách se dosazuje délka kyvety do [α] = 1000·α/(l·c)?', 'v decimetrech (20 cm = 2 dm)', ['v centimetrech', 'v metrech', 'v milimetrech'], 'c je v g/l, l v dm.', 'Kyveta 20 cm jsou 2 dm. Kdo dosadí 20, objeví cukr, co neexistuje.'],
+  ['u_rozsah', 'uv', 'Jaký rozsah vlnových délek má UV-VIS oblast?', '190–900 nm', ['4000–400 nm', '1–10 nm', '2,5–50 µm'], 'Fotony tu mají energii 200–600 kJ/mol a vyvolají přechody vnějších elektronů.'],
+  ['u_chrom', 'uv', 'Jak se jmenují skupiny, ve kterých dochází k elektronovému přechodu po absorpci UV-VIS?', 'chromofory', ['auxochromy', 'fluorofory', 'pufry'], 'U koordinačních sloučenin jde o přechody v d a f orbitalech.'],
+  ['u_abs', 'uv', 'Jak je definována absorbance?', 'A = log(I₀/I)', ['A = I/I₀', 'A = ln(I/I₀)', 'A = I₀ − I'], 'I₀ je dopadající, I prošlé záření. Transmitance T = I/I₀, A = −log T.', 'Absorbance 1 = projde 10 %, absorbance 2 = projde 1 %. Každá jednička je nula navíc.'],
+  ['u_lb', 'uv', 'Jak zní Lambertův–Beerův zákon?', 'A = ε · d · c', ['A = ε / (d · c)', 'A = d · c / ε', 'A = ε + d + c'], 'ε je absorpční koeficient, d tloušťka kyvety, c koncentrace.'],
+  ['u_blank', 'uv', 'Proč se před měřením měří blank (slepý vzorek)?', 'aby se odečetla absorbance rozpouštědla a činidel', ['aby se zahřála lampa', 'aby se zjistila vlnová délka maxima vzorku', 'aby se kalibroval pH metr'], 'Naměřená absorbance je součtem absorbancí všech složek. U jednopaprskového přístroje se blank měří jako první.'],
+  ['u_dad', 'uv', 'Co je typické pro spektrofotometr s diodovým polem (DAD)?', 'kyveta se ozáří polychromatickým světlem a mřížka ho rozloží na fotodiody, celé spektrum najednou', ['vzorek se proměřuje vlnovou délku po vlnové délce', 'měří jen jednu vlnovou délku', 'používá interferometr s pohyblivým zrcadlem'], 'V jednom okamžiku získáme celé absorpční spektrum.'],
+  ['u_deriv', 'uv', 'Co ukazují nulové body 1. derivace absorpčního spektra?', 'polohu maxim a minim původního spektra', ['koncentraci vzorku', 'absorbanci blanku', 'pH roztoku'], 'Derivační spektra pomáhají přesně najít maxima a odlišit podobná spektra.'],
+  ['u_amax', 'uv', 'Jak velká absorbance je při měření ještě vhodná?', 'menší než 2', ['větší než 5', 'přesně 0', 'jakákoli, nezáleží na tom'], 'Koncentraci indikátoru vybereme zkusmo ředěním tak, aby A < 2.'],
+  ['u_ind', 'uv', 'Proč mění acidobazický indikátor barvu?', 'se změnou pH se mění uspořádání dvojných vazeb v molekule', ['indikátor se při změně pH rozpouští', 'mění se teplota roztoku', 'indikátor se oxiduje vzdušným kyslíkem'], 'Změna konjugace posune absorpční maximum, a tím i barvu.'],
+  ['u_univ', 'uv', 'Jakou barvu má univerzální indikátorový papírek v silně zásaditém roztoku (pH 13)?', 'tmavě modrou', ['červenou', 'žlutou', 'zelenou'], 'Škála jde od červené (pH 0–2) přes žlutou (5–6) a zelenou (8–9) po tmavě modrou (12–14).'],
+  ['i_oblast', 'ir', 'Která IČ oblast je pro identifikaci organických látek nejdůležitější?', 'střední (MIR) 4000–200 cm⁻¹', ['blízká (NIR) 12 800–4000 cm⁻¹', 'vzdálená (FIR) 200–5 cm⁻¹', 'UV-VIS 190–900 nm'], 'V MIR leží fundamentální vibrace. FIR jsou hlavně rotace, NIR svrchní tóny (overtony).'],
+  ['i_fir', 'ir', 'Co vyvolává záření ve vzdálené IČ oblasti (FIR)?', 'změny rotační energie molekuly', ['přechody vnějších elektronů', 'svrchní tóny vibrací', 'ionizaci molekul'], 'FIR má nejnižší energii, je to oblast rotačních spekter.'],
+  ['i_nir', 'ir', 'Co jsou svrchní tóny (overtony)?', 'přechody do druhého a vyššího vibračního stavu, typické pro NIR', ['rotační přechody ve FIR', 'elektronové přechody v UV', 'odrazy záření na ATR krystalu'], 'Fotony NIR mají nejvyšší energii z IČ oblastí.'],
+  ['i_dipol', 'ir', 'Kdy vibrace absorbuje IČ záření?', 'když se při ní mění dipólový moment molekuly', ['vždy, když má molekula trvalý dipól', 'jen když molekula obsahuje kyslík', 'když je molekula opticky aktivní'], 'Molekula trvalý dipól mít nemusí, rozhoduje jeho změna. Symetrické vibrace mohou být neaktivní.'],
+  ['i_ft', 'ir', 'Co je nejdůležitější optickou součástí FT-IR spektrometru?', 'interferometr (dělič paprsků, pevné a pohyblivé zrcadlo)', ['hranol', 'fotonásobič', 'sodíková výbojka'], 'He-Ne laser hlídá polohu pohyblivého zrcadla.'],
+  ['i_zdroj', 'ir', 'Co slouží jako zdroj záření v MIR spektrometru?', 'žhavený karbid křemíku nebo vlákno NiCr', ['sodíková výbojka', 'deuteriová lampa', 'He-Ne laser'], 'Detektory: termální DTGS, kvantový tellurid kademnato-rtuťný.'],
+  ['i_kbr', 'ir', 'Proč musí být IČ spektrometr pořád pod napětím?', 'optika z KBr, NaCl apod. je hygroskopická a vyhřívání brání kondenzaci vody', ['aby se nevybil laser', 'aby se nevymazala knihovna spekter', 'kvůli kalibraci vlnové délky'], 'Voda navíc silně absorbuje IČ záření. Proto se KBr kyvety nepoužívají s vodou.'],
+  ['i_pozadi', 'ir', 'Které molekuly vzduchu se projeví ve spektru pozadí?', 'vodní pára a CO₂', ['dusík a kyslík', 'argon a neon', 'ozon a methan'], 'Proto se před vzorkem vždy změří pozadí (background).'],
+  ['i_atr', 'ir', 'Jak se měří technikou ATR?', 'vzorek se přitlačí na krystal (ZnSe, Ge, Si, diamant) a záření proniká asi 1 µm do vzorku', ['vzorek se rozpustí ve vodě v KBr kyvetě', 'vzorek se slisuje s KBr do tablety', 'vzorek se odpaří do plynové kyvety'], 'ATR zvýrazní pásy při nízkých vlnočtech, proto se spektra často korigují.'],
+  ['i_tableta', 'ir', 'Jak se připraví KBr tableta?', 'asi 0,1–0,2 mg vzorku se rozetře se 400–500 mg suchého KBr a slisuje', ['1 g vzorku se rozpustí v 1 ml vody s KBr', 'vzorek se nanese na ATR krystal', 'vzorek se smíchá s parafinovým olejem a zahřeje'], 'Lis se natlakuje na 40 kN, pak na 80–90 kN.'],
+  ['i_ticho', 'ir', 'Co bývá v oblasti 2300–2000 cm⁻¹?', 'trojné vazby: C≡N a C≡C', ['karbonyl C=O', 'O–H vodíkové můstky', 'C–H na benzenu'], 'Jinak je tahle část spektra skoro prázdná, proto jsou nitrily a alkyny snadno vidět.', 'Pásmo 2300–2000 je tiché. Kdo tam křičí, má trojnou vazbu.'],
+  ['i_co', 'ir', 'Seřaď C=O podle vlnočtu od nejvyššího.', 'ester > aldehyd > keton > kyselina > amid', ['amid > kyselina > keton > aldehyd > ester', 'keton > ester > amid > aldehyd > kyselina', 'všechny jsou na 1700 cm⁻¹'], '1735 > 1725 > 1715 > 1710 > 1650 cm⁻¹.', 'Ester 1735, aldehyd 1725, keton 1715, kyselina 1710, amid 1650. „Eva Absolvovala Ke Kafi Analytiku.“']
+];
+
+/* ===== Analytická chemie: kartičky, taháky a hry pro cvičení 3–6 ===== */
+const CHN = {}; AC_CH.forEach(([k, n]) => { CHN[k] = n; });
+const num = (x, d) => (x < 0 ? '−' : '') + Math.abs(x).toFixed(d).replace('.', ',');
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const SUP = { '-': '⁻', 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };
+const sci = (x, d) => { const e = Math.floor(Math.log10(x) + 1e-9), m = x / Math.pow(10, e); return e === 0 ? num(x, d) : `${num(m, d)}·10${String(e).split('').map(c => SUP[c]).join('')}`; };
+/* odlišné možnosti: vezme první 3, které se neshodují se správnou ani spolu */
+function pickWrong(right, cands, n) {
+  const out = [], seen = new Set([right]);
+  for (const c of cands) { if (!seen.has(c)) { seen.add(c); out.push(c); } if (out.length === (n || 3)) break; }
+  return out;
+}
+/* kartička s výběrem: q = {eb, h, sub, long}, r = správně, w = špatně, x = vysvětlení, m = Béďova pomůcka */
+const MC = (id, ch, q, r, w, x, m, pic) => ({ id, t: 'mc', ch, q, r, w, x, m, pic });
+
+function buildMore() {
+  const out = [];
+  /* 3. organická analýza: testy v obou směrech */
+  AC_OT.forEach(([id, g, rg, obs, pr, note, m]) => {
+    const same = AC_OT.filter(t => t[1] === g && t[0] !== id), other = AC_OT.filter(t => t[1] !== g);
+    const x = `${rg} → ${obs}: ${pr}.${note ? ' ' + note : ''}`;
+    out.push({ id: 'ot:' + id, t: 'mc', ch: 'org', q: { eb: `Co jsi dokázala? · ${g}`, h: obs, sub: `Postup: ${rg}.`, long: 1 }, r: pr, x, m,
+      wf: () => pickWrong(pr, mix(same.filter(t => t[3] !== obs).map(t => t[4])).concat(mix(other.map(t => t[4])))) });
+    out.push({ id: 'oo:' + id, t: 'mc', ch: 'org', q: { eb: `Co uvidíš? · ${g}`, h: `Důkaz: ${pr}`, sub: `Postup: ${rg}. Jak vypadá pozitivní výsledek?`, long: 1 }, r: obs, x, m,
+      wf: () => pickWrong(obs, mix(same.map(t => t[3])).concat(mix(other.map(t => t[3])))) });
+  });
+  /* třídy rozpustnosti */
+  const CLS = AC_SOL.map(s => s[0]), SOL = {}; AC_SOL.forEach(s => { SOL[s[0]] = s; });
+  AC_SUBST.forEach(([nm, c]) => out.push({ id: 'rs:' + nm, t: 'mc', ch: 'org', q: { eb: 'Třída rozpustnosti', h: nm, sub: 'Do které třídy rozpustnosti látka patří?' },
+    r: c, x: `${c}: ${SOL[c][1]}. Typicky ${SOL[c][2]}.`, m: AC_BEDA['sol' + c] || null, wf: () => pickWrong(c, mix(CLS.slice())) }));
+  AC_SOL.forEach(([c, p, typ]) => out.push({ id: 'rp:' + c, t: 'mc', ch: 'org', q: { eb: 'Třída rozpustnosti', h: p, sub: 'Která třída to je?', long: 1 },
+    r: c, x: `${c}: typicky ${typ}.`, wf: () => pickWrong(c, mix(CLS.slice())) }));
+  /* teorie */
+  AC_TH.forEach(([id, ch, q, r, w, x, m]) => out.push(MC('t:' + id, ch, { eb: CHN[ch].replace(/^\d · /, ''), h: q, sub: '', long: 1 }, r, w, x, m)));
+  /* 4. výpočty: polarimetrie a pH */
+  const sugarCase = () => { const s = pick(AC_SUGAR), l = pick([1, 2]), c = pick([50, 80, 100, 120, 150, 200]); return { s, l, c, a: Math.round(s[1] * l * c / 1000 / 0.05) * 0.05 }; };
+  out.push({ id: 'c:polcukr', t: 'calc', ch: 'fyz', gen: () => {
+    const { s, l, c, a } = sugarCase();
+    return { q: { eb: 'Polarimetrie', h: `α = ${num(a, 2)}°`, sub: `Roztok cukru ${c} g/l v kyvetě ${l * 10} cm. Který cukr to je?` }, r: s[0], w: pickWrong(s[0], mix(AC_SUGAR.map(x => x[0]))),
+      x: `[α] = 1000·α/(l·c) = 1000·${num(a, 2)}/(${l}·${c}) = ${num(1000 * a / (l * c), 1)}°, to sedí na ${s[0]} (${s[2]}). Délka kyvety v dm!`, m: AC_BEDA.kyveta };
+  } });
+  out.push({ id: 'c:polalfa', t: 'calc', ch: 'fyz', gen: () => {
+    const { s, l, c, a } = sugarCase(), f = v => `${num(v, 2)}°`;
+    return { q: { eb: 'Polarimetrie', h: `Jaký úhel naměříš?`, sub: `${s[0]}, [α] = ${num(s[1], 2)}°, c = ${c} g/l, kyveta ${l * 10} cm.` }, r: f(a), w: pickWrong(f(a), [f(a * 10), f(-a), f(a / 2), f(a * 2)]),
+      x: `α = [α]·l·c/1000 = ${num(s[1], 2)}·${l}·${c}/1000 = ${num(a, 2)}°. Kyveta ${l * 10} cm = ${l} dm.`, m: AC_BEDA.kyveta };
+  } });
+  const conc = () => { const m = pick([1, 2, 5]), k = pick([1, 2, 3, 4]); return m * Math.pow(10, -k); };
+  out.push({ id: 'c:phsil', t: 'calc', ch: 'fyz', gen: () => {
+    const c = conc(), p = -Math.log10(c), f = v => num(v, 2);
+    return { q: { eb: 'Výpočet pH', h: `pH roztoku HCl, c = ${sci(c, 0)} mol/l`, sub: 'Silná kyselina, disociuje úplně.' }, r: f(p), w: pickWrong(f(p), [f(14 - p), f(p + 1), f(Math.abs(p - 1)), f(-Math.log(c))]),
+      x: `pH = −log c(H₃O⁺) = −log ${sci(c, 0)} = ${f(p)}.`, m: AC_BEDA.ph };
+  } });
+  out.push({ id: 'c:phzas', t: 'calc', ch: 'fyz', gen: () => {
+    const c = conc(), po = -Math.log10(c), f = v => num(v, 2);
+    return { q: { eb: 'Výpočet pH', h: `pH roztoku NaOH, c = ${sci(c, 0)} mol/l`, sub: 'Silná zásada, disociuje úplně.' }, r: f(14 - po), w: pickWrong(f(14 - po), [f(po), f(13 - po), f(15 - po), f(7 + po / 2)]),
+      x: `pOH = −log ${sci(c, 0)} = ${f(po)}, pH = 14 − pOH = ${f(14 - po)}.`, m: AC_BEDA.ph };
+  } });
+  out.push({ id: 'c:phoct', t: 'calc', ch: 'fyz', gen: () => {
+    const c = pick([0.1, 0.05, 0.01, 0.2, 0.001]), p = (4.75 - Math.log10(c)) / 2, f = v => num(v, 2);
+    return { q: { eb: 'Výpočet pH', h: `pH kyseliny octové, c = ${num(c, c < 0.01 ? 3 : 2)} mol/l`, sub: 'Slabá kyselina, pKa = 4,75.' }, r: f(p), w: pickWrong(f(p), [f(-Math.log10(c)), f(4.75 - Math.log10(c)), f(4.75), f(p + 1)]),
+      x: `Slabá kyselina: pH = ½(pKa − log c) = ½(4,75 − log ${num(c, 3)}) = ${f(p)}.`, m: 'Slabá kyselina je líná: disociuje jen trochu, proto se půlí. pH = ½(pKa − log c).' };
+  } });
+  /* 5. UV-VIS: indikátory a výpočty */
+  AC_IND.forEach(([nm, a, b, ca, cb]) => {
+    out.push({ id: 'ui:' + nm, t: 'calc', ch: 'uv', gen: () => {
+      const lo = Math.random() < .5, ph = lo ? Math.max(0, Math.floor(a) - 1 - Math.floor(Math.random() * 1.5)) : Math.min(14, Math.ceil(b) + 1 + Math.floor(Math.random() * 1.5)), r = lo ? ca : cb;
+      return { q: { eb: 'Indikátory', h: `${nm} při pH ${ph}`, sub: 'Jakou barvu má roztok?' }, r, w: pickWrong(r, [lo ? cb : ca].concat(mix(AC_IND.flatMap(x => [x[3], x[4]])))),
+        x: `${nm}: ${ca} pod pH ${num(a, 1)}, ${cb} nad pH ${num(b, 1)}.`, m: AC_BEDA['ind:' + nm] };
+    } });
+    const rr = `${num(a, 1)}–${num(b, 1)}`;
+    out.push(MC('ur:' + nm, 'uv', { eb: 'Indikátory', h: `${nm}: ${ca} → ${cb}`, sub: 'V jakém rozmezí pH mění barvu?' }, rr,
+      AC_IND.filter(x => Math.abs(x[1] - a) > .9).map(x => `${num(x[1], 1)}–${num(x[2], 1)}`), `${nm} přechází z ${ca} na ${cb} mezi pH ${rr}.`, AC_BEDA['ind:' + nm]));
+  });
+  out.push({ id: 'c:lb', t: 'calc', ch: 'uv', gen: () => {
+    const e = pick([1.2, 1.5, 2, 2.5, 4, 5]) * 1e4, A = pick([0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]), d = pick([1, 1, 2]), c = A / (e * d), f = v => `${sci(v, 1)} mol/l`;
+    return { q: { eb: 'Lambertův–Beerův zákon', h: `A = ${num(A, 2)}`, sub: `ε = ${sci(e, 1)} l·mol⁻¹·cm⁻¹, kyveta ${d} cm. Jaká je koncentrace?` }, r: f(c), w: pickWrong(f(c), [f(c * 10), f(c / 10), f(A * e * d / 1e8), f(c * d * d)]),
+      x: `c = A/(ε·d) = ${num(A, 2)}/(${sci(e, 1)}·${d}) = ${sci(c, 1)} mol/l.`, m: 'A = ε·d·c, čti „edc“ jako ednička, dvojka, cé. Koncentrace je na konci, tak ji vyděl ostatními.' };
+  } });
+  out.push({ id: 'c:trans', t: 'calc', ch: 'uv', gen: () => {
+    const T = pick([1, 5, 10, 20, 25, 50, 80]), A = 2 - Math.log10(T), f = v => num(v, 2);
+    return { q: { eb: 'Absorbance', h: `T = ${T} %`, sub: 'Jaká je absorbance?' }, r: f(A), w: pickWrong(f(A), [f(Math.log10(T)), f(T / 100), f(1 - T / 100), f(-Math.log(T / 100))]),
+      x: `A = −log T = −log ${num(T / 100, 2)} = ${f(A)}.`, m: AC_BEDA.abs };
+  } });
+  /* 6. IČ: pás ↔ vazba, rušivé možnosti jen z pásů, které se nepřekrývají */
+  const far = (a, b) => b[6] < a[5] - 30 || b[5] > a[6] + 30;
+  AC_IRT.forEach(b => {
+    const [id, bond, typ, rng, int] = b, lab = x => `${x[1]} · ${x[2]}`, others = () => mix(AC_IRT.filter(o => far(b, o)));
+    out.push({ id: 'ib:' + id, t: 'mc', ch: 'ir', q: { eb: 'IČ spektrum', h: `${rng} cm⁻¹`, sub: `Intenzita ${int}. Které vazbě pás patří?` }, r: lab(b), x: `${bond} (${typ}): ${rng} cm⁻¹, ${int}.`, m: AC_BEDA['ir:' + id], wf: () => pickWrong(lab(b), others().map(lab)) });
+    out.push({ id: 'ir:' + id, t: 'mc', ch: 'ir', q: { eb: 'IČ spektrum', h: `${bond} · ${typ}`, sub: 'Kde ve spektru leží pás?' }, r: `${rng} cm⁻¹`, x: `${bond} (${typ}): ${rng} cm⁻¹, ${int}.`, m: AC_BEDA['ir:' + id], wf: () => pickWrong(`${rng} cm⁻¹`, others().map(o => `${o[3]} cm⁻¹`)) });
+  });
+  return out;
+}
+/* data otázky: u výpočtů se čísla generují pokaždé znovu */
+function mcData(cd) {
+  if (cd.gen) return cd.gen();
+  return { q: cd.q, r: cd.r, w: cd.wf ? cd.wf() : pickWrong(cd.r, mix(cd.w.slice())), x: cd.x, m: cd.m };
+}
+
+/* --- taháky --- */
+const tbl = (head, rows) => `<div class="ac-tw"><table class="ac-sheet"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
+const tip = m => m ? `<p class="ac-btip"><b>Béďa:</b> ${escA(m)}</p>` : '';
+function sheetOrg() {
+  const grp = []; AC_OT.forEach(t => { if (!grp.includes(t[1])) grp.push(t[1]); });
+  const tree = `<ol class="ac-tree"><li>Rozpustí se ve vodě? <b>Ano</b> → ether: rozpustí se = <b>S1</b>, nerozpustí = <b>S2</b>.</li>
+    <li><b>Ne</b> → 5% NaOH. Rozpustí se → 5% NaHCO₃ a 5% HCl: NaHCO₃ ano = <b>A1</b> (a když i HCl, tak <b>A1B</b>), NaHCO₃ ne = <b>A2</b> (s HCl <b>A2B</b>).</li>
+    <li>NaOH ne → 5% HCl. Rozpustí se = <b>B</b>.</li>
+    <li>Nic z toho → obsahuje N nebo S? Ano = <b>M</b>.</li>
+    <li>Bez N a S → konc. H₂SO₄: reaguje = <b>N</b>, nereaguje = <b>I</b>.</li></ol>`;
+  return sec('Důkazy prvků', tbl(['Prvek', 'Postup', 'Pozitivní'], AC_OT.filter(t => t[1] === 'Prvky').map(t => [escA(t[4]), escA(t[2]), escA(t[3])])))
+    + sec('Třídy rozpustnosti', tree + tbl(['Třída', 'Chování', 'Typické látky'], AC_SOL.map(s => [s[0], escA(s[1]), escA(s[2])])) + tip(AC_BEDA.sol))
+    + grp.filter(g => g !== 'Prvky').map(g => sec(g, tbl(['Postup', 'Pozitivní', 'Dokazuje'], AC_OT.filter(t => t[1] === g).map(t => [escA(t[2]), escA(t[3]), escA(t[4])])) + tip(AC_OT.filter(t => t[1] === g && t[6]).map(t => t[6])[0]))).join('');
+}
+function sheetFyz() {
+  return sec('Teplota tání', `<ul class="ac-ul"><li>Vrstva látky v kapiláře 2–4 mm, kapilára průměr 1–1,5 mm.</li><li>Zahřívat 4–6 °C/min, u teploty tání 1–2 °C/min.</li><li>Odečítá se vznik taveniny, poslední krystal mizí asi o 2–3 °C výš.</li><li>Nečistota teplotu tání sníží a interval rozšíří.</li></ul>${tip(AC_BEDA.tani)}`)
+    + sec('Index lomu', `<ul class="ac-ul"><li>n = c₁/c₂ = sin α / sin β (Snellův zákon).</li><li>n<sub>D</sub><sup>20</sup>: sodíková čára D, 20 °C.</li><li>S teplotou klesá o 0,0003–0,0008 na 1 °C.</li><li>Abbého refraktometr: mezní úhel, rozsah 1,300–1,700, přesnost ±0,0001.</li></ul>`)
+    + sec('pH', `<ul class="ac-ul"><li>pH = −log a(H₃O⁺), Kw = 10⁻¹⁴, pH + pOH = 14.</li><li>Silná kyselina: pH = −log c. Silná zásada: pH = 14 + log c.</li><li>Slabá kyselina: pH = ½(pKa − log c), kyselina octová pKa = 4,75.</li><li>Skleněná elektroda = membránová iontově selektivní. Kalibrace: pufr 7 → OFFSET, pufr 4 nebo 10 → SLOPE.</li></ul>${tip(AC_BEDA.ph)}`)
+    + sec('Polarimetrie', `<p class="ac-formula">[α] = 1000·α / (l·c)</p><p class="aside">l v dm, c v g/l. Pravotočivé (+) stáčí po směru hodinových ručiček při pohledu proti světlu. Nonius 0,05°, nastavuje se na stejnoměrně šedé pole.</p>
+      ${tbl(['Cukr', '[α]<sub>D</sub><sup>20</sup>'], AC_SUGAR.map(s => [s[0], s[2] + '°']))}${tip(AC_BEDA.kyveta)}`);
+}
+function indChart() {
+  const W = 340, x = p => 92 + p * (W - 100) / 14, rows = AC_IND.length, H = rows * 22 + 26;
+  const bars = AC_IND.map(([nm, a, b, , , ha, hb], i) => { const y = 8 + i * 22, gid = 'acg' + i;
+    return `<defs><linearGradient id="${gid}"><stop offset="0" stop-color="${ha}"/><stop offset="1" stop-color="${hb}"/></linearGradient></defs>
+      <text x="88" y="${y + 12}" text-anchor="end" class="ac-ct">${escA(nm.replace(/ \((\d)\. přechod\)/, ' $1'))}</text>
+      <rect x="${x(0)}" y="${y + 2}" width="${x(a) - x(0)}" height="14" fill="${ha}" opacity=".9"/><rect x="${x(a)}" y="${y + 2}" width="${x(b) - x(a)}" height="14" fill="url(#${gid})"/><rect x="${x(b)}" y="${y + 2}" width="${x(14) - x(b)}" height="14" fill="${hb}" opacity=".9"/>
+      <rect x="${x(0)}" y="${y + 2}" width="${x(14) - x(0)}" height="14" fill="none" stroke="var(--line)"/>`; }).join('');
+  const ax = [0, 2, 4, 6, 8, 10, 12, 14].map(p => `<text x="${x(p)}" y="${H - 4}" text-anchor="middle" class="ac-ct">${p}</text>`).join('');
+  return `<svg class="ac-ind" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rozsahy přechodu indikátorů na ose pH 0 až 14">${bars}${ax}</svg>`;
+}
+function sheetUv() {
+  const uni = ['#c62828', '#e53935', '#ef6c00', '#f9a825', '#fdd835', '#d4e157', '#9ccc65', '#66bb6a', '#26a69a', '#26c6da', '#1e88e5', '#3949ab', '#303f9f', '#1a237e', '#121858'];
+  return sec('Vzorce', `<p class="ac-formula">A = log(I₀/I) = −log T&emsp;A = ε·d·c</p><ul class="ac-ul"><li>UV-VIS 190–900 nm, přechody vnějších elektronů v chromoforech.</li><li>Měř tak, aby A &lt; 2. Nejdřív blank.</li><li>DAD: polychromatické světlo, celé spektrum najednou.</li><li>Nuly 1. derivace spektra = maxima a minima.</li></ul>${tip(AC_BEDA.abs)}`)
+    + sec('Indikátory', `${indChart()}${tbl(['Indikátor', 'pH', 'Kyselá', 'Zásaditá'], AC_IND.map(i => [escA(i[0]), `${num(i[1], 1)}–${num(i[2], 1)}`, i[3], i[4]]))}${tip(AC_BEDA.ind)}`)
+    + sec('Univerzální papírek', `<div class="ac-uni">${uni.map((c, i) => `<span style="background:${c}"><b>${i}</b></span>`).join('')}</div>`);
+}
+const SPX = v => 8 + (4000 - v) / 3400 * 324;
+function irRuler() {
+  const rows = AC_IRT.slice().sort((a, b) => b[6] - a[6]);
+  return `<svg class="ac-ind" viewBox="0 0 340 ${rows.length * 13 + 22}" role="img" aria-label="Poloha pásů na ose vlnočtu 4000 až 600 cm⁻¹">${[4000, 3000, 2000, 1500, 1000].map(v => `<line x1="${SPX(v)}" x2="${SPX(v)}" y1="0" y2="${rows.length * 13 + 4}" stroke="var(--line)"/><text x="${SPX(v)}" y="${rows.length * 13 + 18}" text-anchor="${v === 4000 ? 'start' : 'middle'}" class="ac-ct">${v}</text>`).join('')}
+    ${rows.map((b, i) => `<rect x="${SPX(b[6])}" y="${i * 13 + 2}" width="${Math.max(3, SPX(b[5]) - SPX(b[6]))}" height="9" rx="2" fill="var(--accent)"/><text x="${SPX(b[5]) + 4 > 260 ? SPX(b[6]) - 3 : SPX(b[5]) + 4}" y="${i * 13 + 10}" text-anchor="${SPX(b[5]) + 4 > 260 ? 'end' : 'start'}" class="ac-ct">${escA(b[1])} ${escA(b[2].replace(/ \(.*\)/, ''))}</text>`).join('')}</svg>`;
+}
+function sheetIr() {
+  return sec('Tabulka vibrací', `${irRuler()}${tbl(['Vazba', 'Látka', 'cm⁻¹', 'Intenzita'], AC_IRT.map(b => [escA(b[1]), escA(b[2]), b[3], b[4]]))}${tip(AC_BEDA.co)}`)
+    + sec('Technika', `<ul class="ac-ul"><li>MIR 4000–200 cm⁻¹ (vibrace), NIR 12 800–4000 (svrchní tóny), FIR 200–5 (rotace).</li><li>Aktivní je vibrace, při které se mění dipólový moment.</li><li>FT-IR: interferometr, zdroj SiC nebo NiCr, detektor DTGS nebo MCT, He-Ne laser hlídá zrcadlo.</li><li>Pozadí: vodní pára a CO₂. Optika z KBr je hygroskopická, přístroj zůstává pod napětím.</li><li>ATR: krystal ZnSe, Ge, Si nebo diamant, průnik asi 1 µm. KBr tableta: 0,1–0,2 mg vzorku na 400–500 mg KBr.</li></ul>`);
+}
+function sheetView() { return ST.ch === 'org' ? sheetOrg() : ST.ch === 'fyz' ? sheetFyz() : ST.ch === 'uv' ? sheetUv() : sheetIr(); }
+
+/* --- hra Třída rozpustnosti --- */
+const RZ = { s: null, log: [], wrong: new Set(), done: false };
+const RZT = [['voda', 'voda'], ['ether', 'ether'], ['naoh', '5% NaOH'], ['nahco3', '5% NaHCO₃'], ['hcl', '5% HCl'], ['ns', 'důkaz N a S'], ['h2so4', 'konc. H₂SO₄']];
+function rzNew() { const p = RZ.s; let s; do { s = pick(AC_SUBST); } while (s === p); RZ.s = s; RZ.log = []; RZ.wrong = new Set(); RZ.done = false; }
+function rzResult(k) {
+  const [, c, ns] = RZ.s, ws = c === 'S1' || c === 'S2', Y = 'rozpustí se', N = 'nerozpustí se';
+  if (k === 'voda') return ws ? Y : N;
+  if (k === 'ether') return c === 'S2' ? N : Y;
+  if (k === 'ns') return ns ? 'obsahuje N nebo S' : 'bez N a S';
+  if (k === 'h2so4') return ns ? 'test se nedělá, látka obsahuje N nebo S' : c === 'I' ? 'nereaguje, zůstane beze změny' : 'reaguje (rozpustí se, zahřeje nebo zbarví)';
+  if (ws) return `${Y}, ale rozpouští ji už voda`;
+  const ok = { naoh: ['A1', 'A2', 'A1B', 'A2B'], nahco3: ['A1', 'A1B'], hcl: ['B', 'A1B', 'A2B'] }[k];
+  return ok.includes(c) ? Y : N;
+}
+const rzScore = () => Math.max(10, 100 - 8 * RZ.log.length - 25 * RZ.wrong.size);
+function rzTry(k) { if (RZ.done || RZ.log.some(l => l.k === k)) return; RZ.log.push({ k, n: RZT.find(t => t[0] === k)[1], v: rzResult(k) }); render(); }
+function rzGuess(c) {
+  if (RZ.done) return;
+  if (c === RZ.s[1]) { RZ.done = true; RZ.last = rzScore(); ST.best = ST.best || {}; RZ.rec = RZ.last > (ST.best.rz || 0); ST.best.rz = Math.max(ST.best.rz || 0, RZ.last); save(); }
+  else RZ.wrong.add(c);
+  render();
+}
+function rozpView() {
+  if (!RZ.s) rzNew();
+  const [nm, c] = RZ.s, S0 = AC_SOL.find(s => s[0] === c);
+  const head = `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Třída rozpustnosti</span><span class="ac-score">Body ${RZ.done ? RZ.last : rzScore()} · nejlepší ${(ST.best && ST.best.rz) || 0}</span></div>
+    <h2 class="q-name">${escA(nm)}</h2><p class="ac-sub">Zkoušej rozpouštědla a zařaď látku do třídy. Každá zkouška stojí 8 bodů, špatný tip 25. Postupuj jako v laborce: voda, ether, NaOH, NaHCO₃, HCl, N a S, konc. H₂SO₄.</p></div>`;
+  const log = RZ.log.length ? `<ol class="ac-log">${RZ.log.map(l => `<li><div><b>${escA(l.n)}</b><span>${escA(l.v)}</span></div></li>`).join('')}</ol>` : '';
+  if (RZ.done) return `${head}${log}<div class="card"><div class="fb ok"><p><b>${escA(nm)} patří do třídy ${c}!</b> ${RZ.last} bodů${RZ.rec ? ', nový rekord' : ''}.</p></div><p>${escA(S0[1])}. Typicky ${escA(S0[2])}.</p>${tip(AC_BEDA['sol' + c] || AC_BEDA.sol)}<div class="row"><button type="button" class="btn primary" data-ac="rznew">Další látka</button><button type="button" class="btn" data-ac="mode" data-v="sheet">Tahák</button></div></div>`;
+  return `${head}${log}<div class="card"><span class="eyebrow">Zkouška</span><div class="ac-rgs">${RZT.map(([k, n]) => `<button type="button" class="ac-rg" data-ac="rztry" data-v="${k}"${RZ.log.some(l => l.k === k) ? ' disabled' : ''}>${n}</button>`).join('')}</div>
+    <span class="eyebrow">Tvůj tip</span><div class="ac-chips">${AC_SOL.map(s => `<button type="button" class="ac-ion${RZ.wrong.has(s[0]) ? ' wrong' : ''}" data-ac="rzguess" data-v="${s[0]}"${RZ.wrong.has(s[0]) ? ' disabled' : ''}>${s[0]}</button>`).join('')}</div></div>`;
+}
+
+/* --- hra Čti IČ spektrum --- */
+const SP = { s: null, opts: null, done: false, ok: false, streak: 0 };
+function spNew() { const p = SP.s; let s; do { s = pick(AC_SPEC); } while (s === p); SP.s = s; SP.done = false; SP.opts = mix([s].concat(mix(AC_SPEC.filter(x => x !== s)).slice(0, 3))); }
+function specSVG(s, ann) {
+  const pts = [], T = v => s[2].reduce((t, [p, d, w]) => t * (1 - d * Math.exp(-Math.pow((v - p) / w, 2))), 1);
+  for (let v = 4000; v >= 600; v -= 4) { const n = Math.sin(v * 0.37) * 0.006 + Math.sin(v * 0.113) * 0.004; pts.push(`${SPX(v).toFixed(1)},${(14 + (1 - Math.min(1, T(v) * 0.96 + n)) * 150).toFixed(1)}`); }
+  const grid = [4000, 3500, 3000, 2500, 2000, 1500, 1000].map(v => `<line x1="${SPX(v)}" x2="${SPX(v)}" y1="10" y2="168" stroke="var(--line)"/><text x="${SPX(v)}" y="182" text-anchor="${v === 4000 ? 'start' : 'middle'}" class="ac-ct">${v}</text>`).join('');
+  const lab = ann ? s[2].map(([p, d]) => { const y = 14 + (1 - T(p) * 0.96) * 150; return `<text x="${SPX(p)}" y="${Math.min(y + 14, 166)}" text-anchor="middle" class="ac-ct ac-pk">${p}</text>`; }).join('') : '';
+  return `<svg class="ac-spec" viewBox="0 0 340 190" role="img" aria-label="Simulované IČ spektrum, transmitance proti vlnočtu"><text x="8" y="8" class="ac-ct">T</text>${grid}<polyline points="${pts.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>${lab}<text x="332" y="${190}" text-anchor="end" class="ac-ct">cm⁻¹</text></svg>`;
+}
+function spGuess(k) {
+  if (SP.done) return;
+  const o = SP.opts[+k]; SP.done = true; SP.ok = o === SP.s; SP.picked = o;
+  SP.streak = SP.ok ? SP.streak + 1 : 0; ST.best = ST.best || {};
+  if (SP.streak > (ST.best.ir || 0)) { ST.best.ir = SP.streak; save(); }
+  render();
+}
+function specView() {
+  if (!SP.s) spNew();
+  const s = SP.s;
+  return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Čti IČ spektrum</span><span class="ac-score">Série ${SP.streak} · nejlepší ${(ST.best && ST.best.ir) || 0}</span></div>
+    ${specSVG(s, SP.done)}<p class="ac-sub">Jaká látka má tohle spektrum? Dívej se na oblast nad 3000, tiché pásmo 2300–2000 a karbonyl kolem 1700 cm⁻¹.</p>
+    <div class="opts${SP.done ? ' done' : ''}">${SP.opts.map((o, k) => `<button type="button" class="opt${SP.done ? (o === s ? ' right' : o === SP.picked ? ' wrong' : '') : ''}" data-ac="spg" data-v="${k}"${SP.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${escA(o[1])}</span></button>`).join('')}</div>
+    ${SP.done ? `<div class="fb ${SP.ok ? 'ok' : 'bad'}"><p><b>${SP.ok ? 'Správně!' : `Tohle je ${escA(s[1])}.`}</b> ${escA(s[3])}</p></div>${bedaBox(AC_BEDA['sp:' + s[0]] || AC_BEDA.co)}<div class="row"><button type="button" class="btn primary" data-ac="spnew">Další spektrum</button></div>` : ''}</div>`;
+}
+
+/* --- Béďa radí a memy --- */
+let BEDA_SVG = null;
+function bedaSVG() {
+  if (BEDA_SVG === null) { const m = document.querySelector('#mascot svg'); BEDA_SVG = m ? m.outerHTML.replace('role="img"', 'aria-hidden="true"').replace(/ aria-label="[^"]*"/, '') : ''; }
+  return BEDA_SVG;
+}
+function bedaBox(m) { return m ? `<div class="ac-beda"><div class="ac-beda-pic">${bedaSVG()}</div><p><b>Béďa radí:</b> ${escA(m)}</p></div>` : ''; }
+function memeCard() {
+  const L = AC_MEMES.filter(x => x[2] === ST.ch), m = L.length ? pick(L) : pick(AC_MEMES);
+  return `<figure class="ac-meme" aria-label="Vtip: ${escA(m[0])}, ${escA(m[1])}"><span class="mt">${escA(m[0])}</span><div class="ac-meme-pic">${bedaSVG()}</div><span class="mb">${escA(m[1])}</span></figure>`;
+}
+
 /* ===== Analytická chemie: procvičování, tabulka, přehled iontů a hra Neznámý vzorek ===== */
 const store0 = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* bez úložiště to jede dál */ } } };
-const ST = Object.assign({ r: {}, best: {}, cls: 'k', mode: 'quiz', types: ['obs', 'ion', 'grp', 'sel'], hide: false }, store0.get('fg-ac', {}));
+const ST = Object.assign({ r: {}, best: {}, cls: 'k', mode: 'quiz', types: ['obs', 'ion', 'grp', 'sel'], hide: false, ch: 'ka' }, store0.get('fg-ac', {}));
+if (!CHN[ST.ch]) ST.ch = 'ka';
 const save = () => store0.set('fg-ac', ST);
 const $a = s => document.querySelector(s);
 const escA = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -28687,12 +29201,12 @@ function buildCards() {
   AC_ION.forEach(ion => { if (SELQ.some(x => x.i === ion.id)) out.push({ id: `h:${ion.id}`, t: 'how', c: ion.c, ion }); });
   return out;
 }
-const CARDS = buildCards();
+const CARDS = buildCards().concat(buildMore());
 const TYPE_OF = { obs: 'obs', ion: 'ion', grp: 'grp', sel: 'sel', how: 'sel' };
 const TYPES = [['obs', 'Co uvidíš'], ['ion', 'Který iont'], ['grp', 'Skupinová činidla'], ['sel', 'Selektivní důkazy']];
-const inPool = cd => (ST.cls === 'b' || cd.c === ST.cls) && ST.types.includes(TYPE_OF[cd.t]);
+const inPool = cd => (cd.ch || 'ka') === ST.ch && (!!cd.ch || ((ST.cls === 'b' || cd.c === ST.cls) && ST.types.includes(TYPE_OF[cd.t])));
 const due = id => ST.r[id] && ST.r[id].d <= day();
-const dueCount = () => CARDS.filter(cd => due(cd.id)).length;
+const dueCount = ch => CARDS.filter(cd => due(cd.id) && (!ch || (cd.ch || 'ka') === ch)).length;
 const SRI = [0, 1, 2, 4, 8, 16, 32];
 function mark(id, ok) {
   const t = day(), r = ST.r[id] || { b: 0, d: t, ok: 0, bad: 0 };
@@ -28708,9 +29222,10 @@ function newDeck(onlyDue) {
   Q.empty = !Q.deck.length;
   next(true);
 }
-function next(first) { if (!first) Q.i++; Q.cur = Q.deck[Q.i] || null; Q.done = false; Q.pick = new Set(); Q.opts = null; render(); }
+function next(first) { if (!first) Q.i++; Q.cur = Q.deck[Q.i] || null; Q.done = false; Q.pick = new Set(); Q.opts = null; Q.d = null; render(); }
 const uniq = a => [...new Set(a)];
 function optsFor(cd) {
+  if (cd.t === 'mc' || cd.t === 'calc') { const d = Q.d = mcData(cd); return mix([d.r].concat(d.w.slice(0, 3))).map(v => ({ t: v, ok: v === d.r })); }
   if (cd.t === 'obs') {
     const L = ions(cd.c).filter(o => o.id !== cd.ion.id);
     let d = uniq(L.map(o => o.r[cd.rk] ? o.r[cd.rk].v : NONE)).filter(v => v !== cd.rx.v);
@@ -28735,6 +29250,7 @@ function optsFor(cd) {
   return null;
 }
 function qHead(cd) {
+  if (Q.d && (cd.t === 'mc' || cd.t === 'calc')) return Q.d.q;
   const K = KIND[cd.c];
   if (cd.t === 'obs') { const r = rg(cd.c, cd.rk); return { eb: 'Co uvidíš?', h: `${cd.ion.f} + ${r[1]}`, sub: `${cd.ion.nm} a ${r[2]}${XS[cd.rk] && cd.c === 'k' ? ', přidávej po kapkách až do nadbytku' : ''}` }; }
   if (cd.t === 'ion') { const r = rg(cd.c, cd.rk); return { eb: `Který ${K[0]}?`, h: `${r[1]}: ${cd.rx.v}`, sub: `Skupinové činidlo ${r[2]}. Který ${K[0]} takhle reaguje?`, long: 1 }; }
@@ -28751,6 +29267,8 @@ function feedback(cd, ok) {
   if (cd.t === 'obs' || cd.t === 'ion') {
     const r = rg(cd.c, cd.rk); pic = rxPic(cd.ion, cd.rx);
     body = `<p><b>${cd.ion.f} + ${r[1]}:</b> ${escA(cd.rx.v)}. Vzniká <b>${cd.rx.f}</b>.</p>${cd.rx.n ? `<p class="aside">${cd.rx.n}</p>` : ''}`;
+  } else if (cd.t === 'mc' || cd.t === 'calc') {
+    body = `<p>Správně: <b>${escA(Q.d.r)}</b></p>${Q.d.x ? `<p class="aside">${escA(Q.d.x)}</p>` : ''}`;
   } else if (cd.t === 'sel') {
     pic = selPic(cd.x);
     const same = SELQ.filter(y => y.k === cd.x.k && y.v === cd.x.v && y.i !== cd.x.i).map(y => ION[y.i].f);
@@ -28761,18 +29279,27 @@ function feedback(cd, ok) {
   } else {
     body = `<p>${cd.set.length ? `Správně: <b>${cd.set.map(i => ION[i].f).join(', ')}</b>` : 'Správně: žádný.'}</p>${cd.ex && cd.rk === 'NaOH' ? '<p class="aside">Vzniklé roztoky jsou bezbarvé, jen chromitan je zelený.</p>' : ''}${cd.rk === 'H2S' && cd.c === 'k' && !cd.ex ? '<p class="aside">Pozor na Fe³⁺: oxiduje sulfan a vznikne jen bílý zákal síry, ne sraženina sulfidu.</p>' : ''}`;
   }
-  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>`;
+  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${bedaBox(bedaFor(cd))}`;
+}
+/* Béďova pomůcka ke kartičce: u skupinových otázek podle činidla, jinak podle iontu */
+function bedaFor(cd) {
+  if (cd.t === 'mc' || cd.t === 'calc') return Q.d.m;
+  if (cd.t === 'grp') return cd.none ? AC_BEDA.no3 : AC_BEDA[cd.rk];
+  if (cd.t === 'sel' && cd.x.k === 'flame') return AC_BEDA.flame;
+  if ((cd.t === 'obs' || cd.t === 'ion') && Math.random() < .35 && AC_BEDA[cd.rk]) return AC_BEDA[cd.rk];
+  return AC_BEDA[cd.ion.id];
 }
 function quizView() {
   if (Q.empty) return `<div class="card"><p>${ST.types.length ? 'V tomhle výběru teď nic není.' : 'Vyber aspoň jeden druh otázek.'}</p></div>`;
   if (!Q.cur) {
     const n = Q.deck.length;
-    return `<div class="card ac-end"><span class="eyebrow">Kolo hotové</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
+    return `${memeCard()}<div class="card ac-end"><span class="eyebrow">Kolo hotové</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
       ${Q.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${Q.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
-      <div class="row"><button type="button" class="btn primary" data-ac="again">Další kolo</button><button type="button" class="btn" data-ac="mode" data-v="table">Projít tabulku</button></div></div>`;
+      <div class="row"><button type="button" class="btn primary" data-ac="again">Další kolo</button>${ST.ch === 'ka' ? '<button type="button" class="btn" data-ac="mode" data-v="table">Projít tabulku</button>' : '<button type="button" class="btn" data-ac="mode" data-v="sheet">Projít tahák</button>'}</div></div>`;
   }
-  const cd = Q.cur, h = qHead(cd);
+  const cd = Q.cur;
   if (!Q.opts) Q.opts = optsFor(cd);
+  const h = qHead(cd);
   const prog = `<div class="progress"><span class="cnt">${Q.i + 1} / ${Q.deck.length}</span><span class="bar"><i style="width:${100 * Q.i / Q.deck.length}%"></i></span><span class="cnt">${Q.ok} ✓</span></div>`;
   let ans;
   if (cd.t === 'grp') {
@@ -28783,7 +29310,7 @@ function quizView() {
     ans = `<div class="opts${Q.done ? ' done' : ''}">${Q.opts.map((o, k) => `<button type="button" class="opt${Q.done ? (o.ok ? ' right' : o.picked ? ' wrong' : '') : ''}${o.chem ? ' ac-chem' : ''}" data-ac="opt" data-v="${k}"${Q.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${escA(o.t)}</span></button>`).join('')}</div>`;
   }
   return `${prog}<div class="card ac-q"><div class="card-head"><span class="eyebrow">${h.eb}</span>${ST.r[cd.id] ? '' : '<span class="ac-new">nová</span>'}</div>
-    <h2 class="q-name${h.long ? ' ac-long' : ''}">${escA(h.h)}</h2><p class="ac-sub">${escA(h.sub)}</p>${ans}
+    <h2 class="q-name${h.long ? ' ac-long' : ''}">${escA(h.h)}</h2>${h.sub ? `<p class="ac-sub">${escA(h.sub)}</p>` : ''}${ans}
     <div id="acFb">${Q.done ? Q.fb + '<div class="row"><button type="button" class="btn primary" id="acNext" data-ac="next">Další</button></div>' : ''}</div></div>`;
 }
 function answer(ok, missText) {
@@ -28791,7 +29318,7 @@ function answer(ok, missText) {
   mark(cd.id, ok); Q.fb = feedback(cd, ok); render();
   const b = $a('#acNext'); if (b) b.focus({ preventScroll: true });
 }
-const missTxt = cd => cd.t === 'obs' || cd.t === 'ion' ? `${cd.ion.f} + ${rg(cd.c, cd.rk)[1]}: ${escA(cd.rx.v)} (${cd.rx.f})` : cd.t === 'sel' ? `${cd.ion.f}: ${escA(cd.x.r)} → ${escA(cd.x.v)}` : cd.t === 'how' ? `Důkazy ${cd.ion.f}` : `${escA(qHead(cd).h)} ${cd.set.map(i => ION[i].f).join(', ')}`;
+const missTxt = cd => cd.t === 'mc' || cd.t === 'calc' ? `${escA(Q.d.q.h)}: ${escA(Q.d.r)}` : cd.t === 'obs' || cd.t === 'ion' ? `${cd.ion.f} + ${rg(cd.c, cd.rk)[1]}: ${escA(cd.rx.v)} (${cd.rx.f})` : cd.t === 'sel' ? `${cd.ion.f}: ${escA(cd.x.r)} → ${escA(cd.x.v)}` : cd.t === 'how' ? `Důkazy ${cd.ion.f}` : `${escA(qHead(cd).h)} ${cd.set.map(i => ION[i].f).join(', ')}`;
 
 /* --- tabulka --- */
 const lum = hex => { const n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) / 255; };
@@ -28881,21 +29408,33 @@ function gameView() {
 }
 
 /* --- vykreslení a ovládání --- */
-const MODES = [['quiz', 'Procvičování'], ['table', 'Tabulka'], ['ions', 'Ionty'], ['game', 'Neznámý vzorek']];
-const HASH = { quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek' };
+const MODEN = { quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Třída rozpustnosti', spek: 'Čti IČ spektrum' };
+const CHM = { ka: ['quiz', 'table', 'ions', 'game'], org: ['quiz', 'sheet', 'rozp'], fyz: ['quiz', 'sheet'], uv: ['quiz', 'sheet'], ir: ['quiz', 'sheet', 'spek'] };
+const HASH = { quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum' };
+const MODECH = { table: 'ka', ions: 'ka', game: 'ka', rozp: 'org', spek: 'ir' };
+const LEAD = { ka: 'Kvalitativní analýza podle skript ke cvičení 1 a 2: jak kationty a anionty reagují se skupinovými činidly a jak je dokážeš selektivně.',
+  org: 'Cvičení 3: důkazy prvků, třídy rozpustnosti a důkazy funkčních skupin organických látek.', fyz: 'Cvičení 4: teplota tání, index lomu, pH a polarimetrie, včetně výpočtů.',
+  uv: 'Cvičení 5: absorbance, Lambertův–Beerův zákon, spektrofotometry a acidobazické indikátory.', ir: 'Cvičení 6: IČ oblasti, FT-IR spektrometr, techniky měření a tabulka vibrací.' };
 function render() {
   const box = $a('#acView'); if (!box || $a('#appAC').hidden) return;
+  const cs = $a('#acChSel'); if (cs && !cs.options.length) cs.innerHTML = AC_CH.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+  if (cs) cs.value = ST.ch;
+  $a('#acLead').textContent = LEAD[ST.ch];
+  $a('#acCls').parentNode.hidden = ST.ch !== 'ka';
   $a('#acCls').innerHTML = [['k', 'Kationty'], ['a', 'Anionty'], ['b', 'Obojí']].map(([v, n]) => `<button type="button" data-ac="cls" data-v="${v}" aria-pressed="${ST.cls === v}">${n}</button>`).join('');
-  $a('#acMode').innerHTML = MODES.map(([v, n]) => `<button type="button" data-ac="mode" data-v="${v}" aria-pressed="${ST.mode === v}">${n}</button>`).join('');
-  const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz';
+  $a('#acMode').innerHTML = CHM[ST.ch].map(v => [v, MODEN[v]]).map(([v, n]) => `<button type="button" data-ac="mode" data-v="${v}" aria-pressed="${ST.mode === v}">${n}</button>`).join('');
+  const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz' || ST.ch !== 'ka';
   tb.innerHTML = `<span class="eyebrow">Otázky</span><div class="chips">${TYPES.map(([v, n]) => `<button type="button" class="chip" data-ac="type" data-v="${v}" aria-pressed="${ST.types.includes(v)}">${n}</button>`).join('')}</div>`;
-  const nd = dueCount(); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
-  box.innerHTML = ST.mode === 'table' ? tableView() : ST.mode === 'ions' ? ionsView() : ST.mode === 'game' ? gameView() : quizView();
+  const nd = dueCount(ST.ch); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
+  const V = { table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView };
+  box.innerHTML = (V[ST.mode] || quizView)();
 }
 function show() {
   const h = (location.hash || '').replace('#', '');
   const m = Object.keys(HASH).find(k => HASH[k] === h);
   if (m && m !== ST.mode) { ST.mode = m; save(); }
+  if (MODECH[ST.mode] && ST.ch !== MODECH[ST.mode]) { ST.ch = MODECH[ST.mode]; save(); Q.deck = []; Q.empty = false; }
+  if (!CHM[ST.ch].includes(ST.mode)) { ST.mode = 'quiz'; save(); }
   if (ST.mode === 'quiz' && !Q.deck.length && !Q.empty) newDeck();
   render();
 }
@@ -28920,23 +29459,34 @@ document.addEventListener('click', e => {
   if (a === 'gtry') return gTry(b.dataset.k, v);
   if (a === 'guess') return gGuess(v);
   if (a === 'gnew') { gNew(); render(); return window.scrollTo(0, 0); }
+  if (a === 'rztry') return rzTry(v);
+  if (a === 'rzguess') return rzGuess(v);
+  if (a === 'rznew') { rzNew(); render(); return window.scrollTo(0, 0); }
+  if (a === 'spg') return spGuess(v);
+  if (a === 'spnew') { spNew(); render(); return window.scrollTo(0, 0); }
 });
-document.addEventListener('change', e => { if (e.target.id === 'acHide') { ST.hide = e.target.checked; TB.shown.clear(); TB.open = null; save(); render(); } });
+function setCh(ch) {
+  if (!CHN[ch] || ch === ST.ch) return;
+  ST.ch = ch; if (!CHM[ch].includes(ST.mode)) ST.mode = 'quiz';
+  save(); if (location.hash !== '#' + HASH[ST.mode]) history.replaceState(null, '', '#' + HASH[ST.mode]);
+  if (ST.mode === 'quiz') newDeck(); else render();
+}
+document.addEventListener('change', e => { if (e.target.id === 'acChSel') return setCh(e.target.value); if (e.target.id === 'acHide') { ST.hide = e.target.checked; TB.shown.clear(); TB.open = null; save(); render(); } });
 document.addEventListener('keydown', e => {
-  if ($a('#appAC').hidden || ST.mode !== 'quiz' || !Q.cur) return;
+  if ($a('#appAC').hidden || ST.mode !== 'quiz' || !Q.cur || !Q.opts) return;
   if (e.key === 'Enter' && Q.done && document.activeElement !== $a('#acNext')) { e.preventDefault(); next(); }
   const k = '1234abcd'.indexOf(e.key.toLowerCase()); if (k < 0 || Q.done || Q.cur.t === 'grp' || /input|textarea|select/i.test(document.activeElement.tagName)) return;
   const btn = document.querySelectorAll('#acView .opt')[k % 4]; if (btn) { e.preventDefault(); btn.click(); }
 });
 window.FH_AC = {
-  show, due: dueCount, best: () => (ST.best && ST.best.vz) || 0, cards: CARDS.length,
+  show, due: () => dueCount(), best: k => (ST.best && ST.best[k || 'vz']) || 0, cards: CARDS.length,
   started: () => Object.keys(ST.r).length > 0,
   stats: () => { const ids = CARDS.map(c => c.id); return { all: ids.length, done: ids.filter(id => ST.r[id] && ST.r[id].b >= 2).length }; },
-  goDue: () => { ST.mode = 'quiz'; save(); Q.deck = []; Q.empty = false; location.hash = '#analyticka'; newDeck(true); }
+  goDue: () => { if (!dueCount(ST.ch)) { const c = AC_CH.map(x => x[0]).sort((a, b) => dueCount(b) - dueCount(a))[0]; ST.ch = c; } ST.mode = 'quiz'; save(); Q.deck = []; Q.empty = false; location.hash = '#analyticka'; newDeck(true); }
 };
 
 /* napojení na zbytek webu */
-document.addEventListener('click', e => { const b = e.target.closest('[data-hn="acvz"]'); if (b) { ST.mode = 'game'; save(); location.hash = '#analyticka-vzorek'; } });
+document.addEventListener('click', e => { const b = e.target.closest('[data-hn^="ac"]'); if (!b) return; const m = { acvz: 'game', acrz: 'rozp', acir: 'spek' }[b.dataset.hn]; if (m) { ST.mode = m; save(); location.hash = '#' + HASH[m]; } });
 document.addEventListener('click', e => { const b = e.target.closest('[data-td="ac"]'); if (b) FH_AC.goDue(); });
 window.addEventListener('hashchange', () => { if (/^#analyticka/.test(location.hash)) show(); });
 try { if (typeof renderToday === 'function') renderToday(); } catch (e) { /* nic */ }
