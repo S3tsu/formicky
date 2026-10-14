@@ -1,5 +1,5 @@
 /* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu z mezipaměti. */
-const VER = '202610130708';
+const VER = '202610141520';
 const CORE = 'fh-core-' + VER, RT = 'fh-rt-v1';
 const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg'];
 self.addEventListener('install', e => {
