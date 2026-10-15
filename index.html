@@ -648,7 +648,17 @@ body.sheet-file .sheet{position:static}
 .nl-clues li::before{content:counter(nl);position:absolute;left:12px;top:9px;font-weight:700;color:var(--accent)}
 .nl-clues li.hid{background:transparent;border:1px dashed var(--line);color:var(--muted)}
 .nl-clues li.late{background:var(--bg);color:var(--muted)}
-.nl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:10px}
+.nl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-bottom:10px}
+.nl-opts .hn-rg{padding:9px 11px;font-size:.86rem;line-height:1.25}
+.nl-opts .hn-rg.bad{opacity:.55}
+.nl-meter{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:6px 0 2px;font-size:.92rem}
+.nl-dots{display:flex;gap:4px}
+.nl-dots i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--accent)}
+.nl-dots i.on{background:var(--accent)}
+.nl-clues li.new{outline:2px solid var(--accent);outline-offset:-2px}
+.nl-more{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;margin:-4px 0 12px;padding:10px 12px;border-radius:10px;border:1px dashed var(--accent);background:transparent;color:var(--accent);font:600 .92rem/1.2 inherit;cursor:pointer}
+.nl-more small{color:var(--muted);font-weight:400}
+.nl-q small{display:block;font-size:.8rem;color:var(--muted);font-weight:400;margin-top:2px}
 .hn-rg.ok{border-color:#16a34a;background:#dcfce7;color:#14532d}
 .nl-reveal{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0}
 .nl-reveal b{font:700 1.15rem/1.2 var(--f-display)}
@@ -27774,7 +27784,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   const ELN = { O: ['atom kyslíku', 'atomy kyslíku', 'atomů kyslíku'], N: ['atom dusíku', 'atomy dusíku', 'atomů dusíku'], S: ['atom síry', 'atomy síry', 'atomů síry'], Cl: ['atom chloru', 'atomy chloru', 'atomů chloru'],
     Br: ['atom bromu', 'atomy bromu', 'atomů bromu'], F: ['atom fluoru', 'atomy fluoru', 'atomů fluoru'], I: ['atom jodu', 'atomy jodu', 'atomů jodu'], P: ['atom fosforu', 'atomy fosforu', 'atomů fosforu'] };
   const cz = (n, f) => n === 1 ? f[0] : n < 5 ? f[1] : f[2];
-  function counts(g) { const c = {}; let q = 0; g.X.at.forEach(a => { c[a.el] = (c[a.el] || 0) + 1; if (a.h) c.H = (c.H || 0) + a.h; q += a.q || 0; }); return { c, q }; }
+  const hC = (g, i) => Math.max(0, Math.round(4 - Object.values(g.X.adj[i]).reduce((x, o) => x + (o === 4 ? 1.5 : o), 0) - Math.abs(g.X.at[i].q || 0)));   // vodíky na uhlíku nejsou v datech, dopočítají se z vazeb
+  function counts(g) { const c = {}; let q = 0; g.X.at.forEach((a, i) => { c[a.el] = (c[a.el] || 0) + 1; const h = a.el === 'C' ? hC(g, i) : a.h; if (h) c.H = (c.H || 0) + h; q += a.q || 0; }); return { c, q }; }
   function formula(g) {
     const { c, q } = counts(g), ks = Object.keys(c).filter(k => k !== 'C' && k !== 'H').sort();
     const f = ['C', 'H'].filter(k => c[k]).concat(ks).map(k => k + (c[k] > 1 ? String(c[k]).replace(/\d/g, d => SUB[d]) : '')).join('');
@@ -27809,7 +27820,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
       if (seen.has(norm(o.name)) || formula(o) === f) continue;
       seen.add(norm(o.name)); out.push(o);
     }
-    return out.length >= Math.min(n, 4) ? shuffle(out) : null;
+    return out.length >= n ? shuffle(out) : null;
   }
   const NL = { topic: '*', n: 5, items: [], i: 0, shown: 1, wrong: new Set(), score: 0, done: false, pts: [], seed: 0 };
   const nlTopics = () => TOPICS.filter(t => t.id !== 'fg' && GROUPS.some(g => g.topic === t.id && nlOk(g))).map(t => t.id);
@@ -27818,32 +27829,34 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const pool = GROUPS.filter(g => nlOk(g) && (NL.topic === '*' || g.topic === NL.topic));
     NL.items = withRng(mulberry(NL.seed), () => {
       const out = [];
-      for (const g of shuffle(pool.slice())) { if (out.length >= NL.n) break; if (out.some(x => x.g.name === g.name)) continue; const c = clues(g), o = nlOpts(g, pool, Math.max(8, c.length)); if (o) out.push({ g, o: o.map(x => x.id), c }); }
+      for (const g of shuffle(pool.slice())) { if (out.length >= NL.n) break; if (out.some(x => x.g.name === g.name)) continue; const c = clues(g), o = nlOpts(g, pool, c.length + 1); if (o) out.push({ g, o: o.map(x => x.id), c }); }
       return out;
     });
     Object.assign(NL, { i: 0, score: 0, pts: [] }); nlRound();
   }
-  function nlRound() { Object.assign(NL, { shown: 1, wrong: new Set(), done: false }); nlRender(); }
+  function nlRound() { Object.assign(NL, { shown: 1, wrong: new Set(), done: false, pen: 0 }); nlRender(); }
+  const nlPts = it => Math.max(0, it.c.length - NL.shown + 1 - (NL.pen || 0));   // špatný tip = jedna indicie navíc
   function nlRender() {
     if (NL.i >= NL.items.length) return nlEnd();
-    const it = NL.items[NL.i], g = it.g, tot = it.c.length, maxP = tot - NL.shown + 1 - NL.wrong.size;
+    const it = NL.items[NL.i], g = it.g, tot = it.c.length, pts = NL.done ? NL.got : nlPts(it), left = tot - NL.shown;
     const sel = `<select id="nlTopic" aria-label="Téma"${CH ? ' disabled' : ''}>${['*'].concat(nlTopics()).map(t => `<option value="${t}"${t === NL.topic ? ' selected' : ''}>${t === '*' ? 'Všechna témata' : esc(TOPIC_BY[t].label)}</option>`).join('')}</select>`;
+    const meter = `<div class="nl-meter" aria-label="${NL.done ? 'Získáno' : 'Za uhodnutí teď'} ${pts} b. z ${tot}"><span>${NL.done ? 'Získáno' : 'Za uhodnutí teď'} <b>${pts} b.</b></span><span class="nl-dots">${Array.from({ length: tot }, (_, k) => `<i class="${k < pts ? 'on' : ''}"></i>`).join('')}</span></div>`;
+    const shown = it.c.map((t, k) => k < NL.shown ? `<li class="${k === NL.shown - 1 && !NL.done ? 'new' : ''}">${t}</li>` : NL.done ? `<li class="late">${t}</li>` : '').join('');
+    const more = !NL.done && left > 0 ? `<button type="button" class="nl-more" data-hn="nlmore"><span>Odkrýt indicii ${NL.shown + 1}</span><small>zbývá ${left} · ubere 1 b.</small></button>` : '';
     $('#hnBody').innerHTML = `<div class="hn-bar"><span class="eyebrow">Neznámá látka · ${NL.i + 1} / ${NL.items.length}</span><span>Skóre <b>${NL.score}</b> · nejlepší ${best('nl')}</span></div>
-      <div class="hn-sel">${sel}</div>
-      <ol class="nl-clues">${it.c.map((t, k) => k < NL.shown || NL.done ? `<li class="${k < NL.shown ? '' : 'late'}">${t}</li>` : `<li class="hid">Indicie ${k + 1}</li>`).join('')}</ol>
+      <div class="hn-sel">${sel}</div>${meter}
+      <ol class="nl-clues">${shown}</ol>${more}
       ${NL.done ? `<div class="nl-reveal">${molSVG(g, 30)}<b>${esc(label(g))}</b></div>` : ''}
-      <p class="q-text">${NL.done ? '' : 'Co je to za látku?'}</p>
+      <p class="q-text nl-q">${NL.done ? '' : `Co je to za látku? <small>${it.o.length - NL.wrong.size} možností. Špatný tip odkryje další indicii a ubere 1 b.</small>`}</p>
       <div class="nl-opts">${it.o.map(id => { const o = BYID[id], ok = o === g, w = NL.wrong.has(id);
         return `<button type="button" class="hn-rg${NL.done && ok ? ' ok' : w ? ' bad' : ''}" data-hn="nlg" data-id="${id}"${NL.done || w ? ' disabled' : ''}>${esc(o.name)}</button>`; }).join('')}</div>
-      ${NL.done ? `<div class="fb ${NL.got ? 'ok' : 'bad'}"><p><b>${NL.got ? `Správně! +${NL.got} b.` : 'Tentokrát ne.'}</b> ${NL.got ? '' : 'Správná látka je zvýrazněná.'}</p></div>
-        <div class="row"><button type="button" class="btn primary" data-hn="nlnext">${NL.i + 1 >= NL.items.length ? 'Výsledky' : 'Další látka'}</button></div>`
-      : `<div class="row"><button type="button" class="btn" data-hn="nlmore"${NL.shown >= tot ? ' disabled' : ''}>Další indicie</button></div>
-        <p class="aside">Teď za ${Math.max(0, maxP)} b. Každá další indicie nebo špatný tip ubere bod.</p>`}`;
+      ${NL.done ? `<div class="fb ${NL.got ? 'ok' : 'bad'}"><p><b>${NL.got ? `Správně! +${NL.got} b.` : 'Uhodnuto, ale bez bodů.'}</b> ${NL.got ? '' : 'Indicie i tipy došly, příště to půjde líp.'}</p></div>
+        <div class="row"><button type="button" class="btn primary" data-hn="nlnext">${NL.i + 1 >= NL.items.length ? 'Výsledky' : 'Další látka'}</button></div>` : ''}`;
   }
   function nlGuess(id) {
     const it = NL.items[NL.i];
-    if (id === it.g.id) { NL.got = Math.max(0, it.c.length - NL.shown + 1 - NL.wrong.size); NL.score += NL.got; NL.pts.push(NL.got); NL.done = true; if (!GS.lr[it.g.id]) GS.lr[it.g.id] = 1; if (typeof cheer === 'function') cheer(); }
-    else { NL.wrong.add(id); if (NL.shown < it.c.length) NL.shown++; if (NL.wrong.size >= 3) { NL.got = 0; NL.pts.push(0); NL.done = true; } }
+    if (id === it.g.id) { NL.got = nlPts(it); NL.score += NL.got; NL.pts.push(NL.got); NL.done = true; if (!GS.lr[it.g.id]) GS.lr[it.g.id] = 1; if (typeof cheer === 'function') cheer(); }
+    else { NL.wrong.add(id); if (NL.shown < it.c.length) NL.shown++; else NL.pen = (NL.pen || 0) + 1; }
     if (NL.done && NL.score > best('nl')) { GS.best.nl = NL.score; }
     if (NL.done) saveG();
     nlRender();
