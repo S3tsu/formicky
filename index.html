@@ -648,7 +648,7 @@ body.sheet-file .sheet{position:static}
 .nl-clues li::before{content:counter(nl);position:absolute;left:12px;top:9px;font-weight:700;color:var(--accent)}
 .nl-clues li.hid{background:transparent;border:1px dashed var(--line);color:var(--muted)}
 .nl-clues li.late{background:var(--bg);color:var(--muted)}
-.nl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:10px}
+.nl-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:10px}
 .hn-rg.ok{border-color:#16a34a;background:#dcfce7;color:#14532d}
 .nl-reveal{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0}
 .nl-reveal b{font:700 1.15rem/1.2 var(--f-display)}
@@ -27799,16 +27799,17 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const nm0 = g.name; out.push(`Název začíná na <b>„${esc(nm0.slice(0, 2))}…“</b> a má ${nm0.length} znaků.`);
     return out;
   }
-  function nlOpts(g, pool) {
+  function nlOpts(g, pool, n) {
     const f = formula(g), seen = new Set([norm(g.name)]), out = [g];
-    const nC = x => counts(x).c.C || 0, c0 = nC(g);
-    const same = shuffle(pool.filter(o => o.topic === g.topic && o.fam === g.fam)), rest = shuffle(pool.filter(o => o.topic === g.topic)).sort((a, b) => Math.abs(nC(a) - c0) - Math.abs(nC(b) - c0));
-    for (const o of same.slice(0, 12).concat(rest)) {
-      if (out.length >= 4) break;
+    const nC = x => counts(x).c.C || 0, c0 = nC(g), near = (a, b) => Math.abs(nC(a) - c0) - Math.abs(nC(b) - c0);
+    const same = shuffle(pool.filter(o => o.topic === g.topic && o.fam === g.fam)), rest = shuffle(pool.filter(o => o.topic === g.topic)).sort(near);
+    const other = shuffle(GROUPS.filter(o => nlOk(o) && o.topic !== g.topic)).sort(near);   // když téma nestačí, doplní se látky z jiných témat
+    for (const o of same.slice(0, 12).concat(rest, other)) {
+      if (out.length >= n) break;
       if (seen.has(norm(o.name)) || formula(o) === f) continue;
       seen.add(norm(o.name)); out.push(o);
     }
-    return out.length === 4 ? shuffle(out) : null;
+    return out.length >= Math.min(n, 4) ? shuffle(out) : null;
   }
   const NL = { topic: '*', n: 5, items: [], i: 0, shown: 1, wrong: new Set(), score: 0, done: false, pts: [], seed: 0 };
   const nlTopics = () => TOPICS.filter(t => t.id !== 'fg' && GROUPS.some(g => g.topic === t.id && nlOk(g))).map(t => t.id);
@@ -27817,7 +27818,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const pool = GROUPS.filter(g => nlOk(g) && (NL.topic === '*' || g.topic === NL.topic));
     NL.items = withRng(mulberry(NL.seed), () => {
       const out = [];
-      for (const g of shuffle(pool.slice())) { if (out.length >= NL.n) break; if (out.some(x => x.g.name === g.name)) continue; const o = nlOpts(g, pool); if (o) out.push({ g, o: o.map(x => x.id), c: clues(g) }); }
+      for (const g of shuffle(pool.slice())) { if (out.length >= NL.n) break; if (out.some(x => x.g.name === g.name)) continue; const c = clues(g), o = nlOpts(g, pool, Math.max(8, c.length)); if (o) out.push({ g, o: o.map(x => x.id), c }); }
       return out;
     });
     Object.assign(NL, { i: 0, score: 0, pts: [] }); nlRound();
