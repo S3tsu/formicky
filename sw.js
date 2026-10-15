@@ -1,5 +1,5 @@
-/* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu z mezipaměti. */
-const VER = '202610151200';
+/* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu nebo při pomalé síti (3 s) z mezipaměti. */
+const VER = '202610152130';
 const CORE = 'fh-core-' + VER, RT = 'fh-rt-v1';
 const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg'];
 self.addEventListener('install', e => {
@@ -15,16 +15,16 @@ self.addEventListener('fetch', e => {
   if (r.method !== 'GET') return;
   const u = new URL(r.url);
   if (r.mode === 'navigate') {
+    // Uložená verze se použije, když síť neodpoví do 3 s. Stahování pak doběhne na pozadí,
+    // takže při dalším otevření je stránka zase nejnovější.
+    let saved;
+    const net = fetch(r, { cache: 'no-cache' }).then(res => { if (res.ok) saved = caches.open(CORE).then(c => c.put('./', res.clone())); return res; });
+    e.waitUntil(net.then(() => saved, () => {}));
     e.respondWith((async () => {
-      const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 6000);
-      try {
-        const res = await fetch(r, { signal: ctl.signal, cache: 'no-cache' }); clearTimeout(t);
-        if (res.ok) { const c = await caches.open(CORE); c.put('./', res.clone()); }
-        return res;
-      } catch (err) {
-        clearTimeout(t);
-        return (await caches.match('./')) || Response.error();
-      }
+      const cached = await caches.match('./');
+      if (!cached) { try { return await net; } catch (err) { return Response.error(); } }
+      const late = new Promise(ok => setTimeout(() => ok(null), 3000));
+      try { return (await Promise.race([net, late])) || cached; } catch (err) { return cached; }
     })());
     return;
   }
