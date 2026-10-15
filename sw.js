@@ -1,5 +1,5 @@
 /* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu z mezipaměti. */
-const VER = '202610150320';
+const VER = '202610151200';
 const CORE = 'fh-core-' + VER, RT = 'fh-rt-v1';
 const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg'];
 self.addEventListener('install', e => {
@@ -28,11 +28,12 @@ self.addEventListener('fetch', e => {
     })());
     return;
   }
-  if (u.origin === location.origin) {
+  const lazy = u.origin === location.origin && u.pathname.endsWith('/m3d.json');
+  if (u.origin === location.origin && !lazy) {
     e.respondWith(caches.match(r).then(m => m || fetch(r)));
     return;
   }
-  if (RT_HOSTS.includes(u.hostname)) {
+  if (lazy || RT_HOSTS.includes(u.hostname)) {
     e.respondWith(caches.open(RT).then(async c => {
       const m = await c.match(r);
       const net = fetch(r).then(res => { if (res.ok || res.type === 'opaque') c.put(r, res.clone()); return res; }).catch(() => m);
