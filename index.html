@@ -251,8 +251,10 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .opt.sel .ltr{border-color:var(--accent);color:var(--ink)}
 .qstrip{display:flex;flex-wrap:wrap;gap:5px;padding-top:4px}
 .qn{min-width:30px;height:30px;padding:0 4px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:.84rem;font-weight:600;font-variant-numeric:tabular-nums;display:inline-grid;place-items:center}
-.qn.has{background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+.qn.has{background:var(--accent-soft);color:var(--ink);border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}
 .qn.cur{box-shadow:0 0 0 2px var(--ink)}
+.qn.cur.has{box-shadow:0 0 0 2px var(--ink),inset 0 -3px 0 var(--accent)}
+.opt.sel::after{content:"✓";margin-left:auto;padding-left:6px;font-weight:700;color:var(--accent)}   /* vybraná možnost i bez rozlišení barev */
 .score{margin:0;font:700 clamp(2.2rem,10vw,3rem)/1 var(--f-display);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .score b{font-weight:700}
 .score span{font:500 1.1rem var(--f-body);color:var(--muted)}
@@ -388,6 +390,7 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .les-row-t span{color:var(--muted);font-size:.86rem;line-height:1.35}
 .les-row-s{font-size:.82rem;white-space:nowrap}
 .les-row-go{color:var(--accent)}
+.stale-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--foam);color:var(--ink);border-bottom:1px solid var(--line);font-size:.92rem}
 @media (max-width:520px){.les-row{grid-template-columns:1fr 16px;row-gap:6px}.les-row-s{grid-row:2;grid-column:1;justify-self:start}.les-row-go{grid-row:1/3;grid-column:2}}
 .back{align-self:flex-start;color:var(--accent);font-weight:600;text-decoration:none;font-size:.95rem;padding:4px 0}
 .back:hover{text-decoration:underline;text-underline-offset:3px}
@@ -25644,8 +25647,9 @@ if (hash === 'kresleni') S.mode = 'draw';
 if (hash === 'studium') S.mode = 'study';
 if (!['base', 'extra', 'all'].includes(S.set)) S.set = 'base';
 if (hash === 'test') S.mode = 'test';
-TOPICS.forEach(t => { if (t.hash && hash === t.hash) { S.topic = t.id; S.mixOn = false; } });
+TOPICS.forEach(t => { if (t.hash && hash === t.hash) { if (S.topic !== t.id) S.fams = null; S.topic = t.id; S.mixOn = false; } });   // filtr okruhů z jiného tématu by odkaz ukázal prázdný
 if (!TOPIC_BY[S.topic]) S.topic = 'fg';
+if (S.fams && !GROUPS.some(g => g.topic === S.topic && S.fams.includes(g.fam))) S.fams = null;   // uložený filtr okruhů, který v tématu nic nevybere
 if (!['study', 'name', 'draw', 'test', 'browse'].includes(S.mode)) S.mode = 'study';
 if (S.dir !== 's') S.dir = 'n';
 const saveS = () => store.set('fg-settings', S);
@@ -26135,7 +26139,7 @@ function mapHTML() {
 }
 function qBody(g, order, selId) {
   const pics = g.opts.some(o => o.some(p => !p.t));
-  const opts = order.map((k, i) => `<button type="button" class="opt${pics ? ' pic' : ''}${selId === 'o' + k ? ' sel' : ''}" data-id="o${k}"><span class="ltr">${LTR[i]}</span><span class="txt">` +
+  const opts = order.map((k, i) => `<button type="button" class="opt${pics ? ' pic' : ''}${selId === 'o' + k ? ' sel' : ''}" data-id="o${k}"${selId !== undefined ? ` aria-pressed="${selId === 'o' + k}"` : ''}><span class="ltr">${LTR[i]}</span><span class="txt">` +
     (g.retro ? `<span class="parts">${partsHTML(strParts(g.opts[k]), 24)}</span><span class="rtx">${g.opts[k].filter(p => p.t).map(p => esc(p.t).replace(/\n/g, '<br>')).join('<br>')}</span>` : pics ? `<span class="parts">${partsHTML(g.opts[k], 24)}</span>` : g.chain && !pics ? esc(g.opts[k][0].t).replace(/\n/g, '<br>') : esc(g.opts[k].map(p => p.t).join(' '))) + '</span></button>').join('');
   return `<p class="q-text">${esc(g.prompt)}</p>${g.chain ? chainHTML(g, false) : g.scheme ? schemeHTML(g.scheme) : ''}<div class="opts${pics ? ' pics' : ''}" id="opts">${opts}</div>`;
 }
@@ -26449,7 +26453,7 @@ function fillGrid() {
     if (tabs) html += tabs.map(t => `<div class="tablewrap"><table class="pka"><caption>${esc(t.title)}</caption><thead><tr>${t.cols.map((c, i) => `<th scope="col"${i === t.num ? ' class="num"' : ''}>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
       t.rows.map(r => `<tr>${r.map((c, i) => `<td${i === t.f ? ' class="f"' : i === t.num ? ' class="num"' : ''}>${esc(c)}</td>`).join('')}</tr>`).join('') + '</tbody></table></div>').join('');
     if (items.length) html += `<div class="grid${S.tips ? ' wide' : ''}">` + items.map(g =>
-      `<div class="cellw"><button type="button" class="cell${S.hide ? ' veil' : ''}" data-id="${g.id}"><span class="pic">${molSVG(g, 27)}</span><span class="nm">${esc(g.name)}${g.par ? `<small>${esc(g.par)}</small>` : ''}</span>` +
+      `<div class="cellw"><button type="button" class="cell${S.hide ? ' veil' : ''}" data-id="${g.id}"${S.hide ? ' aria-label="Skrytý název, klepnutím ho ukážeš"' : ''}><span class="pic">${molSVG(g, 27)}</span><span class="nm">${esc(g.name)}${g.par ? `<small>${esc(g.par)}</small>` : ''}</span>` +
       (S.tips && !S.hide && g.tip ? `<span class="tip">${esc(g.tip)}</span>` : '') + '</button>' +
       (M3D_IDS.has(g.id) ? `<button type="button" class="b3d" data-3d="${g.id}" aria-label="3D model${S.hide ? '' : ': ' + esc(g.name)}">3D</button>` : '') + '</div>').join('') + '</div>';
     if (rr.length) html += `<div class="rxlist">${rr.map(r => `<div class="rx${S.hide ? ' veil' : ''}" data-rx="${r.id}"${S.hide ? ' role="button" tabindex="0" aria-label="Ukázat produkt"' : ''}><div class="rx-h">${esc(r.title)}</div>${schemeHTML({ from: r.from, reag: r.reag, to: r.to }, S.hide)}<p class="aside">${esc(r.why)}</p>${stepsHTML(r)}${r.steps && r.steps.length ? '' : animHTML(r)}</div>`).join('')}</div>`;
@@ -26501,7 +26505,7 @@ view.addEventListener('click', e => {
   if (t.id === 'srcAll') { S.src = 'all'; saveS(); renderControls(); return refresh(); }
   if (t.id === 'srcAgain') return newDeck();
   if (t.id === 'againMissed') { const ids = [...Q.missed]; resetPool(ids); Q.deck = shuffle(ids); Q.missed = new Set(); return nextCard(); }
-  if (t.classList.contains('cell') && S.hide) t.classList.toggle('veil');
+  if (t.classList.contains('cell') && S.hide) { t.classList.toggle('veil'); if (t.classList.contains('veil')) t.setAttribute('aria-label', 'Skrytý název, klepnutím ho ukážeš'); else t.removeAttribute('aria-label'); }   // čtečka nepřečte skrytý název
 });
 
 /* ===== Kreslicí plocha ===== */
@@ -26531,7 +26535,7 @@ function mountEditor(host, topic) {
       <button type="button" class="tool" data-act="undo">Zpět</button>
       <button type="button" class="tool" data-act="clear">Smazat vše</button>
     </div>
-    <svg class="pad mol" id="pad" role="img" aria-label="Kreslicí plocha"><g id="scene" font-size="18"></g></svg>
+    <svg class="pad mol" id="pad" role="img" aria-label="Kreslicí plocha, kreslí se myší nebo prstem. Bez nich použij „Ukázat řešení“ a ohodnoť se sama, v Testu můžeš kreslení vypnout."><g id="scene" font-size="18"></g></svg>
     <p class="hint" id="edHint"></p>`;
   const svg = $('#pad', host), scene = $('#scene', host), hint = $('#edHint', host);
   const L = 46, FS = 18;
@@ -26869,13 +26873,20 @@ function mountEditor(host, topic) {
     return { msg: 'Nic dalšího nechybí. Jestli kontrola neprojde, je v nákresu něco navíc: zkus gumu nebo Zpět.' };
   }
 
-  if (window.ResizeObserver) new ResizeObserver(() => { if (svg.isConnected) { size(); draw(); } }).observe(svg);
+  /* Po otočení telefonu nebo zúžení okna posune celý nákres zpátky do plochy (tvar ani délky vazeb nemění). */
+  const fit = () => {
+    if (!st.atoms.length) return;
+    const sh = (v, lo, hi) => { const a = Math.min(...v), b = Math.max(...v); return b - a > hi - lo ? (lo + hi) / 2 - (a + b) / 2 : a < lo ? lo - a : b > hi ? hi - b : 0; };
+    const dx = sh(st.atoms.map(a => a.x), 12, W - 12), dy = sh(st.atoms.map(a => a.y), 12, H - 12);
+    if (dx || dy) st.atoms.forEach(a => { a.x += dx; a.y += dy; });
+  };
+  if (window.ResizeObserver) new ResizeObserver(() => { if (svg.isConnected) { size(); fit(); draw(); } }).observe(svg);
   size(); setTool('C'); draw();
   return {
     graph: () => ({ atoms: st.atoms.map(a => ({ el: a.el, q: a.q })), bonds: st.bonds.map(b => ({ a: b.a, b: b.b, o: b.o })) }),
     hint: giveHint,
     dump: () => JSON.parse(JSON.stringify({ atoms: st.atoms, bonds: st.bonds })),
-    load: d => { st.atoms = JSON.parse(JSON.stringify(d.atoms)); st.bonds = JSON.parse(JSON.stringify(d.bonds)); st.undo = []; draw(); }
+    load: d => { st.atoms = JSON.parse(JSON.stringify(d.atoms)); st.bonds = JSON.parse(JSON.stringify(d.bonds)); st.undo = []; fit(); draw(); }
   };
 }
 
@@ -26978,14 +26989,14 @@ function renderTestQ() {
   } else {
     const byName = q.dir === 'n';
     body = `<span class="eyebrow ask">${byName ? askTxt(g) : 'Který vzorec patří k názvu?'}</span>${byName ? `<div class="figure">${molSVG(g, 46)}</div>` : title}
-      <div class="opts${byName ? '' : ' pics'}" id="opts">${q.opts.map((o, i) => `<button type="button" class="opt${byName ? '' : ' pic'}${q.ans === o.id ? ' sel' : ''}" data-id="${o.id}"><span class="ltr">${LTR[i]}</span><span class="txt">${byName ? esc(label(o)) : molSVG(o, 30)}</span></button>`).join('')}</div>`;
+      <div class="opts${byName ? '' : ' pics'}" id="opts">${q.opts.map((o, i) => `<button type="button" class="opt${byName ? '' : ' pic'}${q.ans === o.id ? ' sel' : ''}" data-id="${o.id}" aria-pressed="${q.ans === o.id}"><span class="ltr">${LTR[i]}</span><span class="txt">${byName ? esc(label(o)) : molSVG(o, 30)}</span></button>`).join('')}</div>`;
   }
   const open = TT.qs.filter(x => !x.ans).length;
   view.innerHTML = `<div class="tbar"><span>Otázka <b>${TT.i + 1}</b> z ${n}</span><span class="clock" id="tClock">${TT.end ? fmt(TT.end - Date.now()) : 'bez limitu'}</span></div>
     <div class="card">${body}
       <div class="row tnav"><button class="btn" id="tPrev" type="button"${TT.i ? '' : ' disabled'}>Předchozí</button><button class="btn primary" id="tNext" type="button"${TT.i < n - 1 ? '' : ' disabled'}>Další</button><span class="sp"></span><button class="btn" id="tSubmit" type="button">Odevzdat</button></div>
       ${TT.confirm ? `<div class="fb info"><p><b>Odevzdat test?</b> ${open ? `Bez odpovědi: ${open} z ${n}.` : 'Všechny otázky mají odpověď.'}</p><div class="row"><button class="btn primary" id="tYes" type="button">Ano, odevzdat</button><button class="btn" id="tNo" type="button">Ještě ne</button></div></div>` : ''}
-      <div class="qstrip" role="group" aria-label="Otázky">${TT.qs.map((x, k) => `<button type="button" class="qn${k === TT.i ? ' cur' : ''}${x.ans ? ' has' : ''}" data-q="${k}" aria-label="Otázka ${k + 1}">${k + 1}</button>`).join('')}</div>
+      <div class="qstrip" role="group" aria-label="Otázky">${TT.qs.map((x, k) => `<button type="button" class="qn${k === TT.i ? ' cur' : ''}${x.ans ? ' has' : ''}" data-q="${k}" aria-label="Otázka ${k + 1}${x.ans ? ', zodpovězená' : ''}"${k === TT.i ? ' aria-current="step"' : ''}>${k + 1}</button>`).join('')}</div>
     </div>`;
   if (q.type === 'draw') { editor = mountEditor($('#ed'), g.topic); if (q.ans) editor.load(q.ans); }
   if (q.type === 'name' && !TT.confirm) { try { $('#tAnswer').focus({ preventScroll: true }); } catch (e) { /* nevadí */ } }
@@ -27055,8 +27066,8 @@ function testClick(t) {
   }
   if (t.classList.contains('opt')) {
     TT.qs[TT.i].ans = t.dataset.id;
-    view.querySelectorAll('.opt').forEach(b => b.classList.toggle('sel', b === t));
-    const cur = $('.qn.cur'); if (cur) cur.classList.add('has');
+    view.querySelectorAll('.opt').forEach(b => { b.classList.toggle('sel', b === t); b.setAttribute('aria-pressed', b === t); });
+    const cur = $('.qn.cur'); if (cur) { cur.classList.add('has'); cur.setAttribute('aria-label', 'Otázka ' + (TT.i + 1) + ', zodpovězená'); }
     return;
   }
   if (t.id === 'tPrev') return go(TT.i - 1);
@@ -27367,7 +27378,7 @@ function renderBackup(msg, code) {
 document.addEventListener('click', async e => {
   const b = e.target.closest('#bkMake,#bkOpen,#bkCopy,#bkLoad'); if (!b) return;
   if (b.id === 'bkOpen') { renderBackup('open'); const t = $('#bkIn'); if (t) t.focus(); return; }
-  if (b.id === 'bkMake') { renderBackup('', await makeBackup()); return; }
+  if (b.id === 'bkMake') { renderBackup('', await makeBackup()); const c = $('#bkCode'); if (c) { c.focus(); c.select(); } return; }   // fokus na kód, ať se nemusí hledat
   if (b.id === 'bkCopy') {
     const t = $('#bkCode'); let ok = false;
     try { await navigator.clipboard.writeText(t.value); ok = true; } catch (er) { t.select(); try { ok = document.execCommand('copy'); } catch (er2) { ok = false; } }
@@ -27522,6 +27533,20 @@ document.addEventListener('click', async e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet') && !$('#sheet').hidden) { const c = $('#shClose'); if (c) c.click(); } });
 renderStats(); renderBackup(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderDay(); renderToday(); } });   // po půlnoci nový den i bez další odpovědi
+/* Pokrok změněný v jiné kartě (nebo v nainstalované aplikaci): tahle karta má v paměti starý stav a další odpovědí by ho přepsala.
+   Skrytá karta se po návratu načte znovu, viditelná ukáže lištu. Rozběhnutý test se nepřeruší. */
+(function () {
+  const KEYS = ['fg-progress', 'fg-srs', 'fg-daily', 'fg-herna', 'fg-ac', 'fg-les'];
+  let stale = false;
+  const warn = () => { if (!$('#staleBar')) document.body.insertAdjacentHTML('afterbegin', '<div class="stale-bar" id="staleBar" role="alert"><span>Pokrok se mezitím změnil v jiné kartě. Načti stránku znovu, ať si karty pokrok nepřepíšou.</span><button type="button" class="btn primary sm" id="staleGo">Načíst znovu</button></div>'); };
+  window.addEventListener('storage', e => {
+    if (e.key !== null && !KEYS.includes(e.key)) return;   // null = smazání všech dat
+    stale = true;
+    if (!document.hidden) warn();
+  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden || !stale) return; if (TT.phase === 'run') warn(); else location.reload(); });
+  document.addEventListener('click', e => { if (e.target.closest('#staleGo')) location.reload(); });
+})();
 window.addEventListener('hashchange', () => { renderStats(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0); const sh = $('#sheet'); if (sh && !sh.hidden) { sh.hidden = true; modalOff(sh, true); document.body.classList.remove('sheet-open'); } });
 /* ===== Herna: Lékárna, Neznámá látka, Syntézní puzzle, Seřaď to, Album kartiček, výzvy ===== */
 (function () {
@@ -28575,9 +28600,11 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     box.hidden = true; modalOff(box, true); document.body.classList.remove('m3d-open');
     if (cur && cur.focus) cur.focus(); cur = null;
   }
+  let tok = 0;   // poslední otevřený model; pomalejší dřívější načtení ho nepřepíše
   async function open(id, opener) {
     const g = BYID[id]; if (!M3D_IDS.has(id) || !g) return;
-    const box = ensureBox(); cur = opener;
+    const box = ensureBox(), my = ++tok; cur = opener;
+    if (viewer) { viewer.clear(); viewer.render(); }   // pod novým názvem nesmí zůstat předchozí molekula
     box.hidden = false; modalOn(box); document.body.classList.add('m3d-open');
     document.getElementById('m3dT').textContent = opener && opener.closest && opener.closest('.cellw') && opener.closest('.cellw').querySelector('.veil') ? '3D model' : g.name;
     const note = document.getElementById('m3dNote'); note.textContent = 'Otáčej tažením, přibližuj kolečkem nebo dvěma prsty.';
@@ -28586,8 +28613,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     box.querySelector('.m3d-x').focus();
     try {
       await Promise.all([loadLib(), M3D ? null : fetch('m3d.json?v=' + FH_VER).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(j => { M3D = j; })]);
-    } catch (e) { msg.textContent = '3D model se nepodařilo načíst. Zkontroluj připojení k internetu.'; return; }
-    if (box.hidden) return;
+    } catch (e) { if (my === tok) msg.textContent = '3D model se nepodařilo načíst. Zkontroluj připojení k internetu.'; return; }
+    if (box.hidden || my !== tok) return;
     const data = M3D[id]; if (!data) { msg.textContent = '3D model pro tuto látku chybí.'; return; }
     if (data.endsWith('|E')) note.textContent += ' Látka má jedno stereocentrum, model ukazuje jeden z enantiomerů.';
     msg.hidden = true;
@@ -28617,7 +28644,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161530';
+const FH_VER = '202610161604';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -28780,18 +28807,40 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
 })();
 </script>
 <script>
+/* ===== Čtečka obrazovky a fokus po překreslení =====
+   Analytika a lekce překreslují celé okno, takže nově vložené hlášení by čtečka nepřečetla a fokus by spadl na začátek stránky.
+   fhSay píše do jedné stálé oblasti aria-live, fhRefocus vrátí fokus na stejné tlačítko, nebo na nejbližší stejného druhu, jinak na nadpis. */
+const fhLive = (() => { const r = document.createElement('div'); r.id = 'fhSay'; r.className = 'sr'; r.setAttribute('aria-live', 'polite'); document.body.appendChild(r); return r; })();
+let fhSayT = 0;
+function fhSay(t) { clearTimeout(fhSayT); fhLive.textContent = ''; if (t) fhSayT = setTimeout(() => { fhLive.textContent = t; }, 80); }
+function fhFocusKey(root, att) {
+  const fe = document.activeElement;
+  return fe && fe !== document.body && root && root.contains(fe) ? { el: fe, id: fe.id, att, a: fe.getAttribute(att), v: fe.dataset.v, k: fe.dataset.k } : null;
+}
+function fhRefocus(fk, root, box) {
+  if (!fk || fk.el.isConnected) return;
+  const ok = x => x && !x.disabled && x.offsetParent !== null;
+  let t = fk.id ? document.getElementById(fk.id) : null;
+  if (!ok(t) && fk.a != null) {
+    const all = [...root.querySelectorAll(`[${fk.att}="${CSS.escape(fk.a)}"]`)];
+    const ex = all.find(x => x.dataset.v === fk.v && x.dataset.k === fk.k), i = ex ? all.indexOf(ex) : 0;
+    t = all.slice(i).concat(all.slice(0, i).reverse()).find(ok);
+  }
+  if (!ok(t)) { t = box.querySelector('h2, h3, .q-text') || box; if (!t.hasAttribute('tabindex')) t.tabIndex = -1; }
+  t.focus({ preventScroll: true });
+}
 /* ===== Lekce: společný modul pro Analytickou i Organickou chemii =====
    Seznam lekcí, výklad a konec lekce. Kvíz si každý předmět běží po svém (jeho karty, jeho opakování),
    tlačítka nesou atribut předmětu (data-ac / data-ol) s hodnotami lopen, lquiz, lback. */
 const FH_LES = (() => {
-  const btn = (att, a, v, cls, txt) => `<button type="button" class="${cls}" ${att}="${a}"${v ? ` data-v="${v}"` : ''}>${txt}</button>`;
+  const btn = (att, a, v, cls, txt, sr) => `<button type="button" class="${cls}" ${att}="${a}"${v ? ` data-v="${v}"` : ''}${sr ? ` aria-label="${txt}${String(sr).replace(/"/g, '&quot;')}"` : ''}>${txt}</button>`;
   /* o = { att, lessons, prog, soon, sub, empty } */
   function list(o) {
     const P = o.prog || {};
     return `<div class="card"><span class="eyebrow">Lekce</span><h2 class="q-name ac-long">Krátký výklad, pak kvíz</h2><p class="ac-sub">${o.sub}</p></div>
     ${o.lessons.length ? o.lessons.map(L => { const p = P[L.id]; return `<article class="card ac-les-item"><span class="eyebrow">Lekce ${L.n}</span><h3>${L.t}</h3>
       <div class="ac-les-meta"><span>asi ${L.min} minut · ${L.q.length} otázek</span>${p ? `<span class="ac-les-done">Hotovo, nejlépe ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</div>
-      <div class="row">${btn(o.att, 'lopen', L.id, 'btn primary', p ? 'Projít znovu' : 'Začít lekci')}${p ? btn(o.att, 'lquiz', L.id, 'btn', 'Jen kvíz') : ''}</div></article>`; }).join('') : `<div class="card">${o.empty}</div>`}
+      <div class="row">${btn(o.att, 'lopen', L.id, 'btn primary', p ? 'Projít znovu' : 'Začít lekci', `: lekce ${L.n}, ${L.t}`)}${p ? btn(o.att, 'lquiz', L.id, 'btn', 'Jen kvíz', `: lekce ${L.n}, ${L.t}`) : ''}</div></article>`; }).join('') : `<div class="card">${o.empty}</div>`}
     ${o.soon && o.soon.length ? `<div class="card"><span class="eyebrow">Připravujeme</span><ol class="ac-les-soon" start="${o.lessons.length + 1}">${o.soon.map(t => `<li>${t}</li>`).join('')}</ol></div>` : ''}`;
   }
   /* o = { att, L, body, beda } */
@@ -28920,7 +28969,7 @@ const FH_OL = (() => {
         <div class="row"><button type="button" class="btn primary" id="olNext" ${ATT}="lnext">${O.i + 1 < n ? 'Další' : 'Dokončit lekci'}</button></div>`;
     }
     return `<div class="progress"><span class="cnt">${O.i + 1} / ${n}</span><span class="bar"><i style="width:${100 * O.i / n}%"></i></span><span class="cnt">${O.ok} ✓</span></div>
-      <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}<div class="fbwrap" aria-live="polite">${fb}</div></div>`;
+      <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}<div class="fbwrap">${fb}</div></div>`;
   }
   /* lekce se zapíše hned po poslední odpovědi, ne až na závěrečné obrazovce */
   function saveRec() { const L = BY[O.open]; if (O.saved || !L) return; OP[L.id] = FH_LES.rec(OP[L.id], O.deck.length, O.ok, today()); store.set('fg-les', OP); O.saved = true; }
@@ -28932,7 +28981,7 @@ const FH_OL = (() => {
   }
   function render() {
     const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
-    const L = BY[O.open];
+    const L = BY[O.open], fk = fhFocusKey(b, ATT);
     if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
     else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` });
     else {
@@ -28940,6 +28989,7 @@ const FH_OL = (() => {
       b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
         empty: `<p>K tomuhle tématu zatím lekce není.</p><div class="row">${has.map(t => `<button type="button" class="btn" ${ATT}="ltopic" data-v="${t}">Otevřít lekce k tématu ${esc(TOPIC_BY[t].label)}</button>`).join('')}</div>` });
     }
+    fhRefocus(fk, b, b);
   }
   /* zobrazení: lekce místo karet, ostatní ovládání Studia schované */
   function show(on) {
@@ -28959,6 +29009,8 @@ const FH_OL = (() => {
     srMark(g.id, ok, true); saveSR();
     if (O.i + 1 >= O.deck.length) saveRec();
     render(); const nb = document.getElementById('olNext'); if (nb) nb.focus({ preventScroll: true });
+    const right = g.full || g.opts[0].filter(p => p.t).map(p => p.t).join(' ');   // u obrázkových možností jen písmeno
+    fhSay(`${ok ? 'Správně' : `Tohle ne. Správně je ${LTR[O.order.indexOf(0)]}`}${right ? ': ' + right.replace(/\n/g, ' ').replace(/\.$/, '') : ''}. ${g.why || ''}`.trim());
   }
   $('#modeSeg').addEventListener('click', e => {
     if (e.target.closest('[data-oles]')) { O.step = 'list'; show(true); render(); return; }
@@ -29849,7 +29901,8 @@ function specSVG(s, ann) {
   for (let v = 4000; v >= 600; v -= 4) { const n = Math.sin(v * 0.37) * 0.006 + Math.sin(v * 0.113) * 0.004; pts.push(`${SPX(v).toFixed(1)},${(14 + (1 - Math.min(1, T(v) * 0.96 + n)) * 150).toFixed(1)}`); }
   const grid = [4000, 3500, 3000, 2500, 2000, 1500, 1000].map(v => `<line x1="${SPX(v)}" x2="${SPX(v)}" y1="10" y2="168" stroke="var(--line)"/><text x="${SPX(v)}" y="182" text-anchor="${v === 4000 ? 'start' : 'middle'}" class="ac-ct">${v}</text>`).join('');
   const lab = ann ? s[2].map(([p, d]) => { const y = 14 + (1 - T(p) * 0.96) * 150; return `<text x="${SPX(p)}" y="${Math.min(y + 14, 166)}" text-anchor="middle" class="ac-ct ac-pk">${p}</text>`; }).join('') : '';
-  return `<svg class="ac-spec" viewBox="0 0 340 190" role="img" aria-label="Simulované IČ spektrum, transmitance proti vlnočtu"><text x="8" y="8" class="ac-ct">T</text>${grid}<polyline points="${pts.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>${lab}<text x="332" y="${190}" text-anchor="end" class="ac-ct">cm⁻¹</text></svg>`;
+  const desc = s[2].slice().sort((a, b) => b[0] - a[0]).map(([p, d, w]) => `${p} ${w >= 120 ? 'široký ' : ''}${d >= .6 ? 'silný' : d >= .35 ? 'střední' : 'slabý'}`).join(', ');   // totéž, co je vidět, slovy pro čtečku
+  return `<svg class="ac-spec" viewBox="0 0 340 190" role="img" aria-label="Simulované IČ spektrum, transmitance proti vlnočtu. Pásy v cm⁻¹: ${desc}."><text x="8" y="8" class="ac-ct">T</text>${grid}<polyline points="${pts.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>${lab}<text x="332" y="${190}" text-anchor="end" class="ac-ct">cm⁻¹</text></svg>`;
 }
 function spGuess(k) {
   if (SP.done) return;
@@ -30153,6 +30206,8 @@ const TYPES = [['obs', 'Co uvidíš'], ['ion', 'Který iont'], ['grp', 'Skupinov
 const inPool = cd => (cd.ch || 'ka') === ST.ch && ((!!cd.ch && cd.ch !== 'ka') || ((ST.cls === 'b' || !cd.c || cd.c === 'b' || cd.c === ST.cls) && ST.types.includes(TYPE_OF[cd.t])));
 const due = id => ST.r[id] && ST.r[id].d <= day();
 const dueCount = ch => CARDS.filter(cd => due(cd.id) && (!ch || (cd.ch || 'ka') === ch)).length;
+/* „Zopakovat N karet“ slibuje všechny karty na dnešek, takže když část leží mimo vybrané ionty nebo druhy otázek, výběr se rozšíří */
+function dueWiden() { if (CARDS.filter(cd => inPool(cd) && due(cd.id)).length < dueCount(ST.ch)) { ST.cls = 'b'; ST.types = TYPES.map(x => x[0]); save(); } }
 const SRI = [0, 1, 2, 4, 8, 16, 32];
 function mark(id, ok) {   // posouvá se jen karta, která je na řadě; po chybě týž den se vrátí zítra
   const t = day(), r = ST.r[id] || { b: 0, d: t, ok: 0, bad: 0 };
@@ -30445,8 +30500,10 @@ function modeTabs(el) {
 }
 document.addEventListener('scroll', e => { const t = e.target; if (t && t.classList && t.classList.contains('mode')) modeFade(t); }, true);
 window.addEventListener('resize', () => document.querySelectorAll('.seg.mode').forEach(modeTabs));
+let acSaid = '';
 function render() {
   const box = $a('#acView'); if (!box || $a('#appAC').hidden) return;
+  const fk = fhFocusKey($a('#appAC'), 'data-ac'), nLog = box.querySelectorAll('.ac-log li').length;
   const cs = $a('#acChSel'); if (cs && !cs.options.length) cs.innerHTML = AC_CH.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
   if (cs) cs.value = ST.ch;
   $a('#acLead').textContent = LEAD[ST.ch];
@@ -30461,6 +30518,15 @@ function render() {
   const nd = dueCount(ST.ch); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
   const V = { les: lesView, table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView };
   box.innerHTML = (V[ST.mode] || quizView)();
+  acAnnounce(box, nLog);
+  fhRefocus(fk, $a('#appAC'), box);
+}
+/* výsledek odpovědi nebo nový řádek v záznamu hry přečte čtečka obrazovky */
+function acAnnounce(box, nLog) {
+  const f = box.querySelector('.fb'), li = box.querySelectorAll('.ac-log li'), tx = e => e ? e.textContent.replace(/\s+/g, ' ').trim() : '';
+  if (f) { const t = (tx(f) + ' ' + tx(box.querySelector('#acFb .ac-ans-t p'))).trim(); if (t !== acSaid) fhSay(t); acSaid = t; return; }
+  acSaid = '';
+  if (li.length === nLog + 1) fhSay([...li[li.length - 1].querySelectorAll(':scope > div > b, :scope > div > span')].map(tx).join(': '));
 }
 /* rozběhnutý kvíz lekce se při odchodu z lekcí (jiný režim nebo kapitola) zahodí, ať se pak nemíchá s Procvičováním */
 function resetLesson() { Q.les = null; Q.deck = []; Q.cur = null; Q.empty = false; LS.step = 'list'; }
@@ -30478,6 +30544,7 @@ function setMode(m) {
   if (m === 'les') LS.step = 'list';
   if (Q.les) resetLesson();
   ST.mode = m; save(); if (location.hash !== '#' + HASH[m]) history.replaceState(null, '', '#' + HASH[m]);
+  if (fromHn && !GAMEM.includes(m)) { fromHn = false; backLbl(); }   // z hry do jiného režimu: odkaz zpět zase na úvod
   if (m === 'quiz' && !Q.deck.length) newDeck(); else render();
   window.scrollTo(0, 0);
 }
@@ -30490,7 +30557,7 @@ document.addEventListener('click', e => {
   if (a === 'lquiz') return lesQuiz(v);
   if (a === 'lback') { if (Q.les) { Q.les = null; Q.deck = []; } LS.step = 'list'; render(); return window.scrollTo(0, 0); }
   if (a === 'type') { ST.types = ST.types.includes(v) ? ST.types.filter(x => x !== v) : ST.types.concat(v); save(); return newDeck(); }
-  if (a === 'due') { if (ST.mode !== 'quiz') setMode('quiz'); return newDeck(true); }
+  if (a === 'due') { dueWiden(); if (ST.mode !== 'quiz') setMode('quiz'); return newDeck(true); }
   if (a === 'again') return newDeck();
   if (a === 'next') return next();
   if (a === 'opt') { if (Q.done) return; const o = Q.opts[+v]; o.picked = 1; return answer(o.ok, missTxt(Q.cur)); }
@@ -30545,7 +30612,7 @@ window.FH_AC = {
   started: () => Object.keys(ST.r).length > 0,
   stats: () => { const ids = CARDS.map(c => c.id); return { all: ids.length, done: ids.filter(id => ST.r[id] && ST.r[id].b >= 2).length }; },
   pic: o => o.t === 'flame' ? flameSVG(o.c) : o.t === 'spot' ? spotSVG(o.c) : tubeSVG(o),
-  goDue: () => { if (!dueCount(ST.ch)) { const c = AC_CH.map(x => x[0]).sort((a, b) => dueCount(b) - dueCount(a))[0]; ST.ch = c; } ST.mode = 'quiz'; save(); Q.deck = []; Q.empty = false; location.hash = '#analyticka'; newDeck(true); }
+  goDue: () => { if (!dueCount(ST.ch)) { const c = AC_CH.map(x => x[0]).sort((a, b) => dueCount(b) - dueCount(a))[0]; ST.ch = c; } ST.mode = 'quiz'; dueWiden(); save(); Q.deck = []; Q.empty = false; location.hash = '#analyticka'; newDeck(true); }
 };
 
 /* napojení na zbytek webu */
