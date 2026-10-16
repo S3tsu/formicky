@@ -150,6 +150,25 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .pad{width:100%;height:300px;border:1px solid var(--line);border-radius:12px;touch-action:none;cursor:crosshair;
   background-color:var(--surface);background-image:radial-gradient(var(--grid) 1.1px,transparent 1.3px);background-size:18px 18px;max-width:100%}
 .hint{margin:0;color:var(--muted);font-size:.86rem;min-height:2.6em}
+.pad:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mol circle.kbsel{fill:none;stroke:var(--pink);stroke-width:2.5}
+.mol circle.kblink{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-dasharray:4 4}
+.kbhelp{font-size:.86rem;color:var(--muted)}
+.whymore{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-top:10px}
+.whymore summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;padding:6px 14px;font-weight:600}
+.whymore[open] summary{border-bottom:1px solid var(--line)}
+.why-q{display:inline-block;background:var(--pink);color:#fff;border-radius:999px;padding:1px 9px;font-size:.82rem;font-weight:700}
+:root[data-theme="dark"] .why-q{color:#2a0c18}
+.why-b{padding:10px 14px 12px;display:grid;gap:10px}
+ul.why-b{margin:0;padding-left:34px}
+.why-b .card{box-shadow:none;border:0;padding:0;margin:0;background:none}
+.why-b .ac-ion-card{border:0;padding:0;box-shadow:none}
+.why-b li.why-in b{color:var(--accent)}
+.why-row{margin-top:10px}
+.kbhelp summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.kbhelp ul{margin:4px 0 0;padding-left:20px;display:grid;gap:4px}
+.kbhelp p{margin:0}
+kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:2px 5px;background:var(--surface);color:var(--ink)}
 
 /* přehled */
 .browse-bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
@@ -359,6 +378,7 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .fact h2{font:700 clamp(1.3rem,4.6vw,1.6rem)/1.2 var(--f-display);letter-spacing:-.01em;margin:0;text-wrap:balance}
 .fact p{margin:0;max-width:56ch;font-size:1.02rem}
 .fact .cat{font-size:.82rem;color:var(--muted);font-weight:600}
+.fact .cat a{color:var(--accent);text-decoration:underline;text-underline-offset:2px;display:inline-block;padding-block:12px;margin-block:-12px}
 .fact .pic{grid-column:2;grid-row:1;max-width:200px;display:flex;justify-content:center;color:var(--accent);overflow:hidden}
 .fact .pic svg.mol{max-width:100%;height:auto}
 .fact .pic .ico{width:52px;height:52px}
@@ -378,6 +398,7 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .subj.soon .go{color:var(--muted)}
 .subj .ico{width:34px;height:34px;color:var(--accent)}
 .les-hub{display:flex;flex-direction:column;gap:10px}
+.les-more{align-self:flex-start;min-height:44px;margin-top:6px}
 .les-hub .fam-h,.les-hub .aside{margin:0}
 #lesHubG{display:flex;flex-direction:column;gap:12px}
 .les-list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
@@ -1005,6 +1026,13 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .seg.mode button:hover{color:var(--ink)}
 @media (max-width:560px){.seg.mode button{padding:10px 6px;font-size:.86rem}}
 @media (max-width:400px){.seg.mode button{padding:10px 4px;font-size:.84rem}}
+/* na telefonu zůstanou záložky režimů přilepené nahoře, ať se dá přepnout i uprostřed dlouhé karty */
+@media (max-width:560px){
+  .controls.modebar{position:sticky;top:0;z-index:5;background:var(--bg);margin-left:-16px;margin-right:-16px;padding:env(safe-area-inset-top,0px) 16px 0}
+  .controls.modebar.stuck{box-shadow:0 8px 12px -12px rgba(0,0,0,.35)}
+  .app .tbar{top:46px}
+  .ac-ion-card,#acDet,.ac-sec{scroll-margin-top:56px}
+}
 </style>
 </head><body>
 <div class="boot" id="boot" role="status"><b>Formičky<span>hub</span></b><i aria-hidden="true"></i><span>Načítám látky a otázky…</span></div>
@@ -1185,7 +1213,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <div class="controls">
     <div class="seg" id="acCls" role="group" aria-label="Ionty"></div>
   </div>
-  <div class="controls">
+  <div class="controls modebar">
     <div class="seg mode" id="acMode" role="group" aria-label="Režim"></div>
   </div>
   <div class="kindbox" id="acTypes"></div>
@@ -1237,7 +1265,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 
   </div>
 
-  <div class="controls">
+  <div class="controls modebar">
     <div class="seg mode" id="modeSeg" role="group" aria-label="Režim">
       <button type="button" data-oles="1">Lekce</button>
       <button type="button" data-mode="study">Studium</button>
@@ -26298,7 +26326,7 @@ function finishMech() {
   const g = Q.cur, ok = Q.mech.ok;
   settle(ok, true); Q.phase = 'done';
   view.innerHTML = `<div class="card"><div class="card-head"><span class="eyebrow">Co bude dál? · ${esc(famName(g))}</span></div><h2 class="q-name">${esc(g.rx.title)}</h2>
-    <div class="fbwrap" id="fb"><div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Celý postup bez chyby.' : 'Postup máš za sebou, ale s chybou. Karta se brzy vrátí.'}</b></p><p class="aside">${esc(g.rx.why || '')}</p></div>${stepsHTML(g.rx, true)}${nextRow()}</div></div>`;
+    <div class="fbwrap" id="fb"><div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Celý postup bez chyby.' : 'Postup máš za sebou, ale s chybou. Karta se brzy vrátí.'}</b></p><p class="aside">${esc(g.rx.why || '')}</p></div>${stepsHTML(g.rx, true)}${ok ? '' : whyOC(g)}${nextRow()}</div></div>`;
   $('#next').focus();
 }
 function renderStudy(g) {
@@ -26332,11 +26360,21 @@ function answerStudy(btn) {
   if (S.dir === 'n') return finishName(false, `<p><b>Správně je ${right}: ${esc(label(g))}.</b></p>` + alsoLine(g) + tipLine(g) + refBox(chosen, esc(label(chosen)) + ' vypadá takhle'));
   finishName(false, `<p><b>Správně je ${right}.</b> Vybraný vzorec je ${esc(label(chosen))}.</p>` + tipLine(g));
 }
+/* „Proč?“ u špatné odpovědi: rozbalí výklad z lekce, ve které otázka je, a co si k okruhu zapamatovat. Karta zůstane, jak byla. */
+function whyOC(g, inLes) {
+  if (!g) return '';
+  const L = typeof FH_OL !== 'undefined' && FH_OL.lessons ? FH_OL.lessons().find(x => x.q.includes(g.id)) : null;
+  let h = '';
+  if (L) h += `<details class="whymore"><summary><span class="why-q">Proč?</span> ${inLes ? 'Výklad této lekce' : `Výklad z lekce ${L.n}: ${esc(L.t)}`}</summary><div class="why-b">${L.body()}</div></details>`;
+  const R = !inLes && RULES[g.fam];
+  if (R && R.length) h += `<details class="whymore"><summary><span class="why-q">Proč?</span> Co si zapamatovat: ${esc(famName(g) || 'okruh')}</summary><ul class="why-b">${R.map(r => `<li>${esc(r)}</li>`).join('')}</ul></details>`;
+  return h;
+}
 function finishName(ok, html) {
   settle(ok, !!Q.opts);
   Q.phase = 'done';
   view.querySelectorAll('#answer,#checkName,#dunno,.opt').forEach(el => { el.disabled = true; });
-  $('#fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'bad'}">${html}</div>${nextRow()}`;
+  $('#fb').innerHTML = `<div class="fb ${ok ? 'ok' : 'bad'}">${html}</div>${ok ? '' : whyOC(Q.cur)}${nextRow()}`;
   $('#next').focus();
 }
 function submitName(typed) {
@@ -26535,12 +26573,20 @@ function mountEditor(host, topic) {
       <button type="button" class="tool" data-act="undo">Zpět</button>
       <button type="button" class="tool" data-act="clear">Smazat vše</button>
     </div>
-    <svg class="pad mol" id="pad" role="img" aria-label="Kreslicí plocha, kreslí se myší nebo prstem. Bez nich použij „Ukázat řešení“ a ohodnoť se sama, v Testu můžeš kreslení vypnout."><g id="scene" font-size="18"></g></svg>
-    <p class="hint" id="edHint"></p>`;
+    <svg class="pad mol" id="pad" tabindex="0" role="application" aria-roledescription="kreslicí plocha" aria-label="Kreslicí plocha. Kreslí se myší, prstem nebo klávesnicí: písmeno vybere prvek, Enter ho přidá k označenému atomu, šipky přecházejí mezi atomy, I přečte celý nákres. Celý návod je pod plochou." aria-describedby="edKbH"><g id="scene" font-size="18"></g></svg>
+    <p class="hint" id="edHint"></p>
+    <details class="kbhelp"><summary>Kreslení z klávesnice</summary><div id="edKbH"><p class="aside">Klikni do plochy nebo na ni přejdi klávesou Tab. Pak:</p><ul>
+      <li><kbd>C</kbd>, <kbd>O</kbd>, <kbd>N</kbd>… vybere prvek, další stisk přepne na prvek se stejným písmenem (C → Cl → Cu). <kbd>R</kbd> je ${ck ? 'konec řetězce' : 'zbytek'}.</li>
+      <li><kbd>Enter</kbd> nebo mezerník přidá vybraný prvek k označenému atomu a označí ho. Na prázdné ploše ho položí doprostřed.</li>
+      <li><kbd>←</kbd> <kbd>↑</kbd> <kbd>→</kbd> <kbd>↓</kbd> označí nejbližší atom tím směrem. <kbd>Esc</kbd> označení zruší, další Enter pak začne nový kus vzorce.</li>
+      <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> nastaví jednoduchou, dvojnou nebo trojnou vazbu k atomu, ze kterého jsi přišla.</li>
+      <li><kbd>V</kbd> spojí atomy (třeba uzavře kruh): šipkami vyber druhý atom a dej Enter.</li>
+      <li><kbd>+</kbd> a <kbd>−</kbd> mění náboj, <kbd>Delete</kbd> smaže atom, <kbd>Ctrl</kbd> + <kbd>Z</kbd> vrátí krok, <kbd>I</kbd> přečte celý nákres.</li>
+    </ul></div></details>`;
   const svg = $('#pad', host), scene = $('#scene', host), hint = $('#edHint', host);
   const L = 46, FS = 18;
   let W = 320, H = 300, drag = null;
-  const st = { atoms: [], bonds: [], tool: 'C', undo: [] };
+  const st = { atoms: [], bonds: [], tool: 'C', undo: [], sel: -1, prev: -1, link: -1, kb: false };
 
   const size = () => { const r = svg.getBoundingClientRect(); W = Math.max(200, r.width); H = Math.max(200, r.height); svg.setAttribute('viewBox', `0 0 ${W.toFixed(0)} ${H.toFixed(0)}`); };
   const snap = () => { st.undo.push(JSON.stringify({ a: st.atoms, b: st.bonds })); if (st.undo.length > 80) st.undo.shift(); };
@@ -26620,6 +26666,13 @@ function mountEditor(host, topic) {
       s += `<line class="ghost" x1="${A.x.toFixed(1)}" y1="${A.y.toFixed(1)}" x2="${T.x.toFixed(1)}" y2="${T.y.toFixed(1)}" stroke-width="2"/>`;
     }
     if (st.flash) s += `<circle class="flash" cx="${st.flash.x.toFixed(1)}" cy="${st.flash.y.toFixed(1)}" r="17"/>`;
+    if (st.kb) {                                        // označení z klávesnice: plný kroužek = označený atom, čárkovaný = druhý atom vazby
+      if (st.sel >= st.atoms.length) st.sel = st.atoms.length - 1;
+      if (st.prev >= st.atoms.length) st.prev = -1;
+      if (st.link >= st.atoms.length) st.link = -1;
+      const ring = (i, c) => i >= 0 ? `<circle class="${c}" cx="${st.atoms[i].x.toFixed(1)}" cy="${st.atoms[i].y.toFixed(1)}" r="16"/>` : '';
+      s += ring(st.sel, 'kbsel') + (st.link >= 0 ? ring(st.link, 'kblink') : '');
+    }
     scene.innerHTML = s;
     $('[data-act="undo"]', host).disabled = !st.undo.length;
   }
@@ -26709,6 +26762,131 @@ function mountEditor(host, topic) {
   };
   svg.addEventListener('pointerup', finish);
   svg.addEventListener('pointercancel', () => { drag = null; draw(); });
+
+  /* --- kreslení z klávesnice a se čtečkou obrazovky ---
+     Označený atom (st.sel) je kurzor: Enter k němu přidá vybraný prvek, šipky přecházejí na nejbližší atom daným směrem.
+     st.prev je atom, ze kterého se přišlo (pro 1/2/3 = násobnost vazby), st.link druhý atom při spojování klávesou V. */
+  const say = t => { if (typeof fhSay === 'function') fhSay(t); hint.textContent = t; };
+  const ORD = { 1: 'jednoduchá', 2: 'dvojná', 3: 'trojná' };
+  const atomName = i => { const a = st.atoms[i]; return (a.el === 'R' ? (ck ? 'konec řetězce' : 'zbytek') : a.el) + ' ' + (i + 1) + (a.q > 0 ? ' plus' : a.q < 0 ? ' minus' : ''); };
+  const nbText = i => { const L = bondsOf(i).map(b => `${atomName(b.a === i ? b.b : b.a)} ${ORD[b.o]}`); return L.length ? 'Vazby: ' + L.join(', ') + '.' : 'Bez vazeb.'; };
+  const bondOfKb = (a, b) => st.bonds.find(x => (x.a === a && x.b === b) || (x.a === b && x.b === a));
+  const toolName = t => t === 'R' ? (ck ? 'konec řetězce' : 'zbytek') : t;
+  const toolsKb = () => [...host.querySelectorAll('[data-tool]')].map(b => b.dataset.tool).filter(placeable);
+  const describe = () => {
+    if (!st.atoms.length) return 'Plocha je prázdná.';
+    const n = st.atoms.length, w = n === 1 ? 'atom' : n < 5 ? 'atomy' : 'atomů';
+    return `${n} ${w}. ` + st.atoms.map((a, i) => `${atomName(i)}: ${nbText(i).replace(/^Vazby: /, '').replace(/^Bez vazeb\./, 'bez vazeb.')}`).join(' ');
+  };
+  /* nejbližší atom v kuželu ±70° kolem směru šipky; navázaný soused má přednost */
+  const stepTo = (from, dx, dy) => {
+    const A = st.atoms[from]; let best = -1, bs = 1e9;
+    st.atoms.forEach((B, j) => {
+      if (j === from) return;
+      const vx = B.x - A.x, vy = B.y - A.y, d = Math.hypot(vx, vy), c = (vx * dx + vy * dy) / (d || 1);
+      if (c < .34) return;
+      const sc = d * (2 - c) * (bondOfKb(from, j) ? .6 : 1);
+      if (sc < bs) { bs = sc; best = j; }
+    });
+    return best;
+  };
+  /* řetězec z klávesnice jde cikcak (120°) jako v čárovém vzorci, jinak první volný směr */
+  let turn = 1;
+  const kbAngle = i => {
+    const B = bondsOf(i); if (B.length !== 1) return freeAngle(i);
+    const a = st.atoms[i], o = st.atoms[B[0].a === i ? B[0].b : B[0].a], inc = Math.atan2(a.y - o.y, a.x - o.x) * 180 / Math.PI;
+    const ok = d => { const r = d * Math.PI / 180, x = a.x + Math.cos(r) * L, y = a.y + Math.sin(r) * L; return x > 12 && x < W - 12 && y > 12 && y < H - 12 && !st.atoms.some(b => Math.hypot(b.x - x, b.y - y) < L * .45); };
+    turn = -turn;
+    for (const d of [inc + 60 * turn, inc - 60 * turn, inc]) if (ok(d)) { if (d === inc - 60 * turn) turn = -turn; return d; }
+    return freeAngle(i);
+  };
+  const freeSpot = () => {                              // nový kus vzorce: doprostřed, nebo vpravo od nákresu
+    if (!st.atoms.length) return { x: W / 2, y: H / 2 };
+    const mx = Math.max(...st.atoms.map(a => a.x)), cy = st.atoms.reduce((q, a) => q + a.y, 0) / st.atoms.length;
+    return clampP({ x: mx + L * 1.3 < W - 12 ? mx + L * 1.3 : W / 2, y: mx + L * 1.3 < W - 12 ? cy : Math.min(H - 12, Math.max(...st.atoms.map(a => a.y)) + L) });
+  };
+  svg.addEventListener('focus', () => { if (!svg.matches(':focus-visible')) return; st.kb = true; if (st.sel < 0 && st.atoms.length) st.sel = st.atoms.length - 1; draw(); });
+  svg.addEventListener('blur', () => { st.kb = false; st.link = -1; draw(); });
+  svg.addEventListener('pointerdown', () => { st.kb = false; st.sel = -1; st.link = -1; }, true);
+  svg.addEventListener('keydown', e => {
+    const k = e.key, t = st.tool, n = st.atoms.length;
+    const done = msg => { e.preventDefault(); e.stopPropagation(); st.kb = true; draw(); if (msg) say(msg); };
+    if (e.altKey || e.metaKey) return;
+    if (e.ctrlKey) {
+      if (k.toLowerCase() !== 'z') return;
+      const u = st.undo.pop(); if (u) { const o = JSON.parse(u); st.atoms = o.a; st.bonds = o.b; }
+      st.link = -1; return done(u ? 'Krok vrácen.' + (st.atoms.length ? '' : ' Plocha je prázdná.') : 'Není co vracet.');
+    }
+    if (st.link >= 0) {                                 // spojování: šipky vybírají druhý atom, Enter spojí, Esc zruší
+      if (k === 'Escape') { st.link = -1; return done('Spojování zrušeno.'); }
+      const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[k];
+      if (dir) { const j = stepTo(st.link, dir[0], dir[1]); if (j < 0) return done('Tím směrem už žádný atom není.'); st.link = j; return done(`Spojit s ${atomName(j)}? Enter spojí, Esc zruší.`); }
+      if (k === 'Enter' || k === ' ') {
+        const a = st.sel, b = st.link; st.link = -1;
+        if (a === b) return done('Atom nejde spojit sám se sebou.');
+        if (leafy(a) || leafy(b)) return done('Vodík a zbytek můžou mít jen jednu vazbu.');
+        snap(); const ex = bondOfKb(a, b);
+        if (ex) ex.o = ex.o % 3 + 1; else st.bonds.push({ a, b, o: 1 });
+        st.prev = a; st.sel = b;
+        return done(`Vazba ${atomName(a)} – ${atomName(b)}: ${ORD[(ex || st.bonds[st.bonds.length - 1]).o]}.`);
+      }
+      return;
+    }
+    if (/^[a-zA-Z]$/.test(k)) {
+      const L0 = k.toUpperCase();
+      if (L0 === 'I') return done(describe());
+      if (L0 === 'V') {
+        if (st.sel < 0) return done('Nejdřív šipkami označ atom, ze kterého vazba povede.');
+        if (n < 2) return done('Na spojení jsou potřeba aspoň dva atomy.');
+        st.link = stepTo(st.sel, 1, 0); if (st.link < 0) st.link = st.atoms.findIndex((a, i) => i !== st.sel);
+        return done(`Spojování z ${atomName(st.sel)}. Šipkami vyber druhý atom, teď ${atomName(st.link)}. Enter spojí, Esc zruší.`);
+      }
+      const L = toolsKb().filter(x => x[0] === L0); if (!L.length) return;
+      const nt = L[(L.indexOf(t) + 1) % L.length];
+      setTool(nt); return done(`Prvek ${toolName(nt)}.` + (L.length > 1 ? ' Další stisk přepne na ' + toolName(L[(L.indexOf(nt) + 1) % L.length]) + '.' : ''));
+    }
+    const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[k];
+    if (dir) {
+      if (!n) return done('Plocha je prázdná. Enter položí první atom.');
+      if (st.sel < 0) { st.sel = n - 1; return done(`${atomName(st.sel)}. ${nbText(st.sel)}`); }
+      const j = stepTo(st.sel, dir[0], dir[1]); if (j < 0) return done('Tím směrem už žádný atom není.');
+      st.prev = st.sel; st.sel = j; return done(`${atomName(j)}. ${nbText(j)}`);
+    }
+    if (k === 'Escape') { if (st.sel < 0) return; st.sel = -1; st.prev = -1; return done('Bez označení. Enter začne nový kus vzorce.'); }
+    if (k === 'Enter' || k === ' ') {
+      if (!placeable(t)) setTool('C');
+      const el = st.tool;
+      if (st.sel < 0 || !n) {
+        if (el === 'R' || el === 'H') return done(`${el === 'H' ? 'Vodík' : toolName(el)} se přidává k atomu. Nejdřív polož atom, třeba C.`);
+        snap(); const q = freeSpot(); st.atoms.push({ el, x: q.x, y: q.y, q: 0 }); st.prev = -1; st.sel = st.atoms.length - 1;
+        return done(`Přidán ${atomName(st.sel)}.`);
+      }
+      if (leafy(st.sel)) return done(`${atomName(st.sel)} už další vazbu mít nemůže. Šipkou se vrať na atom vedle.`);
+      snap(); attach(st.sel, el, kbAngle(st.sel)); st.prev = st.sel; st.sel = st.atoms.length - 1;
+      const nb = st.bonds[st.bonds.length - 1];
+      return done(`Přidán ${atomName(nb.b)} k ${atomName(nb.a)}, vazba jednoduchá.`);
+    }
+    if (/^[123]$/.test(k)) {
+      if (st.sel < 0 || st.prev < 0) return done('Šipkou nebo Enterem přejdi po vazbě na atom, pak nastav její násobnost.');
+      const b = bondOfKb(st.sel, st.prev);
+      if (!b) return done(`${atomName(st.prev)} a ${atomName(st.sel)} nejsou spojené. Spoj je klávesou V.`);
+      if (leafy(b.a) || leafy(b.b)) return done('Vazba k vodíku nebo zbytku je vždy jednoduchá.');
+      snap(); b.o = +k; return done(`Vazba ${atomName(st.prev)} – ${atomName(st.sel)}: ${ORD[b.o]}.`);
+    }
+    if (k === '+' || k === '-' || k === '−') {
+      if (st.sel < 0 || leafy(st.sel)) return done('Náboj se dává na označený atom.');
+      snap(); const a = st.atoms[st.sel], up = k === '+';
+      a.q = up ? (a.q < 1 ? a.q + 1 : 1) : (a.q > -1 ? a.q - 1 : -1);
+      return done(`${atomName(st.sel)}.`);
+    }
+    if (k === 'Delete' || k === 'Backspace') {
+      if (st.sel < 0) return done('Není označený žádný atom.');
+      const nm = atomName(st.sel), nb = bondsOf(st.sel).map(b => b.a === st.sel ? b.b : b.a).find(j => !leafy(j));
+      snap(); const keep = nb === undefined ? null : st.atoms[nb]; delAtom(st.sel);
+      st.sel = keep ? st.atoms.indexOf(keep) : st.atoms.length - 1; st.prev = -1;
+      return done(`${nm} smazán.` + (st.sel >= 0 ? ` Označený ${atomName(st.sel)}.` : ' Plocha je prázdná.'));
+    }
+  });
 
   /* --- nápověda: doplní jednu chybějící část podle vzoru --- */
   function giveHint(g) {
@@ -28478,7 +28656,14 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     if (k >= order.length) shuffle();
     const [name, t, x, tid, pc] = FACTS[order[k]], ac = /^ac:/.test(tid || ''), g = ac ? null : molOf(name, tid), tp = g && TOPICS.find(z => z.id === g.topic);
     $('#factT').textContent = t; $('#factX').textContent = x;
-    $('#factC').textContent = name + (ac ? ' · najdeš v Analytické chemii, ' + ACC[tid.slice(3)] : tp ? ' · najdeš v tématu ' + tp.label : '');
+    /* štítek: kde to najdeš, jako odkaz rovnou na kapitolu Analytiky nebo téma organiky */
+    const fc = $('#factC'); fc.textContent = name;
+    if (ac || tp) {
+      const a = document.createElement('a');
+      if (ac) { a.href = '#analyticka'; a.dataset.fac = tid.slice(3); a.textContent = 'Analytické chemii, ' + ACC[tid.slice(3)]; }
+      else { a.href = '#' + (tp.hash || 'organicka'); a.dataset.ftp = tp.id; a.textContent = 'tématu ' + tp.label; }
+      fc.append(' · najdeš v ', a);
+    }
     let pic = ''; try { if (g) pic = molSVG(g, 34); else if (pc && window.FH_AC) pic = FH_AC.pic(pc); } catch (e) { /* bez obrázku */ }
     $('#factPic').innerHTML = pic;
     $('#factN').textContent = `Zajímavost ${k + 1} z ${order.length}`;
@@ -28487,6 +28672,11 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   shuffle(); show(false);
   window.FH_FACT = () => show(false);   // Analytická chemie se načítá až po rozcestníku, pak dokreslí obrázek
   $('#factNext').addEventListener('click', () => { k++; show(true); });
+  $('#factC').addEventListener('click', e => {
+    const a = e.target.closest('a'); if (!a) return;
+    if (a.dataset.fac && window.FH_AC && FH_AC.ch) { e.preventDefault(); FH_AC.ch(a.dataset.fac); }
+    else if (a.dataset.ftp && typeof goStudy === 'function') { e.preventDefault(); goStudy({ topic: a.dataset.ftp }); }
+  });
 
   /* Logo FormičkyHub: pět variant, náhodně při načtení, klik = další */
   const HUBLOGOS = [["", "<span class=\"w1\">Formičky</span><span class=\"w2\">hub</span><svg class=\"flask\" viewBox=\"0 0 58 64\" aria-hidden=\"true\"><g class=\"foam\"><circle cx=\"29\" cy=\"12\" r=\"7.5\"/><circle cx=\"20\" cy=\"8\" r=\"6.2\"/><circle cx=\"38\" cy=\"7\" r=\"6.6\"/><circle cx=\"28\" cy=\"1.5\" r=\"5.4\"/><circle cx=\"13\" cy=\"14\" r=\"4.6\"/><circle cx=\"45\" cy=\"14\" r=\"4.4\"/><circle cx=\"35\" cy=\"-3\" r=\"4\"/><circle cx=\"21\" cy=\"-2\" r=\"3.8\"/><circle cx=\"9\" cy=\"22\" r=\"3.2\"/><circle cx=\"49\" cy=\"23\" r=\"3\"/><circle cx=\"15\" cy=\"28\" r=\"2.6\"/><circle cx=\"43\" cy=\"30\" r=\"2.6\"/><circle cx=\"8\" cy=\"31\" r=\"2.2\"/><circle cx=\"50\" cy=\"34\" r=\"2.2\"/></g><path class=\"glass\" d=\"M22.5 16 V28 L8.5 54 a4 4 0 0 0 3.6 6 h33.8 a4 4 0 0 0 3.6 -6 L35.5 28 V16\"/><path class=\"liq\" d=\"M16.2 42 Q 23 39 29 42 T 41.8 42 L48 53.6 a3 3 0 0 1 -2.7 4.4 H12.7 a3 3 0 0 1 -2.7 -4.4 Z\"/><circle class=\"bub\" cx=\"24\" cy=\"50\" r=\"2.2\"/><circle class=\"bub\" cx=\"34\" cy=\"53\" r=\"1.6\"/><circle class=\"bub2\" cx=\"29\" cy=\"33\" r=\"1.8\"/><circle class=\"bub2\" cx=\"27\" cy=\"23\" r=\"1.4\"/><circle class=\"rise\" cx=\"27\" cy=\"-6\" r=\"1.8\"/><circle class=\"rise b\" cx=\"34\" cy=\"-8\" r=\"1.5\"/><circle class=\"rise c\" cx=\"22\" cy=\"-9\" r=\"1.3\"/><circle class=\"rise d\" cx=\"31\" cy=\"-12\" r=\"1.2\"/><circle class=\"rise e\" cx=\"18\" cy=\"-4\" r=\"1.4\"/><circle class=\"rise f\" cx=\"40\" cy=\"-3\" r=\"1.6\"/></svg>"], ["", "<span class=\"w1\">Formičky</span><span class=\"w2\">hub</span><svg class=\"cup\" viewBox=\"0 0 48 64\" aria-hidden=\"true\"><path class=\"ln\" d=\"M8 18 h32 q0 16 -16 19 q-16 -3 -16 -19 z\"/><path class=\"ln\" d=\"M24 37 v13 M15 58 h18 M24 50 q-7 2 -9 8 M24 50 q7 2 9 8\"/><g class=\"snake\"><path d=\"M31 8 q-6 -4 -9 1 q-2 5 4 7 q8 3 4 11 q-3 6 -9 6 q-6 1 -4 8 q2 6 7 6 q6 0 5 6\"/><circle class=\"eye\" cx=\"30\" cy=\"8.6\" r=\"1.1\"/></g></svg>"], ["lab", "<span class=\"rp\">Rp.</span><span class=\"w1\">Formičky</span><span class=\"w2\">hub</span><svg class=\"mortar\" viewBox=\"0 0 56 60\" aria-hidden=\"true\"><g class=\"pestle-g\"><path class=\"pestle\" d=\"M30 30 L47 5\"/><circle class=\"pestle-end\" cx=\"47.5\" cy=\"5\" r=\"4\"/></g><path class=\"ln fillb\" d=\"M6 28 h44 q-2 18 -22 20 q-20 -2 -22 -20 z\"/><path class=\"ln\" d=\"M20 48 l-3 7 h22 l-3 -7\"/><circle class=\"pw\" cx=\"20\" cy=\"34\" r=\"2\"/><circle class=\"pw\" cx=\"27\" cy=\"36\" r=\"1.6\"/><circle class=\"pw\" cx=\"34\" cy=\"33\" r=\"1.8\"/></svg>"], ["cap2", "<span class=\"w1\">Formičky</span><span class=\"w2\">hub</span><svg class=\"flask\" viewBox=\"0 0 58 64\" aria-hidden=\"true\"><g class=\"foam\"><circle cx=\"29\" cy=\"12\" r=\"7.5\"/><circle cx=\"20\" cy=\"8\" r=\"6.2\"/><circle cx=\"38\" cy=\"7\" r=\"6.6\"/><circle cx=\"28\" cy=\"1.5\" r=\"5.4\"/><circle cx=\"13\" cy=\"14\" r=\"4.6\"/><circle cx=\"45\" cy=\"14\" r=\"4.4\"/><circle cx=\"35\" cy=\"-3\" r=\"4\"/><circle cx=\"21\" cy=\"-2\" r=\"3.8\"/><circle cx=\"9\" cy=\"22\" r=\"3.2\"/><circle cx=\"49\" cy=\"23\" r=\"3\"/><circle cx=\"15\" cy=\"28\" r=\"2.6\"/><circle cx=\"43\" cy=\"30\" r=\"2.6\"/><circle cx=\"8\" cy=\"31\" r=\"2.2\"/><circle cx=\"50\" cy=\"34\" r=\"2.2\"/></g><path class=\"glass\" d=\"M22.5 16 V28 L8.5 54 a4 4 0 0 0 3.6 6 h33.8 a4 4 0 0 0 3.6 -6 L35.5 28 V16\"/><path class=\"liq\" d=\"M16.2 42 Q 23 39 29 42 T 41.8 42 L48 53.6 a3 3 0 0 1 -2.7 4.4 H12.7 a3 3 0 0 1 -2.7 -4.4 Z\"/><circle class=\"bub\" cx=\"24\" cy=\"50\" r=\"2.2\"/><circle class=\"bub\" cx=\"34\" cy=\"53\" r=\"1.6\"/><circle class=\"bub2\" cx=\"29\" cy=\"33\" r=\"1.8\"/><circle class=\"bub2\" cx=\"27\" cy=\"23\" r=\"1.4\"/><circle class=\"rise\" cx=\"27\" cy=\"-6\" r=\"1.8\"/><circle class=\"rise b\" cx=\"34\" cy=\"-8\" r=\"1.5\"/><circle class=\"rise c\" cx=\"22\" cy=\"-9\" r=\"1.3\"/><circle class=\"rise d\" cx=\"31\" cy=\"-12\" r=\"1.2\"/><circle class=\"rise e\" cx=\"18\" cy=\"-4\" r=\"1.4\"/><circle class=\"rise f\" cx=\"40\" cy=\"-3\" r=\"1.6\"/></svg>"], ["", "<span class=\"w1\">Formičky</span><span class=\"w2\">hub</span><svg class=\"flask\" viewBox=\"0 0 58 64\" aria-hidden=\"true\"><g class=\"foam\"><circle cx=\"29\" cy=\"12\" r=\"7.5\"/><circle cx=\"20\" cy=\"8\" r=\"6.2\"/><circle cx=\"38\" cy=\"7\" r=\"6.6\"/><circle cx=\"28\" cy=\"1.5\" r=\"5.4\"/><circle cx=\"13\" cy=\"14\" r=\"4.6\"/><circle cx=\"45\" cy=\"14\" r=\"4.4\"/><circle cx=\"35\" cy=\"-3\" r=\"4\"/><circle cx=\"21\" cy=\"-2\" r=\"3.8\"/><circle cx=\"9\" cy=\"22\" r=\"3.2\"/><circle cx=\"49\" cy=\"23\" r=\"3\"/><circle cx=\"15\" cy=\"28\" r=\"2.6\"/><circle cx=\"43\" cy=\"30\" r=\"2.6\"/><circle cx=\"8\" cy=\"31\" r=\"2.2\"/><circle cx=\"50\" cy=\"34\" r=\"2.2\"/></g><path class=\"glass\" d=\"M22.5 16 V28 L8.5 54 a4 4 0 0 0 3.6 6 h33.8 a4 4 0 0 0 3.6 -6 L35.5 28 V16\"/><path class=\"liq\" d=\"M16.2 42 Q 23 39 29 42 T 41.8 42 L48 53.6 a3 3 0 0 1 -2.7 4.4 H12.7 a3 3 0 0 1 -2.7 -4.4 Z\"/><circle class=\"bub\" cx=\"24\" cy=\"50\" r=\"2.2\"/><circle class=\"bub\" cx=\"34\" cy=\"53\" r=\"1.6\"/><circle class=\"bub2\" cx=\"29\" cy=\"33\" r=\"1.8\"/><circle class=\"bub2\" cx=\"27\" cy=\"23\" r=\"1.4\"/><circle class=\"rise\" cx=\"27\" cy=\"-6\" r=\"1.8\"/><circle class=\"rise b\" cx=\"34\" cy=\"-8\" r=\"1.5\"/><circle class=\"rise c\" cx=\"22\" cy=\"-9\" r=\"1.3\"/><circle class=\"rise d\" cx=\"31\" cy=\"-12\" r=\"1.2\"/><circle class=\"rise e\" cx=\"18\" cy=\"-4\" r=\"1.4\"/><circle class=\"rise f\" cx=\"40\" cy=\"-3\" r=\"1.6\"/></svg><svg class=\"caps\" viewBox=\"0 0 60 40\" aria-hidden=\"true\"><g class=\"caps-g\"><g transform=\"rotate(-30 30 20)\"><path class=\"c1\" d=\"M30 9 H17 a11 11 0 0 0 0 22 H30 Z\"/><path class=\"c2\" d=\"M30 9 H43 a11 11 0 0 1 0 22 H30 Z\"/><path class=\"ln\" d=\"M17 9 H43 a11 11 0 0 1 0 22 H17 a11 11 0 0 1 0 -22 Z M30 9 V31\"/></g></g></svg>"], ["benz", "<span class=\"w1\" aria-label=\"Formičky\">F<svg class=\"bo\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><polygon points=\"12,1.8 21,7 21,17 12,22.2 3,17 3,7\"/><circle cx=\"12\" cy=\"12\" r=\"5.2\"/></svg>rmičky</span><span class=\"w2\">hub</span>"]];
@@ -28829,6 +29019,13 @@ function fhRefocus(fk, root, box) {
   if (!ok(t)) { t = box.querySelector('h2, h3, .q-text') || box; if (!t.hasAttribute('tabindex')) t.tabIndex = -1; }
   t.focus({ preventScroll: true });
 }
+/* přilepené záložky režimů na telefonu: stín jen tehdy, když opravdu leží přes obsah */
+(() => {
+  let raf = 0;
+  const upd = () => { raf = 0; document.querySelectorAll('.controls.modebar').forEach(el => { el.classList.toggle('stuck', !!el.offsetParent && scrollY > 0 && el.getBoundingClientRect().top <= 1 && getComputedStyle(el).position === 'sticky'); }); };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(upd); }, { passive: true });
+  addEventListener('resize', upd);
+})();
 /* ===== Lekce: společný modul pro Analytickou i Organickou chemii =====
    Seznam lekcí, výklad a konec lekce. Kvíz si každý předmět běží po svém (jeho karty, jeho opakování),
    tlačítka nesou atribut předmětu (data-ac / data-ol) s hodnotami lopen, lquiz, lback. */
@@ -28893,13 +29090,19 @@ const FH_LES = (() => {
     const A = all(), f = SUBJ.some(x => x.k === F) ? F : '*';
     const seg = SUBJ.length > 1 ? `<div class="seg small hn-flt" role="group" aria-label="Předmět">${[['*', 'Vše', A.length]].concat(SUBJ.map(x => [x.k, x.short, A.filter(L => L.s === x).length])).map(([v, l, c]) => `<button type="button" data-lhf="${v}" aria-pressed="${f === v}">${l}<span class="n">${c}</span></button>`).join('')}</div>` : '';
     /* lekce jako seznam řádků: s přibývajícími lekcemi zůstane přehledný i na počítači */
-    const rows = A.filter(L => f === '*' || L.s.k === f).map(L => { const p = L.s.prog()[L.id]; return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
+    /* nedokončené lekce napřed; když jich je víc než 4, ukážou se 3 a zbytek po rozbalení, ať úvod s přibývajícími lekcemi neroste */
+    const sel = A.filter(L => f === '*' || L.s.k === f), todo = sel.filter(L => !L.s.prog()[L.id]), list = todo.concat(sel.filter(L => !todo.includes(L)));
+    const cut = !OPEN && list.length > 4 ? 3 : list.length;
+    const rows = list.slice(0, cut).map(L => { const p = L.s.prog()[L.id]; return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
       <span class="les-row-t"><b>Lekce ${L.n}: ${L.t}</b><span>${L.s.short} · ${L.where}</span></span>
       <span class="les-row-s">${p ? `<span class="ac-les-done">Hotovo ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</span>
       <svg class="les-row-go" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>`; }).join('');
-    document.getElementById('lesHubG').innerHTML = seg + `<ul class="les-list">${rows}</ul>`;
+    const more = list.length > 4 ? `<button type="button" class="link les-more" data-lhm="1" aria-expanded="${OPEN}">${OPEN ? 'Ukázat méně' : `Ukázat všechny lekce (${list.length})`}</button>` : '';
+    document.getElementById('lesHubG').innerHTML = seg + `<ul class="les-list">${rows}</ul>` + more;
   }
+  let OPEN = false;
   document.addEventListener('click', e => {
+    if (e.target.closest('[data-lhm]')) { OPEN = !OPEN; hub(); const b = document.querySelector('[data-lhm]'); if (b) b.focus(); return; }
     const f = e.target.closest('[data-lhf]');
     if (f) { F = f.dataset.lhf; try { localStorage.setItem('fg-leshub', JSON.stringify(F)); } catch (er) { /* nic */ } return hub(); }
     const t = e.target.closest('[data-lh]'); if (t) open(t.dataset.lh, t.dataset.v);
@@ -28965,7 +29168,7 @@ const FH_OL = (() => {
     if (done) {
       const ok = O.pick === 0, full = g.full ? ': ' + esc(g.full) : '';
       const not = !ok && g.not && g.not[O.pick - 1] ? `<p class="aside"><b>Proč ne ${LTR[O.order.indexOf(O.pick)]}:</b> ${esc(g.not[O.pick - 1])}</p>` : '';
-      fb = `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně' + full + '.' : 'Správně je ' + LTR[O.order.indexOf(0)] + full + '.'}</b></p>${not}<p class="aside">${esc(g.why)}</p></div>
+      fb = `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně' + full + '.' : 'Správně je ' + LTR[O.order.indexOf(0)] + full + '.'}</b></p>${not}<p class="aside">${esc(g.why)}</p></div>${ok ? '' : whyOC(g, true)}
         <div class="row"><button type="button" class="btn primary" id="olNext" ${ATT}="lnext">${O.i + 1 < n ? 'Další' : 'Dokončit lekci'}</button></div>`;
     }
     return `<div class="progress"><span class="cnt">${O.i + 1} / ${n}</span><span class="bar"><i style="width:${100 * O.i / n}%"></i></span><span class="cnt">${O.ok} ✓</span></div>
@@ -30280,7 +30483,20 @@ function feedback(cd, ok) {
   } else {
     body = `<p>${cd.set.length ? `Správně: <b>${cd.set.map(i => ION[i].f).join(', ')}</b>` : 'Správně: žádný.'}</p>${cd.ex && cd.rk === 'NaOH' ? '<p class="aside">Vzniklé roztoky jsou bezbarvé, jen chromitan je zelený.</p>' : ''}${cd.rk === 'H2S' && cd.c === 'k' && !cd.ex ? '<p class="aside">Pozor na Fe³⁺: oxiduje sulfan a vznikne jen bílý zákal síry, ne sraženina sulfidu.</p>' : ''}`;
   }
-  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${bedaBox(bedaFor(cd))}`;
+  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${bedaBox(bedaFor(cd))}`;
+}
+/* „Proč?“ u špatné odpovědi: výklad z lekce, všechny reakce iontu nebo celá skupina s činidlem; u cvičení 3–6 odkaz na tahák (kolo se nepřeruší) */
+function whyAC(cd) {
+  const det = (sum, body) => `<details class="whymore"><summary><span class="why-q">Proč?</span> ${sum}</summary><div class="why-b">${body}</div></details>`;
+  const L = AC_LES.find(x => x.q.includes(cd.id));
+  let h = L ? det(Q.les === L.id ? 'Výklad této lekce' : `Výklad z lekce ${L.n}: ${L.t}`, L.body()) : '';
+  if (cd.ion && (cd.t === 'obs' || cd.t === 'ion' || cd.t === 'sel' || cd.t === 'how')) h += det(`Všechny reakce ${cd.ion.f}`, ionCard(cd.ion).replace(/^<article class="card ac-ion-card" id="[^"]*">/, '<article class="ac-ion-card">'));
+  else if (cd.t === 'grp' && !cd.none) {
+    const r = rg(cd.c, cd.rk);
+    h += det(`Jak ${cd.c === 'k' ? 'reagují kationty' : 'reagují anionty'} s ${r[1]}`, `<ul class="ac-rl">${ions(cd.c).map(o => { const rx = o.r[cd.rk]; return `<li${cd.set.includes(o.id) ? ' class="why-in"' : ''}><b>${o.f}</b> ${rx ? `${escA(rx.v)}${rx.f ? ` <small>${rx.f}</small>` : ''}` : NONE}</li>`; }).join('')}</ul>`);
+  }
+  if ((cd.ch || 'ka') !== 'ka' && CHM[ST.ch].includes('sheet')) h += `<div class="row why-row"><button type="button" class="btn sm" data-ac="mode" data-v="sheet"><span class="why-q">Proč?</span> Projít tahák ke cvičení</button></div>`;
+  return h;
 }
 /* Béďova pomůcka ke kartičce: u skupinových otázek podle činidla, jinak podle iontu */
 function bedaFor(cd) {
@@ -30608,7 +30824,15 @@ FH_LES.reg({ k: 'a', name: 'Analytická chemie', short: 'Analytická', prog: () 
     if (location.hash === '#analyticka-lekce') { render(); window.scrollTo(0, 0); } else location.hash = 'analyticka-lekce';
   } });
 window.FH_AC = {
-  show, due: () => dueCount(), best: k => (ST.best && ST.best[k || 'vz']) || 0, cards: CARDS.length,
+  show, due: () => dueCount(),
+  /* otevře kapitolu (cvičení) v Procvičování, třeba ze štítku Béďovy zajímavosti */
+  ch(c) {
+    if (!CHN[c]) return;
+    if (Q.les) resetLesson();
+    if (ST.ch !== c) { ST.ch = c; Q.deck = []; Q.empty = false; }
+    ST.mode = 'quiz'; save();
+    if (location.hash === '#analyticka') show(); else location.hash = 'analyticka';
+  }, best: k => (ST.best && ST.best[k || 'vz']) || 0, cards: CARDS.length,
   started: () => Object.keys(ST.r).length > 0,
   stats: () => { const ids = CARDS.map(c => c.id); return { all: ids.length, done: ids.filter(id => ST.r[id] && ST.r[id].b >= 2).length }; },
   pic: o => o.t === 'flame' ? flameSVG(o.c) : o.t === 'spot' ? spotSVG(o.c) : tubeSVG(o),
