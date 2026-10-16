@@ -30489,7 +30489,7 @@ function feedback(cd, ok) {
   }
   return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${bedaBox(bedaFor(cd))}`;
 }
-/* „Proč?“ u špatné odpovědi: výklad z lekce, všechny reakce iontu nebo celá skupina s činidlem; u cvičení 3–6 odkaz na tahák (kolo se nepřeruší) */
+/* „Proč?“ u špatné odpovědi: výklad z lekce, všechny reakce iontu nebo celá skupina s činidlem; u cvičení 3–6 odkaz na tahák (kolo se nepřeruší, v kvízu lekce chybí, ten by se odchodem zahodil) */
 function whyAC(cd) {
   const det = (sum, body) => `<details class="whymore"><summary><span class="why-q">Proč?</span> ${sum}</summary><div class="why-b">${body}</div></details>`;
   const L = AC_LES.find(x => x.q.includes(cd.id));
@@ -30499,7 +30499,7 @@ function whyAC(cd) {
     const r = rg(cd.c, cd.rk);
     h += det(`Jak ${cd.c === 'k' ? 'reagují kationty' : 'reagují anionty'} s ${r[1]}`, `<ul class="ac-rl">${ions(cd.c).map(o => { const rx = o.r[cd.rk]; return `<li${cd.set.includes(o.id) ? ' class="why-in"' : ''}><b>${o.f}</b> ${rx ? `${escA(rx.v)}${rx.f ? ` <small>${rx.f}</small>` : ''}` : NONE}</li>`; }).join('')}</ul>`);
   }
-  if ((cd.ch || 'ka') !== 'ka' && CHM[ST.ch].includes('sheet')) h += `<div class="row why-row"><button type="button" class="btn sm" data-ac="mode" data-v="sheet"><span class="why-q">Proč?</span> Projít tahák ke cvičení</button></div>`;
+  if (!Q.les && (cd.ch || 'ka') !== 'ka' && CHM[ST.ch].includes('sheet')) h += `<div class="row why-row"><button type="button" class="btn sm" data-ac="mode" data-v="sheet"><span class="why-q">Proč?</span> Projít tahák ke cvičení</button></div>`;
   return h;
 }
 /* Béďova pomůcka ke kartičce: u skupinových otázek podle činidla, jinak podle iontu */
