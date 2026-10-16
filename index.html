@@ -952,6 +952,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 @media (max-width:520px){#acMode[data-n="5"] button,#acMode[data-n="6"] button{flex:1 1 30%}#acMode button{padding:8px 6px}}
 /* lekce: krátký výklad a kvíz */
 .ac-les-back{min-height:44px}
+#olView{display:flex;flex-direction:column;gap:12px;min-width:0}
 .ac-les-item{display:flex;flex-direction:column;gap:8px}
 .ac-les-item h3{margin:0;font-size:1.15rem;line-height:1.3}
 .ac-les-meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:.85rem;color:var(--muted)}
@@ -985,6 +986,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .seg.mode button[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--accent)}
 .seg.mode button:hover{color:var(--ink)}
 @media (max-width:560px){.seg.mode button{padding:10px 6px;font-size:.86rem}}
+@media (max-width:400px){.seg.mode button{padding:10px 4px;font-size:.84rem}}
 </style>
 </head><body>
 <div class="boot" id="boot" role="status"><b>Formičky<span>hub</span></b><i aria-hidden="true"></i><span>Načítám látky a otázky…</span></div>
@@ -1064,8 +1066,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
         <li><b>Okruhy</b> (rozbalovací řádek) zúží procvičování jen na vybrané kapitoly tématu.</li>
       </ul></details>
 
-    <details class="g-item"><summary>Režimy: Studium, Pojmenuj, Nakresli, Test, Přehled</summary>
+    <details class="g-item"><summary>Režimy: Lekce, Studium, Pojmenuj, Nakresli, Test, Přehled</summary>
       <ul>
+        <li><b>Lekce:</b> krátký výklad k části přednášky, asi na 5 minut, s kvízem na konci. Zatím je u 9. přednášky. Otázky z kvízu se ti pak vracejí ve Studiu.</li>
         <li><b>Studium:</b> vybíráš ze čtyř možností A–D. U názvosloví jde přepnout směr „Vzorec → název“ nebo „Název → vzorec“.</li>
         <li><b>Pojmenuj:</b> název napíšeš sám. Drobný překlep se uzná a aplikace upozorní na správný pravopis. Tlačítko „Nevím“ rovnou ukáže odpověď. Při chybě se zvýrazní, čím se tvůj název liší, a napíše se, kde je chyba: lokanty, substituent, hlavní řetězec, koncovka nebo pořadí.</li>
         <li><b>Nakresli:</b> vzorec kreslíš do plochy. „Nápověda“ poradí další krok, „Ukázat řešení“ ukáže vzor a pak se ohodnotíš sama (hodí se, když kreslíš na papír).</li>
@@ -1218,6 +1221,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 
   <div class="controls">
     <div class="seg mode" id="modeSeg" role="group" aria-label="Režim">
+      <button type="button" data-oles="1">Lekce</button>
       <button type="button" data-mode="study">Studium</button>
       <button type="button" data-mode="name">Pojmenuj</button>
       <button type="button" data-mode="draw">Nakresli</button>
@@ -1233,6 +1237,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   </div>
 
   <main id="view"></main>
+  <section id="olView" aria-label="Lekce" hidden></section>
 
   <footer class="mascot" id="mascot">
     <svg class="benz bd2" viewBox="0 0 200 188" width="160" height="150" role="img" aria-label="Maskot Béďa Bobík, šestiúhelník s brýlemi a pár vlasy na temeni, samolibě se usmívá a drží uhlík a dusík">
@@ -10006,6 +10011,11 @@ function registerTopic(T) {
       ['base', 'sou', 'Teplota', 'Co podle doplňku podporuje zvýšená teplota?', ['eliminaci', 'substituci SN2', 'substituci SN1', 'inverzi konfigurace'], 'Souhrn v doplňku zdůrazňuje: zvýšená teplota podporuje eliminaci.', 'q35'],
       ['base', 'sou', 'E2 u primárních', 'Co je podle doplňku nezbytné, aby primární halogenid reagoval E2?', ['silná a stericky bráněná báze (t-BuOK, LDA)', 'slabá báze v protickém rozpouštědle', 'kyselé prostředí (H₂SO₄)', 'polární aprotické rozpouštědlo a CN⁻'], '1-Brombutan s (CH₃)₃COK dá 85 % but-1-enu, s NaCN 90 % nitrilu (SN2, slajd 67).', 'q36'],
       ['base', 'sou', 'Rozhodovací diagram', 'Primární benzylový halogenid a voda jako nukleofil. Jaký mechanismus převládne podle rozhodovacího diagramu?', ['SN1', 'SN2', 'E2', 'E1'], 'Primární, ale benzylový typ + neutrální nukleofil → SN1 nebo E1, upřednostněna SN1 (benzylový kation je stabilizovaný rezonancí).', 'q37'],
+      /* k lekci 1 (SN2, nebo SN1?), přibylo 16. 10. 2026 */
+      ['base', 'sou', 'Podmínky pro SN2', 'Která kombinace podmínek nahrává SN2?', ['primární substrát, silný aniontový nukleofil, DMSO', 'terciární substrát, voda jako nukleofil i rozpouštědlo', 'terciární substrát, slabý nukleofil, ethanol', 'benzylový substrát, methanol, kyselé prostředí'], 'SN2 potřebuje stericky nebráněný uhlík, silný (obvykle aniontový) nukleofil a polární aprotické rozpouštědlo, které nukleofil neobalí vodíkovými vazbami.',
+        ['Terciární uhlík je pro útok zezadu příliš bráněný, voda je slabý nukleofil a protické rozpouštědlo stabilizuje karbokation, tedy SN1.', 'Terciární substrát se slabým nukleofilem v alkoholu je typická SN1 (solvolýza).', 'Benzylový kation je stabilizovaný rezonancí a methanol je slabý nukleofil, takže převládne SN1.'], 'q46'],
+      ['base', 'sou', 'Racemát prozradí SN1', 'Z opticky čistého (R)-halogenidu vznikl ve vodě racemický alkohol. Jak reakce nejspíš proběhla?', ['SN1', 'SN2', 'E1', 'E2'], 'Racemát prozrazuje planární karbokation, na který voda útočí z obou stran. Vodu jako slabý nukleofil v protickém rozpouštědle čekáš právě u SN1.',
+        ['SN2 je jednokroková s útokem zezadu, dala by čistou inverzi, ne racemát.', 'E1 sice jde přes karbokation, ale produktem je alken, ne alkohol.', 'E2 dává alken, ne alkohol.'], 'q47'],
 
       // ===== extra
       ['extra', 'pri', 'Chlorace propanu', 'Jaký poměr 2-chlorpropan : 1-chlorpropan očekáváš při radikálové chloraci propanu (reaktivity 1,0 : 3,5)?', ['asi 54 : 46', '25 : 75', '90 : 10', '50 : 50'], '2 sekundární H × 3,5 = 7, 6 primárních H × 1,0 = 6. 7 : 6 ≈ 54 : 46.', 'q38'],
@@ -25844,7 +25854,8 @@ function renderControls() {
     TOPICS.map(t => `<button type="button" class="chip" data-mix="${t.id}" title="${esc(t.label)}" aria-pressed="${S.mixT.includes(t.id)}">${esc(tShort(t.id))}</button>`).join('');
   renderSrc();
   document.querySelectorAll('#setSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.set === S.set));
-  document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === S.mode));
+  const olOn = typeof FH_OL !== 'undefined' && FH_OL.on();
+  document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', olOn ? !!b.dataset.oles : b.dataset.mode === S.mode));
   $('#setNote').hidden = S.set !== 'extra';
   const inSet = inTopic.filter(g => S.set === 'all' || g.set === S.set);
   $('#famChips').innerHTML = `<button type="button" class="chip" data-fam="*" aria-pressed="${!S.fams}">Všechny</button>` +
@@ -25954,6 +25965,7 @@ $('#topicSel').addEventListener('change', e => {
 
 /* ===== Pohledy ===== */
 function renderView() {
+  if (typeof FH_OL !== 'undefined') FH_OL.sync();
   saveAns(); TT.mounted = false;
   editor = null;
   if (S.mode === 'browse') return renderBrowse();
@@ -27090,6 +27102,7 @@ $('#mascotNext').addEventListener('click', () => {
 /* A–D nebo 1–4 = volba možnosti */
 document.addEventListener('keydown', e => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.rx[data-rx]')) { e.preventDefault(); e.target.classList.toggle('veil'); return; }
+  if (typeof FH_OL !== 'undefined' && FH_OL.on()) return;
   const live = (S.mode === 'study' && Q.phase === 'ask') || (S.mode === 'test' && TT.phase === 'run' && TT.qs[TT.i].type === 'pick');
   if (!live || e.ctrlKey || e.metaKey || e.altKey) return;
   const k = Math.max('abcd'.indexOf(e.key.toLowerCase()), '1234'.indexOf(e.key));
@@ -27098,6 +27111,7 @@ document.addEventListener('keydown', e => {
 });
 /* Enter = Další */
 document.addEventListener('keydown', e => {
+  if (typeof FH_OL !== 'undefined' && FH_OL.on()) return;
   if (e.key === 'Enter' && Q.phase === 'done' && $('#next') && document.activeElement !== $('#next')) { e.preventDefault(); nextCard(); }
   if (e.key === 'Enter' && Q.phase === 'step') { const b = $('#mechNext') || $('#mechDone'); if (b && document.activeElement !== b) { e.preventDefault(); b.click(); } }
 });
@@ -27242,7 +27256,7 @@ async function zip(bytes, dir) {
   return new Uint8Array(await new Response(st).arrayBuffer());
 }
 async function makeBackup() {
-  const data = { v: 1, t: Date.now(), p: store.get('fg-progress', {}), r: store.get('fg-srs', {}), d: store.get('fg-daily', {}), h: store.get('fg-herna', {}), a: store.get('fg-ac', {}) };
+  const data = { v: 1, t: Date.now(), p: store.get('fg-progress', {}), r: store.get('fg-srs', {}), d: store.get('fg-daily', {}), h: store.get('fg-herna', {}), a: store.get('fg-ac', {}), l: store.get('fg-les', {}) };
   const raw = new TextEncoder().encode(JSON.stringify(data));
   if (typeof CompressionStream === 'function') { try { return 'FH1-' + b64u.enc(await zip(raw, true)); } catch (e) { /* bez komprese */ } }
   return 'FH0-' + b64u.enc(raw);
@@ -27283,9 +27297,10 @@ function mergeBackup(d) {
     const A0 = store.get('fg-ac', {}); A0.r = A0.r || {}; A0.best = A0.best || {};
     Object.entries(d.a.r).forEach(([id, r]) => { const a = A0.r[id]; if (r && typeof r === 'object' && (!a || (r.ok || 0) + (r.bad || 0) > (a.ok || 0) + (a.bad || 0))) { A0.r[id] = r; nR++; } });
     Object.entries(d.a.best || {}).forEach(([k, v]) => { A0.best[k] = Math.max(A0.best[k] || 0, +v || 0); });
-    if (d.a.les && typeof d.a.les === 'object') { A0.les = A0.les || {}; Object.entries(d.a.les).forEach(([k, v]) => { const a = A0.les[k]; if (v && typeof v === 'object' && (!a || (v.k || 0) > (a.k || 0))) A0.les[k] = Object.assign({}, v, { best: Math.max(v.best || 0, (a && a.best) || 0) }); }); }
+    if (d.a.les && typeof d.a.les === 'object') A0.les = FH_LES.merge(A0.les || {}, d.a.les);
     store.set('fg-ac', A0);
   }
+  if (d.l && typeof d.l === 'object') { if (typeof FH_OL !== 'undefined' && FH_OL.merge) FH_OL.merge(d.l); else store.set('fg-les', FH_LES.merge(store.get('fg-les', {}), d.l)); }   // pokrok lekcí organiky
   return { nP, nR };
 }
 function renderBackup(msg, code) {
@@ -28525,7 +28540,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161045';
+const FH_VER = '202610161140';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -28687,6 +28702,162 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
 })();
 </script>
 <script>
+/* ===== Lekce: společný modul pro Analytickou i Organickou chemii =====
+   Seznam lekcí, výklad a konec lekce. Kvíz si každý předmět běží po svém (jeho karty, jeho opakování),
+   tlačítka nesou atribut předmětu (data-ac / data-ol) s hodnotami lopen, lquiz, lback. */
+const FH_LES = (() => {
+  const btn = (att, a, v, cls, txt) => `<button type="button" class="${cls}" ${att}="${a}"${v ? ` data-v="${v}"` : ''}>${txt}</button>`;
+  /* o = { att, lessons, prog, soon, sub, empty } */
+  function list(o) {
+    const P = o.prog || {};
+    return `<div class="card"><span class="eyebrow">Lekce</span><h2 class="q-name ac-long">Krátký výklad, pak kvíz</h2><p class="ac-sub">${o.sub}</p></div>
+    ${o.lessons.length ? o.lessons.map(L => { const p = P[L.id]; return `<article class="card ac-les-item"><span class="eyebrow">Lekce ${L.n}</span><h3>${L.t}</h3>
+      <div class="ac-les-meta"><span>asi ${L.min} minut · ${L.q.length} otázek</span>${p ? `<span class="ac-les-done">Hotovo, nejlépe ${p.best} z ${p.n}</span>` : '<span class="ac-new">nová</span>'}</div>
+      <div class="row">${btn(o.att, 'lopen', L.id, 'btn primary', p ? 'Projít znovu' : 'Začít lekci')}${p ? btn(o.att, 'lquiz', L.id, 'btn', 'Jen kvíz') : ''}</div></article>`; }).join('') : `<div class="card">${o.empty}</div>`}
+    ${o.soon && o.soon.length ? `<div class="card"><span class="eyebrow">Připravujeme</span><ol class="ac-les-soon" start="${o.lessons.length + 1}">${o.soon.map(t => `<li>${t}</li>`).join('')}</ol></div>` : ''}`;
+  }
+  /* o = { att, L, body, beda } */
+  function read(o) {
+    const L = o.L;
+    return `<div class="row">${btn(o.att, 'lback', '', 'link ac-les-back', '← Všechny lekce')}</div>
+    <div class="card"><span class="eyebrow">Lekce ${L.n} · asi ${L.min} minut</span><h2 class="q-name ac-long">${L.t}</h2><p class="ac-sub">${L.goal}</p></div>
+    <div class="card ac-les-recall"><p><b>Než začneš:</b> ${L.recall}</p></div>
+    ${o.body}${o.beda || ''}
+    <div class="card"><p>Teď si to vyzkoušej. Nejdřív odpovídej z hlavy, teprve potom se vracej k výkladu.</p><div class="row">${btn(o.att, 'lquiz', L.id, 'btn primary', `Spustit kvíz (${L.q.length} otázek)`)}</div></div>`;
+  }
+  /* o = { att, L, ok, n, missed, tail, note } */
+  function end(o) {
+    const L = o.L;
+    return `<div class="card ac-end"><span class="eyebrow">Lekce ${L.n} hotová</span><h2 class="q-name">${o.ok} z ${o.n} správně</h2>
+    ${o.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${o.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
+    <p>${o.tail}</p>
+    <p class="aside">${o.note}</p>
+    <div class="row">${btn(o.att, 'lback', '', 'btn primary', 'Zpět na lekce')}${btn(o.att, 'lopen', L.id, 'btn', 'Projít výklad znovu')}${btn(o.att, 'lquiz', L.id, 'btn', 'Kvíz znovu')}</div></div>`;
+  }
+  /* záznam o dokončení: nejlepší výsledek a počet průchodů */
+  const rec = (prev, n, ok, d) => ({ d, n, ok, best: Math.max((prev && prev.best) || 0, ok), k: ((prev && prev.k) || 0) + 1 });
+  /* sloučení pokroku lekcí ze zálohy: vyhrává záznam s víc průchody, nejlepší výsledek se nikdy nesníží */
+  function merge(into, from) {
+    Object.entries(from || {}).forEach(([k, v]) => { const a = into[k]; if (v && typeof v === 'object' && (!a || (v.k || 0) > (a.k || 0))) into[k] = Object.assign({}, v, { best: Math.max(v.best || 0, (a && a.best) || 0) }); });
+    return into;
+  }
+  return { list, read, end, rec, merge };
+})();
+
+/* ===== Organická chemie: lekce nad otázkami z přednášek =====
+   Lekce běží ve vlastním kontejneru #olView vedle #view, aby se kliky a klávesy nepletly s kartami Studia.
+   Odpovědi se zapisují do opakování Studia (srMark), pokrok lekcí do fg-les. */
+const FH_OL = (() => {
+  const box = () => document.getElementById('olView');
+  if (!box() || typeof BYID === 'undefined') return { on: () => false, sync() {} };
+  const tbl = (head, rows) => `<div class="ac-tw"><table class="ac-sheet"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
+  const LES = [
+    { id: 't09a', topic: 't09', n: 1, min: 5, t: 'SN2, nebo SN1?',
+      goal: 'Po lekci podle substrátu, nukleofilu a rozpouštědla odhadneš, jestli substituce poběží SN2, nebo SN1, a co to udělá se stereochemií.',
+      recall: 'Zkus si z hlavy vybavit, co znamenají písmena a číslice v názvech SN2 a SN1. Napiš si to na papír, na konci se k tomu vrátíš.',
+      q: ['t09_q12', 't09_q13', 't09_q15', 't09_q16', 't09_q19', 't09_q21', 't09_q23', 't09_q25', 't09_q26', 't09_q42', 't09_q46', 't09_q47'],
+      beda: 'SN2 je šermíř: útočí zezadu a molekulu převrátí jako deštník ve větru. SN1 počká, až X odejde sám, a pak si vezme, co zbylo, z obou stran.',
+      body: () => sec('1. Dvě cesty k témuž produktu', `<p>Při nukleofilní substituci nahradí nukleofil (Nu) odstupující skupinu (X) na sp³ uhlíku. Stejný produkt může vzniknout dvěma mechanismy. S = substituce, N = nukleofilní, číslice říká, kolik částic je v kroku, který určuje rychlost.</p>
+        ${tbl(['', 'SN2', 'SN1'], [['Průběh', 'jeden krok: Nu útočí zezadu a X zároveň odchází', 'dva kroky: X odejde, vznikne karbokation, pak přijde Nu'], ['Rychlost', 'v = k [RX] [Nu]', 'v = k [RX]'], ['Stereochemie', 'vždy inverze (Waldenův obrat)', 'racemizace, často neúplná: odstupující aniont chvíli stíní jednu stranu']])}
+        <p class="aside">Obrat geometrie ještě neznamená, že se R změní na S. Záleží na prioritě nového substituentu.</p>`)
+        + sec('2. Čtyři otázky, které rozhodnou', tbl(['', 'SN2', 'SN1'], [
+          ['Substrát', 'CH₃ > 1° > 2° ≫ 3°. Rozhoduje sterická zábrana: terciární nereaguje vůbec, i neopentyl je skoro mrtvý.', '3° > 2° ≫ 1°. Rozhoduje stabilita karbokationtu, proto jdou i primární allylové a benzylové.'],
+          ['Nukleofil', 'silný, obvykle aniont. Nukleofilita roste dolů ve skupině: HS⁻ > HO⁻, I⁻ > Br⁻ > Cl⁻.', 'nemá zásadní úlohu, stačí slabý (H₂O, ROH). Přichází až po pomalém kroku.'],
+          ['Odstupující skupina', 'čím stabilnější aniont, tím líp: TsO⁻ > I⁻ > Br⁻ > Cl⁻ ≫ F⁻', 'stejně. V kyselém prostředí odstoupí i protonovaná OH jako voda.'],
+          ['Rozpouštědlo', 'polární aprotické (HMPA, CH₃CN, DMF, DMSO, aceton). Nukleofil zůstane „nahý“, nejpomaleji to jde v methanolu.', 'polární protické (voda, alkoholy). Stabilizuje karbokation, čím polárnější, tím rychleji.']]))
+        + sec('3. Rychlý odhad', `<ul class="ac-ul"><li><b>Methyl a primární</b> → SN2.</li><li><b>Terciární</b> se slabým nukleofilem → SN1. SN2 tam nejde.</li><li><b>Sekundární</b> → rozhodne nukleofil a rozpouštědlo: silný aniont v DMSO → SN2, voda nebo alkohol → SN1.</li><li><b>Allylový a benzylový</b> se slabým nukleofilem → SN1, i když je primární.</li></ul>
+        <p class="ac-les-trap"><b>Pozor:</b> silná báze (OH⁻, RO⁻) a teplo táhnou reakci k eliminaci. Tu probereme v další lekci.</p>`) }
+  ];
+  const SOON = { t09: ['E2, nebo E1? Eliminace a Zajcevovo pravidlo', 'Substituce, nebo eliminace? Rozhodovací diagram'] };
+  const BY = {}; LES.forEach(L => { BY[L.id] = L; });
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) LES.forEach(L => L.q.forEach(k => { if (!BYID[k] || BYID[k].kind !== 'q') console.warn(`Lekce ${L.id}: otázka ${k} neexistuje`); }));
+  const OP = store.get('fg-les', {});
+  const O = { on: false, step: 'list', open: null, deck: [], i: 0, ok: 0, missed: [], order: null, pick: null, saved: false, topic: null };
+  const mine = () => LES.filter(L => S.mixOn ? S.mixT.includes(L.topic) : L.topic === S.topic);
+  const ATT = 'data-ol';
+  function quizHTML() {
+    const n = O.deck.length, g = BYID[O.deck[O.i]];
+    if (!g) return end();
+    if (!O.order) O.order = shuffle([0, 1, 2, 3]);
+    const done = O.pick !== null;
+    let body = qBody(g, O.order).replace(' id="opts"', '').replace('class="opts', `class="opts${done ? ' done' : ''}`);
+    if (done) body = body.replace(/<button type="button" class="opt([^"]*)" data-id="o(\d)"/g, (m, c, k) => `<button type="button" class="opt${c}${+k === 0 ? ' right' : +k === O.pick ? ' wrong' : ''}" data-id="o${k}" disabled`);
+    let fb = '';
+    if (done) {
+      const ok = O.pick === 0, full = g.full ? ': ' + esc(g.full) : '';
+      const not = !ok && g.not && g.not[O.pick - 1] ? `<p class="aside"><b>Proč ne ${LTR[O.order.indexOf(O.pick)]}:</b> ${esc(g.not[O.pick - 1])}</p>` : '';
+      fb = `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně' + full + '.' : 'Správně je ' + LTR[O.order.indexOf(0)] + full + '.'}</b></p>${not}<p class="aside">${esc(g.why)}</p></div>
+        <div class="row"><button type="button" class="btn primary" id="olNext" ${ATT}="lnext">${O.i + 1 < n ? 'Další' : 'Dokončit lekci'}</button></div>`;
+    }
+    return `<div class="progress"><span class="cnt">${O.i + 1} / ${n}</span><span class="bar"><i style="width:${100 * O.i / n}%"></i></span><span class="cnt">${O.ok} ✓</span></div>
+      <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}<div class="fbwrap" aria-live="polite">${fb}</div></div>`;
+  }
+  function end() {
+    const L = BY[O.open], n = O.deck.length;
+    if (!O.saved) { OP[L.id] = FH_LES.rec(OP[L.id], n, O.ok, today()); store.set('fg-les', OP); O.saved = true; }
+    return FH_LES.end({ att: ATT, L, ok: O.ok, n, missed: O.missed, tail: 'Vrať se k papíru ze začátku a zkontroluj, co znamená SN2 a SN1. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+      note: 'Otázky z lekce máš teď ve Studiu. Kde jsi chybovala, ty ti „Dnes k opakování“ nabídne ještě dnes, ostatní za pár dní.' });
+  }
+  function render() {
+    const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
+    const L = BY[O.open];
+    if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
+    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` });
+    else {
+      const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
+      b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
+        empty: `<p>K tomuhle tématu zatím lekce není.</p><div class="row">${has.map(t => `<button type="button" class="btn" ${ATT}="ltopic" data-v="${t}">${esc(TOPIC_BY[t].label)}</button>`).join('')}</div>` });
+    }
+  }
+  /* zobrazení: lekce místo karet, ostatní ovládání Studia schované */
+  function show(on) {
+    O.on = on; box().hidden = !on; $('#view').hidden = on;
+    if (on) ['#progBox', '#srcBox', '#kindBox'].forEach(s => { const e = $(s); if (e) e.hidden = true; });
+    document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', on ? !!b.dataset.oles : b.dataset.mode === S.mode));
+  }
+  function start(id) {
+    const L = BY[id]; if (!L) return;
+    O.open = id; O.step = 'quiz'; O.deck = L.q.filter(k => BYID[k]); O.i = 0; O.ok = 0; O.missed = []; O.order = null; O.pick = null; O.saved = false;
+    render(); window.scrollTo(0, 0);
+  }
+  function answer(k) {
+    if (O.pick !== null) return;
+    const g = BYID[O.deck[O.i]], ok = k === 0;
+    O.pick = k; if (ok) O.ok++; else O.missed.push(`${esc(g.prompt)} → ${esc(g.full || (g.opts[0][0] && g.opts[0][0].t) || g.name)}`);
+    srMark(g.id, ok, true); saveSR();
+    render(); const nb = document.getElementById('olNext'); if (nb) nb.focus({ preventScroll: true });
+  }
+  $('#modeSeg').addEventListener('click', e => {
+    if (e.target.closest('[data-oles]')) { O.step = 'list'; show(true); render(); return; }
+    if (O.on && e.target.closest('[data-mode]')) show(false);   // pak běží obvyklé přepnutí režimu
+  }, true);
+  box().addEventListener('click', e => {
+    const o = e.target.closest('.opt[data-id]'); if (o && O.step === 'quiz') return answer(+o.dataset.id.slice(1));
+    const b = e.target.closest(`[${ATT}]`); if (!b) return;
+    const a = b.getAttribute(ATT), v = b.dataset.v;
+    if (a === 'lopen') { O.open = v; O.step = 'read'; render(); return window.scrollTo(0, 0); }
+    if (a === 'lquiz') return start(v);
+    if (a === 'lback') { O.step = 'list'; render(); return window.scrollTo(0, 0); }
+    if (a === 'lnext') { O.i++; O.order = null; O.pick = null; render(); return window.scrollTo(0, 0); }
+    if (a === 'ltopic') { const s = $('#topicSel'); s.value = v; s.dispatchEvent(new Event('change')); }
+  });
+  document.addEventListener('keydown', e => {
+    if (!O.on || O.step !== 'quiz' || e.ctrlKey || e.metaKey || e.altKey || /input|textarea|select/i.test(document.activeElement.tagName)) return;
+    if (e.key === 'Enter' && O.pick !== null && document.activeElement !== document.getElementById('olNext')) { e.preventDefault(); document.getElementById('olNext').click(); return; }
+    const k = Math.max('abcd'.indexOf(e.key.toLowerCase()), '1234'.indexOf(e.key));
+    const b = k >= 0 && O.pick === null && box().querySelectorAll('.opt')[k]; if (b) { e.preventDefault(); b.click(); }
+  });
+  /* opakování z úvodní stránky a odkazy do Studia lekci zavřou */
+  document.addEventListener('click', e => { if (O.on && e.target.closest('[data-td]')) show(false); }, true);
+  return {
+    on: () => O.on,
+    /* volá renderView: při změně tématu obnoví seznam, jinak jen drží lekci navrchu */
+    sync() { if (!O.on) return; show(true); const t = S.mixOn ? 'mix' : S.topic; if (t !== O.topic) { O.step = 'list'; render(); } },
+    prog: () => OP, merge: v => { FH_LES.merge(OP, v); store.set('fg-les', OP); }
+  };
+})();
+
 (function () {
 /* ===== Analytická chemie: data z Laboratorních cvičení 1 a 2 (důkazy kationtů a aniontů, skripta MUNI) ===== */
 /* Barvy sraženin a roztoků pro zkumavky. Klíč = název barvy, jak ho píšou skripta. */
@@ -29942,7 +30113,9 @@ function answer(ok, missText) {
   mark(cd.id, ok); Q.fb = feedback(cd, ok); render();
   const b = $a('#acNext'); if (b) b.focus({ preventScroll: true });
 }
-const missTxt = cd => cd.t === 'mc' || cd.t === 'calc' ? `${escA(Q.d.q.h)}: ${escA(Q.d.r)}` : cd.t === 'obs' || cd.t === 'ion' ? `${cd.ion.f} + ${rg(cd.c, cd.rk)[1]}: ${escA(cd.rx.v)} (${cd.rx.f})` : cd.t === 'sel' ? `${cd.ion.f}: ${escA(cd.x.r)} → ${escA(cd.x.v)}` : cd.t === 'how' ? `Důkazy ${cd.ion.f}` : `${escA(qHead(cd).h)} ${cd.set.map(i => ION[i].f).join(', ')}`;
+/* otázka končící otazníkem nedostane navíc dvojtečku („…reakce?: …“) */
+const qaTxt = (h, r) => `${escA(h)}${/\?$/.test(String(h).trim()) ? ' →' : ':'} ${escA(r)}`;
+const missTxt = cd => cd.t === 'mc' || cd.t === 'calc' ? qaTxt(Q.d.q.h, Q.d.r) : cd.t === 'obs' || cd.t === 'ion' ? `${cd.ion.f} + ${rg(cd.c, cd.rk)[1]}: ${escA(cd.rx.v)} (${cd.rx.f})` : cd.t === 'sel' ? `${cd.ion.f}: ${escA(cd.x.r)} → ${escA(cd.x.v)}` : cd.t === 'how' ? `Důkazy ${cd.ion.f}` : `${escA(qHead(cd).h)} ${cd.set.map(i => ION[i].f).join(', ')}`;
 
 /* --- tabulka --- */
 const lum = hex => { const n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) / 255; };
@@ -30062,20 +30235,10 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.tes
 }
 const LS = { open: null, step: 'list' };
 function lesList() {
-  const P = ST.les || {};
-  return `<div class="card"><span class="eyebrow">Lekce</span><h2 class="q-name ac-long">Krátký výklad, pak kvíz</h2><p class="ac-sub">Lekce zabere asi 5 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.</p></div>
-    ${AC_LES.filter(L => L.ch === ST.ch).map(L => { const p = P[L.id]; return `<article class="card ac-les-item"><span class="eyebrow">Lekce ${L.n}</span><h3>${L.t}</h3>
-      <div class="ac-les-meta"><span>asi ${L.min} minut · ${L.q.length} otázek</span>${p ? `<span class="ac-les-done">Hotovo, nejlépe ${p.best} z ${p.n}</span>` : '<span class="ac-new">nová</span>'}</div>
-      <div class="row"><button type="button" class="btn primary" data-ac="lopen" data-v="${L.id}">${p ? 'Projít znovu' : 'Začít lekci'}</button>${p ? `<button type="button" class="btn" data-ac="lquiz" data-v="${L.id}">Jen kvíz</button>` : ''}</div></article>`; }).join('')}
-    <div class="card"><span class="eyebrow">Připravujeme</span><ol class="ac-les-soon" start="2">${AC_LES_SOON.map(t => `<li>${t}</li>`).join('')}</ol></div>`;
+  return FH_LES.list({ att: 'data-ac', lessons: AC_LES.filter(L => L.ch === ST.ch), prog: ST.les, soon: AC_LES_SOON,
+    sub: 'Lekce zabere asi 5 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.', empty: '<p>K tomuhle cvičení zatím lekce není.</p>' });
 }
-function lesRead(L) {
-  return `<div class="row"><button type="button" class="link ac-les-back" data-ac="lback">← Všechny lekce</button></div>
-    <div class="card"><span class="eyebrow">Lekce ${L.n} · asi ${L.min} minut</span><h2 class="q-name ac-long">${L.t}</h2><p class="ac-sub">${L.goal}</p></div>
-    <div class="card ac-les-recall"><p><b>Než začneš:</b> ${L.recall}</p></div>
-    ${L.body()}${bedaBox(L.beda)}
-    <div class="card"><p>Teď si to vyzkoušej. Nejdřív odpovídej z hlavy, teprve potom se vracej k výkladu.</p><div class="row"><button type="button" class="btn primary" data-ac="lquiz" data-v="${L.id}">Spustit kvíz (${L.q.length} otázek)</button></div></div>`;
-}
+function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: bedaBox(L.beda) }); }
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
   Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false;
@@ -30084,12 +30247,9 @@ function lesQuiz(id) {
 }
 function lesEnd() {
   const L = LES[Q.les], n = Q.deck.length;
-  if (!Q.lesSaved) { ST.les = ST.les || {}; const p = ST.les[L.id] || {}; ST.les[L.id] = { d: day(), n, ok: Q.ok, best: Math.max(p.best || 0, Q.ok), k: (p.k || 0) + 1 }; save(); Q.lesSaved = true; }
-  return `<div class="card ac-end"><span class="eyebrow">Lekce ${L.n} hotová</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
-    ${Q.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${Q.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
-    <p>Vrať se k papíru ze začátku a doplň ke každému činidlu ionty. Co jsi nevěděla z hlavy, zopakuješ zítra.</p>
-    <p class="aside">Otázky z lekce máš teď v Procvičování. Kde jsi chybovala, ty ti „Zopakovat na dnešek“ nabídne ještě dnes, ostatní za pár dní.</p>
-    <div class="row"><button type="button" class="btn primary" data-ac="lback">Zpět na lekce</button><button type="button" class="btn" data-ac="lopen" data-v="${L.id}">Projít výklad znovu</button><button type="button" class="btn" data-ac="lquiz" data-v="${L.id}">Kvíz znovu</button></div></div>`;
+  if (!Q.lesSaved) { ST.les = ST.les || {}; ST.les[L.id] = FH_LES.rec(ST.les[L.id], n, Q.ok, day()); save(); Q.lesSaved = true; }
+  return FH_LES.end({ att: 'data-ac', L, ok: Q.ok, n, missed: Q.missed, tail: 'Vrať se k papíru ze začátku a doplň ke každému činidlu ionty. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+    note: 'Otázky z lekce máš teď v Procvičování. Kde jsi chybovala, ty ti „Zopakovat na dnešek“ nabídne ještě dnes, ostatní za pár dní.' });
 }
 function lesView() {
   if (LS.step === 'quiz' && Q.les) return quizView();
