@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161640';
+const FH_VER = '202610161650';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29833,6 +29833,10 @@ const AC_TH = [
   ['k_l3amf', 'ka', 'Co dělá hydroxid amfoterním?', 'rozpustí se v kyselině i v nadbytku NaOH', ['rozpustí se jen v kyselině, v NaOH ne', 'rozpustí se v NaOH, v kyselině ale ne', 'nerozpustí se v kyselině ani v NaOH'], 'V kyselině se rozpustí každý hydroxid, to je neutralizace. Amfoterní se navíc rozpustí v 2M NaOH na hydroxokomplex [M(OH)₄]ⁿ⁻, třeba hlinitan nebo zinečnatan.', null, 'k'],
   ['k_l3sep', 'ka', 'Jak oddělíš Al³⁺ od Fe³⁺?', 'nadbytkem 2M NaOH a odfiltrováním Fe(OH)₃', ['nadbytkem NH₃ a odfiltrováním Al(OH)₃', 'okyselením HCl a odfiltrováním AlCl₃', 'sulfanem v kyselém prostředí'], 'Al(OH)₃ je amfoterní a v nadbytku NaOH se rozpustí na bezbarvý hlinitan. Rezavý Fe(OH)₃ zůstane jako sraženina a odfiltruje se. Amoniak sráží oba hydroxidy a ani jeden nerozpustí.', null, 'k'],
   ['k_l3scen', 'ka', 'Bílá sraženina z NaOH se v nadbytku rozpustí, s H₂S v kyselém prostředí dá vzorek oranžovou sraženinu. Co v něm je?', 'Sb³⁺', ['Sn²⁺', 'Al³⁺', 'Cd²⁺'], 'Oranžový sulfid má jen antimon (Sb₂S₃) a Sb(OH)₃ je amfoterní. SnS je hnědý, Al³⁺ s H₂S nic nedá a Cd(OH)₂ se v nadbytku NaOH nerozpustí (CdS je navíc žlutý).', null, 'k'],
+  /* k lekci 4 (NH₃ a amminkomplexy), přibylo 16. 10. 2026 */
+  ['k_l4amf', 'ka', 'Který kationt se rozpustí v nadbytku NaOH i v nadbytku NH₃?', 'Zn²⁺', ['Al³⁺', 'Cd²⁺', 'Cu²⁺'], 'Zn(OH)₂ je amfoterní (v NaOH vznikne zinečnatan) a zároveň tvoří amminkomplex [Zn(NH₃)₆]²⁺. Al(OH)₃ se rozpustí jen v NaOH, Cd(OH)₂ a Cu(OH)₂ jen v NH₃.', null, 'k'],
+  ['k_l4sep', 'ka', 'Jak oddělíš Cu²⁺ od Fe³⁺?', 'nadbytkem NH₃ a odfiltrováním Fe(OH)₃', ['nadbytkem NaOH a odfiltrováním Cu(OH)₂', 'okyselením HCl a odfiltrováním CuCl₂', 'přidáním H₂SO₄ a odfiltrováním síranu'], 'Cu²⁺ přejde v nadbytku amoniaku na tmavě modrý [Cu(NH₃)₄]²⁺ a zůstane v roztoku, rezavý Fe(OH)₃ se odfiltruje. V NaOH by se nerozpustil ani jeden hydroxid, s HCl ani H₂SO₄ se nesráží ani jeden kationt.', null, 'k'],
+  ['k_l4scen', 'ka', 'Bílá sraženina z NH₃ se v nadbytku rozpustí, v nadbytku NaOH ne. S H₂S v kyselém prostředí dá vzorek žlutou sraženinu. Co v něm je?', 'Cd²⁺', ['Zn²⁺', 'Mn²⁺', 'Al³⁺'], 'Žlutý sulfid z kyselého prostředí má jen kadmium (CdS) a Cd(OH)₂ se rozpouští v amoniaku, ne v NaOH. Zn(OH)₂ by se rozpustil i v NaOH, MnS se srazí až s NH₄HS (tělový) a Al(OH)₃ se v NH₃ nerozpustí.', null, 'k'],
   ['a_neutr', 'ka', 'Proč se skupinové srážecí reakce aniontů dělají v neutrálním prostředí?', 'v kyselém by se část sraženin vůbec nevytvořila', ['v neutrálním se nesrážejí kationty', 'v zásaditém by se vyloučil jód', 'činidla jsou stálá jen v neutrálním'], 'Barnaté a stříbrné soli se liší právě stálostí v kyselém prostředí. Teprve vzniklou sraženinu zkoušíš kyselinou.', null, 'a'],
   ['a_ph', 'ka', 'Co může obsahovat vzorek aniontů, který reaguje kysele?', 'volnou kyselinu nebo sůl silné kyseliny a slabé zásady', ['sůl silné zásady a slabé kyseliny', 'jen sůl silné kyseliny a silné zásady', 'volnou silnou zásadu'], 'Zásaditý vzorek: silná zásada nebo sůl silné zásady a slabé kyseliny. Neutrální: sůl silné kyseliny a silné zásady, která nehydrolyzuje.', null, 'a'],
   ['a_kysele', 'ka', 'Které anionty nemůžou být ve vzorku s kyselou reakcí?', 'CO₃²⁻, NO₂⁻, SO₃²⁻ a S₂O₃²⁻', ['SO₄²⁻, PO₄³⁻ a NO₃⁻', 'Cl⁻, Br⁻, I⁻ a SCN⁻', 'SO₄²⁻, Cl⁻ a NO₃⁻'], 'Anionty snadno rozložitelných nebo těkavých kyselin (také S²⁻ a CN⁻) v kyselém prostředí nevydrží. Ztratit se můžou i při neutralizaci kyselinou dusičnou.', null, 'a'],
@@ -30720,9 +30724,26 @@ const AC_LES = [
       <p>V kyselině se rozpustí každý hydroxid, to je obyčejná neutralizace. <b>Amfoterní</b> hydroxidy se ale rozpustí i v nadbytku zásady (2M NaOH) na hydroxokomplexy [M(OH)₄]ⁿ⁻: olovnatan, hlinitan, zinečnatan, antimonitan, cínatan a chromitan.</p>
       <p class="ac-les-row"><b>Pb²⁺ · Al³⁺ · Zn²⁺ · Sb³⁺ · Sn²⁺ · Cr³⁺</b><br><small>amfoterní šestka</small></p>
       <ul class="ac-ul"><li>Vzniklé roztoky jsou <b>bezbarvé</b>, jen chromitan je <b>zelený</b>.</li><li>Využiješ to k <b>oddělení</b>: amfoterní kationty zůstanou v roztoku, ostatní hydroxidy odfiltruješ. Třeba Al³⁺ od Fe³⁺.</li></ul>
-      <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina ještě neznamená amfoterní. Cd(OH)₂, Bi(OH)₃ a Mg(OH)₂ jsou taky bílé, ale v nadbytku NaOH zůstanou.</p>`) }
+      <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina ještě neznamená amfoterní. Cd(OH)₂, Bi(OH)₃ a Mg(OH)₂ jsou taky bílé, ale v nadbytku NaOH zůstanou.</p>`) },
+  { id: 'k4', ch: 'ka', n: 4, min: 5, t: 'NH₃ a amminkomplexy',
+    goal: 'Po lekci víš, které kationty amoniak sráží jako hydroxidy, které se v nadbytku rozpustí na amminkomplexy a jakou barvu ty komplexy mají. A poznáš, kdy se chová jinak než NaOH.',
+    recall: 'Vybav si z lekce 3 amfoterní šestku, tedy hydroxidy, které se rozpustí v nadbytku NaOH. Tipni si, jestli se rozpustí i v nadbytku amoniaku.',
+    tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s tabulkou NaOH proti NH₃. Sedm kationtů s amminkomplexem si zkus vyjmenovat z hlavy. Co jsi nevěděla, zopakuješ zítra.',
+    q: ['g:k:NH3', 'x:k:NH3', 'i:cu:NH3', 'i:ni:NH3', 'i:co:NH3', 'i:ag:NH3', 't:k_l1hgnh3', 'i:cr3:NH3', 't:k_l4amf', 't:k_l3amf', 't:k_l4sep', 't:k_l4scen'],
+    beda: 'Amoniak je dobrý hostitel: stříbro, kadmium, zinek, měď, nikl, kobalt a mangan pozve do komplexu. Měď přijde v tmavě modrém, nikl ve světle modrém a kobalt dorazí pozdě a v hnědém.',
+    body: () => sec('1. Amoniak sráží hydroxidy jako NaOH', `${lesTubes([['bila', 'Al(OH)₃, Pb(OH)₂…'], ['rezava', 'Fe(OH)₃'], ['zelenobila', 'Fe(OH)₂'], ['modrozelena', 'Cr(OH)₃'], ['sedocerna', 'Hg⁰ + amidosůl']])}
+      <p>Vodný roztok amoniaku je vlastně hydroxid amonný. S většinou kationtů proto dá totéž co NaOH, tedy nerozpustné hydroxidy. Nesráží jen kationty alkalických kovů a kovů alkalických zemin, Mg²⁺ jen neúplně.</p>
+      ${tbl(['Kationt', 'S NH₃'], [['Pb²⁺, Bi³⁺, Sb³⁺, Sn²⁺, Al³⁺', 'bílé hydroxidy, v nadbytku zůstanou'], ['Fe³⁺, Fe²⁺', 'rezavý Fe(OH)₃, zelenavě bílý Fe(OH)₂, který na vzduchu rezaví'], ['Cr³⁺', 'modrozelený Cr(OH)₃'], ['Hg²⁺', 'bílá amidosůl'], ['Hg₂²⁺', 'šedočerná: bílá amidosůl a k tomu černá Hg⁰']])}`)
+      + sec('2. Amminkomplexy: rozpustí se v nadbytku', `<div class="ac-les-tubes">${[['', '[Ag(NH₃)₂]⁺'], ['tmmodra', '[Cu(NH₃)₄]²⁺'], ['svmodra', '[Ni(NH₃)₆]²⁺'], ['zlutohneda', '[Co(NH₃)₆]³⁺']].map(([sol, f]) => tubeSVG({ sol }, f)).join('')}</div>
+      <p>Sedm kationtů dá nejdřív sraženinu, ale v nadbytku amoniaku (2M NH₃) se rozpustí na <b>amminkomplex</b>:</p>
+      <p class="ac-les-row"><b>Ag⁺ · Cd²⁺ · Zn²⁺ · Cu²⁺ · Ni²⁺ · Co²⁺ · Mn²⁺</b></p>
+      ${tbl(['Komplex', 'Barva roztoku'], [['[Ag(NH₃)₂]⁺, [Cd(NH₃)₄]²⁺, [Zn(NH₃)₆]²⁺, [Mn(NH₃)₆]²⁺', 'bezbarvý'], ['[Cu(NH₃)₄]²⁺', '<b>tmavě modrý</b>'], ['[Ni(NH₃)₆]²⁺', '<b>světle modrý</b>'], ['[Co(NH₃)₆]³⁺', '<b>žlutohnědý</b>: růžový Co(OH)₂ se v zásaditém prostředí vzduchem oxiduje']])}
+      <p class="aside">Stejně se rozpustí i AgCl z lekce 1. Proto ho amoniak odliší od Hg₂Cl₂, který zčerná.</p>`)
+      + sec('3. NaOH, nebo NH₃?', `${tbl(['Kationt', 'Nadbytek NaOH', 'Nadbytek NH₃'], [['Zn²⁺', 'rozpustí se', 'rozpustí se'], ['Pb²⁺, Al³⁺, Sb³⁺, Sn²⁺', 'rozpustí se', 'zůstane'], ['Cr³⁺', 'rozpustí se na zelený roztok', 'zůstane'], ['Ag⁺, Cd²⁺, Cu²⁺, Ni²⁺, Co²⁺, Mn²⁺', 'zůstane', 'rozpustí se']])}
+      <ul class="ac-ul"><li><b>Zn²⁺</b> je jediný, kdo zmizí v obou.</li><li>Amminkomplexy slouží k důkazu (modrá mědi) i k <b>oddělení</b>: Cu²⁺ zůstane v roztoku, Fe(OH)₃ odfiltruješ.</li></ul>
+      <p class="ac-les-trap"><b>Pozor, past:</b> Cd(OH)₂ a Mn(OH)₂ se v NaOH nerozpustí, i když jsou bílé jako amfoterní hydroxidy. Rozpustí je až amoniak.</p>`) }
 ];
-const AC_LES_SOON = ['NH₃ a amminkomplexy', 'KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
+const AC_LES_SOON = ['KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
 const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
 /* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
