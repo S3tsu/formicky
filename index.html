@@ -431,6 +431,7 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .bd2 .eye{fill:var(--ink)} .bd2 .glint{fill:var(--surface)}
 .bd2 .cheek{fill:var(--pink);opacity:.35}
 .bd2 .shoe{fill:var(--ink)}
+.bd2 .tummy{fill:var(--surface);opacity:.5} .bd2 .navel{fill:none;stroke:var(--ink);stroke-width:2.5}
 .bd2 text{font-family:var(--f-chem);font-weight:700;fill:var(--ink)}
 .bd2 .num{font-size:11px;fill:var(--muted)} .bd2 .sym{font-size:24px} .bd2 .sym.n{fill:var(--el-n)}
 .bd2 .armL{transform-origin:52px 104px;animation:sway 1.3s ease-in-out infinite alternate}
@@ -1286,14 +1287,15 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <section id="olView" aria-label="Lekce" hidden></section>
 
   <footer class="mascot" id="mascot">
-    <svg class="benz bd2" viewBox="0 0 200 188" width="160" height="150" role="img" aria-label="Maskot Béďa Bobík, šestiúhelník s brýlemi a pár vlasy na temeni, samolibě se usmívá a drží uhlík a dusík">
-      <g class="legs"><path class="ln" d="M86 148 L82 174 M114 148 L118 174"/><ellipse class="shoe" cx="76" cy="177" rx="11" ry="5.5"/><ellipse class="shoe" cx="124" cy="177" rx="11" ry="5.5"/></g>
+    <svg class="benz bd2" viewBox="0 0 200 201" width="160" height="161" role="img" aria-label="Maskot Béďa Bobík, šestiúhelník s brýlemi, pár vlasy na temeni a kulatým bříškem, samolibě se usmívá a drží uhlík a dusík">
+      <g class="legs"><path class="ln" d="M86 161 L82 187 M114 161 L118 187"/><ellipse class="shoe" cx="76" cy="190" rx="11" ry="5.5"/><ellipse class="shoe" cx="124" cy="190" rx="11" ry="5.5"/></g>
       <g class="pose-b">
         <g class="arm armL"><path class="ln" d="M52 104 L30 90"/><g class="tl" transform="rotate(-10 24 76)"><rect class="tile" x="4" y="56" width="40" height="40" rx="8"/><text class="num" x="10" y="69">6</text><text class="sym" x="24" y="85" text-anchor="middle">C</text></g></g>
         <g class="arm armR"><path class="ln" d="M148 104 L170 90"/><g class="tl" transform="rotate(10 176 76)"><rect class="tile" x="156" y="56" width="40" height="40" rx="8"/><text class="num" x="162" y="69">7</text><text class="sym n" x="176" y="85" text-anchor="middle">N</text></g></g>
       </g>
       <g class="head">
-        <polygon class="body" points="100,34 150.2,63 150.2,121 100,150 49.8,121 49.8,63"/>
+        <path class="body" d="M100 34 L150.2 63 Q161 94.5 155.8 127.4 Q137.6 160.6 100 164.4 Q62.4 160.6 44.2 127.4 Q39 94.5 49.8 63 Z"/>
+        <ellipse class="tummy" cx="100" cy="142.8" rx="35.2" ry="16.4"/><circle class="navel" cx="100" cy="144.8" r="2.6"/>
         <circle class="ring" cx="100" cy="92" r="44"/>
         <path class="ln" style="stroke-width:3" d="M89 38 q-4 -10 -12 -11 M96 35 q-2 -12 -9 -16 M103 35 q2 -12 9 -15 M110 38 q6 -8 13 -7"/>
         <g class="specs"><path class="ln" style="stroke-width:3.5" d="M51 77 L61 80 M139 80 L149 77"/>
@@ -27285,11 +27287,11 @@ const BEDA_POSES = [
     f: `<path class="ln" d="M52 106 Q74 142 132 130"/>${BEDA_HAND(132, 130)}<g class="rarm"><path class="ln" d="M148 106 Q126 142 68 130"/>${BEDA_HAND(68, 130)}</g>${BEDA_PUSH}`,
     pf: `<path class="ln" style="stroke-width:5" d="M50 100 Q20 112 34 121 H112"/>${BEDA_HAND(112, 121)}<g class="rarm"><path class="ln" style="stroke-width:5" d="M150 100 Q180 114 166 125 H88"/>${BEDA_HAND(88, 125)}</g>${BEDA_PUSH}` },
   { id: 'lupa',
-    b: `<path class="ln" d="M52 104 L34 118 L50 132"/>${BEDA_HAND(50, 132)}`,
+    b: `<path class="ln" d="M50 104 L26 116 L36 134"/>${BEDA_HAND(36, 134)}`,
     f: `<path class="ln" d="M148 104 L159 119"/>${BEDA_MAG}${BEDA_HAND(159, 119)}`,
     pf: `${BEDA_EDGE_L}<path class="ln" d="M149 104 L159 119"/>${BEDA_MAG}${BEDA_HAND(159, 119)}` },
   { id: 'kafe',
-    b: `<path class="ln" d="M52 104 L38 130"/>${BEDA_HAND(38, 130)}<path class="ln" d="M148 104 L163 88"/>${BEDA_CUP}${BEDA_HAND(162, 86)}`,
+    b: `<path class="ln" d="M50 104 L32 132"/>${BEDA_HAND(32, 132)}<path class="ln" d="M148 104 L163 88"/>${BEDA_CUP}${BEDA_HAND(162, 86)}`,
     pf: `${BEDA_EDGE_L}<g transform="translate(0 30)">${BEDA_CUP}</g><path class="ln" d="M149 104 L159 114"/>${BEDA_HAND(160, 115)}` },
   { id: 'kapsle', b: BEDA_PILL, pf: BEDA_PILL }
 ];
@@ -28709,6 +28711,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     pk.querySelector('.legs').remove();
     pk.insertAdjacentHTML('afterbegin', '<defs><clipPath id="bdEdge"><rect width="200" height="122"/></clipPath></defs>');
     pk.querySelector('.head').setAttribute('clip-path', 'url(#bdEdge)');
+    /* bříško se přes hranu karty převalí */
+    pk.querySelector('.head').insertAdjacentHTML('afterend', '<path class="body" d="M44.4 121 Q46 138 100 140 Q154 138 155.6 121"/><ellipse class="tummy" cx="100" cy="129" rx="32" ry="6.5"/><circle class="navel" cx="100" cy="131" r="2.6"/>');
     pk.classList.add('peek'); bedaPose(pk, Math.floor(Math.random() * BEDA_POSES.length));
     $('#factWho').replaceChildren(pk);
   }
