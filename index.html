@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161810';
+const FH_VER = '202610161830';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29201,6 +29201,68 @@ const FH_OL = (() => {
         + sec('3. Energie reakce', `${tbl(['Veličina', 'Rozhoduje o'], [['ΔG° = ΔH° − TΔS° = −RT ln K', 'směru a poloze rovnováhy, záporné ΔG° = samovolně k produktům'], ['ΔG‡ (aktivační energie)', 'rychlosti, malé ΔG‡ = rychlá reakce'], ['ΔS', 'adice záporné, eliminace kladné']])}
         <p><b>Přechodový stav</b> je vrchol energie a izolovat nejde. <b>Meziprodukt</b> leží v mělkém minimu mezi dvěma přechodovými stavy (u adice HBr na ethen karbokation).</p>
         <p class="ac-les-trap"><b>Pozor:</b> reakce může být termodynamicky výhodná (záporné ΔG°), a přesto pomalá, když má vysokou bariéru ΔG‡.</p>`) },
+    { id: 't06a', topic: 't06', n: 1, min: 5, t: 'Alkeny: stavba, názvy a E/Z',
+      goal: 'Po lekci spočítáš stupeň nenasycenosti, pojmenuješ alken, určíš E/Z podle priorit CIP a seřadíš alkeny podle stability.',
+      recall: 'Tipni si, proč u ethenu existují cis/trans izomery, a u ethanu ne.',
+      tail: 'Vrať se k tipu ze začátku. Kolem dvojné vazby se neotáčí, otočení by zrušilo vazbu π. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t06_q2', 't06_q4', 't06_q5', 't06_q8', 't06_q10', 't06_q13', 't06_q14', 't06_q16', 't06_q17', 't06_q21', 't06_q25', 't06_q27'],
+      beda: 'Z jako zusammen: velcí kamarádi stojí spolu na jedné straně. E jako entgegen: stojí si naproti. A kdo je velký, rozhodne protonové číslo, ne velikost skupiny.',
+      body: () => sec('1. Stupeň nenasycenosti', `<p>Alkeny (olefiny) s jednou dvojnou vazbou mají vzorec <b>CₙH₂ₙ</b>. Kolik kruhů a násobných vazeb látka má, ukáže <b>stupeň nenasycenosti</b> = (počet H alkanu − počet H látky) / 2.</p>
+        <ul class="ac-ul"><li>halogen se přičte k H,</li><li>kyslík se vynechá,</li><li>dusík se od H odečte.</li></ul>
+        <p class="aside">C₇H₈O: O vynechat, alkan C₇H₁₆, (16 − 8)/2 = 4.</p>`)
+        + sec('2. Názvy a E/Z', `<p>Hlavní řetězec je nejdelší, který <b>obsahuje dvojnou vazbu</b>, a čísluje se od konce bližšího k ní. V kruhu má dvojná vazba vždy polohy 1 a 2. Vinyl je CH₂=CH–, allyl CH₂=CH–CH₂–.</p>
+        <p>Kolem dvojné vazby se volně neotáčí (otočení by stálo asi 268 kJ·mol⁻¹), proto existují stereoizomery. Nemůžou být, když jeden uhlík nese dvě stejné skupiny.</p>
+        ${tbl(['Krok', 'Co udělat'], [['1', 'na každém uhlíku dvojné vazby zvlášť urči prioritu podle protonového čísla prvního atomu'], ['2', 'při shodě porovnej další sféru, rozhodne první rozdíl'], ['3', 'násobná vazba se počítá jako zdvojený atom (–CH=O jako C s O, O, H)'], ['4', 'priority 1 na stejné straně = <b>Z</b>, na opačných = <b>E</b>']])}`)
+        + sec('3. Stabilita alkenů', `<p>Víc alkylů na dvojné vazbě = stabilnější alken: R₂C=CR₂ > R₂C=CHR > RCH=CHR ≈ R₂C=CH₂ > RCH=CH₂. Pomáhá hyperkonjugace a pevnější vazby sp³–sp².</p>
+        <p class="ac-les-trap"><b>Pozor:</b> trans-but-2-en je stabilnější než cis, cis má sterické pnutí mezi methyly. Poznáš to i z hydrogenačního tepla: kdo uvolní víc tepla, startoval výš.</p>`) },
+    { id: 't06b', topic: 't06', n: 2, min: 6, t: 'Reakce alkenů',
+      goal: 'Po lekci předpovíš produkt adice HX, X₂, vody a H₂ na alken, včetně regiochemie (Markovnikov) a stereochemie (syn, nebo anti).',
+      recall: 'Vybav si z lekce 1, který alken je stabilnější. Tipni si, který karbokation bude stabilnější: terciární, nebo primární.',
+      tail: 'Vrať se k tipu ze začátku. Terciární karbokation je nejstabilnější a podle něj se řídí Markovnikovo pravidlo. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t06_q30', 't06_q31', 't06_q32', 't06_q33', 't06_q35', 't06_q39', 't06_q40', 't06_q41', 't06_q45', 't06_q49', 't06_q50', 't06_q53'],
+      beda: 'Markovnikov: bohatý zbohatne. Vodík jde k uhlíku, který už vodíků má víc. Hydroborace je rebel a dělá to obráceně.',
+      body: () => sec('1. Adice HX a Markovnikovo pravidlo', `<p>HX se aduje přes <b>karbokation</b>, který je planární (sp², prázdný p orbital). Pořadí stability: terciární > sekundární > primární > methyl (hyperkonjugace a +I efekt). Vznikne přednostně stabilnější karbokation, a proto H jde na uhlík s méně alkyly a X na více substituovaný: <b>Markovnikovo pravidlo</b>.</p>
+        <p>Podle Hammondova postulátu se přechodový stav podobá karbokationtu, takže stabilnější karbokation vzniká rychleji. Méně stabilní karbokation se může <b>přesmyknout</b> (posun hydridu nebo methylu).</p>`)
+        + sec('2. Halogeny a voda', `${tbl(['Reakce', 'Produkt', 'Stereochemie'], [['Br₂', '1,2-dibromid přes bromoniový ion', '<b>anti</b> (trans)'], ['Br₂ ve vodě', 'halohydrin (voda napadne bromoniový ion)', 'anti'], ['H₂O, H⁺', 'alkohol podle Markovnikova', 'hrozí přesmyky'], ['hydroxymerkurace', 'alkohol podle Markovnikova', 'bez přesmyků'], ['hydroborace (BH₃·THF, pak H₂O₂, OH⁻)', 'OH na <b>méně</b> substituovaný uhlík', '<b>syn</b>']])}`)
+        + sec('3. Redukce, karbeny a oxidace', `${tbl(['Činidlo', 'Výsledek'], [['H₂, Pd/C nebo PtO₂', 'alkan, syn adice z povrchu katalyzátoru'], [':CCl₂, Simmons–Smith (CH₂I₂, Zn(Cu))', 'cyklopropan'], ['OsO₄, pak NaHSO₃', 'cis-1,2-diol (syn)'], ['HIO₄', 'rozštěpí 1,2-diol na karbonyly'], ['O₃, pak Zn', 'aldehydy a ketony'], ['KMnO₄, H₃O⁺', 'RCH= dá kyselinu, R₂C= keton']])}
+        <p class="ac-les-trap"><b>Pozor:</b> u kyselé hydratace jde reakce přes volný karbokation, a ten se může přesmyknout. Hydroborace ani hydroxymerkurace volný karbokation netvoří.</p>`) },
+    { id: 't07a', topic: 't07', n: 1, min: 5, t: 'Alkyny',
+      goal: 'Po lekci víš, jak je stavěná trojná vazba, jak se alkyn hydratuje a redukuje na cis-, nebo trans-alken a proč jde koncový alkyn deprotonovat.',
+      recall: 'Tipni si, jestli je kyselejší ethan, ethen, nebo ethyn. Napiš si pořadí.',
+      tail: 'Vrať se k pořadí ze začátku: alkyn (pKa 25) > alken (44) > alkan (60). Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t07_q1', 't07_q3', 't07_q6', 't07_q7', 't07_q13', 't07_q15', 't07_q16', 't07_q19', 't07_q22', 't07_q23', 't07_q27', 't07_q29'],
+      beda: 'Lindlar je opatrný a dá cis-alken. Lithium v amoniaku je divočák a dá trans. A NaNH₂ s alkynem udělá acetylid, kterým pak přilepíš další uhlíky.',
+      body: () => sec('1. Stavba a názvy', `<p>Uhlíky trojné vazby jsou <b>sp</b>, molekula je lineární (180°). Trojná vazba = jedna σ a dvě π, je nejkratší (120 pm) a nejpevnější vazba C–C. Acetylen se vyrábí pyrolýzou methanu při 1 200 °C.</p>
+        <p>V názvu koncovka <b>-yn</b>. Nejnižší lokanty dostanou násobné vazby dohromady, při shodě má přednost dvojná vazba: hept-1-en-6-yn.</p>`)
+        + sec('2. Adice na trojnou vazbu', `${tbl(['Činidlo', 'Výsledek'], [['HBr', 'přes vinylový kation, podle Markovnikova'], ['H₂O, H₂SO₄, HgSO₄', 'enol → <b>keton</b> (koncový alkyn dá methylketon)'], ['hydroborace', 'koncový alkyn dá <b>aldehyd</b>'], ['H₂, Lindlarův katalyzátor', '<b>cis</b>-alken (syn)'], ['Li v kapalném NH₃', '<b>trans</b>-alken'], ['KMnO₄ nebo O₃', 'dvě karboxylové kyseliny']])}
+        <p class="aside">Enol se hned přesmykne na keton (keto-enol tautomerie, rovnováha je u ketonu).</p>`)
+        + sec('3. Kyselost a acetylidy', `<p>pKa: alkan 60, alken 44, alkyn 25. Acetylidový anion nese náboj v orbitalu sp s 50 % s-charakteru, blízko jádra, a proto je stabilnější. NaNH₂ koncový alkyn deprotonuje, protože NH₃ (36) je slabší kyselina.</p>
+        <p>Acetylid pak reaguje s primárním halogenidem mechanismem SN2 a <b>prodlouží řetězec</b>: R–C≡CH → 1. NaNH₂, 2. R′CH₂Br → R–C≡C–CH₂R′.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> hydroxid na deprotonaci alkynu nestačí, voda (15,74) je silnější kyselina než alkyn.</p>`) },
+    { id: 't08a', topic: 't08', n: 1, min: 5, t: 'Chiralita a konfigurace R/S',
+      goal: 'Po lekci najdeš stereogenní centrum, určíš konfiguraci R/S podle pravidel CIP a víš, co měří polarimetr.',
+      recall: 'Vezmi do ruky obě dlaně. Proč je nejde na sebe položit tak, aby se kryly? Zkus to vysvětlit jednou větou.',
+      tail: 'Vrať se k větě ze začátku. Ruce jsou zrcadlové obrazy, které nejsou totožné, a přesně to je chiralita. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t08_q1', 't08_q2', 't08_q3', 't08_q5', 't08_q12', 't08_q14', 't08_q19', 't08_q22', 't08_q24', 't08_q25', 't08_q26', 't08_q27'],
+      beda: 'Volant: dej skupinu 4 dozadu a jeď 1 → 2 → 3. Točíš doprava? R jako rectus. Doleva? S jako sinister.',
+      body: () => sec('1. Chiralita', `<p>Molekula je <b>chirální</b> (cheir = dlaň), když není totožná se svým zrcadlovým obrazem a nemá rovinu symetrie. Obě zrcadlové formy jsou <b>enantiomery</b>. Typické stereogenní centrum je uhlík se <b>čtyřmi různými substituenty</b>.</p>
+        <p>Enantiomery mají stejné fyzikální vlastnosti kromě směru otáčení polarizovaného světla: pravotočivý (+), levotočivý (−). Směs 50 : 50 je <b>racemát</b> a je opticky neaktivní.</p>
+        <p class="aside">Specifická otáčivost [α] = α / (c · l), kyveta v dm a c v g·ml⁻¹.</p>`)
+        + sec('2. Pravidla CIP', `<ol class="ac-les-steps"><li>priorita podle protonového čísla atomu přímo na stereocentru (O > N > C > H)</li><li>při shodě porovnej další sféru, rozhodne první rozdíl</li><li>násobná vazba = zdvojený atom (–CHO jako C s O, O, H)</li></ol>
+        <p>Příklad kyselina mléčná: OH > COOH > CH₃ > H.</p>`)
+        + sec('3. R, nebo S', `<p>Natoč molekulu tak, aby skupina s prioritou 4 mířila <b>od tebe</b>. Když 1 → 2 → 3 jde po směru hodinových ručiček, je to <b>R</b>, proti směru <b>S</b>.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> když skupina 4 míří k tobě (třeba vodorovné H ve Fischerově projekci), výsledek obrať. A R/S vůbec nesouvisí se znaménkem (+)/(−).</p>`) },
+    { id: 't08b', topic: 't08', n: 2, min: 5, t: 'Diastereomery, meso a stereochemie reakcí',
+      goal: 'Po lekci rozlišíš enantiomery, diastereomery a meso formu, spočítáš počet stereoizomerů a předpovíš stereochemii adice Br₂ a HBr.',
+      recall: 'Vybav si z lekce 1, co je enantiomer. Tipni si, kolik stereoizomerů má kyselina vinná se dvěma stereocentry.',
+      tail: 'Vrať se k tipu ze začátku. Kyselina vinná má jen tři stereoizomery, protože jeden je meso. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t08_q36', 't08_q37', 't08_q39', 't08_q41', 't08_q43', 't08_q44', 't08_q49', 't08_q52', 't08_q53', 't08_q57', 't08_q62', 't08_q67'],
+      beda: 'Cis + anti = racemát, trans + anti = meso. Kdo si to zapamatuje jako rýmovačku, nemusí pak kreslit.',
+      body: () => sec('1. Diastereomery a meso', `<p><b>Diastereomery</b> jsou stereoizomery, které nejsou enantiomery: třeba (2R,3R) a (2R,3S). Mají <b>různé</b> fyzikální vlastnosti. Látka s n stereocentry má nejvýš <b>2ⁿ</b> stereoizomerů.</p>
+        <p><b>Meso</b> sloučenina má stereocentra i rovinu symetrie, a proto je achirální. Kyselina vinná má tak jen tři stereoizomery: (R,R), (S,S) a meso.</p>`)
+        + sec('2. Stereochemie adic', `${tbl(['Reakce', 'Produkt'], [['HBr na but-1-en', '<b>racemát</b>, planární karbokation se napadá z obou stran stejně'], ['Br₂ na cis-but-2-en (anti)', 'racemát (2R,3R) a (2S,3S)'], ['Br₂ na trans-but-2-en (anti)', '<b>meso</b>-2,3-dibrombutan'], ['HBr na chirální alken', 'diastereomery v nestejném poměru, směs je opticky aktivní']])}
+        <p class="aside">Z achirálních látek bez chirálního činidla vznikne vždy racemát.</p>`)
+        + sec('3. Další stereocentra a biologie', `<ul class="ac-ul"><li>Dusík v aminu se rychle invertuje jako deštník, enantiomery nejde oddělit. Fosfor a síra v sulfoxidu jsou stálá stereocentra, volný pár má nejnižší prioritu.</li><li><b>Prochirální</b> molekula se jedním krokem změní na chirální (butanon → butan-2-ol). Strany se značí Re a Si.</li><li>Receptory v těle jsou chirální, proto mají enantiomery léčiv různé účinky. (R)-karvon voní po mátě, (S) po kmínu.</li></ul>`) },
     { id: 't09a', topic: 't09', n: 1, min: 5, t: 'SN2, nebo SN1?',
       goal: 'Po lekci podle substrátu, nukleofilu a rozpouštědla odhadneš, jestli substituce poběží SN2, nebo SN1, a co to udělá se stereochemií.',
       recall: 'Zkus si z hlavy vybavit, co znamenají písmena a číslice v názvech SN2 a SN1. Napiš si to na papír, na konci se k tomu vrátíš.',
@@ -29247,7 +29309,45 @@ const FH_OL = (() => {
           ['1-brombutan + NaCN', 'nitril, asi 90 % (SN2)', 'primární, nebazický nukleofil'], ['1-brombutan + t-BuOK', 'but-1-en, asi 85 % (E2)', 'objemná báze'],
           ['2-brompropan + CH₃COONa', 'ester, 100 % (SN2)', 'acetát je slabá báze'], ['2-brompropan + CH₃CH₂ONa', 'propen, asi 80 % (E2)', 'ethoxid je silná báze'],
           ['terciární bromid + ethanol', 'ether, asi 80 % (SN1)', 'bez báze, přes karbokation'], ['terciární bromid + CH₃CH₂ONa', 'alken, asi 97 % (E2)', 'silná báze']])}
-        <p class="ac-les-trap"><b>Pozor:</b> zvýšená teplota vždy podporuje eliminaci. Stejný terciární halogenid dá ve vodě za tepla víc alkenu než za studena.</p>`) }
+        <p class="ac-les-trap"><b>Pozor:</b> zvýšená teplota vždy podporuje eliminaci. Stejný terciární halogenid dá ve vodě za tepla víc alkenu než za studena.</p>`) },
+    { id: 't10a', topic: 't10', n: 1, min: 5, t: 'IČ a hmotnostní spektrometrie',
+      goal: 'Po lekci víš, na co odpovídá která spektrální metoda, najdeš v IČ spektru hlavní pásy a z hmotnostního spektra vyčteš molekulový ion, ztráty fragmentů a izotopy Cl a Br.',
+      recall: 'Tipni si, které záření má větší energii: UV, nebo infračervené. A proč?',
+      tail: 'Vrať se k tipu ze začátku. UV má kratší vlnovou délku, a tedy vyšší energii. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t10_q2', 't10_q5', 't10_q10', 't10_q12', 't10_q14', 't10_q15', 't10_q16', 't10_q25', 't10_q31', 't10_q35', 't10_q36', 't10_q43'],
+      beda: 'Chlor v MS kulhá 3 : 1, brom chodí rovně 1 : 1. A když z molekuly odletí 15, utekl methyl.',
+      body: () => sec('1. Která metoda na co', `${tbl(['Metoda', 'Odpověď'], [['MS', 'velikost a složení molekuly (molekulová hmotnost, fragmenty)'], ['IČ', 'funkční skupiny (molekulové vibrace)'], ['UV', 'konjugovaný π systém'], ['NMR', 'uhlíková kostra a typy C a H']])}
+        <p>Energie záření roste s klesající vlnovou délkou: UV > viditelné (380–780 nm) > IČ > mikrovlny > rádiové vlny (NMR).</p>`)
+        + sec('2. IČ spektrum', `<p>Molekula pohltí IČ záření, když se jeho frekvence shoduje s frekvencí vibrace. Spektrum je 4000–400 cm⁻¹ (vlnočet ν̃ = 1/λ).</p>
+        ${tbl(['Oblast (cm⁻¹)', 'Vazby'], [['4000–2500', 'vazby k H: O–H, N–H, C–H'], ['2500–2000', 'trojné C≡C, C≡N'], ['1800–1550', 'dvojné C=O, C=C'], ['pod 1500', '<b>otisk prstu</b>, typický pro konkrétní látku']])}
+        <p>Keton C=O 1715, ester 1735 (a C–O 1250 a 1050), alkohol široký O–H kolem 3350 cm⁻¹.</p>`)
+        + sec('3. Hmotnostní spektrum', `<p>Při ionizaci nárazem elektronu (70 eV) vznikne z molekuly <b>kationradikál M⁺•</b>, molekulový ion. Spektrometr: iontový zdroj → analyzátor (třeba TOF, kvadrupól) → detektor.</p>
+        <ul class="ac-ul"><li><b>Základní pík</b> je nejintenzivnější (100 %), nemusí to být molekulový ion. Hexan: M⁺• 86, základní pík 57.</li><li>Ztráta CH₃ = −15, ethylu −29, propylu −43.</li><li>Jeden Cl: M a M+2 v poměru <b>3 : 1</b>, jeden Br <b>1 : 1</b>, dva Cl 9 : 6 : 1.</li></ul>`) },
+    { id: 't10b', topic: 't10', n: 2, min: 5, t: 'NMR spektroskopie',
+      goal: 'Po lekci spočítáš signály v ¹³C a ¹H NMR, odhadneš chemický posun a z pravidla n + 1 určíš multiplicitu.',
+      recall: 'Tipni si, kolik signálů bude mít aceton v ¹H NMR a proč.',
+      tail: 'Vrať se k tipu ze začátku. Aceton má jediný singlet, všech šest H je ekvivalentních. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t10_q44', 't10_q49', 't10_q50', 't10_q51', 't10_q53', 't10_q55', 't10_q56', 't10_q57', 't10_q63', 't10_q65', 't10_q66', 't10_q78'],
+      beda: 'Pravidlo n + 1: kolik má vodík sousedů, o jednu víc čar. Ethyl se pozná na první pohled, triplet a kvartet tančí vždycky spolu.',
+      body: () => sec('1. Princip', `<p>Magnetická jádra (¹H, ¹³C, ¹⁹F, ³¹P, ne ¹²C ani ¹⁶O) se ve vnějším poli orientují a radiové vlny je překlopí. Rezonanční frekvence roste se silou magnetu a závisí na druhu jádra.</p>
+        <p>Elektrony kolem jádra ho <b>stíní</b>: signál je vpravo, při nižším δ. Elektronegativní soused jádro <b>odstíní</b> a signál posune doleva, k vyššímu δ. Nulu ukazuje standard <b>TMS</b>. Chemický posun δ v ppm nezávisí na přístroji.</p>`)
+        + sec('2. ¹³C NMR', `<p>¹³C je v přírodě jen 1,1 %, proto se měření sčítají. Každý typ uhlíku dá jeden signál, <b>ekvivalentní uhlíky jeden společný</b>.</p>
+        ${tbl(['Látka', 'Signály'], [['hexan', '3 (symetrie)'], ['ethyl-acetát', '4'], ['toluen', '5'], ['acetofenon', '6, karbonyl nejvíc vlevo (198 ppm)']])}`)
+        + sec('3. ¹H NMR', `<ul class="ac-ul"><li><b>Počet signálů</b> = počet typů ekvivalentních H.</li><li><b>Integrál</b> = relativní počet H daného typu.</li><li><b>Multiplicita</b>: n sousedních H → n + 1 čar (1 singlet, 2 dublet, 3 triplet, 4 kvartet).</li><li>Protony, které se navzájem štěpí, mají stejnou interakční konstantu J.</li></ul>
+        <p class="ac-les-trap"><b>Pozor:</b> v ethyl-acetátu je CH₃C=O singlet, protože soused C=O žádné H nemá. OCH₂ je kvartet a CH₃ ethylu triplet.</p>`) },
+    { id: 't11a', topic: 't11', n: 1, min: 5, t: 'Konjugované dieny a UV',
+      goal: 'Po lekci vysvětlíš, proč je konjugovaný dien stabilnější, předpovíš 1,2- a 1,4-adukt podle teploty a víš, jak konjugace posouvá absorpci v UV.',
+      recall: 'Tipni si, který produkt vznikne rychleji a který je stabilnější, když se HBr aduje na buta-1,3-dien.',
+      tail: 'Vrať se k tipu ze začátku. Za studena vyhraje rychlejší 1,2-adukt, za tepla stabilnější 1,4-adukt. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t11_q2', 't11_q8', 't11_q10', 't11_q14', 't11_q17', 't11_q18', 't11_q22', 't11_q24', 't11_q25', 't11_q30', 't11_q32', 't11_q38'],
+      beda: 'Za studena vyhraje sprinter (1,2-adukt), za tepla vytrvalec (1,4-adukt). Jen za tepla má reakce čas se rozmyslet.',
+      body: () => sec('1. Proč je konjugace výhodná', `<p>Izolovaný dien se chová jako dva samostatné alkeny. Konjugovaný buta-1,3-dien je stabilnější: hydrogenací uvolní −236 kJ·mol⁻¹ místo očekávaných −252, tedy o 16 kJ·mol⁻¹ méně.</p>
+        <p>Vazba C2–C3 je kratší (148 pm) a silnější než v butanu, protože ji tvoří orbitaly sp² a π elektrony jsou delokalizované přes všechny čtyři uhlíky. Ze čtyř orbitalů p vzniknou čtyři π MO, obsazené jsou vazebné ψ₁ a ψ₂.</p>`)
+        + sec('2. 1,2- a 1,4-adice', `<p>H⁺ se naváže na C1 a vznikne <b>allylový karbokation</b> s nábojem rozprostřeným na C2 a C4. Br⁻ pak může přijít na C2 (1,2-adukt) nebo na C4 (1,4-adukt, dvojná vazba se posune mezi C2 a C3).</p>
+        ${tbl(['', 'Kinetické řízení', 'Termodynamické řízení'], [['Podmínky', 'nízká teplota (0 °C), nevratné', 'vyšší teplota (40 °C), vratné, rovnováha'], ['Rozhoduje', 'rychlost (nižší ΔG‡)', 'stabilita produktu'], ['Převládne', '1,2-adukt (71 %)', '1,4-adukt (85 %), vnitřní dvojná vazba']])}`)
+        + sec('3. UV a vidění', `<p>Foton UV (200–400 nm) převede elektron z HOMO (ψ₂) do LUMO (ψ₃*). Čím delší konjugace, tím menší rozdíl HOMO a LUMO a tím delší λmax: hexatrien 258 nm, oktatetraen 290 nm, β-karoten 455 nm.</p>
+        <p>β-Karoten má tak dlouhou konjugaci, že absorbuje modré světlo a je oranžový. V těle z něj vzniká vitamin A a 11-cis-retinal. Ten s opsinem tvoří rhodopsin a světlo přepne jeho dvojnou vazbu z cis na trans, což spustí nervový signál.</p>
+        <p class="aside">A = log(Φ₀/Φ), ε = A/(c·l).</p>`) }
   ];
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
