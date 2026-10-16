@@ -29125,7 +29125,12 @@ const FH_LES = (() => {
     const t = e.target.closest('[data-lh]'); if (t) open(t.dataset.lh, t.dataset.v);
   });
   window.addEventListener('hashchange', () => { if (!location.hash || location.hash === '#') hub(); });
-  return { list, read, end, rec, merge, reg, next, open, hub };
+  /* číslo lekce podle přednášky nebo cvičení: „Lekce 2“, víc lekcí k jedné přednášce „Lekce 9.a“, „9.b“…; bez čísla zůstane pořadí */
+  function number(lessons, group, num) {
+    const G = {}; lessons.forEach(L => { (G[group(L)] = G[group(L)] || []).push(L); });
+    Object.values(G).forEach(g => { const m = num(g[0]); if (!m) return; g.sort((a, b) => a.n - b.n).forEach((L, i) => { L.n = m[1] + (g.length > 1 ? '.' + 'abcdefghijklmnopqrstuvwxyz'[i] : ''); }); });
+  }
+  return { list, read, end, rec, merge, reg, next, open, hub, number };
 })();
 
 /* ===== Organická chemie: lekce nad otázkami z přednášek =====
@@ -29683,6 +29688,7 @@ const FH_OL = (() => {
   ];
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
+  FH_LES.number(LES, L => L.topic, L => ((TOPIC_BY[L.topic] || {}).label || '').match(/^(\d+)\./));
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) LES.forEach(L => L.q.forEach(k => { if (!BYID[k] || BYID[k].kind !== 'q') console.warn(`Lekce ${L.id}: otázka ${k} neexistuje`); }));
   const OP = store.get('fg-les', {});
   const O = { on: false, step: 'list', open: null, deck: [], i: 0, ok: 0, missed: [], order: null, pick: null, saved: false, topic: null };
@@ -31533,6 +31539,7 @@ const AC_LES = [
 ];
 const AC_LES_SOON = [];
 const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
+FH_LES.number(AC_LES, L => L.ch, L => L.ch === 'ka' ? null : (AC_CH.find(c => c[0] === L.ch) || [, ''])[1].match(/^(\d+) ·/));   // cvičení 1–2 má lekce 1–15 po sobě
 /* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
   AC_LES.forEach(L => L.q.forEach(k => { if (!CARD[k]) console.warn(`Lekce ${L.id}: karta ${k} neexistuje`); }));
