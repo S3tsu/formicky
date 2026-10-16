@@ -29090,14 +29090,16 @@ const FH_LES = (() => {
     const A = all(), f = SUBJ.some(x => x.k === F) ? F : '*';
     const seg = SUBJ.length > 1 ? `<div class="seg small hn-flt" role="group" aria-label="Předmět">${[['*', 'Vše', A.length]].concat(SUBJ.map(x => [x.k, x.short, A.filter(L => L.s === x).length])).map(([v, l, c]) => `<button type="button" data-lhf="${v}" aria-pressed="${f === v}">${l}<span class="n">${c}</span></button>`).join('')}</div>` : '';
     /* lekce jako seznam řádků: s přibývajícími lekcemi zůstane přehledný i na počítači */
-    /* nedokončené lekce napřed; když jich je víc než 4, ukážou se 3 a zbytek po rozbalení, ať úvod s přibývajícími lekcemi neroste */
-    const sel = A.filter(L => f === '*' || L.s.k === f), todo = sel.filter(L => !L.s.prog()[L.id]), list = todo.concat(sel.filter(L => !todo.includes(L)));
-    const cut = !OPEN && list.length > 4 ? 3 : list.length;
-    const rows = list.slice(0, cut).map(L => { const p = L.s.prog()[L.id]; return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
+    /* sbaleně jen nejbližší nedokončené lekce, střídavě z každého předmětu (nejvýš 4); celý seznam po rozbalení, ať úvod s přibývajícími lekcemi neroste */
+    const sel = A.filter(L => f === '*' || L.s.k === f), todo = sel.filter(L => !L.s.prog()[L.id]);
+    const by = SUBJ.map(x => todo.filter(L => L.s === x)), rr = [];
+    for (let i = 0; by.some(g => g[i]); i++) by.forEach(g => { if (g[i]) rr.push(g[i]); });
+    const short = (rr.length ? rr : sel).slice(0, 4), list = OPEN || sel.length <= 5 ? sel : short;
+    const rows = list.map(L => { const p = L.s.prog()[L.id]; return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
       <span class="les-row-t"><b>Lekce ${L.n}: ${L.t}</b><span>${L.s.short} · ${L.where}</span></span>
       <span class="les-row-s">${p ? `<span class="ac-les-done">Hotovo ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</span>
       <svg class="les-row-go" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>`; }).join('');
-    const more = list.length > 4 ? `<button type="button" class="link les-more" data-lhm="1" aria-expanded="${OPEN}">${OPEN ? 'Ukázat méně' : `Ukázat všechny lekce (${list.length})`}</button>` : '';
+    const more = sel.length > 5 ? `<button type="button" class="link les-more" data-lhm="1" aria-expanded="${OPEN}">${OPEN ? 'Ukázat méně' : `Ukázat všechny lekce (${sel.length})`}</button>` : '';
     document.getElementById('lesHubG').innerHTML = seg + `<ul class="les-list">${rows}</ul>` + more;
   }
   let OPEN = false;
