@@ -10067,6 +10067,19 @@ function registerTopic(T) {
         ['To je popis E1: nejdřív vznikne karbokation a na geometrii nezáleží.', 'v = k [RX] platí pro E1 (monomolekulární). U E2 je v rovnici i báze.', 'Slabé báze jako voda a alkohol vedou spíš k E1 (a SN1), E2 chce silnou bázi.'], 'q48'],
       ['base', 'e1', 'E1 a SN1 spolu', 'Proč E1 obvykle provází SN1?', ['obě začínají vznikem karbokationtu', 'obě potřebují silnou a objemnou bázi', 'obě vyžadují antiperiplanární H a X', 'obě probíhají v jediném kroku'], 'Karbokation buď přijme nukleofil (SN1), nebo odštěpí H⁺ ze sousedního uhlíku (E1). Proto u terciárních substrátů ve vodě nebo v alkoholu vzniká směs a teplo posouvá poměr k alkenu.',
         ['Obě jdou se slabou bází nebo nukleofilem. Silná báze vede k E2.', 'Antiperiplanární uspořádání vyžaduje E2. U E1 na geometrii nezáleží.', 'Obě jsou dvoukrokové. Jednokrokové jsou SN2 a E2.'], 'q49'],
+      /* k lekci 3 (Substituce, nebo eliminace?), přibylo 16. 10. 2026 */
+      ['base', 'sou', 'Terciární a silná báze', 'Terciární bromid s ethoxidem sodným v ethanolu. Co převládne?', ['E2', 'SN1', 'SN2', 'E1'], 'Terciární substrát a silná báze: rozhodovací diagram vede rovnou k E2. Alken tvoří asi 97 % produktu, ether jen stopy.',
+        ['SN1 převládne, když v ethanolu žádná báze není (asi 80 % etheru). Ethoxid ale reakci strhne k E2.', 'SN2 na terciárním uhlíku neproběhne, útok zezadu je stericky zablokovaný.', 'E1 jde přes karbokation se slabou bází. Se silnou bází je rychlejší jednokroková E2.'], 'q50'],
+      ['base', 'sou', 'Terciární bez báze', 'Terciární bromid necháš reagovat s ethanolem, bez přidané báze. Co převládne?', ['ether (SN1)', 'alken (E2)', 'ether (SN2)', 'alken (E1)'], 'Ethanol je slabý nukleofil i slabá báze a jako protické rozpouštědlo stabilizuje karbokation. Ten většinou zachytí ethanol (asi 80 % etheru), zbytek odštěpí H⁺ (E1). Teplo by podíl alkenu zvýšilo.',
+        ['E2 potřebuje silnou bázi a ethanol jí není.', 'SN2 na terciárním uhlíku neproběhne, ether tu vzniká přes karbokation.', 'E1 tu probíhá, ale jen jako menšinová cesta vedle SN1.'], 'q51'],
+      ['base', 'sou', 'Sekundární a azid', '2-Brombutan s NaN₃ v DMSO. Jaký mechanismus převládne?', ['SN2', 'E2', 'SN1', 'E1'], 'Sekundární substrát a aniontový nukleofil, který není silnou bází (azid patří mezi silné a nebazické). Diagram vede k SN2 a aprotické DMSO ji ještě podpoří.',
+        ['E2 by převládla se silnou bází, třeba s ethoxidem. Azid silná báze není.', 'SN1 chce slabý neutrální nukleofil a protické rozpouštědlo. Tady je silný aniont v DMSO.', 'E1 jde přes karbokation, a ten v DMSO se silným nukleofilem nevznikne.'], 'q52'],
+      ['base', 'sou', 'Sekundární a voda', 'Sekundární halogenid s vodou, bez další báze. Kam ho pošle rozhodovací diagram?', ['SN1', 'SN2', 'E2', 'E1'], 'Sekundární substrát, nukleofil není aniont a nejde o alkohol s H₂SO₄: diagram končí u SN1. Voda je slabý nukleofil a jako protické rozpouštědlo stabilizuje karbokation.',
+        ['SN2 u sekundárního substrátu chce aniontový nukleofil, který není silnou bází.', 'E2 potřebuje silnou bázi a voda je slabá.', 'E1 diagram volí pro alkohol s H₂SO₄ nebo H₃PO₄.'], 'q53'],
+      ['base', 'sou', 'Primární a ethoxid', '1-Brombutan s ethoxidem sodným. Co převládne podle rozhodovacího diagramu?', ['SN2', 'E2', 'SN1', 'E1'], 'Primární substrát, ne allylový ani benzylový, a ethoxid není stericky bráněná báze. Diagram vede k SN2 a vznikne ether (Williamsonova syntéza).',
+        ['E2 u primárního substrátu převládne jen se silnou a objemnou bází (t-BuOK, LDA).', 'SN1 u primárního substrátu nejde, primární karbokation je příliš nestabilní. Výjimkou jsou allylové a benzylové.', 'E1 jde přes karbokation, a ten z obyčejného primárního bromidu nevznikne.'], 'q54'],
+      ['base', 'sou', 'První otázka diagramu', 'Na co se rozhodovací diagram SN1, SN2, E1, E2 ptá nejdřív?', ['na typ substrátu', 'na sílu nukleofilu', 'na rozpouštědlo', 'na teplotu'], 'Nejdřív urči, jestli je substrát primární, sekundární, nebo terciární (u primárního ještě, jestli není allylový či benzylový). Teprve potom se ptáš na nukleofil nebo bázi.',
+        ['Síla nukleofilu a bazicita přichází na řadu až ve druhém kroku, podle typu substrátu.', 'Rozpouštědlo pomáhá rozhodnout mezi SN1 a SN2, ale diagram se na něj přímo neptá.', 'Teplota jen posouvá poměr produktů k eliminaci.'], 'q55'],
 
       // ===== extra
       ['extra', 'pri', 'Chlorace propanu', 'Jaký poměr 2-chlorpropan : 1-chlorpropan očekáváš při radikálové chloraci propanu (reaktivity 1,0 : 3,5)?', ['asi 54 : 46', '25 : 75', '90 : 10', '50 : 50'], '2 sekundární H × 3,5 = 7, 6 primárních H × 1,0 = 6. 7 : 6 ≈ 54 : 46.', 'q38'],
@@ -28834,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161604';
+const FH_VER = '202610161640';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29152,9 +29165,27 @@ const FH_OL = (() => {
         + sec('2. Který alken vznikne', `<p><b>Zajcevovo pravidlo:</b> při eliminaci HX převládá <b>více substituovaný</b> (stabilnější) alken. Platí pro E1 i pro běžnou E2.</p>
         <ul class="ac-ul"><li><b>Objemná báze</b> (t-BuOK) odtrhne stericky přístupnější H z CH₃, a převládne méně substituovaný alken.</li><li><b>Primární halogenid</b> eliminuje E2 jen se silnou a objemnou bází (t-BuOK, LDA). Jinak vyhraje SN2.</li><li><b>Teplo</b> podporuje eliminaci před substitucí.</li><li><b>Alkohol s H₂SO₄</b> (terciární) eliminuje mechanismem E1: dehydratace.</li></ul>`)
         + sec('3. E2 na cyklohexanu', `<p>Na kruhu jsou antiperiplanární jen <b>axiální H a axiální X</b>, tedy trans-diaxiálně. Z konformace s ekvatoriálním halogenem E2 neproběhne.</p>
-        <p class="ac-les-trap"><b>Pozor:</b> proto menthylchlorid s ethoxidem nedá Zajcevův alken. Po překlopení kruhu má axiální H proti Cl jen na jednom sousedním uhlíku, a vznikne méně substituovaný 2-menthen.</p>`) }
+        <p class="ac-les-trap"><b>Pozor:</b> proto menthylchlorid s ethoxidem nedá Zajcevův alken. Po překlopení kruhu má axiální H proti Cl jen na jednom sousedním uhlíku, a vznikne méně substituovaný 2-menthen.</p>`) },
+    { id: 't09c', topic: 't09', n: 3, min: 5, t: 'Substituce, nebo eliminace?',
+      goal: 'Po lekci projdeš rozhodovací diagram a u halogenidu odhadneš, jestli převládne SN1, SN2, E1, nebo E2.',
+      recall: 'Vybav si z lekcí 1 a 2, co chce SN2, co SN1 a co E2. Zkus si na papír napsat, na co by ses ptala jako první, když máš rozhodnout mezi nimi.',
+      tail: 'Vrať se k papíru ze začátku a porovnej svou první otázku s diagramem. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+      q: ['t09_q55', 't09_q34', 't09_q54', 't09_q36', 't09_q52', 't09_q33', 't09_q53', 't09_q50', 't09_q51', 't09_q45', 't09_q37', 't09_q35'],
+      beda: 'Nejdřív se podívej, kdo nese X, teprve potom, kdo klepe na dveře. Silná báze u terciárního uhlíku? Bez debaty E2. A když se v zadání topí, sázej na eliminaci.',
+      body: () => sec('1. Tři druhy nukleofilů', `<p>Diagram se ptá, jestli je nukleofil silný a jestli je zároveň silnou bází. Podle toho se dělí do tří skupin (Na může být i Li nebo K):</p>
+        ${tbl(['Skupina', 'Příklady', 'Kam táhne'], [['silné a bazické', 'NaOH, NaOR, NaNH₂, NaNR₂, NaC≡CR', 'k E2, hlavně u sekundárních a terciárních'], ['silné a nebazické', 'NaSH, NaSR, NaCN, NaN₃, RCOONa, NH₃, NR₃, X⁻', 'k SN2'], ['slabé', 'H₂O, ROH, RCOOH', 'k SN1 a E1 přes karbokation']])}`)
+        + sec('2. Diagram: nejdřív substrát', `${tbl(['Substrát', 'Pak se ptej', 'Výsledek'], [
+          ['primární', 'Je allylový nebo benzylový a nukleofil neutrální (voda, alkohol)?', 'ano → SN1 (méně E1)'], ['', 'Jinak: je činidlo silná a objemná báze (t-BuOK, LDA)?', 'ano → E2, ne → SN2'],
+          ['sekundární', 'Je nukleofil aniont a zároveň silná báze (RO⁻, NR₂⁻, acetylid)?', 'E2'], ['', 'Je to aniont, který silnou bází není (CN⁻, N₃⁻, RS⁻, RCOO⁻)?', 'SN2'], ['', 'Není to aniont (voda, alkohol)?', 'SN1, alkohol s H₂SO₄ nebo H₃PO₄ → E1'],
+          ['terciární', 'Je činidlo báze?', 'ano → E2'], ['', 'Bez báze, ve vodě nebo alkoholu', 'SN1 s příměsí E1, alkohol s H₂SO₄ → E1']])}
+        <p class="aside">SN2 u terciárního substrátu nikdy, SN1 a E1 u obyčejného primárního taky ne. Rozpouštědlo diagram přímo nezmiňuje, ale napoví: aprotické podporuje SN2, protické SN1.</p>`)
+        + sec('3. Jak to dopadá v baňce', `${tbl(['Substrát a činidlo', 'Hlavní produkt', 'Proč'], [
+          ['1-brombutan + NaCN', 'nitril, asi 90 % (SN2)', 'primární, nebazický nukleofil'], ['1-brombutan + t-BuOK', 'but-1-en, asi 85 % (E2)', 'objemná báze'],
+          ['2-brompropan + CH₃COONa', 'ester, 100 % (SN2)', 'acetát je slabá báze'], ['2-brompropan + CH₃CH₂ONa', 'propen, asi 80 % (E2)', 'ethoxid je silná báze'],
+          ['terciární bromid + ethanol', 'ether, asi 80 % (SN1)', 'bez báze, přes karbokation'], ['terciární bromid + CH₃CH₂ONa', 'alken, asi 97 % (E2)', 'silná báze']])}
+        <p class="ac-les-trap"><b>Pozor:</b> zvýšená teplota vždy podporuje eliminaci. Stejný terciární halogenid dá ve vodě za tepla víc alkenu než za studena.</p>`) }
   ];
-  const SOON = { t09: ['Substituce, nebo eliminace? Rozhodovací diagram'] };
+  const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) LES.forEach(L => L.q.forEach(k => { if (!BYID[k] || BYID[k].kind !== 'q') console.warn(`Lekce ${L.id}: otázka ${k} neexistuje`); }));
   const OP = store.get('fg-les', {});
@@ -29797,6 +29828,11 @@ const AC_TH = [
   ['k_l2sb', 'ka', 'Co se stane s oranžovým Sb₂S₃ v nadbytku NH₄HS?', 'rozpustí se na thioantimonitan, kyselinou se vrátí', ['zčerná, protože se vyloučí kovový antimon', 'zežloutne přeměnou na jinou sloučeninu', 'nic, nerozpustí se ani v kyselinách'], 'Sb₂S₃ (a SnS₂) tvoří v nadbytku činidla thiokomplexy. Okyselením HCl se oranžový Sb₂S₃ znovu vyloučí, a toho se využívá i při selektivním důkazu Sb³⁺.', null, 'k'],
   ['k_l2coni', 'ka', 'Které sulfidy stárnutím polymerují a nerozpustí se ani v kyselinách?', 'CoS a NiS', ['ZnS a MnS', 'FeS a MnS', 'FeS a ZnS'], 'Ostatní sulfidy z NH₄HS se ve zředěných minerálních kyselinách rozpustí, třeba bílý ZnS.', null, 'k'],
   ['k_l2scen', 'ka', 'Vzorek s H₂S v kyselém prostředí nedá nic, s NH₄HS černou sraženinu. Co v něm může být?', 'Fe²⁺, Co²⁺ nebo Ni²⁺', ['Cu²⁺, Pb²⁺ nebo Hg²⁺', 'Cd²⁺, Sb³⁺ nebo Bi³⁺', 'Na⁺, K⁺ nebo Mg²⁺'], 'Cu²⁺, Pb²⁺ a Hg²⁺ by se srazily černě už s H₂S. Cd²⁺, Sb³⁺ a Bi³⁺ by se srazily taky, navíc žlutě, oranžově a hnědě. Na⁺, K⁺ a Mg²⁺ sulfidy netvoří. Černé sulfidy až z amoniakálního prostředí dávají Fe²⁺, Co²⁺ a Ni²⁺ (a FeS vznikne i z Fe³⁺).', null, 'k'],
+  /* k lekci 3 (NaOH a amfoterní hydroxidy), přibylo 16. 10. 2026 */
+  ['k_l3ox', 'ka', 'Které kationty dají s NaOH místo hydroxidu oxid?', 'Ag⁺ a Hg²⁺', ['Cu²⁺ a Zn²⁺', 'Fe³⁺ a Al³⁺', 'Ni²⁺ a Cd²⁺'], 'Hydroxidy stříbra a rtuti jsou nestálé a hned se rozloží na hnědý Ag₂O a žlutý HgO. Ostatní kationty dají hydroxidy, některé zásadité soli (třeba modrá sraženina z Co²⁺).', null, 'k'],
+  ['k_l3amf', 'ka', 'Co dělá hydroxid amfoterním?', 'rozpustí se v kyselině i v nadbytku NaOH', ['rozpustí se jen v kyselině, v NaOH ne', 'rozpustí se v NaOH, v kyselině ale ne', 'nerozpustí se v kyselině ani v NaOH'], 'V kyselině se rozpustí každý hydroxid, to je neutralizace. Amfoterní se navíc rozpustí v 2M NaOH na hydroxokomplex [M(OH)₄]ⁿ⁻, třeba hlinitan nebo zinečnatan.', null, 'k'],
+  ['k_l3sep', 'ka', 'Jak oddělíš Al³⁺ od Fe³⁺?', 'nadbytkem 2M NaOH a odfiltrováním Fe(OH)₃', ['nadbytkem NH₃ a odfiltrováním Al(OH)₃', 'okyselením HCl a odfiltrováním AlCl₃', 'sulfanem v kyselém prostředí'], 'Al(OH)₃ je amfoterní a v nadbytku NaOH se rozpustí na bezbarvý hlinitan. Rezavý Fe(OH)₃ zůstane jako sraženina a odfiltruje se. Amoniak sráží oba hydroxidy a ani jeden nerozpustí.', null, 'k'],
+  ['k_l3scen', 'ka', 'Bílá sraženina z NaOH se v nadbytku rozpustí, s H₂S v kyselém prostředí dá vzorek oranžovou sraženinu. Co v něm je?', 'Sb³⁺', ['Sn²⁺', 'Al³⁺', 'Cd²⁺'], 'Oranžový sulfid má jen antimon (Sb₂S₃) a Sb(OH)₃ je amfoterní. SnS je hnědý, Al³⁺ s H₂S nic nedá a Cd(OH)₂ se v nadbytku NaOH nerozpustí (CdS je navíc žlutý).', null, 'k'],
   ['a_neutr', 'ka', 'Proč se skupinové srážecí reakce aniontů dělají v neutrálním prostředí?', 'v kyselém by se část sraženin vůbec nevytvořila', ['v neutrálním se nesrážejí kationty', 'v zásaditém by se vyloučil jód', 'činidla jsou stálá jen v neutrálním'], 'Barnaté a stříbrné soli se liší právě stálostí v kyselém prostředí. Teprve vzniklou sraženinu zkoušíš kyselinou.', null, 'a'],
   ['a_ph', 'ka', 'Co může obsahovat vzorek aniontů, který reaguje kysele?', 'volnou kyselinu nebo sůl silné kyseliny a slabé zásady', ['sůl silné zásady a slabé kyseliny', 'jen sůl silné kyseliny a silné zásady', 'volnou silnou zásadu'], 'Zásaditý vzorek: silná zásada nebo sůl silné zásady a slabé kyseliny. Neutrální: sůl silné kyseliny a silné zásady, která nehydrolyzuje.', null, 'a'],
   ['a_kysele', 'ka', 'Které anionty nemůžou být ve vzorku s kyselou reakcí?', 'CO₃²⁻, NO₂⁻, SO₃²⁻ a S₂O₃²⁻', ['SO₄²⁻, PO₄³⁻ a NO₃⁻', 'Cl⁻, Br⁻, I⁻ a SCN⁻', 'SO₄²⁻, Cl⁻ a NO₃⁻'], 'Anionty snadno rozložitelných nebo těkavých kyselin (také S²⁻ a CN⁻) v kyselém prostředí nevydrží. Ztratit se můžou i při neutralizaci kyselinou dusičnou.', null, 'a'],
@@ -30667,9 +30703,26 @@ const AC_LES = [
       <p>Nesráží jen kationty alkalických kovů, kovů alkalických zemin a Mg²⁺ (a NH₄⁺).</p>
       ${tbl(['Zvláštnost', 'Co uvidíš'], [['Sb₂S₃ v nadbytku NH₄HS', 'rozpustí se na thiokomplex, okyselením se oranžová sraženina vrátí'], ['CoS a NiS', 'stárnutím polymerují, nerozpustí se ani v kyselinách'], ['PbSO₄ z lekce 1', 's NH₄HS zčerná na PbS']])}`)
       + sec('3. Proč dvě síta se sulfidy', `<p>H₂S je slabá kyselina. V kyselém prostředí je sulfidových iontů tak málo, že se vysráží jen nejméně rozpustné sulfidy. V amoniakálním prostředí jich je víc, a srazí se i ty rozpustnější. Odtud dvě skupiny ze staré Böttgerovy soustavy: sulfidy z kyselého a z amoniakálního prostředí.</p>
-      <p>Protože NH₄HS sráží všechny těžké kovy, používá se s (NH₄)₂CO₃ i k jejich <b>odstranění</b> před důkazem Li⁺, Na⁺, K⁺ a Mg²⁺.</p>`) }
+      <p>Protože NH₄HS sráží všechny těžké kovy, používá se s (NH₄)₂CO₃ i k jejich <b>odstranění</b> před důkazem Li⁺, Na⁺, K⁺ a Mg²⁺.</p>`) },
+  { id: 'k3', ch: 'ka', n: 3, min: 5, t: 'NaOH a amfoterní hydroxidy',
+    goal: 'Po lekci víš, které kationty NaOH sráží a jakou barvu mají sraženiny, které z nich na vzduchu mění barvu a které se v nadbytku NaOH zase rozpustí.',
+    recall: 'Vybav si z lekce 2, které kationty nesráží ani NH₄HS. Pak si tipni, které z nich by mohl srazit hydroxid.',
+    tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s lekcí. Šestku amfoterních si zkus napsat z hlavy ještě jednou. Co jsi nevěděla, zopakuješ zítra.',
+    q: ['g:k:NaOH', 't:k_l3ox', 'i:ag:NaOH', 'i:hg1:NaOH', 'i:mn:NaOH', 'i:fe2:NaOH', 't:k_mgnh4', 'x:k:NaOH', 't:k_l3amf', 'i:cr3:NaOH', 't:k_l3sep', 't:k_l3scen'],
+    beda: 'Amfoterní šestka se v nadbytku NaOH rozpustí a zmizí: olovo, hliník, zinek, antimon a cín beze stopy. Jen chrom se schovat neumí, prozradí ho zelený roztok.',
+    body: () => sec('1. NaOH sráží skoro všechno', `${lesTubes([['hneda', 'Ag₂O'], ['zluta', 'HgO'], ['modra', 'Cu(OH)₂'], ['rezava', 'Fe(OH)₃'], ['svzelena', 'Ni(OH)₂']])}
+      <p>Zředěný NaOH sráží hydroxidy skoro všech kationtů kovů. Vedle bílých sraženin je tu hodně barevných, a ty samy napoví, o který iont jde.</p>
+      ${tbl(['Co z NaOH vzniká', 'Příklad'], [['hydroxid', 'většina kationtů: modrý Cu(OH)₂, rezavý Fe(OH)₃, světle zelený Ni(OH)₂, bílý Cd(OH)₂ nebo Bi(OH)₃'], ['oxid', 'Ag⁺ a Hg²⁺: hydroxid se hned rozloží na hnědý Ag₂O a žlutý HgO'], ['zásaditá sůl', 'Co²⁺: modrá sraženina']])}
+      <p><b>Nesráží</b> alkalické kovy, NH₄⁺, Ba²⁺ a Sr²⁺. Ca²⁺ jen z koncentrovanějších roztoků. Mg²⁺ dá bílý Mg(OH)₂ jen v silně zásaditém prostředí a jen když ve vzorku není NH₄⁺.</p>`)
+      + sec('2. Sraženiny, které mění barvu', `${tbl(['Kationt', 'Nejdřív', 'Pak', 'Proč'], [['Hg₂²⁺', 'šedočerná hned', '', 'rtuť(I) dismutuje, vzniká černá Hg⁰'], ['Mn²⁺', 'bílý Mn(OH)₂', 'hnědne až černý MnO₂', 'oxidace vzdušným kyslíkem'], ['Fe²⁺', 'zelenavě bílý Fe(OH)₂', 'rezavý Fe(OH)₃', 'oxidace vzdušným kyslíkem'], ['Co²⁺', 'modrá zásaditá sůl', 'růžový Co(OH)₂, pak hnědý Co(OH)₃', 'přeměna a oxidace vzduchem']])}
+      <p class="aside">Když sraženina na vzduchu tmavne nebo rezaví, mysli na Mn²⁺, Fe²⁺ a Co²⁺.</p>`)
+      + sec('3. Amfoterní hydroxidy: zmizí v nadbytku', `${lesTubes([['bila', 'Pb(OH)₂'], ['bila', 'Al(OH)₃'], ['bila', 'Zn(OH)₂'], ['bila', 'Sb(OH)₃'], ['bila', 'Sn(OH)₂'], ['sedozelena', 'Cr(OH)₃']])}
+      <p>V kyselině se rozpustí každý hydroxid, to je obyčejná neutralizace. <b>Amfoterní</b> hydroxidy se ale rozpustí i v nadbytku zásady (2M NaOH) na hydroxokomplexy [M(OH)₄]ⁿ⁻: olovnatan, hlinitan, zinečnatan, antimonitan, cínatan a chromitan.</p>
+      <p class="ac-les-row"><b>Pb²⁺ · Al³⁺ · Zn²⁺ · Sb³⁺ · Sn²⁺ · Cr³⁺</b><br><small>amfoterní šestka</small></p>
+      <ul class="ac-ul"><li>Vzniklé roztoky jsou <b>bezbarvé</b>, jen chromitan je <b>zelený</b>.</li><li>Využiješ to k <b>oddělení</b>: amfoterní kationty zůstanou v roztoku, ostatní hydroxidy odfiltruješ. Třeba Al³⁺ od Fe³⁺.</li></ul>
+      <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina ještě neznamená amfoterní. Cd(OH)₂, Bi(OH)₃ a Mg(OH)₂ jsou taky bílé, ale v nadbytku NaOH zůstanou.</p>`) }
 ];
-const AC_LES_SOON = ['NaOH a amfoterní hydroxidy', 'NH₃ a amminkomplexy', 'KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
+const AC_LES_SOON = ['NH₃ a amminkomplexy', 'KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
 const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
 /* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
