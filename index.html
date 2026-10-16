@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161830';
+const FH_VER = '202610161850';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29347,7 +29347,85 @@ const FH_OL = (() => {
         ${tbl(['', 'Kinetické řízení', 'Termodynamické řízení'], [['Podmínky', 'nízká teplota (0 °C), nevratné', 'vyšší teplota (40 °C), vratné, rovnováha'], ['Rozhoduje', 'rychlost (nižší ΔG‡)', 'stabilita produktu'], ['Převládne', '1,2-adukt (71 %)', '1,4-adukt (85 %), vnitřní dvojná vazba']])}`)
         + sec('3. UV a vidění', `<p>Foton UV (200–400 nm) převede elektron z HOMO (ψ₂) do LUMO (ψ₃*). Čím delší konjugace, tím menší rozdíl HOMO a LUMO a tím delší λmax: hexatrien 258 nm, oktatetraen 290 nm, β-karoten 455 nm.</p>
         <p>β-Karoten má tak dlouhou konjugaci, že absorbuje modré světlo a je oranžový. V těle z něj vzniká vitamin A a 11-cis-retinal. Ten s opsinem tvoří rhodopsin a světlo přepne jeho dvojnou vazbu z cis na trans, což spustí nervový signál.</p>
-        <p class="aside">A = log(Φ₀/Φ), ε = A/(c·l).</p>`) }
+        <p class="aside">A = log(Φ₀/Φ), ε = A/(c·l).</p>`) },
+    { id: 't12a', topic: 't12', n: 1, min: 5, t: 'Aromaticita a elektrofilní substituce',
+      goal: 'Po lekci rozhodneš podle Hückelova pravidla, jestli je kruh aromatický, a popíšeš mechanismus SEAr včetně halogenace, nitrace, sulfonace a Friedelových–Craftsových reakcí.',
+      recall: 'Tipni si, proč benzen neodbarví bromovou vodu, i když má na papíře tři dvojné vazby.',
+      tail: 'Vrať se k tipu ze začátku. Benzen si chrání aromatickou stabilitu, a tak substituuje místo aby adoval. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t12_q3', 't12_q7', 't12_q8', 't12_q9', 't12_q10', 't12_q12', 't12_q16', 't12_q17', 't12_q18', 't12_q21', 't12_q22', 't12_q23'],
+      beda: 'Aromatický klub má čtyři podmínky vstupu: kruh, rovina, konjugace a 4n + 2 elektronů π. Cyklobutadien se 4 elektrony nesmí ani ke dveřím.',
+      body: () => sec('1. Aromaticita', `<p>Benzen je o asi <b>150 kJ·mol⁻¹</b> stabilnější, než by odpovídalo třem izolovaným dvojným vazbám, a všechny vazby C–C má stejně dlouhé (139 pm). Kekulého struktury jsou jen rezonanční.</p>
+        <p>Aromatická molekula je <b>cyklická, planární, konjugovaná a má 4n + 2 elektronů π</b> (Hückel: 2, 6, 10…). Se 4n elektrony je antiaromatická (cyklobutadien).</p>
+        ${tbl(['Systém', 'π elektronů'], [['benzen, pyridin', '6'], ['cyklopentadienylový anion', '6 (volný pár v p)'], ['cykloheptatrienylový kation', '6 (prázdný p)'], ['naftalen', '10']])}
+        <p class="aside">Polohy na kruhu: ortho 1,2, meta 1,3, para 1,4. Fenyl je C₆H₅–, benzyl C₆H₅CH₂–.</p>`)
+        + sec('2. Mechanismus SEAr', `<p>Ar–H + E⁺ → Ar–E + H⁺. Elektrony π napadnou elektrofil a vznikne <b>σ-komplex</b>. To je pomalý krok, protože se ztrácí aromaticita. Pak odejde H⁺ a aromaticita se vrátí. Proto benzen reaguje pomaleji než alken a potřebuje silnější elektrofil.</p>
+        ${tbl(['Reakce', 'Činidlo', 'Elektrofil'], [['bromace', 'Br₂, FeBr₃', 'polarizovaný Br₂'], ['jodace', 'I₂, CuCl₂', 'I⁺'], ['nitrace', 'HNO₃, H₂SO₄', 'NO₂⁺'], ['sulfonace (vratná)', 'oleum nebo konc. H₂SO₄', 'SO₃ / HSO₃⁺']])}`)
+        + sec('3. Friedelovy–Craftsovy reakce', `<p><b>Alkylace</b> (RCl, AlCl₃) jde přes karbokation, a ten se může přesmyknout: z 1-chlorbutanu vznikne hlavně sek-butylbenzen. <b>Acylace</b> (RCOCl, AlCl₃) jde přes acyliový ion, který je stabilizovaný rezonancí a nepřesmykuje se.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> AlCl₃ je u alkylace katalyzátor, u acylace se ale váže na vzniklý keton.</p>`) },
+    { id: 't12b', topic: 't12', n: 2, min: 5, t: 'Vliv substituentů a nukleofilní substituce',
+      goal: 'Po lekci odhadneš, jestli substituent kruh aktivuje, nebo deaktivuje a kam pošle další skupinu, a víš, kdy jde na aromátu nukleofilní substituce.',
+      recall: 'Vybav si z lekce 1, co je σ-komplex. Tipni si, jestli ho OH skupina na kruhu stabilizuje, nebo destabilizuje.',
+      tail: 'Vrať se k tipu ze začátku. OH dodá do kruhu volný pár, σ-komplex stabilizuje a orientuje ortho a para. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t12_q25', 't12_q26', 't12_q27', 't12_q28', 't12_q29', 't12_q30', 't12_q31', 't12_q32', 't12_q33', 't12_q35', 't12_q37', 't12_q38'],
+      beda: 'Dárci elektronů (OH, NH₂, alkyl) zvou hosty do ortho a para. Zloději elektronů (NO₂, C=O, CN) je pošlou do meta. Halogeny jsou podivíni: zpomalí, ale pošlou do ortho a para.',
+      body: () => sec('1. Aktivace a deaktivace', `<p>Rychlost nitrace: fenol 1000 > benzen 1 > chlorbenzen 0,033 > nitrobenzen 6 × 10⁻⁸. Rozhodují dva efekty:</p>
+        <ul class="ac-ul"><li><b>indukční</b> přes vazby σ (halogen, O odčerpávají),</li><li><b>mezomerní</b> přes π systém: +M dodá volný pár (OH, OR, NH₂, Cl), −M odčerpá (C=O, CN, NO₂).</li></ul>
+        <p>U OH převládne silný +M, a proto je to silný aktivátor.</p>`)
+        + sec('2. Kam jde další skupina', `${tbl(['Skupina', 'Účinek', 'Orientace'], [['–OH, –OR, –NH₂', 'silně aktivuje', 'ortho, para'], ['alkyl (–CH₃)', 'aktivuje', 'ortho, para'], ['halogen', 'deaktivuje', '<b>ortho, para</b>'], ['–NO₂, –CN, –CHO, –COR, –COOH, –SO₃H', 'deaktivuje', 'meta']])}
+        <p>Proč: po ataku ortho a para má σ-komplex strukturu s kladným nábojem přímo na uhlíku se substituentem. Donor ji stabilizuje (u OH dokonce oxoniovou strukturou, a proto vzniká 0 % meta-nitrofenolu), akceptor destabilizuje, a tak zbude meta.</p>
+        <p class="aside">Nitrace chlorbenzenu: ortho 35 %, meta 1 %, para 64 %. Poloha mezi dvěma substituenty v meta je stericky bráněná.</p>`)
+        + sec('3. Nukleofilní aromatická substituce', `<p>Chlorbenzen s nukleofily běžně nereaguje: SN2 brání kruh a arylový kation je nestabilní. Jde to dvěma cestami:</p>
+        ${tbl(['Mechanismus', 'Kdy'], [['adičně-eliminační (SNAr)', 'silný akceptor (NO₂) v <b>ortho nebo para</b> stabilizuje záporný náboj aduktu'], ['eliminačně-adiční přes benzyn', 'NaOH, 340 °C a vysoký tlak']])}
+        <p class="ac-les-trap"><b>Pozor:</b> NO₂ v poloze meta SNAr nepomůže, záporný náboj se na její uhlík nedostane.</p>`) },
+    { id: 't13a', topic: 't13', n: 1, min: 5, t: 'Alkoholy a fenoly: názvy, kyselost a příprava',
+      goal: 'Po lekci pojmenuješ alkohol, vysvětlíš vysoké teploty varu, seřadíš alkoholy a fenoly podle kyselosti a víš, jak se alkoholy připravují redukcí a Grignardovou reakcí.',
+      recall: 'Tipni si, proč vře propan-1-ol skoro o 100 °C výš než butan, i když mají skoro stejnou hmotnost.',
+      tail: 'Vrať se k tipu ze začátku. Alkoholy drží pohromadě vodíkové vazby. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t13_q1', 't13_q2', 't13_q3', 't13_q8', 't13_q13', 't13_q15', 't13_q16', 't13_q17', 't13_q23', 't13_q26', 't13_q27', 't13_q28'],
+      beda: 'Fenol je kyselejší než ethanol, protože svůj záporný náboj rozdělí mezi kyslík a kruh. Sdílená starost, poloviční starost.',
+      body: () => sec('1. Názvy a vlastnosti', `<p>Alkohol je primární, sekundární nebo terciární podle uhlíku s OH. U <b>fenolu</b> je OH přímo na aromatickém uhlíku (benzylalkohol je obyčejný primární alkohol). Skupina OH dostane nejnižší lokant: 2-methylpentan-2-ol, glycerol = propan-1,2,3-triol.</p>
+        <p>Alkoholy tvoří <b>vodíkové vazby</b>, proto vřou mnohem výš než uhlovodíky podobné hmotnosti (propan-1-ol 97 °C, butan −0,5 °C). Jsou amfoterní: s HX se protonují na oxoniový ion, se silnou bází dají alkoxid.</p>`)
+        + sec('2. Kyselost', `${tbl(['Látka', 'pKa'], [['(CH₃)₃COH', '18,0'], ['ethanol', '16,0'], ['voda', '15,74'], ['methanol', '15,54'], ['fenol', '9,89'], ['p-nitrofenol', '7,15'], ['(CF₃)₃COH', '5,4']])}
+        <p>Kyselost zvýší vše, co stabilizuje záporný náboj aniontu: fluor indukcí, u fenolu <b>rezonance do kruhu</b>, u p-nitrofenolu navíc nitroskupina. Donory (CH₃, NH₂) v para kyselost fenolu snižují.</p>`)
+        + sec('3. Příprava alkoholů', `${tbl(['Cesta', 'Výsledek'], [['hydratace alkenu, hydroborace', 'viz alkeny, hydroborace syn a anti-Markovnikov'], ['NaBH₄', 'aldehydy a ketony → alkoholy'], ['LiAlH₄', 'i karboxylové kyseliny a estery → primární alkoholy, C=C zůstane'], ['RMgX + HCHO', 'primární alkohol o uhlík delší'], ['RMgX + jiný aldehyd / keton', 'sekundární / terciární alkohol']])}
+        <p class="ac-les-trap"><b>Pozor:</b> v Grignardově činidle je uhlík δ−, nukleofil a silná báze. Karboxylová kyselina ho proto hned zničí na alkan, místo aby se aduovala.</p>`) },
+    { id: 't13b', topic: 't13', n: 2, min: 5, t: 'Reakce alkoholů a fenolů',
+      goal: 'Po lekci víš, jak alkohol dehydratovat, převést na halogenid nebo tosylát (a co se děje s konfigurací), co dá oxidace a jak se vyrábí a používá fenol.',
+      recall: 'Vybav si z organiky SN2 a SN1. Tipni si, která z nich poběží u terciárního alkoholu s HBr.',
+      tail: 'Vrať se k tipu ze začátku. Terciární alkohol s HBr jde přes karbokation (SN1). Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t13_q29', 't13_q30', 't13_q31', 't13_q32', 't13_q34', 't13_q36', 't13_q37', 't13_q38', 't13_q39', 't13_q41', 't13_q42', 't13_q21'],
+      beda: 'OH je mizerná odstupující skupina. Musíš ji převléknout: protonovat na vodu, nebo z ní udělat tosylát, a pak už odejde s grácií.',
+      body: () => sec('1. Dehydratace a halogenace', `<p>OH⁻ špatně odstupuje, proto se alkohol nejdřív <b>protonuje</b> a odchází voda. Dehydratace (E1) jde nejsnáz u terciárních: primární < sekundární < terciární.</p>
+        ${tbl(['Alkohol', 'Činidlo', 'Mechanismus'], [['terciární', 'HX', 'SN1, pomalý krok je odchod vody'], ['primární, sekundární', 'SOCl₂ (pyridin), PBr₃', 'SN2']])}`)
+        + sec('2. Tosyláty a stereochemie', `<p>Tosylace (TsCl, pyridin) <b>nemění konfiguraci</b>, reaguje kyslík a vazba C–O zůstane. Z OH je tak výborná odstupující skupina pro SN2 a teprve SN2 konfiguraci obrátí.</p>
+        <p class="aside">Kyselina jablečná s SOCl₂: bez pyridinu retence, s pyridinem inverze.</p>`)
+        + sec('3. Oxidace a fenoly', `<p>Primární alkohol se oxiduje na aldehyd (a dál na kyselinu), sekundární na keton. <b>Terciární se neoxiduje</b>, na uhlíku s OH nemá vodík. U oxidace chromem vznikne chromanový ester a C=O vytvoří eliminace E2.</p>
+        <ul class="ac-ul"><li>Fenol se dnes vyrábí <b>kumenovým procesem</b> (vedlejší produkt aceton), dříve z uhlí a z chlorbenzenu s NaOH.</li><li>BHT a BHA jsou fenolové antioxidanty, zachytávají radikály.</li><li>p-Benzochinon a hydrochinon jsou redoxní pár, stejně fungují ubichinony (koenzym Q).</li></ul>
+        <p class="ac-les-trap"><b>Pozor:</b> trans-diol dá epoxidace (MCPBA) a otevření vodou, cis-diol OsO₄.</p>`) },
+    { id: 't14a', topic: 't14', n: 1, min: 5, t: 'Ethery a epoxidy',
+      goal: 'Po lekci pojmenuješ ether, připravíš ho Williamsonovou syntézou bez eliminace a předpovíš, kde se ether nebo epoxid rozštěpí.',
+      recall: 'Tipni si, jestli je lepší připravit terc-butyl(methyl)ether z methoxidu a terc-butylbromidu, nebo z terc-butoxidu a jodmethanu.',
+      tail: 'Vrať se k tipu ze začátku. Terc-butoxid s jodmethanem, protože SN2 chce nebráněný halogenid. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t14_q2', 't14_q4', 't14_q6', 't14_q8', 't14_q9', 't14_q10', 't14_q13', 't14_q14', 't14_q15', 't14_q16', 't14_q19', 't14_q20'],
+      beda: 'Williamson je SN2: halogenid musí být malý a nebráněný, alkoxid klidně objemný. Obráceně dostaneš jen alken.',
+      body: () => sec('1. Názvy a vlastnosti', `<p>Skupinový název: zbytky abecedně + ether, třeba ethyl(fenyl)ether, substitučně ethoxybenzen. Anisol je methoxybenzen, THF pětičlenný nasycený cyklický ether. Korunové ethery (18-crown-6 má 18 atomů a 6 kyslíků) obalí K⁺ a rozpustí draselné soli v nepolárním rozpouštědle.</p>`)
+        + sec('2. Příprava', `${tbl(['Metoda', 'Podmínka'], [['Williamsonova syntéza (RO⁻ + R′X)', 'SN2, R′X methyl nebo primární, alkoxid z alkoholu a NaH'], ['alkoxymerkurace alkenu', 'Markovnikov, bez přesmyků'], ['kyselá kondenzace ethanolu', 'SN2 na protonovaném ethanolu']])}
+        <p class="ac-les-trap"><b>Pozor:</b> methoxid s terciárním halogenidem dá jen alken (E2), ne ether.</p>`)
+        + sec('3. Štěpení etherů a epoxidů', `<p>Ethery jsou málo reaktivní (proto rozpouštědla), štěpí je až HBr a HI:</p>
+        ${tbl(['Substrát', 'Kam jde X⁻'], [['primární a sekundární alkyly', 'SN2 na méně bráněný uhlík'], ['aryl-alkyl ether', 'vždy na alkyl, vznikne fenol (na aromát SN2 nejde)'], ['terciární, benzylový, allylový', 'SN1/E1, stačí CF₃COOH']])}
+        <p><b>Epoxid</b> se otevírá snadno kvůli pnutí: v kyselém prostředí jde nukleofil na <b>víc</b> substituovaný uhlík (charakter SN1), silný nukleofil bez kyseliny (OH⁻, RMgBr) na <b>méně</b> bráněný (SN2).</p>`) },
+    { id: 't14b', topic: 't14', n: 2, min: 5, t: 'Thioly a sulfidy',
+      goal: 'Po lekci pojmenuješ sirné sloučeniny podle vaznosti síry, víš, jak se připraví thiol a jak se thiol, disulfid, sulfoxid a sulfon převádějí jeden na druhý.',
+      recall: 'Vybav si z bílkovin, co drží pohromadě dva cysteiny. Tipni si, jestli je to oxidace, nebo redukce.',
+      tail: 'Vrať se k tipu ze začátku. Disulfidový můstek vzniká oxidací dvou thiolů. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t14_q21', 't14_q22', 't14_q23', 't14_q25', 't14_q26', 't14_q28', 't14_q29', 't14_q30', 't14_q31', 't14_q32', 't14_q34', 't14_q35'],
+      beda: 'Síra je jako kyslík, jen víc smrdí a umí víc vazeb. Thioly přidávají do plynu, aby se únik ucítil dřív, než bouchne.',
+      body: () => sec('1. Názvy', `${tbl(['Vaznost síry', 'Skupiny'], [['dvouvazná', 'thiol R–SH (předpona sulfanyl), sulfid R–S–R, disulfid, sulfenová kyselina R–S–OH'], ['čtyřvazná', 'sulfoxid R–S(O)–R, sulfinová kyselina R–S(O)OH'], ['šestivazná', 'sulfon R–SO₂–R, sulfonová kyselina R–SO₂OH, sulfonamid R–SO₂–NHR′']])}
+        <p>CH₃S– je methylsulfanyl. Trialkylsulfonium je R₃S⁺.</p>`)
+        + sec('2. Thioly a disulfidy', `<p>Thioly nepříjemně zapáchají už ve stopách. Připravují se přes <b>thiomočovinu</b>, protože s NaSH by vzniklý thiolát napadl další halogenalkan a vznikl by sulfid.</p>
+        <p>I₂ oxiduje thioly na <b>disulfid</b>, Zn/H⁺ ho redukuje zpět. Stejně se v bílkovinách spojují cysteiny na cystin, disulfidové můstky drží jejich strukturu.</p>`)
+        + sec('3. Sulfidy a ochrana karbonylu', `<p>Sulfid se oxiduje postupně: H₂O₂ → sulfoxid, CH₃COOOH → sulfon. Z trimethylsulfonia vzniká ylid (CH₃)₂S⁺–CH₂⁻.</p>
+        <p>Keton se dá <b>chránit</b> jako 1,3-dithiolan: LiAlH₄ pak redukuje jen ester. HgCl₂ vrátí keton, Raneyův nikl síru odstraní a z C=O zbude CH₂.</p>`) }
   ];
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
