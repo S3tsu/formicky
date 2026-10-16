@@ -347,18 +347,22 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 @media (prefers-reduced-motion:reduce){.hub-logo *,.hub-logo{animation:none!important}.hub-logo .rise{opacity:0}}
 .hub-head p{margin:0;color:var(--muted);max-width:52ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.fact{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:start}
-.fact .who{grid-row:1/span 2;width:132px;height:auto}
+.fact{position:relative;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--pink);border-radius:18px;margin-top:134px;padding:34px 20px 18px}
+.fact .who{position:absolute;width:210px;left:16px;top:-128px;line-height:0}
+.fact .who svg{width:100%;height:auto}
 .fact .eyebrow{color:var(--pink-ink)}
+.fbub{min-width:0;display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:center}
 .fact-body{display:flex;flex-direction:column;gap:6px;min-width:0}
-.fact h2{font:700 1.25rem/1.2 var(--f-display);margin:0;text-wrap:balance}
-.fact p{margin:0;max-width:56ch}
+.fact h2{font:700 clamp(1.3rem,4.6vw,1.6rem)/1.2 var(--f-display);letter-spacing:-.01em;margin:0;text-wrap:balance}
+.fact p{margin:0;max-width:56ch;font-size:1.02rem}
 .fact .cat{font-size:.82rem;color:var(--muted);font-weight:600}
-.fact .pic{grid-column:1/-1;display:flex;justify-content:center;padding:2px 0 0;color:var(--accent);overflow:hidden}
+.fact .pic{grid-column:2;grid-row:1;max-width:200px;display:flex;justify-content:center;color:var(--accent);overflow:hidden}
 .fact .pic svg.mol{max-width:100%;height:auto}
 .fact .pic .ico{width:52px;height:52px}
 .fact .row{grid-column:1/-1;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .fact .row .n{color:var(--muted);font-size:.84rem}
+.fact.hype .who .head{animation:bob .45s ease-out}
+@keyframes bob{40%{transform:translateY(-6px)}}
 .fact.swap .fact-body,.fact.swap .pic{animation:factIn .35s ease-out}
 @keyframes factIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
@@ -373,8 +377,43 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .back{align-self:flex-start;color:var(--accent);font-weight:600;text-decoration:none;font-size:.95rem;padding:4px 0}
 .back:hover{text-decoration:underline;text-underline-offset:3px}
 .ico{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:520px){ .fact{grid-template-columns:1fr} .fact .who{grid-row:auto;width:110px;justify-self:start} }
-@media (prefers-reduced-motion:reduce){ .fact.swap .fact-body,.fact.swap .pic{animation:none} }
+@media (max-width:520px){ .fact{margin-top:116px;padding:30px 16px 16px} .fact .who{width:180px;left:50%;margin-left:-90px;top:-110px} .fbub{grid-template-columns:1fr} .fact .pic{grid-column:1;grid-row:auto;max-width:none} }
+@media (prefers-reduced-motion:reduce){ .fact.swap .fact-body,.fact.swap .pic,.fact.hype .who .head{animation:none} }
+/* --- Béďa Bobík: kresba (patička, rozcestník, Analytická chemie) --- */
+:root{--beda-lens:#f6e7a4}
+/* v tmavém režimu zůstává Béďa „samolepka“ jako ve světlém, jen ztlumený a se světlým lemem */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bd2{--ink:#2a1f30;--surface:#ece4ea;--accent-soft:#b7d9d8;--accent:#0b6870;--muted:#5d4f61;--pink:#d23a70;--el-n:#1d3fd1;--beda-lens:#e4d189;filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}}
+:root[data-theme="dark"] .bd2{--ink:#2a1f30;--surface:#ece4ea;--accent-soft:#b7d9d8;--accent:#0b6870;--muted:#5d4f61;--pink:#d23a70;--el-n:#1d3fd1;--beda-lens:#e4d189;filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}
+.bd2 .ln{stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.bd2 .body{fill:var(--accent-soft);stroke:var(--ink);stroke-width:4.5;stroke-linejoin:round}
+.bd2 .ring{fill:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:2 7;stroke-linecap:round;opacity:.7}
+.bd2 .tile{fill:var(--surface);stroke:var(--ink);stroke-width:3.5}
+.bd2 .lens{fill:var(--beda-lens);stroke:var(--ink);stroke-width:5}
+.bd2 .eye{fill:var(--ink)} .bd2 .glint{fill:var(--surface)}
+.bd2 .cheek{fill:var(--pink);opacity:.35}
+.bd2 .shoe{fill:var(--ink)}
+.bd2 text{font-family:var(--f-chem);font-weight:700;fill:var(--ink)}
+.bd2 .num{font-size:11px;fill:var(--muted)} .bd2 .sym{font-size:24px} .bd2 .sym.n{fill:var(--el-n)}
+.bd2 .armL{transform-origin:52px 104px;animation:sway 1.3s ease-in-out infinite alternate}
+.bd2 .armR{transform-origin:148px 104px;animation:sway 1.3s ease-in-out infinite alternate}
+.bd2 .blink{transform-box:fill-box;transform-origin:center top;animation:blink 6s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96.5%{transform:scaleY(.15)}}
+.bd2{overflow:visible}
+.bd2 .hand{fill:var(--surface);stroke:var(--ink);stroke-width:3.5}
+.bd2 .mag{fill:var(--beda-lens);stroke:var(--ink);stroke-width:5}
+.bd2 .coffee{fill:#8a5a3b} .bd2 .steam{stroke:var(--muted);stroke-width:2.5}
+.bd2 .steam{animation:steam 2.4s ease-in-out infinite alternate}
+@keyframes steam{from{transform:translateY(0);opacity:.9}to{transform:translateY(-4px);opacity:.4}}
+.bd2 .cap1{fill:var(--pink)} .bd2 .cap2{fill:var(--accent)}
+.mascot.hype .bd2{animation:bob .45s ease-out 3}
+.bd2 .push{opacity:0}
+.bd2[data-pose="1"] .specs{animation:specs 7s ease-in-out infinite}
+.bd2[data-pose="1"] .push{animation:push 7s ease-in-out infinite}
+.bd2[data-pose="1"] .rarm{animation:rarm 7s linear infinite}
+@keyframes specs{0%{transform:translateY(0)}70%,78%{transform:translateY(9px)}86%{transform:translateY(-1px)}90%,100%{transform:translateY(0)}}
+@keyframes push{0%,69%{opacity:0;transform:translateY(12px)}70.5%{opacity:1}73%,78%{opacity:1;transform:translateY(9px)}86%{opacity:1;transform:translateY(-1px)}92%{opacity:1;transform:translateY(0)}93.5%,100%{opacity:0;transform:translateY(4px)}}
+@keyframes rarm{0%,69%{opacity:1}70.5%,92.5%{opacity:0}94%,100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.bd2 .arm,.bd2 .blink,.bd2 .steam,.mascot.hype .bd2,.bd2 .specs,.bd2 .push,.bd2 .rarm{animation:none!important}}
 
 /* 3D model */
 .cellw{position:relative;display:flex;min-width:0}
@@ -949,6 +988,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 
   <section class="fact" id="fact" aria-live="polite">
     <div class="who" id="factWho"></div>
+    <div class="fbub">
     <div class="fact-body">
       <span class="eyebrow">Béďa Bobík ti vzkazuje</span>
       <h2 id="factT"></h2>
@@ -959,6 +999,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <div class="row">
       <span class="n" id="factN"></span>
       <button type="button" class="btn" id="factNext">Další zajímavost</button>
+    </div>
     </div>
   </section>
 
@@ -1177,25 +1218,27 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <main id="view"></main>
 
   <footer class="mascot" id="mascot">
-    <svg class="benz" viewBox="0 0 220 146" width="220" height="146" role="img" aria-label="Maskot Béďa Bobík s delšími vlasy a ustupujícími kouty pohupuje v dlaních uhlíkem a dusíkem">
-      <path class="hair" d="M92 43 C72 42 58 60 58 80 C58 92 60 100 53 111 C66 111 74 103 77 96 L77 56 Z"/>
-      <path class="hair" d="M128 43 C148 42 162 60 162 80 C162 92 160 100 167 111 C154 111 146 103 143 96 L143 56 Z"/>
-      <path class="wisp" d="M105 36 q-2 -8 -10 -9 M110 34 q2 -9 -4 -13 M115 36 q5 -7 12 -5"/>
-      <g class="arm armL">
-        <line x1="74" y1="76" x2="42" y2="84"/>
-        <rect class="tile" x="20" y="46" width="38" height="38" rx="7"/>
-        <text class="num" x="25" y="58">6</text><text class="sym" x="39" y="77" text-anchor="middle">C</text>
+    <svg class="benz bd2" viewBox="0 0 200 188" width="160" height="150" role="img" aria-label="Maskot Béďa Bobík, šestiúhelník s brýlemi a pár vlasy na temeni, samolibě se usmívá a drží uhlík a dusík">
+      <g class="legs"><path class="ln" d="M86 148 L82 174 M114 148 L118 174"/><ellipse class="shoe" cx="76" cy="177" rx="11" ry="5.5"/><ellipse class="shoe" cx="124" cy="177" rx="11" ry="5.5"/></g>
+      <g class="pose-b">
+        <g class="arm armL"><path class="ln" d="M52 104 L30 90"/><g class="tl" transform="rotate(-10 24 76)"><rect class="tile" x="4" y="56" width="40" height="40" rx="8"/><text class="num" x="10" y="69">6</text><text class="sym" x="24" y="85" text-anchor="middle">C</text></g></g>
+        <g class="arm armR"><path class="ln" d="M148 104 L170 90"/><g class="tl" transform="rotate(10 176 76)"><rect class="tile" x="156" y="56" width="40" height="40" rx="8"/><text class="num" x="162" y="69">7</text><text class="sym n" x="176" y="85" text-anchor="middle">N</text></g></g>
       </g>
-      <g class="arm armR">
-        <line x1="146" y1="76" x2="178" y2="84"/>
-        <rect class="tile" x="162" y="46" width="38" height="38" rx="7"/>
-        <text class="num" x="167" y="58">7</text><text class="sym n" x="181" y="77" text-anchor="middle">N</text>
+      <g class="head">
+        <polygon class="body" points="100,34 150.2,63 150.2,121 100,150 49.8,121 49.8,63"/>
+        <circle class="ring" cx="100" cy="92" r="44"/>
+        <path class="ln" style="stroke-width:3" d="M89 38 q-4 -10 -12 -11 M96 35 q-2 -12 -9 -16 M103 35 q2 -12 9 -15 M110 38 q6 -8 13 -7"/>
+        <g class="specs"><path class="ln" style="stroke-width:3.5" d="M51 77 L61 80 M139 80 L149 77"/>
+        <ellipse class="lens" cx="79" cy="82" rx="19" ry="15"/><ellipse class="lens" cx="121" cy="82" rx="19" ry="15"/>
+        <path class="ln" style="stroke-width:4" d="M97 80 q3 -4 6 0"/></g>
+        <g class="blink"><path class="eye" d="M71 82 a9 8 0 0 0 18 0 z"/><path class="eye" d="M113 82 a9 8 0 0 0 18 0 z"/></g>
+        <path class="ln" style="stroke-width:3.5" d="M66 82 H92 M108 82 H134"/>
+        <circle class="glint" cx="84" cy="85" r="1.8"/><circle class="glint" cx="126" cy="85" r="1.8"/>
+        <ellipse class="cheek" cx="64" cy="106" rx="7" ry="4.5"/><ellipse class="cheek" cx="136" cy="106" rx="7" ry="4.5"/>
+        <path class="ln" d="M76 105 q22 15 46 -3 M120 101 q5 0 7 -5"/>
+        <circle class="eye" cx="90" cy="118" r="1.5"/><circle class="eye" cx="97" cy="120" r="1.5"/><circle class="eye" cx="104" cy="119" r="1.5"/>
       </g>
-      <line x1="96" y1="110" x2="92" y2="138"/><line x1="82" y1="138" x2="96" y2="138"/>
-      <line x1="124" y1="110" x2="128" y2="138"/><line x1="124" y1="138" x2="138" y2="138"/>
-      <polygon class="body" points="110,34 146.4,55 146.4,97 110,118 73.6,97 73.6,55"/>
-      <circle class="ring" cx="110" cy="76" r="26"/>
-      <path class="face" d="M95 72 q6 -6 12 0 M113 72 q6 -6 12 0 M100 84 q10 9 20 0"/>
+      <g class="pose-f"></g>
     </svg>
     <div class="bubble">
       <span class="eyebrow">Béďa Bobík radí</span>
@@ -26973,6 +27016,41 @@ function testClick(t) {
   if (t.id === 'tYes') return finishTest();
 }
 
+/* ===== Béďovy pózy: b = za tělem, f = před tělem; pb/pf = varianta, když vykukuje přes kartu (hrana karty y = 122) ===== */
+const BEDA_TILE = (x, y, r, num, sym, n) => `<g transform="rotate(${r} ${x + 20} ${y + 20})"><rect class="tile" x="${x}" y="${y}" width="40" height="40" rx="8"/><text class="num" x="${x + 6}" y="${y + 13}">${num}</text><text class="sym${n ? ' n' : ''}" x="${x + 20}" y="${y + 29}" text-anchor="middle">${sym}</text></g>`;
+const BEDA_HAND = (x, y) => `<circle class="hand" cx="${x}" cy="${y}" r="6"/>`;
+const BEDA_EDGE_L = `<path class="ln" d="M51 104 Q47 120 60 124"/>${BEDA_HAND(62, 124)}`;
+const BEDA_CUP = `<path class="coffee" d="M160 72 h22 v16 a4 4 0 0 1 -4 4 h-14 a4 4 0 0 1 -4 -4 z"/><path class="ln" style="stroke-width:3.5" d="M156 56 h30 M159 56 v32 a4 4 0 0 0 4 4 h16 a4 4 0 0 0 4 -4 v-32 M163 64 h6 M163 72 h6"/><path class="ln steam" d="M167 50 q-4 -6 0 -12 q4 -6 0 -12 M177 50 q-4 -6 0 -12"/>`;
+const BEDA_MAG = `<path class="ln" style="stroke-width:6" d="M137 98 L157 117"/><circle class="mag" cx="122" cy="82" r="22"/><path class="eye" d="M107 84 a15 13 0 0 0 30 0 z"/><path class="ln" d="M101 84 H143"/><circle class="glint" cx="128" cy="90" r="2.6"/><path class="ln" style="stroke:var(--surface);stroke-width:3" d="M108 70 q6 -6 14 -6"/>`;
+const BEDA_PILL = `<g transform="rotate(-6 100 14)"><path class="cap1" d="M100 2 H62 a12 12 0 0 0 0 24 H100 Z"/><path class="cap2" d="M100 2 H138 a12 12 0 0 1 0 24 H100 Z"/><path class="ln" style="stroke-width:3.5" d="M62 2 H138 a12 12 0 0 1 0 24 H62 a12 12 0 0 1 0 -24 Z M100 2 V26"/><path class="ln" style="stroke:var(--surface);stroke-width:3;opacity:.7" d="M66 8 H88"/></g><path class="ln" d="M52 104 L36 62 L58 20 M148 104 L164 62 L142 20"/>${BEDA_HAND(58, 20)}${BEDA_HAND(142, 20)}`;
+const BEDA_PUSH = `<g class="push"><path class="ln" d="M148 108 C134 122 106 120 101 98"/><circle class="hand" cx="101" cy="95" r="5"/></g>`;
+const BEDA_POSES = [
+  { id: '67',
+    b: `<g class="arm armL"><path class="ln" d="M52 104 L30 90"/>${BEDA_TILE(4, 56, -10, 6, 'C')}</g><g class="arm armR"><path class="ln" d="M148 104 L170 90"/>${BEDA_TILE(156, 56, 10, 7, 'N', 1)}</g>`,
+    pf: `<g transform="translate(0 46)">${BEDA_TILE(4, 56, -10, 6, 'C')}${BEDA_TILE(156, 56, 10, 7, 'N', 1)}</g>` },
+  { id: 'ruce',   /* brýle mu pomalu sjíždějí po nose, pravou rukou si je posune zpátky */
+    f: `<path class="ln" d="M52 106 Q74 142 132 130"/>${BEDA_HAND(132, 130)}<g class="rarm"><path class="ln" d="M148 106 Q126 142 68 130"/>${BEDA_HAND(68, 130)}</g>${BEDA_PUSH}`,
+    pf: `<path class="ln" style="stroke-width:5" d="M50 100 Q20 112 34 121 H112"/>${BEDA_HAND(112, 121)}<g class="rarm"><path class="ln" style="stroke-width:5" d="M150 100 Q180 114 166 125 H88"/>${BEDA_HAND(88, 125)}</g>${BEDA_PUSH}` },
+  { id: 'lupa',
+    b: `<path class="ln" d="M52 104 L34 118 L50 132"/>${BEDA_HAND(50, 132)}`,
+    f: `<path class="ln" d="M148 104 L159 119"/>${BEDA_MAG}${BEDA_HAND(159, 119)}`,
+    pf: `${BEDA_EDGE_L}<path class="ln" d="M149 104 L159 119"/>${BEDA_MAG}${BEDA_HAND(159, 119)}` },
+  { id: 'kafe',
+    b: `<path class="ln" d="M52 104 L38 130"/>${BEDA_HAND(38, 130)}<path class="ln" d="M148 104 L163 88"/>${BEDA_CUP}${BEDA_HAND(162, 86)}`,
+    pf: `${BEDA_EDGE_L}<g transform="translate(0 30)">${BEDA_CUP}</g><path class="ln" d="M149 104 L159 114"/>${BEDA_HAND(160, 115)}` },
+  { id: 'kapsle', b: BEDA_PILL, pf: BEDA_PILL }
+];
+/* nastaví pózu na kresbě Béďi; bez i vybere náhodně jinou, než má teď */
+function bedaPose(svg, i) {
+  if (!svg) return;
+  const peek = svg.classList.contains('peek'), cur = +svg.dataset.pose || 0;
+  if (i == null) { i = Math.floor(Math.random() * (BEDA_POSES.length - 1)); if (i >= cur) i++; }
+  const P = BEDA_POSES[i];
+  svg.querySelector('.pose-b').innerHTML = peek ? '' : P.b || '';
+  svg.querySelector('.pose-f').innerHTML = peek ? P.pf || P.f || '' : P.f || '';
+  svg.dataset.pose = i;
+}
+
 /* ===== Maskot dole na stránce ===== */
 let cheerT = 0;
 function cheer() {
@@ -26982,6 +27060,7 @@ function cheer() {
   cheerT = setTimeout(() => el.classList.remove('hype'), 1800);
 }
 $('#mascotNext').addEventListener('click', () => {
+  bedaPose($('#mascot svg'));
   if (Math.random() < .4 && MEMES[S.topic].length) {
     const list = MEMES[S.topic], m = list[Math.floor(Math.random() * list.length)];
     $('#mascotSay').innerHTML = m.map(([a, b]) => `<b>${esc(a)}:</b> ${esc(b)}`).join('<br>');
@@ -28292,7 +28371,20 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     showLogo(false);
     hl.addEventListener('click', () => { li = (li + 1) % HUBLOGOS.length; showLogo(true); });
   }
-  const m = $('#mascot svg'); if (m) $('#factWho').innerHTML = m.outerHTML.replace('role="img"', 'aria-hidden="true"');
+  /* Béďa vykukuje přes horní okraj zajímavosti: hlava z patičky oříznutá hranou karty, dlaně s C a N leží na hraně */
+  const m = $('#mascot svg');
+  if (m) {
+    const pk = m.cloneNode(true);
+    pk.removeAttribute('role'); pk.removeAttribute('aria-label'); pk.setAttribute('aria-hidden', 'true');
+    pk.setAttribute('viewBox', '0 0 200 146'); pk.removeAttribute('width'); pk.removeAttribute('height');
+    pk.querySelector('.legs').remove();
+    pk.insertAdjacentHTML('afterbegin', '<defs><clipPath id="bdEdge"><rect width="200" height="122"/></clipPath></defs>');
+    pk.querySelector('.head').setAttribute('clip-path', 'url(#bdEdge)');
+    pk.classList.add('peek'); bedaPose(pk, Math.floor(Math.random() * BEDA_POSES.length));
+    $('#factWho').replaceChildren(pk);
+  }
+  $('#factNext').addEventListener('click', () => { const box = $('#fact'); bedaPose($('#factWho svg')); box.classList.remove('hype'); void box.offsetWidth; box.classList.add('hype'); });
+
 
   const nQ = GROUPS.filter(g => g.kind === 'q').length, nM = GROUPS.filter(g => g.kind === 'mol').length;
   $('#subjects').innerHTML = `
