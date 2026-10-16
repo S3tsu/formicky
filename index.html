@@ -31539,7 +31539,9 @@ const AC_LES = [
 ];
 const AC_LES_SOON = [];
 const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
-FH_LES.number(AC_LES, L => L.ch, L => L.ch === 'ka' ? null : (AC_CH.find(c => c[0] === L.ch) || [, ''])[1].match(/^(\d+) ·/));   // cvičení 1–2 má lekce 1–15 po sobě
+/* cvičení 1–2 je jedna kapitola: lekce 1–11 o kationtech patří ke cvičení 1, lekce 12–15 o aniontech ke cvičení 2 */
+const acGrp = L => L.ch === 'ka' ? (L.n <= 11 ? 'ka1' : 'ka2') : L.ch;
+FH_LES.number(AC_LES, acGrp, L => L.ch === 'ka' ? [, acGrp(L) === 'ka1' ? '1' : '2'] : (AC_CH.find(c => c[0] === L.ch) || [, ''])[1].match(/^(\d+) ·/));
 /* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
   AC_LES.forEach(L => L.q.forEach(k => { if (!CARD[k]) console.warn(`Lekce ${L.id}: karta ${k} neexistuje`); }));
