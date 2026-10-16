@@ -374,6 +374,11 @@ form.ans{display:flex;flex-direction:column;gap:10px}
 .subj.soon{border-style:dashed;cursor:default;background:transparent}
 .subj.soon .go{color:var(--muted)}
 .subj .ico{width:34px;height:34px;color:var(--accent)}
+.les-hub{display:flex;flex-direction:column;gap:10px}
+.les-hub .fam-h,.les-hub .aside{margin:0}
+#lesHubG{display:flex;flex-direction:column;gap:12px}
+.les-tile .eyebrow{color:var(--accent)}
+.les-tile b{font-size:1.08rem}
 .back{align-self:flex-start;color:var(--accent);font-weight:600;text-decoration:none;font-size:.95rem;padding:4px 0}
 .back:hover{text-decoration:underline;text-underline-offset:3px}
 .ico{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -27215,6 +27220,7 @@ function renderToday() {
   const started = done > 0 || Object.keys(SR).length > 0;
   const n = DAILY.c[today()] || 0, g = DAILY.goal, s = streak();
   const C = Object.assign({}, S, S.ret || {});            // „Pokračovat“ vrací tam, kde byla před opakováním
+  let nxL = null; try { if (typeof FH_LES !== 'undefined') { nxL = FH_LES.next(); FH_LES.hub(); } } catch (e) { /* lekce ještě nejsou načtené */ }
   const cur = C.mixOn ? `Mix z ${C.mixT.length} ${C.mixT.length === 1 ? 'tématu' : 'témat'}` : (TOPIC_BY[C.topic] || TOPICS[0]).label;
   const h = due ? `Na dnešek máš ${due} ${karet(due)} k opakování`
     : !started ? 'Vítej! Začni prvním tématem' : n && g && n >= g ? 'Dnešní cíl je splněný, jen tak dál' : 'Nic k opakování, pokračuj v novém';
@@ -27224,6 +27230,7 @@ function renderToday() {
       ${due ? `<button type="button" class="btn primary" data-td="due">Zopakovat ${due} ${karet(due)}<small>${dueT.length === 1 ? esc(TOPIC_BY[dueT[0]].label) : `z ${dueT.length} témat najednou`}</small></button>` : ''}
       <button type="button" class="btn${due ? '' : ' primary'}" data-td="go">${started ? 'Pokračovat' : 'Začít'}<small>${esc(cur)} · ${MODE_NAME[C.mode]}</small></button>
       ${weak ? `<button type="button" class="btn" data-td="weak">Slabá místa<small>${weak} ${karet(weak)}, kde chybuješ</small></button>` : ''}
+      ${nxL ? `<button type="button" class="btn" data-td="les">Pokračuj: další lekce<small>${esc(nxL.s.short)} · ${esc(nxL.t)}</small></button>` : ''}
       ${window.FH_AC && FH_AC.due() ? `<button type="button" class="btn" data-td="ac">Analytická chemie<small>${FH_AC.due()} ${karet(FH_AC.due())} k opakování</small></button>` : ''}
     </div>
     ${started ? '' : '<p class="td-help">Nevíš, jak začít? <a href="#navod">Přečti si krátký návod</a>.</p>'}
@@ -27239,6 +27246,7 @@ document.addEventListener('click', e => {
   const a = b.dataset.td, box = $('#today'), pick = L => L.length === 1 ? { topic: L[0] } : { mixOn: true, mixT: L };
   if ((a === 'due' || a === 'weak') && !S.ret) S.ret = { topic: S.topic, mixOn: !!S.mixOn, mixT: S.mixT, mode: S.mode, set: S.set, fams: S.fams };
   if (a === 'ac') return;
+  if (a === 'les') { const x = FH_LES.next(); if (x) FH_LES.open(x.s.k, x.id); return; }
   if (a === 'go' || a === 't') { const r = a === 'go' && S.ret; delete S.ret; if (r) return goStudy(Object.assign(r, { src: 'all' })); }
   if (a === 'due') goStudy(Object.assign({ mode: 'study', src: 'due', set: 'all', fams: null }, pick(box._dueT)));
   if (a === 'weak') goStudy(Object.assign({ mode: 'study', src: 'weak', set: 'all', fams: null }, pick(box._weakT)));
@@ -28540,7 +28548,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161140';
+const FH_VER = '202610161200';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -28741,7 +28749,37 @@ const FH_LES = (() => {
     Object.entries(from || {}).forEach(([k, v]) => { const a = into[k]; if (v && typeof v === 'object' && (!a || (v.k || 0) > (a.k || 0))) into[k] = Object.assign({}, v, { best: Math.max(v.best || 0, (a && a.best) || 0) }); });
     return into;
   }
-  return { list, read, end, rec, merge };
+  /* předměty s lekcemi: { k, name, short, lessons() → [{ id, n, t, min, qn, where }], prog(), open(id) } */
+  const SUBJ = [];
+  const reg = s => { SUBJ.push(s); try { hub(); } catch (e) { /* rozcestník ještě není */ } };
+  const all = () => SUBJ.flatMap(s => s.lessons().map(L => Object.assign({ s }, L)));
+  /* další lekce: první nedokončená v pořadí předmětů a lekcí */
+  const next = () => all().find(x => !x.s.prog()[x.id]) || null;
+  const open = (k, id) => { const s = SUBJ.find(x => x.k === k); if (s) s.open(id); };
+  let F = '*'; try { F = JSON.parse(localStorage.getItem('fg-leshub')) || '*'; } catch (e) { /* výchozí Vše */ }
+  /* dlaždice Lekce na rozcestníku pod předměty, s přepínačem předmětů jako v Herně */
+  function hub() {
+    const anchor = document.getElementById('subjects'); if (!anchor) return;
+    let sec = document.getElementById('lesHub');
+    if (!sec) {
+      anchor.insertAdjacentHTML('afterend', '<section id="lesHub" class="les-hub" aria-labelledby="lesHubH"><h2 class="fam-h" id="lesHubH">Lekce</h2><p class="aside">Krátký výklad a kvíz, asi 5 minut. Otázky z kvízu se ti pak vracejí v opakování.</p><div id="lesHubG"></div></section>');
+      sec = document.getElementById('lesHub');
+    }
+    const A = all(), f = SUBJ.some(x => x.k === F) ? F : '*';
+    const seg = SUBJ.length > 1 ? `<div class="seg small hn-flt" role="group" aria-label="Předmět">${[['*', 'Vše', A.length]].concat(SUBJ.map(x => [x.k, x.short, A.filter(L => L.s === x).length])).map(([v, l, c]) => `<button type="button" data-lhf="${v}" aria-pressed="${f === v}">${l}<span class="n">${c}</span></button>`).join('')}</div>` : '';
+    const rows = A.filter(L => f === '*' || L.s.k === f).map(L => { const p = L.s.prog()[L.id]; return `<button type="button" class="subj les-tile" data-lh="${L.s.k}" data-v="${L.id}">
+      <span class="eyebrow">${L.s.short} · ${L.where}</span><b>Lekce ${L.n}: ${L.t}</b>
+      <span>asi ${L.min} minut · ${L.qn} otázek · ${p ? `<span class="ac-les-done">Hotovo, nejlépe ${p.best} z ${p.n}</span>` : '<span class="ac-new">nová</span>'}</span>
+      <span class="go">${p ? 'Projít znovu' : 'Začít lekci'} →</span></button>`; }).join('');
+    document.getElementById('lesHubG').innerHTML = seg + `<div class="subjects">${rows}</div>`;
+  }
+  document.addEventListener('click', e => {
+    const f = e.target.closest('[data-lhf]');
+    if (f) { F = f.dataset.lhf; try { localStorage.setItem('fg-leshub', JSON.stringify(F)); } catch (er) { /* nic */ } return hub(); }
+    const t = e.target.closest('[data-lh]'); if (t) open(t.dataset.lh, t.dataset.v);
+  });
+  window.addEventListener('hashchange', () => { if (!location.hash || location.hash === '#') hub(); });
+  return { list, read, end, rec, merge, reg, next, open, hub };
 })();
 
 /* ===== Organická chemie: lekce nad otázkami z přednášek =====
@@ -28854,9 +28892,20 @@ const FH_OL = (() => {
     on: () => O.on,
     /* volá renderView: při změně tématu obnoví seznam, jinak jen drží lekci navrchu */
     sync() { if (!O.on) return; show(true); const t = S.mixOn ? 'mix' : S.topic; if (t !== O.topic) { O.step = 'list'; render(); } },
-    prog: () => OP, merge: v => { FH_LES.merge(OP, v); store.set('fg-les', OP); }
+    prog: () => OP, merge: v => { FH_LES.merge(OP, v); store.set('fg-les', OP); },
+    lessons: () => LES,
+    /* otevře výklad lekce z rozcestníku nebo z panelu Dnes */
+    open(id) {
+      const L = BY[id]; if (!L) return;
+      goStudy({ topic: L.topic, src: 'all' });
+      O.open = id; O.step = 'read'; show(true); render(); window.scrollTo(0, 0);
+    }
   };
 })();
+/* organika v seznamu lekcí na rozcestníku a v panelu Dnes */
+if (typeof FH_OL.prog === 'function') FH_LES.reg({ k: 'o', name: 'Organická chemie', short: 'Organická', prog: FH_OL.prog,
+  lessons: () => FH_OL.lessons().map(L => ({ id: L.id, n: L.n, t: L.t, min: L.min, qn: L.q.length, where: TOPIC_BY[L.topic] ? TOPIC_BY[L.topic].label : '' })),
+  open: id => FH_OL.open(id) });
 
 (function () {
 /* ===== Analytická chemie: data z Laboratorních cvičení 1 a 2 (důkazy kationtů a aniontů, skripta MUNI) ===== */
@@ -30348,6 +30397,14 @@ document.addEventListener('keydown', e => {
   const k = '1234abcd'.indexOf(e.key.toLowerCase()); if (k < 0 || Q.done || Q.cur.t === 'grp' || /input|textarea|select/i.test(document.activeElement.tagName)) return;
   const btn = document.querySelectorAll('#acView .opt')[k % 4]; if (btn) { e.preventDefault(); btn.click(); }
 });
+FH_LES.reg({ k: 'a', name: 'Analytická chemie', short: 'Analytická', prog: () => ST.les || {},
+  lessons: () => AC_LES.map(L => ({ id: L.id, n: L.n, t: L.t, min: L.min, qn: L.q.length, where: (AC_CH.find(c => c[0] === L.ch) || [, ''])[1] })),
+  open(id) {
+    const L = LES[id]; if (!L) return;
+    if (Q.les) { Q.les = null; Q.deck = []; Q.cur = null; Q.empty = false; }
+    ST.ch = L.ch; ST.mode = 'les'; LS.open = id; LS.step = 'read'; save();
+    if (location.hash === '#analyticka-lekce') { render(); window.scrollTo(0, 0); } else location.hash = 'analyticka-lekce';
+  } });
 window.FH_AC = {
   show, due: () => dueCount(), best: k => (ST.best && ST.best[k || 'vz']) || 0, cards: CARDS.length,
   started: () => Object.keys(ST.r).length > 0,
