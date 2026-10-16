@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610162000';
+const FH_VER = '202610162030';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29434,9 +29434,9 @@ const FH_OL = (() => {
       beda: 'Aldehyd je ten ukecaný, ráda se nechá oxidovat a Tollensovi nakreslí stříbrné zrcátko. Keton mlčí.',
       body: () => sec('1. Názvy', `<ul class="ac-ul"><li>Aldehyd -al, keton -on. C=O dostane nejnižší lokant: hex-4-en-2-on.</li><li>CHO na kruhu: <b>-karbaldehyd</b> (cyklohexankarbaldehyd).</li><li>Když je hlavní skupinou vyšší skupina (třeba ester), keton se píše předponou <b>oxo-</b>.</li><li>Acyly: formyl HCO–, acetyl CH₃CO–, benzoyl C₆H₅CO–. Akrolein je prop-2-enal.</li></ul>
         <p>Na rozdíl od esterů a acylchloridů nemají aldehydy a ketony odstupující skupinu (–H a –R neodejdou), proto se na ně nukleofil <b>aduje</b>, nesubstituuje.</p>`)
-        + sec('2. Příprava', `${tbl(['Z čeho', 'Činidlo', 'Produkt'], [['primární alkohol', 'PCC v CH₂Cl₂ (bezvodé)', 'aldehyd, dál se neoxiduje'], ['alken', '1. O₃, 2. Zn, H₃O⁺', 'aldehydy a ketony (=CH₂ dá formaldehyd)'], ['ester', 'DIBAH, −78 °C', 'aldehyd'], ['koncový alkyn', 'H₃O⁺, HgSO₄', 'methylketon'], ['acylchlorid', '(CH₃)₂CuLi', 'keton (kuprát s ketonem už nereaguje)'], ['fenol', 'CHCl₃, NaOH (Reimer–Tiemann)', 'aldehyd přes :CCl₂']])}`)
-        + sec('3. Oxidace', `<p>Aldehyd má na C=O vodík a oxiduje se snadno na kyselinu. <b>Tollensova zkouška</b>: aldehyd redukuje Ag⁺ na kovové stříbro, které vytvoří zrcátko. Ketony běžnými činidly neoxiduješ.</p>
-        <p class="ac-les-trap"><b>Pozor:</b> ve vodném prostředí vzniká z aldehydu hydrát a ten se oxiduje dál na kyselinu. Proto PCC v bezvodém CH₂Cl₂.</p>`) },
+        + sec('2. Příprava', `${tbl(['Z čeho', 'Činidlo', 'Produkt'], [['primární alkohol', 'PCC v CH₂Cl₂', 'aldehyd, dál se neoxiduje'], ['alken', '1. O₃, 2. Zn, H₃O⁺', 'aldehydy a ketony (=CH₂ dá formaldehyd)'], ['ester', 'DIBAH, −78 °C', 'aldehyd'], ['koncový alkyn', 'H₃O⁺, HgSO₄', 'methylketon'], ['acylchlorid', '(CH₃)₂CuLi', 'keton (kuprát s ketonem už nereaguje)'], ['aren + acylchlorid', 'AlCl₃, zahřívání', 'arylketon'], ['fenol', 'CHCl₃, NaOH (Reimer–Tiemann)', 'aldehyd přes :CCl₂']])}`)
+        + sec('3. Oxidace', `<p>Aldehyd má na C=O vodík a oxiduje se snadno na kyselinu, třeba CrO₃ v H₃O⁺ a acetonu při 0 °C. <b>Tollensova zkouška</b>: aldehyd redukuje Ag⁺ na kovové stříbro, které vytvoří zrcátko. Keton s běžným oxidačním činidlem nereaguje.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> silný oxidant keton rozštěpí. KMnO₄ v zásaditém prostředí a pak H₃O⁺ udělá z cyklohexanonu kyselinu hexandiovou, přerušením vazby C–C.</p>`) },
     { id: 't15b', topic: 't15', n: 2, min: 6, t: 'Nukleofilní adice na C=O',
       goal: 'Po lekci seřadíš karbonyly podle reaktivity a předpovíš produkt s vodou, HCN, Grignardem, aminy, alkoholy a Wittigovým ylidem.',
       recall: 'Tipni si, jestli je reaktivnější formaldehyd, nebo aceton, a proč.',
@@ -29445,7 +29445,7 @@ const FH_OL = (() => {
       beda: 'Primární amin s ketonem udělá imin, sekundární enamin. Kdo nemá na dusíku vodík, musí si ho půjčit od α-uhlíku.',
       body: () => sec('1. Reaktivita', `<p>Nukleofil napadne δ+ karbonylový uhlík. Aldehydy jsou reaktivnější než ketony (jeden alkyl: menší bránění i menší stabilizace δ+), aromatické aldehydy méně než alifatické (kruh rezonancí zmenší δ+). Formaldehyd je ve vodě z 99,9 % hydrát, aceton jen z 0,1 %.</p>
         <p>Záporné nukleofily (⁻OH, H⁻, R⁻, ⁻CN) se adují přímo. Neutrální (H₂O, ROH, amin) potřebují <b>kyselou katalýzu</b>: protonace kyslíku zvýší elektrofilitu uhlíku.</p>`)
-        + sec('2. C, H a O nukleofily', `${tbl(['Nukleofil', 'Produkt'], [['HCN (kat. ⁻CN)', 'kyanhydrin, nukleofilem je kyanid'], ['RMgX', 'formaldehyd → primární, aldehyd → sekundární, keton → terciární alkohol'], ['ROH, H⁺, odstraňování vody', 'hemiacetal → <b>acetal</b> (chránicí skupina, stálý v zásadě)'], ['Wittigův ylid Ph₃P=CHR', 'alken přesně na místě C=O, hnací silou je vazba P=O']])}`)
+        + sec('2. C, H a O nukleofily', `${tbl(['Nukleofil', 'Produkt'], [['HCN (kat. ⁻CN)', 'kyanhydrin, nukleofilem je kyanid'], ['RMgX', 'formaldehyd → primární, aldehyd → sekundární, keton → terciární alkohol'], ['ROH, H⁺, odstraňování vody', 'hemiacetal → <b>acetal</b> (chránicí skupina: vydrží LiAlH₄, H₃O⁺ ji odstraní)'], ['Wittigův ylid Ph₃P=CHR', 'alken přesně na místě C=O, vedle vznikne Ph₃P=O']])}`)
         + sec('3. Dusíkaté nukleofily', `${tbl(['Činidlo', 'Produkt'], [['primární amin', 'imin (C=N)'], ['sekundární amin', 'enamin (na dusíku není H, odejde z α-uhlíku)'], ['NH₂OH', 'oxim'], ['H₂NNH₂, KOH (Wolff–Kižněr)', 'C=O → CH₂, uniká N₂']])}
         <p class="ac-les-trap"><b>Pozor:</b> iminy a oximy vznikají nejrychleji kolem pH 4–5. V silně kyselém se amin protonuje a přestane být nukleofilem.</p>`) },
     { id: 'cka', topic: 'ck', n: 1, min: 5, t: 'Karboxylové kyseliny a nitrily',
