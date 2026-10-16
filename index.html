@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161650';
+const FH_VER = '202610161720';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29837,6 +29837,21 @@ const AC_TH = [
   ['k_l4amf', 'ka', 'Který kationt se rozpustí v nadbytku NaOH i v nadbytku NH₃?', 'Zn²⁺', ['Al³⁺', 'Cd²⁺', 'Cu²⁺'], 'Zn(OH)₂ je amfoterní (v NaOH vznikne zinečnatan) a zároveň tvoří amminkomplex [Zn(NH₃)₆]²⁺. Al(OH)₃ se rozpustí jen v NaOH, Cd(OH)₂ a Cu(OH)₂ jen v NH₃.', null, 'k'],
   ['k_l4sep', 'ka', 'Jak oddělíš Cu²⁺ od Fe³⁺?', 'nadbytkem NH₃ a odfiltrováním Fe(OH)₃', ['nadbytkem NaOH a odfiltrováním Cu(OH)₂', 'okyselením HCl a odfiltrováním CuCl₂', 'přidáním H₂SO₄ a odfiltrováním síranu'], 'Cu²⁺ přejde v nadbytku amoniaku na tmavě modrý [Cu(NH₃)₄]²⁺ a zůstane v roztoku, rezavý Fe(OH)₃ se odfiltruje. V NaOH by se nerozpustil ani jeden hydroxid, s HCl ani H₂SO₄ se nesráží ani jeden kationt.', null, 'k'],
   ['k_l4scen', 'ka', 'Bílá sraženina z NH₃ se v nadbytku rozpustí, v nadbytku NaOH ne. S H₂S v kyselém prostředí dá vzorek žlutou sraženinu. Co v něm je?', 'Cd²⁺', ['Zn²⁺', 'Mn²⁺', 'Al³⁺'], 'Žlutý sulfid z kyselého prostředí má jen kadmium (CdS) a Cd(OH)₂ se rozpouští v amoniaku, ne v NaOH. Zn(OH)₂ by se rozpustil i v NaOH, MnS se srazí až s NH₄HS (tělový) a Al(OH)₃ se v NH₃ nerozpustí.', null, 'k'],
+  /* k lekcím 5–11 (KI a octan, kombinované úlohy, selektivní důkazy), přibylo 16. 10. 2026 */
+  ['k_l5i2', 'ka', 'Roztok po přidání KI zhnědne, ale sraženina nevznikne. Jak ověříš, že je to jód?', 'siřičitan roztok odbarví', ['amoniak roztok zmodří', 'zahřátím se vyloučí žluté šupinky', 'octan sodný dá bílou sraženinu'], 'Jodid redukuje Fe³⁺ na Fe²⁺ a vyloučí se hnědý jód. Siřičitan jód zredukuje zpátky na bezbarvý jodid: I₂ + SO₃²⁻ + H₂O → 2 I⁻ + SO₄²⁻ + 2 H⁺.', null, 'k'],
+  ['k_l5scen', 'ka', 'Octan sodný dá bílou sraženinu, NaOH taky bílou, ale ta se v nadbytku NaOH nerozpustí. Co je ve vzorku?', 'Bi³⁺', ['Sb³⁺', 'Sn²⁺', 'Hg₂²⁺'], 'S octanem hydrolyzují na bílé zásadité soli Bi³⁺, Sb³⁺ a cín, Hg₂²⁺ dá málo rozpustný octan. Sb(OH)₃ a Sn(OH)₂ jsou amfoterní a v nadbytku NaOH se rozpustí, Hg₂²⁺ by s NaOH dal šedočernou sraženinu. Zbývá Bi(OH)₃.', null, 'k'],
+  ['k_l6a', 'ka', 'Vzorek je modrý. NaOH dá modrou sraženinu, nadbytek NH₃ tmavě modrý roztok a H₂S v kyselém černou sraženinu. Co v něm je?', 'Cu²⁺', ['Co²⁺', 'Ni²⁺', 'Fe²⁺'], 'Modrý roztok, modrý Cu(OH)₂ a tmavě modrý [Cu(NH₃)₄]²⁺ ukazují na měď, černý CuS to potvrdí. Co²⁺ je růžový, Ni²⁺ zelený a Fe²⁺ světle zelený. Žádný z nich se s H₂S z kyselého prostředí nesráží.', null, 'k'],
+  ['k_l6b', 'ka', 'Zelený vzorek: H₂S v kyselém nic, NH₄HS černá sraženina, nadbytek NH₃ modrý roztok. Co v něm je?', 'Ni²⁺', ['Cr³⁺', 'Fe²⁺', 'Cu²⁺'], 'NiS se sráží až s NH₄HS a Ni(OH)₂ se v nadbytku amoniaku rozpustí na modrý [Ni(NH₃)₆]²⁺. Cr³⁺ dá s NH₄HS šedozelený hydroxid, Fe(OH)₂ se v amoniaku nerozpustí a CuS by se srazil už s H₂S.', null, 'k'],
+  ['k_l6c', 'ka', 'HCl, H₂SO₄ ani NH₄HS nic. NaOH dá bílou sraženinu, která se v nadbytku nerozpustí, NH₃ jen neúplně. Co ve vzorku je?', 'Mg²⁺', ['Zn²⁺', 'Al³⁺', 'Cd²⁺'], 'Mg²⁺ skupinová činidla nesráží, Mg(OH)₂ vznikne jen se zásadou. Zn²⁺ by dal s NH₄HS bílý ZnS, Al³⁺ bílý hydroxid, který se v NaOH rozpustí, a Cd²⁺ žlutý CdS.', null, 'k'],
+  ['k_l6d', 'ka', 'Žlutohnědý vzorek: H₂S v kyselém dá jen bílý zákal, KI hnědý roztok bez sraženiny. Co v něm je?', 'Fe³⁺', ['Cu²⁺', 'Bi³⁺', 'Fe²⁺'], 'Fe³⁺ zoxiduje sulfan na síru i jodid na jód, sám se redukuje na Fe²⁺. Cu²⁺ by dal s KI hnědou sraženinu (CuI s jódem), Bi³⁺ černohnědou a Fe²⁺ jodid neoxiduje.', null, 'k'],
+  ['k_l6e', 'ka', 'Bílá sraženina z NaOH se rozpustí v nadbytku NaOH i NH₃. S NH₄HS dá vzorek bílou sraženinu. Co v něm je?', 'Zn²⁺', ['Al³⁺', 'Cd²⁺', 'Pb²⁺'], 'Zn(OH)₂ je amfoterní a zároveň tvoří amminkomplex, bílý ZnS to potvrdí. Al(OH)₃ se v NH₃ nerozpustí, Cd(OH)₂ v NaOH taky ne a Pb²⁺ by dal černý PbS.', null, 'k'],
+  ['k_l7nh4', 'ka', 'Který kationt ruší důkaz K⁺ dipikrylaminem i důkaz Mg²⁺ magnesonem?', 'NH₄⁺', ['Na⁺', 'Ca²⁺', 'Fe³⁺'], 'Amonné ionty ruší důkazy K⁺ (dipikrylamin, hexanitrokobaltitan) i Mg²⁺ (magneson). Proto se NH₄⁺ dokazuje jako první a před důkazem K⁺ se odstraní odkouřením s HCl.', null, 'k'],
+  ['k_l8both', 'ka', 'Která reakce Hg₂²⁺ od Hg²⁺ neodliší?', 'kapka na hliníkový plíšek', ['NaNO₂ a AgNO₃ na papíře', 'KI, Na₂SO₃ a CuSO₄ na papíře', 'srážení 3% HCl'], 'Šedobílý povlak na alobalu dají obě oxidační čísla rtuti, stejně jako SnCl₂ s anilinem a difenylkarbazid. AgNO₂ zčerná jen s Hg₂²⁺, tetrajodortuťnatan měďný vzniká z Hg²⁺ a HCl sráží jen Hg₂²⁺.', null, 'k'],
+  ['k_l9thio', 'ka', 'Thiomočovina dá žluté zbarvení. Které kationty to můžou být?', 'Bi³⁺, Sb³⁺ nebo Ni²⁺', ['Cu²⁺, Cd²⁺ nebo Zn²⁺', 'Fe³⁺, Al³⁺ nebo Cr³⁺', 'Ag⁺, Pb²⁺ nebo Hg²⁺'], 'Žlutý komplex s thiomočovinou dává Bi³⁺, slaběji Sb³⁺ a podle skript i Ni²⁺. Výsledek proto ověř další reakcí: bismutiol dá s Bi³⁺ jasně červenou sraženinu, Čugajevovo činidlo s Ni²⁺ červenou.', null, 'k'],
+  ['k_l10ox', 'ka', 'Proč se Cr³⁺ před selektivním důkazem povaří s NaOH a H₂O₂?', 'zoxiduje se na žlutý chroman', ['vysráží se jako zelený Cr(OH)₃', 'zredukuje se na Cr²⁺', 'vznikne modrý peroxid chromu'], 'Selektivní reakce (amylalkohol s H₂O₂ v kyselém, difenylkarbazid) dokazují až CrO₄²⁻. Ostatní hydroxidy se odfiltrují a žlutý filtrát poslouží i k důkazu Al³⁺ a Zn²⁺.', null, 'k'],
+  ['k_l10zn', 'ka', 'Bílá sraženina Zn²⁺ s K₄[Fe(CN)₆] zmodrala. Proč?', 'stopy železa dají berlínskou modř', ['zinek se na vzduchu oxiduje', 'vznikl amminkomplex zinku', 'sraženina se rozkládá na světle'], 'Zn₂[Fe(CN)₆] je bílý, ale už stopy Fe³⁺ s hexakyanoželeznatanem dají tmavě modrou berlínskou modř. Druhá možnost je bílý ZnS s NH₄HS, rozpustný v minerálních kyselinách.', null, 'k'],
+  ['k_l11ag', 'ka', 'K čemu je AgNO₃ při důkazu Mn²⁺ peroxodisíranem?', 'katalyzuje oxidaci na manganistan', ['redukuje manganistan zpět na Mn²⁺', 'zabarví roztok do fialova', 'maskuje rušivé Fe³⁺'], 'Mn²⁺ se v kyselém prostředí peroxodisíranem oxiduje na fialový MnO₄⁻ a Ag⁺ reakci katalyzuje. Takto provedený důkaz je pro Mn²⁺ specifický.', null, 'k'],
+  ['k_l11dmg', 'ka', 'Jak u důkazu Ni²⁺ Čugajevovým činidlem odstraníš barevné komplexy Fe²⁺, Co²⁺ a Cu²⁺?', 'vymyješ je zředěným NH₃', ['vysušíš skvrnu nad plamenem', 'přidáš NaF, který je zamaskuje', 'okyselíš skvrnu konc. HCl'], 'Červený diacetyldioximát niklu je nerozpustný, komplexy Fe²⁺, Co²⁺ a Cu²⁺ jsou rozpustné a zředěný amoniak je ze skvrny vymyje.', null, 'k'],
   ['a_neutr', 'ka', 'Proč se skupinové srážecí reakce aniontů dělají v neutrálním prostředí?', 'v kyselém by se část sraženin vůbec nevytvořila', ['v neutrálním se nesrážejí kationty', 'v zásaditém by se vyloučil jód', 'činidla jsou stálá jen v neutrálním'], 'Barnaté a stříbrné soli se liší právě stálostí v kyselém prostředí. Teprve vzniklou sraženinu zkoušíš kyselinou.', null, 'a'],
   ['a_ph', 'ka', 'Co může obsahovat vzorek aniontů, který reaguje kysele?', 'volnou kyselinu nebo sůl silné kyseliny a slabé zásady', ['sůl silné zásady a slabé kyseliny', 'jen sůl silné kyseliny a silné zásady', 'volnou silnou zásadu'], 'Zásaditý vzorek: silná zásada nebo sůl silné zásady a slabé kyseliny. Neutrální: sůl silné kyseliny a silné zásady, která nehydrolyzuje.', null, 'a'],
   ['a_kysele', 'ka', 'Které anionty nemůžou být ve vzorku s kyselou reakcí?', 'CO₃²⁻, NO₂⁻, SO₃²⁻ a S₂O₃²⁻', ['SO₄²⁻, PO₄³⁻ a NO₃⁻', 'Cl⁻, Br⁻, I⁻ a SCN⁻', 'SO₄²⁻, Cl⁻ a NO₃⁻'], 'Anionty snadno rozložitelných nebo těkavých kyselin (také S²⁻ a CN⁻) v kyselém prostředí nevydrží. Ztratit se můžou i při neutralizaci kyselinou dusičnou.', null, 'a'],
@@ -30741,9 +30756,110 @@ const AC_LES = [
       <p class="aside">Stejně se rozpustí i AgCl z lekce 1. Proto ho amoniak odliší od Hg₂Cl₂, který zčerná.</p>`)
       + sec('3. NaOH, nebo NH₃?', `${tbl(['Kationt', 'Nadbytek NaOH', 'Nadbytek NH₃'], [['Zn²⁺', 'rozpustí se', 'rozpustí se'], ['Pb²⁺, Al³⁺, Sb³⁺, Sn²⁺', 'rozpustí se', 'zůstane'], ['Cr³⁺', 'rozpustí se na zelený roztok', 'zůstane'], ['Ag⁺, Cd²⁺, Cu²⁺, Ni²⁺, Co²⁺, Mn²⁺', 'zůstane', 'rozpustí se']])}
       <ul class="ac-ul"><li><b>Zn²⁺</b> je jediný, kdo zmizí v obou.</li><li>Amminkomplexy slouží k důkazu (modrá mědi) i k <b>oddělení</b>: Cu²⁺ zůstane v roztoku, Fe(OH)₃ odfiltruješ.</li></ul>
-      <p class="ac-les-trap"><b>Pozor, past:</b> Cd(OH)₂ a Mn(OH)₂ se v NaOH nerozpustí, i když jsou bílé jako amfoterní hydroxidy. Rozpustí je až amoniak.</p>`) }
+      <p class="ac-les-trap"><b>Pozor, past:</b> Cd(OH)₂ a Mn(OH)₂ se v NaOH nerozpustí, i když jsou bílé jako amfoterní hydroxidy. Rozpustí je až amoniak.</p>`) },
+  { id: 'k5', ch: 'ka', n: 5, min: 5, t: 'KI a octan sodný',
+    goal: 'Po lekci víš, které kationty sráží jodid a které se v jeho nadbytku rozpustí, kdy jodid redukuje, a co prozradí zkouška hydrolýzy s octanem sodným.',
+    recall: 'Vybav si, jakou barvu má AgI. Pak si tipni, proč by KI mohl s některými kationty dát hnědou barvu, i když hnědý jodid neexistuje.',
+    tail: 'Vrať se ke svému tipu ze začátku. Hnědá barva byla jód. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+    q: ['g:k:KI', 'i:ag:KI', 'i:pb:KI', 'i:hg2:KI', 'i:bi:KI', 'x:k:KI', 'i:cu:KI', 't:k_l5i2', 'g:k:AcO', 't:k_octan', 'i:cr3:AcO', 't:k_l5scen'],
+    beda: 'Jodid je tichý zloděj: Cu²⁺ a Fe³⁺ potají sebere elektron a jako důkaz po sobě nechá hnědý jód. Siřičitan je policajt, jód zmizí a roztok se odbarví.',
+    body: () => sec('1. KI: barevné jodidy', `${lesTubes([['zluta', 'AgI'], ['zluta', 'PbI₂'], ['cervena', 'HgI₂'], ['tmhneda', 'BiI₃'], ['hneda', 'CuI + I₂']])}
+      <p>0,1M KI sráží řadu kationtů jako barevné jodidy. Část z nich se v nadbytku (1M KI) rozpustí na jodokomplexy.</p>
+      ${tbl(['Kationt', 'Sraženina', 'V nadbytku KI'], [['Ag⁺', 'žlutý AgI', 'zůstane'], ['Sb³⁺', 'žlutooranžový SbI₃, jen z koncentrovanějších roztoků', 'zůstane'], ['Pb²⁺', 'žlutý PbI₂', 'bezbarvý roztok'], ['Hg²⁺', 'červený HgI₂', 'bezbarvý roztok'], ['Bi³⁺', 'černohnědý BiI₃', '<b>oranžový</b> [BiI₄]⁻'], ['Hg₂²⁺', 'žlutozelený Hg₂I₂', 'rozpustí se a vyloučí se černá Hg⁰']])}
+      <p class="aside">PbI₂ se navíc rozpustí zahřátím a při chladnutí se vylučuje jako žluté šupinky. Tomu se říká zlatý déšť a uvidíš ho u selektivních důkazů olova.</p>`)
+      + sec('2. Jodid umí redukovat', `<p>Jodid je redukční činidlo. S oxidujícími kationty proto nevznikne jen jodid kovu, ale vyloučí se i <b>hnědý jód</b>.</p>
+      ${tbl(['Kationt', 'Co se stane', 'Co uvidíš'], [['Cu²⁺', 'redukuje se na Cu⁺, vznikne bílý CuI', 'sraženina zbarvená jódem hnědě'], ['Fe³⁺', 'redukuje se na Fe²⁺', 'hnědý roztok, sraženina nevzniká']])}
+      <p>Že je hnědá barva opravdu jód, ověříš pár kapkami <b>siřičitanu</b>: jód se zredukuje zpátky na jodid a směs se odbarví.</p>`)
+      + sec('3. Octan sodný: zkouška hydrolýzy', `<p>Octan sodný je sůl slabé kyseliny a silné zásady, jeho roztok je proto mírně zásaditý. V silně zásaditém prostředí by hydrolyzovala většina kationtů (to už znáš z NaOH). Jen <b>Bi³⁺, Sb³⁺ a cín</b> hydrolyzují už tady a vyloučí se jako bílé zásadité soli. Někdy stačí kyselý vzorek jen zředit vodou.</p>
+      <ul class="ac-ul"><li>Před přidáním octanu se do vzorku dá pevný NaCl a případná sraženina chloridů se odfiltruje.</li><li><b>Cr³⁺</b> dá přechodně šedozelenou sraženinu, která se rozpustí na modrofialový roztok acetátokomplexů.</li><li><b>Fe³⁺</b> dá slabě červený roztok acetátokomplexů, sraženinu ne.</li></ul>
+      <p class="ac-les-trap"><b>Pozor, past:</b> soli bismutu hydrolyzují tak snadno, že se v roztoku drží jen pod pH 2. Okyseluje se kyselinou se stejným aniontem.</p>`) },
+  { id: 'k6', ch: 'ka', n: 6, min: 6, t: 'Co je ve vzorku? Kombinované úlohy',
+    goal: 'Po lekci umíš spojit výsledky několika skupinových činidel a barvu vzorku a z nich odvodit, který kationt ve vzorku je.',
+    recall: 'Zkus si z hlavy napsat všech osm skupinových činidel. Ke každému připiš aspoň jeden kationt, který s ním dá něco nápadného.',
+    tail: 'Vrať se k seznamu činidel ze začátku a doplň, co ti chybělo. U chybných úloh si projdi, které pozorování jsi přehlédla. Zopakuješ je zítra.',
+    q: ['t:k_postup', 't:k_l1hclneg', 't:k_l1scen', 't:k_l2scen', 't:k_l6a', 't:k_l6b', 't:k_l6d', 't:k_l3scen', 't:k_l6e', 't:k_l4scen', 't:k_l5scen', 't:k_l6c'],
+    beda: 'Detektivka v laborce: barva vzorku je první stopa, negativní reakce je alibi a každé síto škrtne pár podezřelých. Kdo zbude, toho usvědčí selektivní důkaz.',
+    body: () => sec('1. Jak číst výsledky', `<ul class="ac-ul"><li><b>Pozitivní</b> reakce říká, kdo ve vzorku <b>může</b> být. <b>Negativní</b> reakce škrtá. Ta je často cennější.</li><li>Nevyhodnocuj činidla jedno po druhém. Hledej kationt, který sedí na <b>všechna</b> pozorování najednou.</li><li>Dívej se i na <b>nadbytek</b> činidla a na to, co se se sraženinou děje na vzduchu.</li><li>Na konci vždy potvrď selektivní reakcí.</li></ul>`)
+      + sec('2. Barva vzorku napoví', `<div class="ac-les-tubes">${[['svmodra', 'Cu²⁺'], ['zelena', 'Ni²⁺'], ['ruzova', 'Co²⁺'], ['fialova', 'Cr³⁺'], ['zlutohneda', 'Fe³⁺'], ['svzelena2', 'Fe²⁺']].map(([sol, f]) => tubeSVG({ sol }, f)).join('')}</div>
+      <p>Ostatní kationty jsou bezbarvé. Pozor, Cr³⁺ může být podle aniontu i zelený a Fe³⁺ je sám bezbarvý, žlutohnědý je kvůli hydrolýze.</p>`)
+      + sec('3. Mapa skupinových činidel', `${tbl(['Činidlo', 'Koho chytí', 'Čím se prozradí'], [
+        ['HCl', 'Ag⁺, Hg₂²⁺, Pb²⁺ (neúplně)', 'NH₃: AgCl se rozpustí, Hg₂Cl₂ zčerná'], ['H₂SO₄', 'Ba²⁺, Pb²⁺, z konc. Sr²⁺ a Ca²⁺', 'PbSO₄ s NH₄HS zčerná'],
+        ['H₂S, kyselé', 'Ag⁺, Pb²⁺, Hg, Cu²⁺, Cd²⁺, Bi³⁺, Sb³⁺, Sn', 'CdS žlutý, Sb₂S₃ oranžový, Fe³⁺ jen zákal síry'], ['NH₄HS', 'navíc Fe, Co²⁺, Ni²⁺, Mn²⁺, Zn²⁺, hydroxidy Al³⁺ a Cr³⁺', 'MnS tělový, ZnS bílý'],
+        ['NaOH', 'skoro všechny kovy kromě alkalických a Ba²⁺, Sr²⁺', 'v nadbytku zmizí Pb, Al, Zn, Sb, Sn, Cr'], ['NH₃', 'hydroxidy jako NaOH', 'v nadbytku zmizí Ag, Cd, Zn, Cu, Ni, Co, Mn'],
+        ['KI', 'Ag⁺, Cu²⁺, Sb³⁺, Pb²⁺, Bi³⁺, Hg', 'jód z Cu²⁺ a Fe³⁺, oranžový [BiI₄]⁻'], ['octan', 'Bi³⁺, Sb³⁺, cín (hydrolýza)', 'Cr³⁺ modrofialový, Fe³⁺ červený roztok']])}
+      <p class="ac-les-trap"><b>Pozor, past:</b> když žádné skupinové činidlo nic nesrazí, ještě to neznamená, že ve vzorku nic není. Zbývají NH₄⁺, Li⁺, Na⁺, K⁺ a Mg²⁺ (ten jen se zásadou), na ty je další lekce.</p>`) },
+  { id: 'k7', ch: 'ka', n: 7, min: 6, t: 'NH₄⁺, alkalické kovy a plamen',
+    goal: 'Po lekci víš, jak dokázat NH₄⁺, Li⁺, Na⁺, K⁺, Mg²⁺ a kovy alkalických zemin: plamenem, plynným amoniakem a několika selektivními činidly.',
+    recall: 'Vybav si, které kationty nesráží žádné skupinové činidlo. Tipni si, jak bys je od sebe odlišila.',
+    tail: 'Vrať se ke svému tipu ze začátku. Barvy plamene si zkus napsat z hlavy ještě jednou. Co jsi nevěděla, zopakuješ zítra.',
+    q: ['t:k_prvni', 's:nh4:naoh_t', 's:nh4:nessler', 's:li:flame', 's:na:flame', 's:k:flame', 's:k:cono2', 't:k_l7nh4', 's:mg:magneson', 's:ba:k2cro4', 's:ca:ox', 's:sr:flame'],
+    beda: 'Plamen jako ohňostroj: lithium a stroncium karmínová, sodík žlutá, draslík fialová přes modré brýle, vápník cihlová a baryum zelená.',
+    body: () => sec('1. NH₄⁺ jako první', `<p>Amonný kationt ruší další důkazy, a proto se dokazuje hned po zjištění pH, přímo v původním vzorku. K vzorku se přidá 2M NaOH a lehce se zahřeje. Silná zásada vytěsní plynný <b>amoniak</b> a ten prozradí:</p>
+      ${tbl(['Nad zkumavkou', 'Co uvidíš'], [['navlhčený indikátorový papírek', 'zmodrá'], ['papír s kapkou soli Cu²⁺', 'zmodrá'], ['papír s Nesslerovým činidlem (K₂[HgI₄] v KOH)', 'zhnědne']])}
+      <p class="aside">Při vyšší koncentraci amoniak ucítíš i nosem.</p>`)
+      + sec('2. Plamenová zkouška', `<p>Platinový drátek se nejdřív žíhá a noří do koncentrované HNO₃, dokud plamen nebarví. Pak se na očko nanese vzorek (nejlépe tuhý odparek) a sleduje se barva v prvních vteřinách. Pracuje se v digestoři.</p>
+      ${tbl(['Kationt', 'Plamen'], [['Li⁺, Sr²⁺', 'karmínově červený'], ['Na⁺', 'intenzivně žlutý, reakce je velmi citlivá'], ['K⁺', 'světle fialový, přes modré kobaltové sklo'], ['Ca²⁺', 'cihlově červený'], ['Ba²⁺, Cu²⁺', 'zelený']])}
+      <p class="ac-les-trap"><b>Pozor, past:</b> sodík je skoro všude a jeho žlutá přebije fialovou draslíku. Kobaltové sklo žlutou odfiltruje.</p>`)
+      + sec('3. K⁺, Mg²⁺, Ba²⁺ a Ca²⁺ v roztoku', `${tbl(['Kationt', 'Činidlo', 'Co uvidíš'], [
+        ['K⁺', 'dipikrylamin', 'oranžově červená sraženina'], ['K⁺', 'hexanitrokobaltitan sodný Na₃[Co(NO₂)₆]', 'žlutá sraženina, s Na⁺ nevzniká'],
+        ['Mg²⁺', 'magneson a NaOH', 'chrpově modrý „lak“ na sraženině'], ['Mg²⁺', 'NH₄Cl, Na₂HPO₄ a po kapkách NH₃', 'bílá krystalická MgNH₄PO₄, urychlí ji tření tyčinkou'],
+        ['Ba²⁺', 'K₂CrO₄ v kyselině octové', 'žlutý BaCrO₄, Ca²⁺ neruší'], ['Ba²⁺', 'rhodizonan sodný, pak 3% HCl', 'hnědá skvrna zčervená'], ['Ca²⁺', 'kyselina šťavelová', 'bílý krystalický šťavelan, Ba²⁺ neruší']])}
+      <ul class="ac-ul"><li>Důkazy K⁺ i Mg²⁺ ruší <b>NH₄⁺</b>, před důkazem K⁺ se odstraní odkouřením s HCl.</li><li>Těžké kovy se předem odstraní: pro Li⁺, Na⁺, K⁺ a Mg²⁺ pomocí NH₄HS a (NH₄)₂CO₃ a odkouřením, pro Ca²⁺ a Ba²⁺ stačí sulfid amonný a neutralizace kyselinou octovou.</li></ul>`) },
+  { id: 'k8', ch: 'ka', n: 8, min: 5, t: 'Selektivní důkazy: Ag⁺, Pb²⁺ a rtuť',
+    goal: 'Po lekci umíš selektivně dokázat stříbro, olovo a obě podoby rtuti a víš, které reakce Hg₂²⁺ a Hg²⁺ od sebe odliší.',
+    recall: 'Vybav si z lekce 1, jak odlišíš AgCl, Hg₂Cl₂ a PbCl₂. Zkus si tipnout, proč to na důkaz ještě nestačí.',
+    tail: 'Vrať se k tipu ze začátku. Selektivní reakce potvrdí to, co skupinová jen naznačila. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+    q: ['s:ag:chelki', 't:k_mask', 's:ag:k2cro4', 's:pb:h2so4p', 's:pb:kigold', 's:pb:k2cro4', 's:hg1:agno2', 's:hg2:cuhgi', 't:k_l8both', 's:hg2:sncl2', 's:hg1:dpc', 't:k_l1hgnh3'],
+    beda: 'Olovo má nejhezčí důkaz z celé laborky: zlatý déšť. Žluté šupinky PbI₂ padají při chladnutí jako konfety. Jen na ně nesahej.',
+    body: () => sec('1. Ag⁺', `${tbl(['Činidlo', 'Co uvidíš', 'Poznámka'], [['Chelaton III, 2M NH₃ a KI', 'žlutý AgI', '<b>specifický</b> důkaz, Chelaton III maskuje rušivé kovy'], ['K₂CrO₄ na papíře, pak NH₃ a kyselina octová', 'červený prstenec Ag₂CrO₄', '']])}`)
+      + sec('2. Pb²⁺', `${lesTubes([['bila', 'PbSO₄'], ['cerna', 'PbS'], ['zluta', 'PbI₂'], ['zluta', 'PbCrO₄']])}
+      ${tbl(['Činidlo', 'Co uvidíš'], [['H₂SO₄ na papíře, promýt vodou, pak (NH₄)₂S', 'bílý PbSO₄ zčerná na PbS'], ['KI, zahřát a nechat vychladnout', 'žlutý PbI₂ se teplem rozpustí a ochlazením vypadnou žluté šupinky („zlatý déšť“)'], ['K₂CrO₄', 'žlutý PbCrO₄, rozpustný v HNO₃ i NaOH']])}`)
+      + sec('3. Hg₂²⁺ a Hg²⁺', `${tbl(['Činidlo', 'Co uvidíš', 'Dokáže'], [['NaNO₂ a AgNO₃ na papíře', 'černá skvrna Hg⁰', '<b>jen Hg₂²⁺</b>'], ['KI, Na₂SO₃, CuSO₄ a HCl na papíře', 'oranžově červená skvrna', '<b>jen Hg²⁺</b>'], ['odmaštěný alobal', 'šedobílý povlak', 'obě'], ['SnCl₂ a anilin na papíře', 'tmavá skvrna Hg⁰', 'obě, Sb³⁺ neruší'], ['difenylkarbazid', 'modrofialové zbarvení', 'obě']])}
+      <p class="aside">Rtuťné soli navíc v zásaditém prostředí dismutují na Hg²⁺ a černou Hg⁰. Proto Hg₂Cl₂ s amoniakem zčerná.</p>`) },
+  { id: 'k9', ch: 'ka', n: 9, min: 5, t: 'Selektivní důkazy: Cu²⁺, Cd²⁺, Bi³⁺ a Sb³⁺',
+    goal: 'Po lekci umíš selektivně dokázat měď, kadmium, bismut a antimon a víš, kde si můžou splést výsledek.',
+    recall: 'Vybav si z lekce 2 barvy CdS a Sb₂S₃ a z lekce 4 barvu měďnatého amminkomplexu. Tipni si, které z nich se hodí i jako selektivní důkaz.',
+    tail: 'Vrať se k tipu ze začátku. Žlutý CdS a oranžový Sb₂S₃ jsou opravdu důkazy, jen v trochu jiném provedení. Co jsi nevěděla, zopakuješ zítra.',
+    q: ['t:k_cu', 's:cu:flame', 's:cu:fecn', 's:cu:kupron', 's:cd:h2shcl', 's:cd:cadion', 's:bi:thiom', 's:bi:bismutiol', 't:k_bihydr', 's:sb:nh4shcl', 's:sb:s2o3', 't:k_l9thio'],
+    beda: 'Antimon umí dvě barvy: oranžový Sb₂S₃ z kyselého filtrátu a červenou antimonovou rumělku s thiosíranem. Na Halloween i na Vánoce.',
+    body: () => sec('1. Cu²⁺ a Cd²⁺', `<p>Měďnaté roztoky jsou modré, modrozelené nebo zelené, bezvodé soli bílé.</p>
+      ${tbl(['Kationt', 'Činidlo', 'Co uvidíš'], [['Cu²⁺', 'plamenová zkouška', 'zelený plamen (těkavý CuCl₂)'], ['Cu²⁺', 'HCl a K₄[Fe(CN)₆] na papíře', 'hnědá sraženina (Hatchettova hněď)'], ['Cu²⁺', 'vínan sodno-draselný, kupron a páry NH₃', 'zelená skvrna, <b>specifický</b> důkaz'], ['Cd²⁺', '10% HCl a sulfan', 'žlutý CdS, Cu²⁺, Co²⁺ a Ni²⁺ je někdy potřeba maskovat'], ['Cd²⁺', 'HCl, Cadion S a NaOH na papíře', 'fialová skvrna přejde na růžovou']])}`)
+      + sec('2. Bi³⁺ a Sb³⁺', `${lesTubes([['zluta', 'Bi + thiomočovina'], ['cervena', 'Bi + bismutiol'], ['oranzova', 'Sb₂S₃'], ['cervena', 'rumělka']])}
+      <p>Soli obou kationtů jsou bezbarvé a snadno hydrolyzují na bílé oxidosoli. V roztoku je udrží okyselení pod pH 2.</p>
+      ${tbl(['Kationt', 'Činidlo', 'Co uvidíš'], [['Bi³⁺', 'krystalek thiomočoviny pokápnutý vzorkem', 'žluté zbarvení'], ['Bi³⁺', 'bismutiol na papíře', 'jasně červená sraženina'], ['Sb³⁺', 'thiomočovina', 'žluté zbarvení, slabší než u Bi³⁺'], ['Sb³⁺', 'sulfid amonný, filtrát okyselit HCl', 'oranžový Sb₂S₃ (ve filtrátu byl thioantimonitan)'], ['Sb³⁺', 'Na₂S₂O₃ a Na₂CO₃, opatrně zahřát', 'červená antimonová rumělka']])}
+      <p class="ac-les-trap"><b>Pozor, past:</b> žluté zbarvení s thiomočovinou dá Bi³⁺, slaběji Sb³⁺ a podle skript i Ni²⁺. Samo o sobě nestačí.</p>`) },
+  { id: 'k10', ch: 'ka', n: 10, min: 5, t: 'Selektivní důkazy: Fe³⁺, Al³⁺, Cr³⁺ a Zn²⁺',
+    goal: 'Po lekci umíš selektivně dokázat železo, hliník, chrom a zinek a víš, proč se chrom před důkazem oxiduje.',
+    recall: 'Vybav si z lekce 3, které z těchto čtyř kationtů tvoří amfoterní hydroxid. Tipni si, jak by se toho dalo využít při důkazech.',
+    tail: 'Vrať se k tipu ze začátku. Žlutý filtrát po oxidaci chromu obsahuje právě amfoterní Al³⁺ a Zn²⁺. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+    q: ['t:k_fe3', 's:fe3:fecn', 's:fe3:scn', 's:fe3:sulfosal', 's:al:alizarin', 's:al:morin', 't:k_cr', 't:k_l10ox', 's:cr3:amyl', 's:cr3:dpc', 's:zn:fecn', 't:k_l10zn'],
+    beda: 'Fe³⁺ je upír s modrou krví: s thiokyanatanem krvavě červená, se žlutou krevní solí berlínská modř. A hliník si s alizarinem obleče červený lak.',
+    body: () => sec('1. Fe³⁺ a Al³⁺', `${lesTubes([['tmmodra', 'berlínská modř'], ['cervena', 'Fe + SCN⁻'], ['fialova', 'Fe + sulfosal.'], ['cervena', 'Al + alizarin']])}
+      ${tbl(['Kationt', 'Činidlo', 'Co uvidíš'], [['Fe³⁺', 'K₄[Fe(CN)₆] na papíře', 'tmavě modrá berlínská modř'], ['Fe³⁺', 'NH₄SCN', 'krvavě červený roztok'], ['Fe³⁺', '5% kyselina sulfosalicylová', 'fialový roztok'], ['Al³⁺', 'alizarin S, okyselit HCl, pak po kapkách NH₃', 'Al(OH)₃ s červeným „lakem“'], ['Al³⁺', 'morin na papíře, vzorek, HCl, UV lampa', 'intenzivní zelená fluorescence']])}
+      <p class="aside">U obou důkazů Al³⁺ se dělá i slepý pokus bez Al³⁺, ať máš s čím barvu porovnat.</p>`)
+      + sec('2. Cr³⁺: nejdřív oxidace', `<p>Chromité ionty jsou fialové, v komplexech se sírany nebo chloridy zelené. Selektivně se dokazují až jako <b>chroman</b>. Vzorek se povaří s 2M NaOH a H₂O₂, hydroxidy se odfiltrují a filtrát s CrO₄²⁻ je žlutý.</p>
+      ${tbl(['Činidlo (k filtrátu)', 'Co uvidíš'], [['H₂O₂, okyselit H₂SO₄, hned amylalkohol', 'modrá alkoholová vrstva, <b>specifický</b> důkaz'], ['3% HCl a difenylkarbazid', 'fialově červené zbarvení']])}
+      <p class="aside">Ve stejném filtrátu zůstaly amfoterní Al³⁺ a Zn²⁺, takže poslouží i k jejich důkazu.</p>`)
+      + sec('3. Zn²⁺', `${tbl(['Činidlo', 'Co uvidíš'], [['3% HCl a K₄[Fe(CN)₆]', 'bílý Zn₂[Fe(CN)₆]'], ['NH₄HS', 'bílý ZnS, rozpustný v minerálních kyselinách']])}
+      <p class="ac-les-trap"><b>Pozor, past:</b> stopy železa zabarví bílou sraženinu s hexakyanoželeznatanem do modra (berlínská modř). Modrá tady ještě neznamená, že zinek chybí.</p>`) },
+  { id: 'k11', ch: 'ka', n: 11, min: 5, t: 'Selektivní důkazy: Co²⁺, Ni²⁺ a Mn²⁺',
+    goal: 'Po lekci umíš selektivně dokázat kobalt, nikl a mangan a víš, co ruší a jak to obejít.',
+    recall: 'Vybav si z lekce 2, které dva sulfidy stárnutím polymerují. Pak si tipni, jakou barvu má kobalt nasucho.',
+    tail: 'Vrať se k tipu ze začátku. Nasucho je kobalt modrý, ve vodě růžový. Tím je plán lekcí ke kationtům kompletní. Co jsi nevěděla, zopakuješ zítra.',
+    q: ['t:k_co', 's:co:hcldry', 's:co:scn', 't:k_naf', 's:ni:dmg', 't:k_l11dmg', 'i:ni:NH3', 's:ni:thiom', 's:mn:naohp', 's:mn:persulf', 't:k_l11ag', 't:k_l2coni'],
+    beda: 'Nikl je zelený, ale s Čugajevem zčervená jak jahoda. Mangan zase sní o tom být fialovým manganistanem, stačí peroxodisíran a kapka stříbra jako sponzor.',
+    body: () => sec('1. Co²⁺', `${lesTubes([['modra', 'Co[CoCl₄]'], ['modra', 'Co + SCN⁻']])}
+      <p>Hydratované kobaltnaté ionty jsou růžové, bezvodé soli modré.</p>
+      ${tbl(['Činidlo', 'Co uvidíš'], [['konc. HCl na papíře, skvrnu vysušit nad plamenem', 'modrá skvrna Co[CoCl₄]'], ['NH₄SCN a amylalkohol, protřepat', 'modrá alkoholová vrstva (NH₄)₂[Co(SCN)₄]']])}
+      <p class="ac-les-trap"><b>Pozor, past:</b> Fe³⁺ dá s thiokyanatanem krvavě červený roztok a modrou přebije. Zamaskuješ ho NaF.</p>`)
+      + sec('2. Ni²⁺', `${lesTubes([['cervena', 'Ni + Čugajev'], ['svmodra', '[Ni(NH₃)₆]²⁺']])}
+      <p>Hydratované ionty Ni²⁺ jsou jasně zelené, bezvodé soli bezbarvé.</p>
+      ${tbl(['Činidlo', 'Co uvidíš'], [['Čugajevovo činidlo (diacetyldioxim) a páry NH₃', 'červená sraženina, <b>specifický</b> důkaz'], ['thiomočovina', 'žluté zbarvení'], ['NH₃, pak nadbytek', 'světle zelený Ni(OH)₂ se rozpustí na modrý amminkomplex']])}
+      <p class="aside">Fe²⁺, Co²⁺ a Cu²⁺ dají s Čugajevovým činidlem taky barevné komplexy, ty jsou ale rozpustné a zředěný amoniak je ze skvrny vymyje.</p>`)
+      + sec('3. Mn²⁺', `${tbl(['Činidlo', 'Co uvidíš'], [['0,1M NaOH na papíře', 'skvrna postupně tmavne (oxidace vzduchem)'], ['15% HNO₃, K₂S₂O₈ a kapka AgNO₃, lehce povařit', 'fialový manganistan, <b>specifický</b> důkaz']])}
+      <p>U druhé reakce Ag⁺ oxidaci katalyzuje. Bez něj by mangan zůstal bezbarvý.</p>`) }
 ];
-const AC_LES_SOON = ['KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
+const AC_LES_SOON = [];
 const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
 /* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
