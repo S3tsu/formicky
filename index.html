@@ -1,4 +1,4 @@
-<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://s3tsu.goatcounter.com; connect-src 'self' https://s3tsu.goatcounter.com https://docs.google.com; worker-src 'self' blob:; manifest-src 'self'; form-action 'self' https://docs.google.com; base-uri 'self'; object-src 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>FormičkyHub</title>
 <script>addEventListener("load",function(){var b=document.getElementById("boot");b&&b.remove()});try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25669,7 +25669,7 @@ function srMark(id, ok, pick) {
   dailyTick();
 }
 const isDue = id => !!SR[id] && SR[id].d <= today();
-const weakScore = id => { const r = SR[id]; return r && r.bad && (r.bad * 2 >= r.ok || !r.x) ? r.bad * 2 - r.ok + (r.x ? 0 : 2) + 1 : 0; };
+const weakScore = id => { const r = SR[id]; return r && r.bad && (r.bad * 2 >= r.ok || !r.x) ? Math.max(1, r.bad * 2 - r.ok + (r.x ? 0 : 2) + 1) : 0; };   // čerstvě zkažená známá karta má aspoň 1
 const inScope = g => S.mixOn ? S.mixT.includes(g.topic) : g.topic === S.topic;
 const famOk = g => S.mixOn || !S.fams || S.fams.includes(g.fam);
 const tShort = id => { const l = TOPIC_BY[id].label, m = l.match(/^(\d+)\./); return m ? m[1] + '. přednáška' : l; };
@@ -26907,6 +26907,7 @@ function renderTestSetup() {
         <label class="switch"><input type="checkbox" id="tPick"${S.test.pick ? ' checked' : ''}> Výběr A–D</label>
       </fieldset>
       <div class="row"><button class="btn primary" id="tStart" type="button">Spustit test</button></div>
+      <p class="aside" id="tMsg" role="status"></p>
     </div>`;
   syncSetup();
 }
@@ -26934,7 +26935,7 @@ function buildTestList(ty) {
 function startTest(list) {
   const ty = testTypes();
   const qs = list || buildTestList(ty);
-  if (!qs.length) return;
+  if (!qs.length) { const m = $('#tMsg'); if (m) m.textContent = 'Z vybraných okruhů se test s těmito typy otázek nesestaví. Zapni „Výběr A–D“, nebo vyber jiné okruhy.'; return; }
   TT.qs = shuffle(qs.slice()).map(q => {
     const o = { g: q.g, type: q.type, ans: null, ok: false, note: '' };
     if (o.type === 'pick') { if (o.g.kind === 'q') o.order = shuffle([0, 1, 2, 3]); else { o.dir = Math.random() < .5 ? 'n' : 's'; o.opts = makeOpts(o.g); } }
@@ -27243,7 +27244,7 @@ function renderToday() {
   const box = $('#today'); if (!box) return;
   const T = topicStats(), ids = TOPICS.map(x => x.id);
   const sum = k => ids.reduce((a, id) => a + T[id][k], 0);
-  const due = sum('due'), weak = sum('weak'), done = sum('done'), all = sum('all');
+  const due = sum('due'), weak = Math.min(40, sum('weak')), done = sum('done'), all = sum('all');   // kolo Slabých míst má nejvýš 40 karet
   const dueT = ids.filter(id => T[id].due), weakT = ids.filter(id => T[id].weak);
   const started = done > 0 || Object.keys(SR).length > 0;
   const n = DAILY.c[today()] || 0, g = DAILY.goal, s = streak();
@@ -27520,6 +27521,7 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet') && !$('#sheet').hidden) { const c = $('#shClose'); if (c) c.click(); } });
 renderStats(); renderBackup(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderDay(); renderToday(); } });   // po půlnoci nový den i bez další odpovědi
 window.addEventListener('hashchange', () => { renderStats(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0); const sh = $('#sheet'); if (sh && !sh.hidden) { sh.hidden = true; modalOff(sh, true); document.body.classList.remove('sheet-open'); } });
 /* ===== Herna: Lékárna, Neznámá látka, Syntézní puzzle, Seřaď to, Album kartiček, výzvy ===== */
 (function () {
@@ -27923,7 +27925,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   }
   function lekRender(fb) {
     const c = L.cur, av = AV[c.who];
-    const stars = L.i ? Math.round(5 * L.ok / L.i * 10) / 10 : 5;
+    const served = L.i + (fb ? 1 : 0), stars = served ? Math.round(5 * L.ok / served * 10) / 10 : 5;   // se zpětnou vazbou už je obsloužený i aktuální zákazník
     $('#hnBody').innerHTML = `<div class="hn-bar"><span class="lk-mini">${avatarSVG(null, 30)}<span>Zákazník <b>${L.i + 1}</b> / ${L.n}</span></span><span>Tržba <b>${L.cash} Kč</b> · ★ ${stars.toFixed(1)}</span></div>
       <div class="lk-scene"><div class="lk-cust"><div class="lk-av${fb ? ' ' + fb.cls : ''}">${av.svg}</div><b>${esc(av.n)}</b></div>
         <div class="lk-bubble"><p><i>${esc(c.hi)}</i> ${c.say}</p>${c.show ? `<div class="lk-show">${c.show}</div>` : ''}${fb ? `<p class="lk-reply">„${esc(fb.line)}“</p>` : ''}</div></div>
@@ -28492,13 +28494,22 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     <div class="subj soon" aria-disabled="true">${ICON.book}<b>Další předmět</b><span>Tady přibudou další předměty.</span><span class="go">Brzy</span></div>`;
 
   const APP = new Set(['organicka', 'nove', 'prehled', 'kresleni', 'studium', 'test'].concat(TOPICS.map(t => t.hash).filter(Boolean)));
+  /* odkaz na téma nebo režim (#alkeny, #kresleni…) funguje i v už otevřené aplikaci: přepne se stejně jako ručně */
+  const deep = h => {
+    const t = TOPICS.find(x => x.hash && x.hash === h);
+    if (t && (S.mixOn || S.topic !== t.id)) { const sel = $('#topicSel'); sel.value = t.id; sel.dispatchEvent(new Event('change')); }
+    const m = { kresleni: 'draw', studium: 'study', test: 'test' }[h], mb = m && $(`#modeSeg [data-mode="${m}"]`);
+    if (mb && (S.mode !== m || (typeof FH_OL !== 'undefined' && FH_OL.on()))) mb.click();
+    const st = { nove: 'extra', prehled: 'base' }[h], sb = st && $(`#setSeg [data-set="${st}"]`);
+    if (sb && S.set !== st) sb.click();
+  };
   const route = () => {
     const bt = $('#boot'); if (bt) bt.remove();
     const h = (location.hash || '').replace('#', ''), app = APP.has(h), ac = /^analyticka/.test(h);
     $('#hub').hidden = app || ac; $('#appOC').hidden = !app; $('#appAC').hidden = !ac;
     document.title = app ? 'Cvičení · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : 'FormičkyHub';
     if (ac && window.FH_AC) FH_AC.show();
-    if (app) { try { refresh(); } catch (e) { /* vykreslí se při další akci */ } }
+    if (app) { try { refresh(); deep(h); } catch (e) { /* vykreslí se při další akci */ } }
     $('#hub').classList.toggle('guide', h === 'navod');
     window.scrollTo(0, 0);
   };
@@ -28602,11 +28613,11 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 const WEB = {
   form: 'https://docs.google.com/forms/d/e/1FAIpQLSdefXGfOdIMNJJK31zCA00S9jhzKvVYepcgndDwrFaQcjrCfQ/formResponse',
   entry: 'entry.1456317184',  // pole „Hlášení“
-  gc: 's3tsu'    // kód GoatCounter (https://<kód>.goatcounter.com)
+  gc: 's3tsu'    // kód GoatCounter (https://<kód>.goatcounter.com); při změně kódu nebo formuláře upravit i Content-Security-Policy v hlavičce
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161350';
+const FH_VER = '202610161530';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -28619,13 +28630,14 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
   if (!WEB_ON) return;
 
   /* --- statistiky (GoatCounter: bez cookies, bez osobních údajů) --- */
-  const gcCount = (path, ev) => { try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path, title: path, event: !!ev }); } catch (e) { /* nic */ } };
+  const gcQ = [];   // počty zavolané dřív, než se skript načte (třeba otevření výzvy), se pošlou po načtení
+  const gcCount = (path, ev) => { try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path, title: path, event: !!ev }); else if (gcQ.length < 20) gcQ.push([path, ev]); } catch (e) { /* nic */ } };
   const page = () => '/' + (location.hash.replace(/^#/, '').replace(/^vyzva=.*/, 'vyzva') || 'hub');
   if (WEB.gc) {
     window.goatcounter = { no_onload: true };
-    const s = document.createElement('script'); s.async = true; s.src = 'https://gc.zgo.at/count.js';
+    const s = document.createElement('script'); s.async = true; s.src = 'count.js';   // vlastní kopie, ne skript z cizího serveru
     s.dataset.goatcounter = 'https://' + WEB.gc + '.goatcounter.com/count';
-    s.onload = () => { gcCount(page()); if (matchMedia('(display-mode: standalone)').matches) gcCount('aplikace-spustena', true); };
+    s.onload = () => { gcCount(page()); if (matchMedia('(display-mode: standalone)').matches) gcCount('aplikace-spustena', true); gcQ.splice(0).forEach(([p, ev]) => gcCount(p, ev)); };
     document.head.appendChild(s);
     let last = page();
     window.addEventListener('hashchange', () => { const p = page(); if (p !== last) { last = p; gcCount(p); } });
@@ -28710,7 +28722,7 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
         <label class="rep-l">Podpis (nepovinné)<input id="repName" type="text" maxlength="40" value="${esc(store.get(NK, ''))}" placeholder="aby se ti dalo odpovědět"></label>
         <p class="rep-msg" id="repMsg" aria-live="polite"></p>
       </div>
-      <div class="m3d-foot"><button type="submit" class="btn primary" id="repSend">Odeslat</button><button type="button" class="btn" data-rep="close">Zrušit</button></div>
+      <div class="m3d-foot"><button type="submit" class="btn primary" id="repSend">Poslat hlášení</button><button type="button" class="btn" data-rep="close">Zrušit</button></div>
     </form>`;
     box.hidden = false; modalOn(box); document.body.classList.add('m3d-open');
     setTimeout(() => { const f = gen ? $('#repTxt') : box.querySelector('input[name=rt]'); if (f) f.focus(); }, 30);
@@ -28734,7 +28746,7 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
     store.set(NK, name);
     const text = [rt ? 'Typ: ' + rt.value : 'Typ: Připomínka', 'Popis: ' + (txt || '–'), 'Od: ' + (name || 'anonym')].concat(ctx.lines)
       .concat([`Verze: ${FH_VER}`, `Zařízení: ${installed() ? 'aplikace' : 'prohlížeč'}, ${innerWidth}×${innerHeight}`]).join('\n');
-    const btn = $('#repSend'); btn.disabled = true; btn.textContent = 'Odesílám…';
+    const btn = $('#repSend'); btn.disabled = true; btn.textContent = 'Posílám…';
     let ok = true;
     try { if (!navigator.onLine) throw new Error('offline'); await send(text); } catch (er) { ok = false; const q = store.get(QK, []); q.push(text); store.set(QK, q.slice(-30)); }
     gcCount('hlaseni', true);
@@ -28910,9 +28922,11 @@ const FH_OL = (() => {
     return `<div class="progress"><span class="cnt">${O.i + 1} / ${n}</span><span class="bar"><i style="width:${100 * O.i / n}%"></i></span><span class="cnt">${O.ok} ✓</span></div>
       <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}<div class="fbwrap" aria-live="polite">${fb}</div></div>`;
   }
+  /* lekce se zapíše hned po poslední odpovědi, ne až na závěrečné obrazovce */
+  function saveRec() { const L = BY[O.open]; if (O.saved || !L) return; OP[L.id] = FH_LES.rec(OP[L.id], O.deck.length, O.ok, today()); store.set('fg-les', OP); O.saved = true; }
   function end() {
     const L = BY[O.open], n = O.deck.length;
-    if (!O.saved) { OP[L.id] = FH_LES.rec(OP[L.id], n, O.ok, today()); store.set('fg-les', OP); O.saved = true; }
+    saveRec();
     return FH_LES.end({ att: ATT, L, ok: O.ok, n, missed: O.missed, tail: L.tail || 'Vrať se k papíru ze začátku a zkontroluj, co jsi z hlavy napsala. Co jsi nevěděla, zopakuješ zítra.',
       note: 'Otázky z lekce máš teď ve Studiu. Kde jsi chybovala, ty ti „Dnes k opakování“ nabídne ještě dnes, ostatní za pár dní.' });
   }
@@ -28943,6 +28957,7 @@ const FH_OL = (() => {
     const g = BYID[O.deck[O.i]], ok = k === 0;
     O.pick = k; if (ok) O.ok++; else O.missed.push(`${esc(g.prompt)} → ${esc(g.full || (g.opts[0][0] && g.opts[0][0].t) || g.name)}`);
     srMark(g.id, ok, true); saveSR();
+    if (O.i + 1 >= O.deck.length) saveRec();
     render(); const nb = document.getElementById('olNext'); if (nb) nb.focus({ preventScroll: true });
   }
   $('#modeSeg').addEventListener('click', e => {
@@ -30243,11 +30258,11 @@ function quizView() {
   }
   return `${prog}<div class="card ac-q"><div class="card-head"><span class="eyebrow">${h.eb}</span>${ST.r[cd.id] ? '' : '<span class="ac-new">nová</span>'}</div>
     <h2 class="q-name${h.long ? ' ac-long' : ''}">${escA(h.h)}</h2>${h.sub ? `<p class="ac-sub">${escA(h.sub)}</p>` : ''}${ans}
-    <div id="acFb">${Q.done ? Q.fb + '<div class="row"><button type="button" class="btn primary" id="acNext" data-ac="next">Další</button></div>' : ''}</div></div>`;
+    <div id="acFb">${Q.done ? Q.fb + `<div class="row"><button type="button" class="btn primary" id="acNext" data-ac="next">${Q.les && Q.i + 1 >= Q.deck.length ? 'Dokončit lekci' : 'Další'}</button></div>` : ''}</div></div>`;
 }
 function answer(ok, missText) {
   const cd = Q.cur; Q.done = true; if (ok) Q.ok++; else Q.missed.push(missText);
-  mark(cd.id, ok); Q.fb = feedback(cd, ok); render();
+  mark(cd.id, ok); Q.fb = feedback(cd, ok); if (Q.les && Q.i + 1 >= Q.deck.length) lesSave(); render();
   const b = $a('#acNext'); if (b) b.focus({ preventScroll: true });
 }
 /* otázka končící otazníkem nedostane navíc dvojtečku („…reakce?: …“) */
@@ -30398,9 +30413,11 @@ function lesQuiz(id) {
   LS.open = id; LS.step = 'quiz';
   next(true); window.scrollTo(0, 0);
 }
+/* lekce se zapíše hned po poslední odpovědi, ne až na závěrečné obrazovce */
+function lesSave() { const L = LES[Q.les]; if (Q.lesSaved || !L) return; ST.les = ST.les || {}; ST.les[L.id] = FH_LES.rec(ST.les[L.id], Q.deck.length, Q.ok, day()); save(); Q.lesSaved = true; }
 function lesEnd() {
   const L = LES[Q.les], n = Q.deck.length;
-  if (!Q.lesSaved) { ST.les = ST.les || {}; ST.les[L.id] = FH_LES.rec(ST.les[L.id], n, Q.ok, day()); save(); Q.lesSaved = true; }
+  lesSave();
   return FH_LES.end({ att: 'data-ac', L, ok: Q.ok, n, missed: Q.missed, tail: L.tail || 'Vrať se k papíru ze začátku a doplň ke každému činidlu ionty. Co jsi nevěděla z hlavy, zopakuješ zítra.',
     note: 'Otázky z lekce máš teď v Procvičování. Kde jsi chybovala, ty ti „Zopakovat na dnešek“ nabídne ještě dnes, ostatní za pár dní.' });
 }
