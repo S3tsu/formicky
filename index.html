@@ -447,13 +447,16 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .bd2 .cap1{fill:var(--pink)} .bd2 .cap2{fill:var(--accent)}
 .mascot.hype .bd2{animation:bob .45s ease-out 3}
 .bd2 .push{opacity:0}
+/* lupa: velké oko se rozhlíží a mrká */
+.bd2 .look{transform-box:fill-box;transform-origin:50% 0;animation:look 6s ease-in-out infinite}
+@keyframes look{0%,8%{transform:translate(0,0)}14%,28%{transform:translate(-5px,0)}34%,48%{transform:translate(5px,0)}54%,58%{transform:translate(0,0) scaleY(1)}60%{transform:translate(0,0) scaleY(.08)}62%,66%{transform:translate(0,0) scaleY(1)}72%,84%{transform:translate(3px,2px) scaleY(1)}88%{transform:translate(3px,2px) scaleY(.08)}90%{transform:translate(3px,2px) scaleY(1)}96%,100%{transform:translate(0,0)}}
 .bd2[data-pose="1"] .specs{animation:specs 7s ease-in-out infinite}
 .bd2[data-pose="1"] .push{animation:push 7s ease-in-out infinite}
 .bd2[data-pose="1"] .rarm{animation:rarm 7s linear infinite}
 @keyframes specs{0%{transform:translateY(0)}70%,78%{transform:translateY(9px)}86%{transform:translateY(-1px)}90%,100%{transform:translateY(0)}}
 @keyframes push{0%,69%{opacity:0;transform:translateY(12px)}70.5%{opacity:1}73%,78%{opacity:1;transform:translateY(9px)}86%{opacity:1;transform:translateY(-1px)}92%{opacity:1;transform:translateY(0)}93.5%,100%{opacity:0;transform:translateY(4px)}}
 @keyframes rarm{0%,69%{opacity:1}70.5%,92.5%{opacity:0}94%,100%{opacity:1}}
-@media (prefers-reduced-motion:reduce){.bd2 .arm,.bd2 .blink,.bd2 .steam,.mascot.hype .bd2,.bd2 .specs,.bd2 .push,.bd2 .rarm{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.bd2 .arm,.bd2 .blink,.bd2 .steam,.mascot.hype .bd2,.bd2 .specs,.bd2 .push,.bd2 .rarm,.bd2 .look{animation:none!important}}
 
 /* 3D model */
 .cellw{position:relative;display:flex;min-width:0}
@@ -1160,7 +1163,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <details class="g-item"><summary>Drobnosti a zkratky</summary>
       <ul>
         <li>Na počítači: <b>A–D</b> nebo <b>1–4</b> vybere možnost, <b>Enter</b> přejde na další otázku.</li>
-        <li><b>Béďa Bobík</b> dole na stránce radí pomůcky a memes, „Další pomůcka“ přinese novou. Na úvodní stránce má zajímavosti z organické i analytické chemie.</li>
+        <li><b>Béďa Bobík</b> dole na stránce radí pomůcky a memes, „Další pomůcka“ přinese novou. Na úvodní stránce má zajímavosti z organické chemie.</li>
         <li>Klepnutím na logo se mění jeho podoba.</li>
       </ul></details>
 
@@ -27276,7 +27279,7 @@ const BEDA_TILE = (x, y, r, num, sym, n) => `<g transform="rotate(${r} ${x + 20}
 const BEDA_HAND = (x, y) => `<circle class="hand" cx="${x}" cy="${y}" r="6"/>`;
 const BEDA_EDGE_L = `<path class="ln" d="M51 104 Q47 120 60 124"/>${BEDA_HAND(62, 124)}`;
 const BEDA_CUP = `<path class="coffee" d="M160 72 h22 v16 a4 4 0 0 1 -4 4 h-14 a4 4 0 0 1 -4 -4 z"/><path class="ln" style="stroke-width:3.5" d="M156 56 h30 M159 56 v32 a4 4 0 0 0 4 4 h16 a4 4 0 0 0 4 -4 v-32 M163 64 h6 M163 72 h6"/><path class="ln steam" d="M167 50 q-4 -6 0 -12 q4 -6 0 -12 M177 50 q-4 -6 0 -12"/>`;
-const BEDA_MAG = `<path class="ln" style="stroke-width:6" d="M137 98 L157 117"/><circle class="mag" cx="122" cy="82" r="22"/><path class="eye" d="M107 84 a15 13 0 0 0 30 0 z"/><path class="ln" d="M101 84 H143"/><circle class="glint" cx="128" cy="90" r="2.6"/><path class="ln" style="stroke:var(--surface);stroke-width:3" d="M108 70 q6 -6 14 -6"/>`;
+const BEDA_MAG = `<path class="ln" style="stroke-width:6" d="M137 98 L157 117"/><circle class="mag" cx="122" cy="82" r="22"/><clipPath id="bdMag"><circle cx="122" cy="82" r="19.5"/></clipPath><g clip-path="url(#bdMag)"><g class="look"><path class="eye" d="M107 84 a15 13 0 0 0 30 0 z"/><circle class="glint" cx="128" cy="90" r="2.6"/></g></g><path class="ln" d="M101 84 H143"/><path class="ln" style="stroke:var(--surface);stroke-width:3" d="M108 70 q6 -6 14 -6"/>`;
 const BEDA_PILL = `<g transform="rotate(-6 100 14)"><path class="cap1" d="M100 2 H62 a12 12 0 0 0 0 24 H100 Z"/><path class="cap2" d="M100 2 H138 a12 12 0 0 1 0 24 H100 Z"/><path class="ln" style="stroke-width:3.5" d="M62 2 H138 a12 12 0 0 1 0 24 H62 a12 12 0 0 1 0 -24 Z M100 2 V26"/><path class="ln" style="stroke:var(--surface);stroke-width:3;opacity:.7" d="M66 8 H88"/></g><path class="ln" d="M52 104 L36 62 L58 20 M148 104 L164 62 L142 20"/>${BEDA_HAND(58, 20)}${BEDA_HAND(142, 20)}`;
 const BEDA_PUSH = `<g class="push"><path class="ln" d="M148 108 C134 122 106 120 101 98"/><circle class="hand" cx="101" cy="95" r="5"/></g>`;
 const BEDA_POSES = [
@@ -28666,7 +28669,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const head = `Kontrola dat: ${qs.length} otázek, ${W.length} varování`;
     if (W.length) { console.groupCollapsed(head); console.table(W); console.groupEnd(); } else console.info(head);
   }
-  const shuffle = () => { order = FACTS.map((f, i) => i); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } k = 0; };
+  /* Béďa je maskot organiky: zajímavosti z Analytické chemie (tid 'ac:…') zůstávají ve FACTS, ale Béďa je neříká; převezme je maskot Analytické chemie */
+  const shuffle = () => { order = FACTS.map((f, i) => i).filter(i => !/^ac:/.test(FACTS[i][3] || '')); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } k = 0; };
   const show = anim => {
     if (k >= order.length) shuffle();
     const [name, t, x, tid, pc] = FACTS[order[k]], ac = /^ac:/.test(tid || ''), g = ac ? null : molOf(name, tid), tp = g && TOPICS.find(z => z.id === g.topic);
@@ -30082,9 +30086,9 @@ const AC_SK = {
   zngriess: 'Zn, pak diazotace', fsulf: 'Fenolsulfonová kyselina'
 };
 
-/* ===== Analytická chemie: cvičení 3–6 (organická analýza, fyzikální vlastnosti, UV-VIS, IČ) + Béďovy pomůcky a memy ===== */
+/* ===== Analytická chemie: cvičení 3–6 (organická analýza, fyzikální vlastnosti, UV-VIS, IČ) + pomůcky a memy ===== */
 const AC_CH = [['ka', '1–2 · Kationty a anionty'], ['org', '3 · Organická analýza'], ['fyz', '4 · Fyzikální vlastnosti'], ['uv', '5 · Fotometrie UV-VIS'], ['ir', '6 · IČ spektrometrie']];
-/* Béďovy pomůcky: klíč = iont, test nebo téma */
+/* Pomůcky (dřív Béďovy, převezme je maskot Analytické chemie): klíč = iont, test nebo téma */
 const AC_BEDA = {
   ag: 'Stříbro má rádo čpavek: AgCl se ve zředěném NH₃ rozpustí jako cukr v čaji, AgBr až v koncentrovaném a AgI vůbec. Čím těžší halogen, tím tvrdohlavější.',
   hg1: 'Hg₂²⁺ jsou dvojčata. Stačí trocha zásady a pohádají se: jedno zčerná na Hg⁰, druhé zůstane Hg²⁺. Kalomel + NH₃ = černá.',
@@ -30465,7 +30469,7 @@ function pickWrong(right, cands, n) {
   for (const c of cands) { if (!seen.has(c)) { seen.add(c); out.push(c); } if (out.length === (n || 3)) break; }
   return out;
 }
-/* kartička s výběrem: q = {eb, h, sub, long}, r = správně, w = špatně, x = vysvětlení, m = Béďova pomůcka */
+/* kartička s výběrem: q = {eb, h, sub, long}, r = správně, w = špatně, x = vysvětlení, m = pomůcka */
 const MC = (id, ch, q, r, w, x, m, pic) => ({ id, t: 'mc', ch, q, r, w, x, m, pic });
 
 function buildMore() {
@@ -30581,7 +30585,7 @@ function mcData(cd) {
 /* --- taháky --- */
 const tbl = (head, rows) => `<div class="ac-tw"><table class="ac-sheet"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
-const tip = m => m ? `<p class="ac-btip"><b>Béďa:</b> ${escA(m)}</p>` : '';
+const tip = m => m ? `<p class="ac-btip"><b>${AC_MASCOT.name ? escA(AC_MASCOT.name) + ':' : 'Pomůcka:'}</b> ${escA(m)}</p>` : '';
 function sheetOrg() {
   const grp = []; AC_OT.forEach(t => { if (!grp.includes(t[1])) grp.push(t[1]); });
   const tree = `<ol class="ac-tree"><li>Rozpustí se ve vodě? <b>Ano</b> → ether: rozpustí se = <b>S1</b>, nerozpustí = <b>S2</b>.</li>
@@ -30686,19 +30690,17 @@ function specView() {
   return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Čti IČ spektrum</span><span class="ac-score">Série ${SP.streak} · nejlepší ${(ST.best && ST.best.ir) || 0}</span></div>
     ${specSVG(s, SP.done)}<p class="ac-sub">Jaká látka má tohle spektrum? Dívej se na oblast nad 3000, tiché pásmo 2300–2000 a karbonyl kolem 1700 cm⁻¹.</p>
     <div class="opts${SP.done ? ' done' : ''}">${SP.opts.map((o, k) => `<button type="button" class="opt${SP.done ? (o === s ? ' right' : o === SP.picked ? ' wrong' : '') : ''}" data-ac="spg" data-v="${k}"${SP.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${escA(o[1])}</span></button>`).join('')}</div>
-    ${SP.done ? `<div class="fb ${SP.ok ? 'ok' : 'bad'}"><p><b>${SP.ok ? 'Správně!' : `Tohle je ${escA(s[1])}.`}</b> ${escA(s[3])}</p></div>${bedaBox(AC_BEDA['sp:' + s[0]] || AC_BEDA['ir:co'])}<div class="row"><button type="button" class="btn primary" data-ac="spnew">Další spektrum</button></div>` : ''}</div>`;
+    ${SP.done ? `<div class="fb ${SP.ok ? 'ok' : 'bad'}"><p><b>${SP.ok ? 'Správně!' : `Tohle je ${escA(s[1])}.`}</b> ${escA(s[3])}</p></div>${acTipBox(AC_BEDA['sp:' + s[0]] || AC_BEDA['ir:co'])}<div class="row"><button type="button" class="btn primary" data-ac="spnew">Další spektrum</button></div>` : ''}</div>`;
 }
 
-/* --- Béďa radí a memy --- */
-let BEDA_SVG = null;
-function bedaSVG() {
-  if (BEDA_SVG === null) { const m = document.querySelector('#mascot svg'); BEDA_SVG = m ? m.outerHTML.replace('role="img"', 'aria-hidden="true"').replace(/ aria-label="[^"]*"/, '') : ''; }
-  return BEDA_SVG;
-}
-function bedaBox(m) { return m ? `<div class="ac-beda"><div class="ac-beda-pic">${bedaSVG()}</div><p><b>Béďa radí:</b> ${escA(m)}</p></div>` : ''; }
+/* --- Pomůcky a memy ---
+   Béďa Bobík patří jen organice, tady zatím žádný maskot není. Texty zůstávají v AC_BEDA a AC_MEMES;
+   až bude mít Analytická chemie vlastního maskota, stačí doplnit AC_MASCOT (jméno a kresbu SVG). */
+const AC_MASCOT = { name: '', svg: '' };
+function acTipBox(m) { return m ? `<div class="ac-beda${AC_MASCOT.svg ? '' : ' bare'}">${AC_MASCOT.svg ? `<div class="ac-beda-pic">${AC_MASCOT.svg}</div>` : ''}<p><b>${AC_MASCOT.name ? escA(AC_MASCOT.name) + ' radí' : 'Pomůcka'}:</b> ${escA(m)}</p></div>` : ''; }
 function memeCard() {
   const L = AC_MEMES.filter(x => x[2] === ST.ch), m = L.length ? pick(L) : pick(AC_MEMES);
-  return `<figure class="ac-meme" aria-label="Vtip: ${escA(m[0])}, ${escA(m[1])}"><span class="mt">${escA(m[0])}</span><div class="ac-meme-pic">${bedaSVG()}</div><span class="mb">${escA(m[1])}</span></figure>`;
+  return `<figure class="ac-meme" aria-label="Vtip: ${escA(m[0])}, ${escA(m[1])}"><span class="mt">${escA(m[0])}</span>${AC_MASCOT.svg ? `<div class="ac-meme-pic">${AC_MASCOT.svg}</div>` : ''}<span class="mb">${escA(m[1])}</span></figure>`;
 }
 
 /* ===== Analytická chemie: hry Neznámá organická látka, Seřaď postup a Bodotávek ===== */
@@ -30779,7 +30781,7 @@ function neorgView() {
     const pos = AC_OT.filter(t => s.p.has(t[0])).map(t => `<li>${escA(t[2])} → <b>${escA(t[3])}</b> (${escA(t[4])})</li>`).join('');
     return `${head}${log}<div class="card"><div class="fb ok"><p><b>Je to ${escA(s.n)}!</b> ${OG.last} bodů${OG.rec ? ', nový rekord' : ''}.</p></div>
       <p>Třída rozpustnosti <b>${s.c}</b>${s.ns ? ', obsahuje N nebo S' : ''}.</p>${pos ? `<span class="eyebrow">Pozitivní zkoušky</span><ul class="ac-ul">${pos}</ul>` : '<p class="aside">Kromě uhlíku a vodíku nedá žádnou pozitivní zkoušku.</p>'}
-      ${bedaBox(AC_BEDA['sol' + s.c])}<div class="row"><button type="button" class="btn primary" data-ac="olnew">Další látka</button></div></div>`;
+      ${acTipBox(AC_BEDA['sol' + s.c])}<div class="row"><button type="button" class="btn primary" data-ac="olnew">Další látka</button></div></div>`;
   }
   const btn = (k, n) => `<button type="button" class="ac-rg" data-ac="oltry" data-v="${k}"${used(k) ? ' disabled' : ''}>${escA(n)}</button>`;
   const groups = [['Rozpustnost', RZT.map(([k, n]) => btn('r:' + k, n))]].concat(OLG.filter(g => AC_OT.some(t => t[1] === g && !OLHIDE.has(t[0]))).map(g => [g, AC_OT.filter(t => t[1] === g && !OLHIDE.has(t[0])).map(t => btn(t[0], OLS[t[0]]))]));
@@ -30876,7 +30878,7 @@ function taniView() {
     silne: `Teplota tání je výrazně pod ${T(s[1])} a rozmezí tání je široké. Hodně nečistot = velký pokles.`, jina: `Teplota tání je výš než ${T(s[1])}. Nečistota teplotu tání nikdy nezvýší, takže ve zkumavce je jiná látka.` }[v];
   return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Bodotávek</span><span class="ac-score">Série ${MP.streak} · nejlepší ${(ST.best && ST.best.mp) || 0}</span></div>
     <h2 class="q-name ac-long">${escA(s[0])}</h2><p class="ac-sub">Na štítku je ${escA(s[0])}, podle tabulek taje při ${T(s[1])}. Zahříváš 1–2 °C za minutu a pozoruješ kapiláru:</p>${obs}${q1}${q2}
-    ${MP.done ? `<div class="fb ${MP.ok ? 'ok' : 'bad'}"><p><b>${MP.ok ? 'Správně!' : 'Tohle ne úplně.'}</b> ${escA(why)}</p></div>${bedaBox(AC_BEDA.tani)}<div class="row"><button type="button" class="btn primary" data-ac="mpnew">Další vzorek</button></div>` : ''}</div>`;
+    ${MP.done ? `<div class="fb ${MP.ok ? 'ok' : 'bad'}"><p><b>${MP.ok ? 'Správně!' : 'Tohle ne úplně.'}</b> ${escA(why)}</p></div>${acTipBox(AC_BEDA.tani)}<div class="row"><button type="button" class="btn primary" data-ac="mpnew">Další vzorek</button></div>` : ''}</div>`;
 }
 
 /* ===== Analytická chemie: procvičování, tabulka, přehled iontů a hra Neznámý vzorek ===== */
@@ -31049,7 +31051,7 @@ function feedback(cd, ok) {
   } else {
     body = `<p>${cd.set.length ? `Správně: <b>${cd.set.map(i => ION[i].f).join(', ')}</b>` : 'Správně: žádný.'}</p>${cd.ex && cd.rk === 'NaOH' ? '<p class="aside">Vzniklé roztoky jsou bezbarvé, jen chromitan je zelený.</p>' : ''}${cd.rk === 'H2S' && cd.c === 'k' && !cd.ex ? '<p class="aside">Pozor na Fe³⁺: oxiduje sulfan a vznikne jen bílý zákal síry, ne sraženina sulfidu.</p>' : ''}`;
   }
-  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${bedaBox(bedaFor(cd))}`;
+  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${acTipBox(bedaFor(cd))}`;
 }
 /* „Proč?“ u špatné odpovědi: výklad z lekce, všechny reakce iontu nebo celá skupina s činidlem; u cvičení 3–6 odkaz na tahák (kolo se nepřeruší, v kvízu lekce chybí, ten by se odchodem zahodil) */
 function whyAC(cd) {
@@ -31064,7 +31066,7 @@ function whyAC(cd) {
   if (!Q.les && (cd.ch || 'ka') !== 'ka' && CHM[ST.ch].includes('sheet')) h += `<div class="row why-row"><button type="button" class="btn sm" data-ac="mode" data-v="sheet"><span class="why-q">Proč?</span> Projít tahák ke cvičení</button></div>`;
   return h;
 }
-/* Béďova pomůcka ke kartičce: u skupinových otázek podle činidla, jinak podle iontu */
+/* Pomůcka ke kartičce: u skupinových otázek podle činidla, jinak podle iontu */
 function bedaFor(cd) {
   if (cd.t === 'mc' || cd.t === 'calc') return Q.d.m;
   if (cd.t === 'grp') return cd.none ? AC_BEDA.no3 : AC_BEDA[cd.rk];
@@ -31556,7 +31558,7 @@ function lesList() {
   return FH_LES.list({ att: 'data-ac', lessons: AC_LES.filter(L => L.ch === ST.ch), prog: ST.les, soon: AC_LES_SOON,
     sub: 'Lekce zabere asi 5 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.', empty: '<p>K tomuhle cvičení zatím lekce není.</p>' });
 }
-function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: bedaBox(L.beda) }); }
+function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) }); }
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
   Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false;
@@ -31705,7 +31707,7 @@ FH_LES.reg({ k: 'a', name: 'Analytická chemie', short: 'Analytická', prog: () 
   } });
 window.FH_AC = {
   show, due: () => dueCount(),
-  /* otevře kapitolu (cvičení) v Procvičování, třeba ze štítku Béďovy zajímavosti */
+  /* otevře kapitolu (cvičení) v Procvičování, třeba ze štítku zajímavosti na úvodu */
   ch(c) {
     if (!CHN[c]) return;
     if (Q.les) resetLesson();
