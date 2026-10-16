@@ -949,7 +949,23 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
 .ac-meme-pic{width:min(220px,70%);line-height:0;--ink:#f4f1f7;--muted:#a8a0b8;--surface:#2a2638;--accent-soft:#4a3f66}
 #acMode{flex-wrap:wrap;border-radius:20px}
-@media (max-width:520px){#acMode[data-n="5"] button{flex:1 1 30%}#acMode button{padding:8px 6px}}
+@media (max-width:520px){#acMode[data-n="5"] button,#acMode[data-n="6"] button{flex:1 1 30%}#acMode button{padding:8px 6px}}
+/* lekce: krátký výklad a kvíz */
+.ac-les-back{min-height:44px}
+.ac-les-item{display:flex;flex-direction:column;gap:8px}
+.ac-les-item h3{margin:0;font-size:1.15rem;line-height:1.3}
+.ac-les-meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:.85rem;color:var(--muted)}
+.ac-les-done{font-weight:600;color:var(--ok)}
+.ac-les-soon{margin:0;padding-left:20px;color:var(--muted)}
+.ac-les-recall{border-left:4px solid var(--accent);background:var(--accent-soft)}
+.ac-les-recall p{margin:0}
+.ac-les-steps{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:2px}
+.ac-les-steps .here{font-weight:700;color:var(--ink)}
+.ac-les-steps .here::marker{color:var(--accent)}
+.ac-les-tubes{display:flex;gap:14px;flex-wrap:wrap}
+.ac-les-trap{margin:0;padding:10px 12px;border-radius:12px;background:var(--bad-soft)}
+.ac-les-row{margin:0;text-align:center;font-size:1.1rem}
+.ac-les-row small{font-size:.8rem;color:var(--muted)}
 @media (max-width:400px){#acMode[data-n="4"]{flex-wrap:nowrap}#acMode[data-n="4"] button{padding:8px 3px;font-size:.78rem;min-width:0}}
 .ac-tg{display:flex;flex-direction:column;gap:5px;margin-bottom:6px}
 .ac-tg > b{font-size:.8rem;color:var(--muted);font-weight:600}
@@ -1035,6 +1051,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <details class="g-item"><summary>Analytická chemie</summary>
       <ul>
         <li>Nahoře vybereš <b>cvičení</b>: 1–2 Kationty a anionty, 3 Organická analýza, 4 Fyzikální vlastnosti, 5 Fotometrie UV-VIS a 6 IČ spektrometrie.</li>
+        <li><b>Lekce</b> (u cvičení 1–2) jsou krátký výklad, asi na 5 minut, s kvízem na konci. Otázky z kvízu se ti pak vracejí v Procvičování.</li>
         <li><b>Procvičování</b> jsou kartičky, které se opakují v rozestupech. Karty na dnešek najdeš v aplikaci („Zopakovat … na dnešek“) i na úvodní stránce v panelu Dnes. U cvičení 1–2 si vybereš druhy otázek: Co uvidíš, Který iont, Skupinová činidla, Selektivní důkazy a Teorie a postupy.</li>
         <li><b>Tabulka</b> a <b>Ionty</b> (u cvičení 1–2) ukazují reakce iontů se skupinovými činidly, <b>Tahák</b> (u cvičení 3–6) shrnuje celé cvičení na jednu stránku.</li>
         <li>Zbylé záložky jsou hry, stejné jako v Herně. Odpovědi z analytiky se počítají do denního cíle.</li>
@@ -27266,6 +27283,7 @@ function mergeBackup(d) {
     const A0 = store.get('fg-ac', {}); A0.r = A0.r || {}; A0.best = A0.best || {};
     Object.entries(d.a.r).forEach(([id, r]) => { const a = A0.r[id]; if (r && typeof r === 'object' && (!a || (r.ok || 0) + (r.bad || 0) > (a.ok || 0) + (a.bad || 0))) { A0.r[id] = r; nR++; } });
     Object.entries(d.a.best || {}).forEach(([k, v]) => { A0.best[k] = Math.max(A0.best[k] || 0, +v || 0); });
+    if (d.a.les && typeof d.a.les === 'object') { A0.les = A0.les || {}; Object.entries(d.a.les).forEach(([k, v]) => { const a = A0.les[k]; if (v && typeof v === 'object' && (!a || (v.k || 0) > (a.k || 0))) A0.les[k] = Object.assign({}, v, { best: Math.max(v.best || 0, (a && a.best) || 0) }); }); }
     store.set('fg-ac', A0);
   }
   return { nP, nR };
@@ -28507,7 +28525,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161010';
+const FH_VER = '202610161045';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29189,6 +29207,16 @@ const AC_TH = [
   ['k_fe3', 'ka', 'Proč jsou roztoky železitých solí žlutohnědé, i když je Fe³⁺ bezbarvý?', 'postupně v nich vznikají hydroxokomplexy', ['obsahují vyloučený jód', 'Fe³⁺ se v nich redukuje na Fe²⁺', 'bývají v nich stopy mědi'], 'Hydrolýzou postupně vzniká Fe(OH)₃.', null, 'k'],
   ['k_mask', 'ka', 'K čemu je Chelaton III při důkazu Ag⁺ s NH₃ a KI?', 'komplexuje (maskuje) rušící kovové ionty', ['vysráží Ag⁺ jako bílou sraženinu', 'okyselí roztok', 'zredukuje Ag⁺ na kovové stříbro'], 'Maskuje se i jinde: vínan sodno-draselný při důkazu Cu²⁺ kupronem, NaF proti Fe³⁺ při důkazu Co²⁺ thiokyanatanem.', null, 'k'],
   ['k_naf', 'ka', 'Čím se maskuje Fe³⁺ při důkazu Co²⁺ thiokyanatanem a amylalkoholem?', 'NaF', ['NH₄Cl', 'NaNO₂', 'K₂CrO₄'], 'Fe³⁺ by s thiokyanatanem dal intenzivně červený roztok a přebil modrou kobaltu.', null, 'k'],
+  /* k lekci 1 (HCl a H₂SO₄), přibylo 16. 10. 2026 */
+  ['k_l1poz', 'ka', 'Co ti řekne pozitivní skupinová reakce?', 'které ionty v roztoku být mohou', ['které ionty v roztoku určitě jsou', 'které ionty v roztoku být nemohou', 'kolik iontů je v roztoku celkem'], 'Skupinová reakce jen zužuje výběr. Který iont to je, rozhodne až selektivní (specifická) reakce.', null, 'b'],
+  ['k_l1agnh3', 'ka', 'Bílá sraženina z HCl se ve 2M NH₃ rozpustí. Který kationt to byl?', 'Ag⁺', ['Pb²⁺', 'Hg₂²⁺', 'Ba²⁺'], 'AgCl se v amoniaku rozpustí na diamminstříbrný komplex [Ag(NH₃)₂]⁺. Okyselením HNO₃ se AgCl znovu vyloučí.', null, 'k'],
+  ['k_l1hgnh3', 'ka', 'Bílá sraženina z HCl po přidání NH₃ zčerná. Který kationt to byl?', 'Hg₂²⁺', ['Ag⁺', 'Pb²⁺', 'Ca²⁺'], 'Hg₂Cl₂ v amoniaku disproporcionuje: vedle bílé amidosoli vzniká černá elementární rtuť Hg⁰.', null, 'k'],
+  ['k_l1pbhot', 'ka', 'Bílá sraženina z HCl se rozpustí v horké vodě. Který kationt to byl?', 'Pb²⁺', ['Ag⁺', 'Hg₂²⁺', 'Ba²⁺'], 'PbCl₂ je z těch tří chloridů nejrozpustnější. V horké vodě se rozpustí a s HCl se ani nesráží úplně.', null, 'k'],
+  ['k_l1hclneg', 'ka', 'Kapka vzorku s 3% HCl zůstane čirá. Které kationty můžeš vyloučit?', 'Ag⁺ a Hg₂²⁺, Pb²⁺ ne', ['Ag⁺, Hg₂²⁺ i Pb²⁺', 'jen Pb²⁺, Ag⁺ ne', 'Ba²⁺ a Ca²⁺, Pb²⁺ ne'], 'Ag⁺ a Hg₂²⁺ se s HCl sráží úplně. PbCl₂ je rozpustnější a ze zředěného roztoku se vysrážet nemusí, proto Pb²⁺ ověř s H₂SO₄. O Ba²⁺ a Ca²⁺ HCl nic neřekne.', null, 'k'],
+  ['k_l1baso4', 'ka', 'Který síran je nejméně rozpustný?', 'BaSO₄', ['CaSO₄', 'PbSO₄', 'SrSO₄'], 'Rozpustnost roste BaSO₄ < SrSO₄ < CaSO₄. Ba²⁺ se proto s H₂SO₄ sráží úplně, Ca²⁺ jen z koncentrovanějších roztoků.', null, 'k'],
+  ['k_l1caso4', 'ka', 'Proč se Ca²⁺ s H₂SO₄ sráží jen z koncentrovanějších roztoků?', 'CaSO₄ je ze síranů nejrozpustnější', ['CaSO₄ je ze síranů nejméně rozpustný', 'Ca²⁺ tvoří s H₂SO₄ rozpustný komplex', 'Ca²⁺ se sráží jen v zásaditém prostředí'], 'Spolehlivější je kyselina šťavelová: bílá krystalická sraženina šťavelanu vápenatého.', null, 'k'],
+  ['k_l1pbso4', 'ka', 'Jak odlišíš bílý PbSO₄ od BaSO₄?', 'PbSO₄ s NH₄HS zčerná', ['BaSO₄ s NH₄HS zčerná', 'PbSO₄ s NH₃ zmodrá', 'BaSO₄ s HCl zežloutne'], 'NH₄HS převede PbSO₄ na černý PbS. Ostatní sírany zůstanou bílé.', null, 'k'],
+  ['k_l1scen', 'ka', 'Vzorek s HCl nedá nic, s H₂SO₄ bílou sraženinu. Co v něm může být?', 'Ba²⁺, Sr²⁺, Ca²⁺ nebo Pb²⁺', ['Ag⁺, Hg₂²⁺ nebo Pb²⁺', 'Cu²⁺, Cd²⁺ nebo Bi³⁺', 'Na⁺, K⁺ nebo NH₄⁺'], 'Ag⁺ a Hg₂²⁺ vyloučila HCl. Pb²⁺ zůstává ve hře: z malé koncentrace s HCl uteče, H₂SO₄ ho ale chytí. Cu²⁺, Cd²⁺, Bi³⁺ ani Na⁺, K⁺, NH₄⁺ nerozpustné sírany netvoří.', null, 'k'],
   ['a_neutr', 'ka', 'Proč se skupinové srážecí reakce aniontů dělají v neutrálním prostředí?', 'v kyselém by se část sraženin vůbec nevytvořila', ['v neutrálním se nesrážejí kationty', 'v zásaditém by se vyloučil jód', 'činidla jsou stálá jen v neutrálním'], 'Barnaté a stříbrné soli se liší právě stálostí v kyselém prostředí. Teprve vzniklou sraženinu zkoušíš kyselinou.', null, 'a'],
   ['a_ph', 'ka', 'Co může obsahovat vzorek aniontů, který reaguje kysele?', 'volnou kyselinu nebo sůl silné kyseliny a slabé zásady', ['sůl silné zásady a slabé kyseliny', 'jen sůl silné kyseliny a silné zásady', 'volnou silnou zásadu'], 'Zásaditý vzorek: silná zásada nebo sůl silné zásady a slabé kyseliny. Neutrální: sůl silné kyseliny a silné zásady, která nehydrolyzuje.', null, 'a'],
   ['a_kysele', 'ka', 'Které anionty nemůžou být ve vzorku s kyselou reakcí?', 'CO₃²⁻, NO₂⁻, SO₃²⁻ a S₂O₃²⁻', ['SO₄²⁻, PO₄³⁻ a NO₃⁻', 'Cl⁻, Br⁻, I⁻ a SCN⁻', 'SO₄²⁻, Cl⁻ a NO₃⁻'], 'Anionty snadno rozložitelných nebo těkavých kyselin (také S²⁻ a CN⁻) v kyselém prostředí nevydrží. Ztratit se můžou i při neutralizaci kyselinou dusičnou.', null, 'a'],
@@ -29813,7 +29841,7 @@ const Q = { deck: [], i: 0, ok: 0, cur: null, done: false, pick: new Set(), opts
 function newDeck(onlyDue) {
   const pool = CARDS.filter(inPool), t = day();
   const d = mix(pool.filter(cd => due(cd.id))), fresh = mix(pool.filter(cd => !ST.r[cd.id])), rest = mix(pool.filter(cd => ST.r[cd.id] && !due(cd.id))).sort((a, b) => ST.r[a.id].b - ST.r[b.id].b);
-  Q.deck = (onlyDue ? d : d.concat(fresh, rest)).slice(0, 15); Q.i = 0; Q.ok = 0; Q.missed = [];
+  Q.deck = (onlyDue ? d : d.concat(fresh, rest)).slice(0, 15); Q.i = 0; Q.ok = 0; Q.missed = []; Q.les = null;
   Q.empty = !Q.deck.length;
   next(true);
 }
@@ -29886,6 +29914,7 @@ function bedaFor(cd) {
 }
 function quizView() {
   if (Q.empty) return `<div class="card"><p>${ST.types.length ? 'V tomhle výběru teď nic není.' : 'Vyber aspoň jeden druh otázek.'}</p></div>`;
+  if (!Q.cur && Q.les) return lesEnd();
   if (!Q.cur) {
     const n = Q.deck.length;
     return `${memeCard()}<div class="card ac-end"><span class="eyebrow">Kolo hotové</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
@@ -30002,11 +30031,78 @@ function gameView() {
     <p class="aside">Ve hře platí jen reakce ze skript. Když činidlo u daného iontu ve skriptech není, ukáže se „${NONE}“.</p></div>`;
 }
 
+/* --- lekce: krátký výklad, pak kvíz z karet; odpovědi se zapíšou do opakování jako v Procvičování --- */
+const CARD = {}; CARDS.forEach(cd => { CARD[cd.id] = cd; });
+const lesTubes = L => `<div class="ac-les-tubes">${L.map(([p, f]) => tubeSVG({ p, s: 2 }, f)).join('')}</div>`;
+const AC_LES = [
+  { id: 'k1', ch: 'ka', n: 1, min: 5, t: 'První dvě síta: HCl a H₂SO₄',
+    goal: 'Po lekci umíš z jednoho pozorování (sraženina ano, nebo ne) říct, které kationty ve vzorku být můžou a které ne. Zatím pro HCl a H₂SO₄.',
+    recall: 'Zkus si z hlavy vybavit, jaká skupinová činidla znáš. Klidně si je napiš na papír, na konci se k nim vrátíš.',
+    q: ['t:k_neg', 't:k_l1poz', 'g:k:HCl', 't:k_l1agnh3', 't:k_l1hgnh3', 't:k_l1pbhot', 't:k_l1hclneg', 'g:k:H2SO4', 't:k_l1baso4', 't:k_l1caso4', 't:k_l1pbso4', 't:k_l1scen'],
+    beda: 'HCl si zve na parket tři: stříbro, rtuť a olovo. Olovo ale tančí jen napůl, takže ho musí dochytat H₂SO₄.',
+    body: () => sec('1. Síto, ne robot', `<p>Kationty se nedokazují tak, že na vzorek vyzkoušíš všechna činidla. Postupuje se úvahou: nejdřív <b>skupinová činidla</b>, která sráží celou skupinu iontů najednou, potom <b>selektivní činidla</b> na zúžený výběr.</p>
+      ${tbl(['Skupinová reakce', 'Co z ní plyne'], [['Pozitivní<br><small>sraženina</small>', 'Některý iont ze skupiny <b>může</b> být přítomen. Který, zatím nevíš.'], ['Negativní<br><small>nic</small>', 'Ionty, které se sráží úplně, ve vzorku <b>nejsou</b>. To je silnější informace.']])}
+      <p>Celý postup má osm kroků. Tahle lekce je o krocích 3 a 4:</p>
+      <ol class="ac-les-steps"><li>pH vzorku univerzálním papírkem</li><li>důkaz NH₄⁺ (ruší jiné důkazy)</li><li class="here">skupinová reakce s HCl</li><li class="here">skupinová reakce s H₂SO₄</li><li>další skupinová činidla</li><li>odstranění těžkých kovů, důkaz Mg²⁺, Na⁺, K⁺, Li⁺</li><li>selektivní důkazy</li><li>ověření nejasných výsledků</li></ol>`)
+      + sec('2. HCl: tři bílé chloridy', `${lesTubes([['bila', 'AgCl'], ['bila', 'Hg₂Cl₂'], ['bila', 'PbCl₂']])}
+      <p>3% HCl sráží <b>Ag⁺, Hg₂²⁺ a Pb²⁺</b>. Všechny tři chloridy jsou bílé a ve zředěných kyselinách se nerozpustí. Odlišíš je dalším krokem:</p>
+      ${tbl(['Sraženina', 'Prozradí ji', 'Proč'], [['AgCl', 've 2M NH₃ se <b>rozpustí</b>', 'vznikne rozpustný [Ag(NH₃)₂]⁺, okyselením HNO₃ se AgCl vrátí. Na světle šedne.'], ['Hg₂Cl₂', 's NH₃ <b>zčerná</b>', 'rtuť(I) disproporcionuje na černou Hg⁰ a bílou amidosůl.'], ['PbCl₂', 'v <b>horké vodě</b> se rozpustí', 'je z trojice nejrozpustnější, proto se ani nesráží úplně.']])}
+      <p class="ac-les-trap"><b>Pozor, past:</b> když HCl nic nesrazí, Ag⁺ a Hg₂²⁺ ve vzorku nejsou. Pb²⁺ ale vyloučit nemůžeš, ze zředěného roztoku PbCl₂ zůstane rozpuštěný. Proto další síto.</p>`)
+      + sec('3. H₂SO₄: bílé sírany', `<p>35% H₂SO₄ sráží úplně <b>Ba²⁺ a Pb²⁺</b>, jen z koncentrovanějších roztoků <b>Sr²⁺ a Ca²⁺</b>. Všechny sírany jsou bílé.</p>
+      <p class="ac-les-row"><b>BaSO₄</b> &lt; SrSO₄ &lt; <b>CaSO₄</b><br><small>od nejméně po nejvíc rozpustný</small></p>
+      <ul class="ac-ul"><li><b>Ca²⁺</b> proto spolehlivěji dokážeš kyselinou šťavelovou (bílý šťavelan vápenatý).</li><li><b>PbSO₄</b> po přidání NH₄HS zčerná, vznikne PbS. Ostatní sírany zůstanou bílé.</li><li><b>Pb²⁺ je v obou sítech:</b> co uteče přes HCl, chytí H₂SO₄.</li></ul>
+      <p class="aside">Skripta u H₂SO₄ v závorce zmiňují i Hg₂²⁺ a Ag⁺. Ty ale dokážeš už s HCl, a tak je v kvízech k H₂SO₄ nepočítáme.</p>`) }
+];
+const AC_LES_SOON = ['Sulfidy: H₂S a NH₄HS', 'NaOH a amfoterní hydroxidy', 'NH₃ a amminkomplexy', 'KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
+const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
+/* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
+if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
+  AC_LES.forEach(L => L.q.forEach(k => { if (!CARD[k]) console.warn(`Lekce ${L.id}: karta ${k} neexistuje`); }));
+  const seen = new Set(); CARDS.forEach(cd => { if (seen.has(cd.id)) console.warn(`Analytika: karta ${cd.id} je dvakrát`); seen.add(cd.id); });
+}
+const LS = { open: null, step: 'list' };
+function lesList() {
+  const P = ST.les || {};
+  return `<div class="card"><span class="eyebrow">Lekce</span><h2 class="q-name ac-long">Krátký výklad, pak kvíz</h2><p class="ac-sub">Lekce zabere asi 5 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.</p></div>
+    ${AC_LES.filter(L => L.ch === ST.ch).map(L => { const p = P[L.id]; return `<article class="card ac-les-item"><span class="eyebrow">Lekce ${L.n}</span><h3>${L.t}</h3>
+      <div class="ac-les-meta"><span>asi ${L.min} minut · ${L.q.length} otázek</span>${p ? `<span class="ac-les-done">Hotovo, nejlépe ${p.best} z ${p.n}</span>` : '<span class="ac-new">nová</span>'}</div>
+      <div class="row"><button type="button" class="btn primary" data-ac="lopen" data-v="${L.id}">${p ? 'Projít znovu' : 'Začít lekci'}</button>${p ? `<button type="button" class="btn" data-ac="lquiz" data-v="${L.id}">Jen kvíz</button>` : ''}</div></article>`; }).join('')}
+    <div class="card"><span class="eyebrow">Připravujeme</span><ol class="ac-les-soon" start="2">${AC_LES_SOON.map(t => `<li>${t}</li>`).join('')}</ol></div>`;
+}
+function lesRead(L) {
+  return `<div class="row"><button type="button" class="link ac-les-back" data-ac="lback">← Všechny lekce</button></div>
+    <div class="card"><span class="eyebrow">Lekce ${L.n} · asi ${L.min} minut</span><h2 class="q-name ac-long">${L.t}</h2><p class="ac-sub">${L.goal}</p></div>
+    <div class="card ac-les-recall"><p><b>Než začneš:</b> ${L.recall}</p></div>
+    ${L.body()}${bedaBox(L.beda)}
+    <div class="card"><p>Teď si to vyzkoušej. Nejdřív odpovídej z hlavy, teprve potom se vracej k výkladu.</p><div class="row"><button type="button" class="btn primary" data-ac="lquiz" data-v="${L.id}">Spustit kvíz (${L.q.length} otázek)</button></div></div>`;
+}
+function lesQuiz(id) {
+  const L = LES[id]; if (!L) return;
+  Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false;
+  LS.open = id; LS.step = 'quiz';
+  next(true); window.scrollTo(0, 0);
+}
+function lesEnd() {
+  const L = LES[Q.les], n = Q.deck.length;
+  if (!Q.lesSaved) { ST.les = ST.les || {}; const p = ST.les[L.id] || {}; ST.les[L.id] = { d: day(), n, ok: Q.ok, best: Math.max(p.best || 0, Q.ok), k: (p.k || 0) + 1 }; save(); Q.lesSaved = true; }
+  return `<div class="card ac-end"><span class="eyebrow">Lekce ${L.n} hotová</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
+    ${Q.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${Q.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
+    <p>Vrať se k papíru ze začátku a doplň ke každému činidlu ionty. Co jsi nevěděla z hlavy, zopakuješ zítra.</p>
+    <p class="aside">Otázky z lekce máš teď v Procvičování. Kde jsi chybovala, ty ti „Zopakovat na dnešek“ nabídne ještě dnes, ostatní za pár dní.</p>
+    <div class="row"><button type="button" class="btn primary" data-ac="lback">Zpět na lekce</button><button type="button" class="btn" data-ac="lopen" data-v="${L.id}">Projít výklad znovu</button><button type="button" class="btn" data-ac="lquiz" data-v="${L.id}">Kvíz znovu</button></div></div>`;
+}
+function lesView() {
+  if (LS.step === 'quiz' && Q.les) return quizView();
+  const L = LES[LS.open];
+  if (LS.step === 'read' && L && L.ch === ST.ch) return lesRead(L);
+  return lesList();
+}
+
 /* --- vykreslení a ovládání --- */
-const MODEN = { quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Rozpustnost', spek: 'Čti spektrum', neorg: 'Neznámá látka', por: 'Seřaď postup', tani: 'Bodotávek' };
-const CHM = { ka: ['quiz', 'table', 'ions', 'game', 'por'], org: ['quiz', 'sheet', 'rozp', 'neorg', 'por'], fyz: ['quiz', 'sheet', 'tani', 'por'], uv: ['quiz', 'sheet', 'por'], ir: ['quiz', 'sheet', 'spek', 'por'] };
-const HASH = { quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum', neorg: 'analyticka-latka', por: 'analyticka-postup', tani: 'analyticka-bodotavek' };
-const MODECH = { table: 'ka', ions: 'ka', game: 'ka', rozp: 'org', spek: 'ir', neorg: 'org', tani: 'fyz' };
+const MODEN = { les: 'Lekce', quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Rozpustnost', spek: 'Čti spektrum', neorg: 'Neznámá látka', por: 'Seřaď postup', tani: 'Bodotávek' };
+const CHM = { ka: ['les', 'quiz', 'table', 'ions', 'game', 'por'], org: ['quiz', 'sheet', 'rozp', 'neorg', 'por'], fyz: ['quiz', 'sheet', 'tani', 'por'], uv: ['quiz', 'sheet', 'por'], ir: ['quiz', 'sheet', 'spek', 'por'] };
+const HASH = { les: 'analyticka-lekce', quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum', neorg: 'analyticka-latka', por: 'analyticka-postup', tani: 'analyticka-bodotavek' };
+const MODECH = { les: 'ka', table: 'ka', ions: 'ka', game: 'ka', rozp: 'org', spek: 'ir', neorg: 'org', tani: 'fyz' };
 const LEAD = { ka: 'Kvalitativní analýza podle skript ke cvičení 1 a 2: jak kationty a anionty reagují se skupinovými činidly a jak je dokážeš selektivně.',
   org: 'Cvičení 3: důkazy prvků, třídy rozpustnosti a důkazy funkčních skupin organických látek.', fyz: 'Cvičení 4: teplota tání, index lomu, pH a polarimetrie, včetně výpočtů.',
   uv: 'Cvičení 5: absorbance, Lambertův–Beerův zákon, spektrofotometry a acidobazické indikátory.', ir: 'Cvičení 6: IČ oblasti, FT-IR spektrometr, techniky měření a tabulka vibrací.' };
@@ -30015,14 +30111,14 @@ function render() {
   const cs = $a('#acChSel'); if (cs && !cs.options.length) cs.innerHTML = AC_CH.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
   if (cs) cs.value = ST.ch;
   $a('#acLead').textContent = LEAD[ST.ch];
-  $a('#acCls').parentNode.hidden = ST.ch !== 'ka';
+  $a('#acCls').parentNode.hidden = ST.ch !== 'ka' || ST.mode === 'les';
   $a('#acCls').innerHTML = [['k', 'Kationty'], ['a', 'Anionty'], ['b', 'Obojí']].map(([v, n]) => `<button type="button" data-ac="cls" data-v="${v}" aria-pressed="${ST.cls === v}">${n}</button>`).join('');
   $a('#acMode').dataset.n = CHM[ST.ch].length;
   $a('#acMode').innerHTML = CHM[ST.ch].map(v => [v, MODEN[v]]).map(([v, n]) => `<button type="button" data-ac="mode" data-v="${v}" aria-pressed="${ST.mode === v}">${n}</button>`).join('');
   const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz' || ST.ch !== 'ka';
   tb.innerHTML = `<span class="eyebrow">Otázky</span><div class="chips">${TYPES.map(([v, n]) => `<button type="button" class="chip" data-ac="type" data-v="${v}" aria-pressed="${ST.types.includes(v)}">${n}</button>`).join('')}</div>`;
   const nd = dueCount(ST.ch); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
-  const V = { table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView };
+  const V = { les: lesView, table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView };
   box.innerHTML = (V[ST.mode] || quizView)();
 }
 function show() {
@@ -30034,12 +30130,21 @@ function show() {
   if (ST.mode === 'quiz' && !Q.deck.length && !Q.empty) newDeck();
   render();
 }
-function setMode(m) { ST.mode = m; save(); if (location.hash !== '#' + HASH[m]) history.replaceState(null, '', '#' + HASH[m]); render(); window.scrollTo(0, 0); }
+function setMode(m) {
+  if (m === 'les') LS.step = 'list';
+  if (Q.les) { Q.les = null; Q.deck = []; Q.cur = null; Q.empty = false; LS.step = 'list'; }
+  ST.mode = m; save(); if (location.hash !== '#' + HASH[m]) history.replaceState(null, '', '#' + HASH[m]);
+  if (m === 'quiz' && !Q.deck.length) newDeck(); else render();
+  window.scrollTo(0, 0);
+}
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-ac]'); if (!b) return;
   const a = b.dataset.ac, v = b.dataset.v;
   if (a === 'cls') { if (ST.cls === v) return; ST.cls = v; save(); TB.open = null; if (ST.mode === 'quiz') newDeck(); else render(); return; }
   if (a === 'mode') return setMode(v);
+  if (a === 'lopen') { if (Q.les) { Q.les = null; Q.deck = []; } LS.open = v; LS.step = 'read'; render(); return window.scrollTo(0, 0); }
+  if (a === 'lquiz') return lesQuiz(v);
+  if (a === 'lback') { if (Q.les) { Q.les = null; Q.deck = []; } LS.step = 'list'; render(); return window.scrollTo(0, 0); }
   if (a === 'type') { ST.types = ST.types.includes(v) ? ST.types.filter(x => x !== v) : ST.types.concat(v); save(); return newDeck(); }
   if (a === 'due') { if (ST.mode !== 'quiz') setMode('quiz'); return newDeck(true); }
   if (a === 'again') return newDeck();
@@ -30078,7 +30183,7 @@ function setCh(ch) {
 }
 document.addEventListener('change', e => { if (e.target.id === 'acChSel') return setCh(e.target.value); if (e.target.id === 'acHide') { ST.hide = e.target.checked; TB.shown.clear(); TB.open = null; save(); render(); } });
 document.addEventListener('keydown', e => {
-  if ($a('#appAC').hidden || ST.mode !== 'quiz' || !Q.cur || !Q.opts) return;
+  if ($a('#appAC').hidden || (ST.mode !== 'quiz' && !(ST.mode === 'les' && Q.les)) || !Q.cur || !Q.opts) return;
   if (e.key === 'Enter' && Q.done && document.activeElement !== $a('#acNext')) { e.preventDefault(); next(); }
   const k = '1234abcd'.indexOf(e.key.toLowerCase()); if (k < 0 || Q.done || Q.cur.t === 'grp' || /input|textarea|select/i.test(document.activeElement.tagName)) return;
   const btn = document.querySelectorAll('#acView .opt')[k % 4]; if (btn) { e.preventDefault(); btn.click(); }
