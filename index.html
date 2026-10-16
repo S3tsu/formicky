@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161910';
+const FH_VER = '202610161940';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29531,7 +29531,155 @@ const FH_OL = (() => {
         <ol class="ac-les-steps"><li><b>oxidativní adice</b> R–X na Pd⁰ (vznikne Pdᴵᴵ)</li><li><b>transmetalace</b> (R′ přejde z kovu M na Pd)</li><li><b>reduktivní eliminace</b> R–R′ a návrat Pd⁰</li></ol>
         <p>Heckova reakce má místo transmetalace inzerci alkenu a syn-β-eliminaci.</p>`)
         + sec('3. Pojmenované reakce', `${tbl(['Reakce', 'Kovová složka'], [['Suzuki–Miyaura', 'boronové kyseliny a boronáty, báze'], ['Stille', 'stannan R–SnBu₃'], ['Negishi', 'organozinečnaté R–ZnX'], ['Kumada', 'Grignard, Ni katalyzátor'], ['Hiyama', 'organokřemík + TBAF'], ['Sonogashira', 'terminální alkyn, CuI a báze'], ['Buchwald–Hartwig', 'vazba aryl–N, O, S']])}
-        <p class="aside">Nobelova cena 2010: Heck, Negishi, Suzuki.</p>`) }
+        <p class="aside">Nobelova cena 2010: Heck, Negishi, Suzuki.</p>`) },
+    { id: 't21a', topic: 't21', n: 1, min: 5, t: 'Heterocykly: názvy a epoxidy',
+      goal: 'Po lekci víš, který názvoslovný systém se kdy používá, přečteš název kondenzovaného heterocyklu a předpovíš, kde a jak se otevře epoxid.',
+      recall: 'Vybav si z etherů, kam napadne nukleofil epoxid v kyselém a kam v zásaditém prostředí.',
+      tail: 'Vrať se k papíru ze začátku. V kyselém jde nukleofil spíš na víc substituovaný uhlík, bez kyseliny na méně bráněný. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t21_q1', 't21_q2', 't21_q3', 't21_q14', 't21_q16', 't21_q24', 't21_q26', 't21_q29', 't21_q30', 't21_q31', 't21_q34', 't21_q35'],
+      beda: 'Epoxid je napjatý jako struna. Stačí slabší nukleofil a kruh praskne, a útočník přichází vždycky zezadu.',
+      body: () => sec('1. Tři názvoslovné systémy', `${tbl(['Systém', 'Kdy'], [['triviální názvy', '5- a 6-členné kruhy s 1–2 heteroatomy (furan, pyrrol, pyridin)'], ['Hantzsch–Widman', '3-, 4- a 7- až 10-členné kruhy a kruhy s víc heteroatomy'], ['záměnný princip (oxa-, thia-, aza-)', 'kruhy nad 10 členů a bi- a polycykly, třeba 4-thia-1-azabicyklo[3.2.0]heptan v penicilinu']])}
+        <p>U kondenzovaných heterocyklů je <b>základní složkou</b> větší kruh, při stejné velikosti rozhoduje heteroatom N > O > S. Písmeno označuje vazbu základní složky (1–2 = a, 2–3 = b), připojený thiofen je thieno-, furan furo-.</p>`)
+        + sec('2. Příprava epoxidů', `<ul class="ac-ul"><li><b>Peroxykyselina</b> (MCPBA) přenese kyslík na oba uhlíky v jednom kroku, geometrie alkenu se zachová (z cis-alkenu cis-epoxid). Z MCPBA zbude kyselina m-chlorbenzoová.</li><li>Z <b>halohydrinu</b> a NaOH: vnitromolekulární SN2, alkoxid vytlačí halogenid zezadu.</li></ul>`)
+        + sec('3. Otevírání epoxidů', `${tbl(['Podmínky', 'Kam jde nukleofil', 'Proč'], [['kyselé (H₃O⁺, HX)', 'na substituovanější uhlík, útok zezadu', 'náboj se hromadí jako u SN1, ale útok jako u SN2'], ['bez kyseliny, silný nukleofil', 'na méně bráněný CH₂', 'jen sterika, SN2']])}
+        <p>Kyselá hydrolýza cyklohexenoxidu dá <b>trans</b>-diol. Grignard s oxiranem prodlouží řetězec o dva uhlíky.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> u 1,2-epoxypropanu jde Cl⁻ i v kyselém hlavně na CH₂ (90 %), na sekundární uhlík méně. Terciární uhlík ale vyhraje (1,2-epoxy-2-methylpropan).</p>`) },
+    { id: 't22a', topic: 't22', n: 1, min: 5, t: 'Pětičlenné heterocykly',
+      goal: 'Po lekci vysvětlíš, proč je pyrrol aromatický a skoro nebazický, víš, jak se pyrrol, furan a indol připraví a kam jde elektrofil.',
+      recall: 'Tipni si, jestli je bazičtější pyrrol, nebo pyrrolidin, a proč.',
+      tail: 'Vrať se k tipu ze začátku. Pyrrolidin, pyrrol by protonací přišel o aromaticitu. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t22_q4', 't22_q5', 't22_q6', 't22_q8', 't22_q9', 't22_q12', 't22_q16', 't22_q17', 't22_q18', 't22_q22', 't22_q23', 't22_q25'],
+      beda: 'Pyrrol svůj volný pár nedá, je to jeho vstupenka do aromatického klubu. Proto je skoro nebazický a elektrofily ho naopak milují.',
+      body: () => sec('1. Aromaticita a bazicita', `<p>V pyrrolu dodají dvě C=C čtyři elektrony π a <b>volný pár dusíku</b> další dva, vznikne sextet. Protonací by se pár ztratil a s ním aromaticita, proto je pyrrol skoro nebazický. U pyridinu je volný pár v sp² orbitalu mimo sextet.</p>
+        ${tbl(['Báze', 'pKa konj. kyseliny'], [['pyrrolidin (sp³)', '11,27'], ['pyridin (sp²)', '5,25'], ['pyrrol', '0,4']])}
+        <p class="aside">α polohy pyrrolu jsou 2 a 5, β 3 a 4. Indol = benzen + pyrrol.</p>`)
+        + sec('2. Syntézy', `${tbl(['Syntéza', 'Z čeho', 'Co vznikne'], [['Paal–Knorr', '1,4-diketon + NH₃ (amin) / H⁺', 'pyrrol / furan'], ['z 1,3-dikarbonylu', '+ NH₂OH / + N₂H₄', 'isoxazol / pyrazol'], ['Fischer', 'arylhydrazon, kyselina', 'indol přes [3,3]-sigmatropní přesmyk']])}`)
+        + sec('3. Elektrofilní substituce', `<p>Pyrrol a furan jsou bohaté na elektrony a substituují se snadno, do <b>polohy 2</b>: kation po ataku na C2 má tři rezonanční struktury, na C3 jen dvě. Indol jde naopak do <b>polohy 3</b>, benzenový kruh tak zůstane aromatický.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> nitrační směs pyrrol rozloží, nitruje se HNO₃ v acetanhydridu. Furan se umí chovat i jako dien (s maleimidem endo za studena, exo za tepla).</p>`) },
+    { id: 't22b', topic: 't22', n: 2, min: 5, t: 'Pyridin, chinolin a biologicky důležité kruhy',
+      goal: 'Po lekci víš, kam jde elektrofil a kam nukleofil na pyridinu, jak se připraví pyridin a chinolin a kde se heterocykly objevují v léčivech a v přírodě.',
+      recall: 'Vybav si z lekce 1, kde má pyridin volný elektronový pár. Tipni si, jestli bude kruh pyridinu bohatý, nebo chudý na elektrony.',
+      tail: 'Vrať se k tipu ze začátku. Pyridin je chudý na elektrony, dusík je táhne k sobě (2,26 D). Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t22_q1', 't22_q7', 't22_q11', 't22_q27', 't22_q30', 't22_q31', 't22_q32', 't22_q34', 't22_q35', 't22_q37', 't22_q15', 't22_q42'],
+      beda: 'Pyridin je chudák na elektrony: elektrofily posílá jen do polohy 3 a nukleofily vítá v polohách 2 a 4, kde jim dusík podrží záporný náboj.',
+      body: () => sec('1. Reaktivita pyridinu', `<p>Elektronegativní dusík táhne elektrony z kruhu (dipól 2,26 D), pyridin je <b>chudý na elektrony</b>.</p>
+        ${tbl(['Reakce', 'Poloha', 'Proč'], [['elektrofilní substituce (těžko, sulfonace 70 %)', '3', 'při ataku na 2 a 4 by kladný náboj šel na dusík'], ['nukleofilní substituce', '2 a 4', 'záporný náboj se uloží na dusík'], ['Čičibabin (NaNH₂)', '2', 'odstupuje hydrid']])}
+        <p>SN 2-chlorpyridinu připomíná nukleofilní acylovou substituci, C=N se chová jako C=O.</p>`)
+        + sec('2. Syntézy', `${tbl(['Syntéza', 'Výsledek'], [['Hantzsch (ketoester, aldehyd, NH₃)', '1,4-dihydropyridin, oxidací pyridin'], ['Skraup (anilin + akrolein, oxidace)', 'chinolin'], ['Bischler–Napieralski (H₃PO₄, P₂O₅)', 'isochinolinový skelet']])}
+        <p>Chinolin má dusík v poloze 1, isochinolin v poloze 2. Elektrofil u nich jde do <b>benzenového</b> kruhu, polohy 5 a 8.</p>`)
+        + sec('3. V přírodě a v lécích', `<ul class="ac-ul"><li>Porfyrin ze čtyř pyrrolů nese v hemu Fe, v chlorofylu <b>Mg</b>, ve vitaminu B₁₂ Co.</li><li>Statiny (atorvastatin s pyrrolem z Paal–Knorrovy syntézy) inhibují HMG-CoA reduktasu.</li><li>Purin = pyrimidin + imidazol, v nukleosidech se cukr váže na N9.</li></ul>`) },
+    { id: 't23a', topic: 't23', n: 1, min: 5, t: 'Fotochemie a pericyklické reakce',
+      goal: 'Po lekci rozlišíš fluorescenci a fosforescenci, víš, co je chemiluminiscence, a podle počtu elektronových párů předpovíš průběh elektrocyklické reakce, cykloadice a sigmatropního přesmyku.',
+      recall: 'Vybav si z dienů, co je HOMO a LUMO buta-1,3-dienu.',
+      tail: 'Vrať se k papíru ze začátku. HOMO je ψ₂, LUMO ψ₃*, a světlo mezi nimi přehodí elektron. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t23_q1', 't23_q2', 't23_q5', 't23_q7', 't23_q11', 't23_q17', 't23_q18', 't23_q19', 't23_q26', 't23_q29', 't23_q35', 't23_q41'],
+      beda: 'Sudý počet párů jde termicky konrotačně, lichý disrotačně. Světlo to celé obrátí, jako když převrátíš přesýpací hodiny.',
+      body: () => sec('1. Fotochemie a luminiscence', `${tbl(['Děj', 'Přechod', 'Poznámka'], [['fluorescence', 'S₁ → S₀, zářivý', 'stejná multiplicita, rychlá'], ['fosforescence', 'T₁ → S₀, zářivý', 'spinově zakázaný, trvá 10⁻³–10² s'], ['mezisystémová konverze', 'S₁ → T₁, nezářivý', 'mění multiplicitu']])}
+        <p><b>Chemiluminiscence</b>: energii dodá reakce. Luminol se oxiduje na excitovaný 3-aminoftalát, který svítí, a železo z hemoglobinu oxidaci katalyzuje (stopy krve).</p>`)
+        + sec('2. Pericyklické reakce', `<p>Probíhají <b>součinně přes cyklický přechodový stav</b> bez meziproduktů. Patří sem elektrocyklické reakce, cykloadice, sigmatropní přesmyky, cheletropní a enové reakce. Rozhoduje symetrie hraničních orbitalů (Woodward–Hoffmann, Fukui).</p>
+        ${tbl(['Elektrocyklická reakce', 'Termicky', 'Fotochemicky'], [['dien (2 páry, 4π)', 'konrotačně', 'disrotačně'], ['trien (3 páry, 6π)', 'disrotačně', 'konrotačně']])}`)
+        + sec('3. Cykloadice a přesmyky', `<ul class="ac-ul"><li><b>Dielsova–Alderova</b> reakce [4 + 2] (3 páry) jde termicky suprafaciálně. Dien musí být <b>s-cis</b>, pomáhá donor na dienu a akceptor na dienofilu, kineticky vzniká endo produkt.</li><li>Termická [2 + 2] cykloadice dvou alkenů neprobíhá (suprafaciální cesta je zakázaná).</li><li>Termický [1,5]-posun H jde suprafaciálně, [1,3]-posun H není znám.</li><li>Claisenův a Copeho přesmyk jsou [3,3]-sigmatropní.</li></ul>`) },
+    { id: 't24a', topic: 't24', n: 1, min: 5, t: 'Monosacharidy',
+      goal: 'Po lekci zařadíš monosacharid, poznáš D a L ve Fischerově projekci, převedeš ho do Haworthovy projekce a vysvětlíš anomery a mutarotaci.',
+      recall: 'Tipni si, podle čeho se pozná D-cukr ve Fischerově projekci.',
+      tail: 'Vrať se k tipu ze začátku. D-cukr má OH na posledním stereocentru vpravo. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t24_q1', 't24_q2', 't24_q6', 't24_q7', 't24_q10', 't24_q12', 't24_q17', 't24_q19', 't24_q21', 't24_q22', 't24_q23', 't24_q24'],
+      beda: 'Vpravo ve Fischerovi je dole v Haworthovi. A α-anomer má OH dole, jako α jde dolů na lyžích.',
+      body: () => sec('1. Fischerova projekce a D/L', `<p>Vodorovné vazby míří k tobě, svislé od tebe. Otočit projekci smíš o 180°, ne o 90°.</p>
+        <p><b>D</b> nebo <b>L</b> se pozná podle OH na stereocentru <b>nejvzdálenějším od karbonylu</b>: vpravo D, vlevo L. Neříká nic o směru otáčení (D-fruktosa je levotočivá). L-glukosa je enantiomer D-glukosy, má obrácená všechna centra.</p>`)
+        + sec('2. Typy monosacharidů', `<p>Sacharidy jsou polyhydroxyaldehydy a polyhydroxyketony. Podle karbonylu aldosy a ketosy, podle počtu uhlíků triosy až hexosy: D-ribosa je aldopentosa, D-fruktosa ketohexosa. D-aldohexos je 8, glukosa a galaktosa se liší jen na C4.</p>`)
+        + sec('3. Cyklické formy', `<p>Karbonyl a OH téže molekuly dají <b>intramolekulární hemiacetal</b>. Vzniká nové stereocentrum, <b>anomerní uhlík</b>, a dva anomery:</p>
+        ${tbl(['Anomer', 'Anomerní OH v Haworthově projekci'], [['α', 'dole, trans k CH₂OH'], ['β', 'nahoře, cis k CH₂OH']])}
+        <p>Ve vodě se anomery přes otevřenou formu pomalu přeměňují na rovnovážnou směs: <b>mutarotace</b>. D-Glukosa: β 62,6 %, α 37,3 %, otevřená forma 0,002 %.</p>`) },
+    { id: 't24b', topic: 't24', n: 2, min: 5, t: 'Reakce sacharidů a disacharidy',
+      goal: 'Po lekci víš, co je glykosid a redukující cukr, jak se aldosa redukuje, oxiduje, prodlouží a zkrátí, a rozlišíš běžné disacharidy a polysacharidy.',
+      recall: 'Vybav si z lekce 1, co je hemiacetal. Tipni si, proč sacharosa nedá Tollensovu zkoušku, a maltosa ano.',
+      tail: 'Vrať se k tipu ze začátku. Sacharosa má oba anomerní uhlíky ve vazbě a žádný volný hemiacetal. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t24_q27', 't24_q28', 't24_q32', 't24_q33', 't24_q34', 't24_q35', 't24_q37', 't24_q40', 't24_q42', 't24_q43', 't24_q45', 't24_q46'],
+      beda: 'Sacharosa je pár, který se drží za obě ruce: glukosa i fruktosa mají anomerní uhlík obsazený, a tak nikoho neredukují.',
+      body: () => sec('1. Glykosidy a redukující cukry', `<p><b>Glykosid</b> je acetal cukru: anomerní OH nahradí OR. Acetal se ve vodě sám neotevře, proto glykosid nemutarotuje ani neredukuje. Koenigs–Knorr (Ag₂O) dá díky acetylu na C2 β-glykosid.</p>
+        <p><b>Redukující</b> jsou cukry s volným hemiacetalem, tedy s aldehydem v otevřené formě. Pozitivní je i fruktosa, v zásaditém prostředí se přes endiol izomeruje na aldosu.</p>`)
+        + sec('2. Reakce aldos', `${tbl(['Reakce', 'Produkt'], [['NaBH₄', 'alditol (D-glukosa → D-glucitol, sorbit)'], ['Br₂, H₂O', 'aldonová kyselina (COOH na C1)'], ['HNO₃', 'aldarová kyselina (COOH na obou koncích)'], ['Kiliani–Fischer (HCN)', 'o uhlík delší, dva C2 epimery'], ['Wohl', 'o uhlík kratší, C1 odejde jako HCN']])}`)
+        + sec('3. Di- a polysacharidy', `${tbl(['Cukr', 'Složení a vazba', 'Redukuje'], [['maltosa', 'glukosa + glukosa, α(1→4)', 'ano'], ['cellobiosa', 'glukosa + glukosa, β(1→4)', 'ano'], ['laktosa', 'galaktosa + glukosa, β(1→4)', 'ano'], ['sacharosa', 'glukosa + fruktosa, (1→2)', '<b>ne</b>']])}
+        <p>Celulosa má vazby β(1→4), amylosa α(1→4). Škrob je amylosa (lineární) a amylopektin (rozvětvený).</p>`) },
+    { id: 't25a', topic: 't25', n: 1, min: 5, t: 'Aminokyseliny',
+      goal: 'Po lekci určíš konfiguraci L-aminokyseliny, vysvětlíš obojetný ion a izoelektrický bod a předpovíš, kam aminokyselina putuje při elektroforéze.',
+      recall: 'Tipni si, jakou absolutní konfiguraci (R, nebo S) mají L-aminokyseliny.',
+      tail: 'Vrať se k tipu ze začátku. Skoro všechny L-aminokyseliny jsou S, výjimkou je L-cystein (R). Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t25_q1', 't25_q3', 't25_q8', 't25_q9', 't25_q10', 't25_q11', 't25_q13', 't25_q14', 't25_q15', 't25_q17', 't25_q19', 't25_q20'],
+      beda: 'Při pH pod pI je aminokyselina kladná a jde k zápornému pólu. Nad pI je záporná a jde ke kladnému. Protiklady se přitahují.',
+      body: () => sec('1. Stavba a konfigurace', `<p>Peptid má méně než 50 aminokyselin, protein víc. Z 20 aminokyselin je 15 neutrálních, 2 kyselé (Asp, Glu) a 3 bazické (Lys, Arg, His). U histidinu je bazický dusík pyridinového typu.</p>
+        <p><b>L</b> ve Fischerově projekci: COO⁻ nahoře, R dole, NH₃⁺ vlevo (jako OH u L-glyceraldehydu). L-alanin a L-serin jsou <b>S</b>, ale L-cystein je <b>R</b>, protože CH₂SH má díky síře vyšší prioritu než COOH.</p>
+        <p class="aside">GABA má aminoskupinu na C4 (γ), α-aminokyselinou není.</p>`)
+        + sec('2. Obojetný ion a pI', `<p>Aminokyseliny existují jako <b>obojetné ionty</b> (NH₃⁺ a COO⁻): mají vysoké teploty tání, rozpouštějí se ve vodě, ne v organických rozpouštědlech, a jsou <b>amfoterní</b>.</p>
+        <p><b>Izoelektrický bod</b> pI je pH, při kterém převládá neutrální obojetný ion a aminokyselina se v elektrickém poli nepohybuje.</p>
+        ${tbl(['pH roztoku', 'Náboj', 'Putuje k'], [['pH < pI', 'kation', 'zápornému pólu'], ['pH = pI', 'nulový', 'nikam'], ['pH > pI', 'anion', 'kladnému pólu']])}`)
+        + sec('3. Syntézy', `${tbl(['Syntéza', 'Princip'], [['reduktivní aminace α-ketokyseliny', 'NH₃, NaBH₄ (kyselina pyrohroznová → alanin)'], ['acetamidomalonátová', 'alkylace (BrCH₂COOEt pro Asp), dusík chráněný jako acetamid, nakonec hydrolýza a dekarboxylace']])}
+        <p class="ac-les-trap"><b>Pozor:</b> z achirálních výchozích látek a činidel vznikne vždy racemát (R,S).</p>`) },
+    { id: 't25b', topic: 't25', n: 2, min: 5, t: 'Peptidy, bílkoviny a enzymy',
+      goal: 'Po lekci zapíšeš peptid od N-konce, popíšeš úrovně struktury bílkovin, víš, jak se určuje sekvence, a vysvětlíš, co dělá enzym a jeho kofaktor.',
+      recall: 'Tipni si, proč se kolem peptidové vazby C–N volně neotáčí.',
+      tail: 'Vrať se k tipu ze začátku. Volný pár dusíku je v rezonanci s C=O a vazba má částečně dvojný charakter. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t25_q23', 't25_q25', 't25_q26', 't25_q28', 't25_q29', 't25_q30', 't25_q34', 't25_q37', 't25_q38', 't25_q41', 't25_q47', 't25_q49'],
+      beda: 'Trypsin stříhá za bazickými Lys a Arg, chymotrypsin za aromatickými Phe, Tyr a Trp. Dvoje nůžky, každé na jinou látku.',
+      body: () => sec('1. Peptidová vazba a struktura', `<p>Peptid se píše od <b>N-konce</b> (vlevo) ke C-konci. n aminokyselin spojí n − 1 peptidových vazeb, páteř se opakuje jako –NH–CH–CO–. Vazba C–N má částečně dvojný charakter, proto se kolem ní neotáčí.</p>
+        ${tbl(['Struktura', 'Co popisuje'], [['primární', 'sekvence aminokyselin'], ['sekundární', 'α-helix, skládaný list'], ['terciární', 'celkový tvar: fibrilární nebo globulární'], ['kvartérní', 'uspořádání víc podjednotek']])}
+        <p class="aside">Disulfidový můstek vzniká oxidací SH dvou cysteinů.</p>`)
+        + sec('2. Analýza a sekvence', `<ul class="ac-ul"><li><b>Ninhydrin</b> dá s α-aminokyselinou purpurové barvivo, aldehyd a CO₂.</li><li><b>Edmanovo odbourávání</b> (PITC) odštěpí N-koncovou aminokyselinu, pozná se podle PTH derivátu. Zvládne asi 50 cyklů, delší řetězec se nejdřív rozštěpí.</li><li>Trypsin štěpí za Lys a Arg, chymotrypsin za Phe, Tyr a Trp. C-konec určí karboxypeptidasa.</li></ul>`)
+        + sec('3. Enzymy', `<p>Enzym sníží aktivační energii, polohu rovnováhy nezmění: E + S ⇌ ES ⇌ EP ⇌ E + P. Ureasa má absolutní substrátovou specifitu. Biokatalyzátory jsou i ribozymy (RNA).</p>
+        ${tbl(['Pojem', 'Význam'], [['holoenzym', 'apoenzym + kofaktor, jediná aktivní forma'], ['koenzym', 'organický kofaktor, třeba NAD⁺ (často z vitaminů)'], ['prostetická skupina', 'kofaktor pevně vázaný na bílkovinu'], ['stopové prvky (Zn, Fe, Cu, Mn, Se)', 'anorganické kofaktory']])}`) },
+    { id: 't26a', topic: 't26', n: 1, min: 5, t: 'Tuky, mýdla a fosfolipidy',
+      goal: 'Po lekci víš, co spojuje lipidy, proč jsou oleje kapalné a tuky tuhé, jak funguje mýdlo a jak je stavěná buněčná membrána.',
+      recall: 'Tipni si, proč je olivový olej při pokojové teplotě kapalný, a sádlo tuhé.',
+      tail: 'Vrať se k tipu ze začátku. Cis dvojné vazby nenasycených kyselin zalomí řetězce a ty se neuspořádají. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t26_q1', 't26_q3', 't26_q5', 't26_q6', 't26_q9', 't26_q11', 't26_q13', 't26_q14', 't26_q16', 't26_q17', 't26_q19', 't26_q24'],
+      beda: 'Mýdlo je dvojí agent: ocasem se schová do mastnoty, hlavou kamarádí s vodou. A tvrdá voda mu kazí kšeft vápníkem.',
+      body: () => sec('1. Lipidy a tuky', `<p>Lipidy nemají společnou funkční skupinu, spojuje je jen <b>lipofilita</b>. Vosky jsou estery vyšších mastných kyselin s dlouhými alkoholy, <b>triacylglyceroly</b> triestery glycerolu (tuky a oleje).</p>
+        <p>Mastné kyseliny mají nerozvětvený řetězec se <b>sudým</b> počtem uhlíků a dvojné vazby Z. Nejběžnější: palmitová, stearová, olejová (C18, jedna cis vazba na C9), linolová (2 vazby), linolenová (3), arachidonová (C20, 4).</p>
+        <p>Každá cis dvojná vazba zalomí řetězec a sníží teplotu tání, proto jsou oleje (víc nenasycených kyselin) kapalné. Olivový olej má asi 80 % kyseliny olejové.</p>`)
+        + sec('2. Mýdla a detergenty', `<p>Mýdla jsou <b>sodné nebo draselné soli mastných kyselin</b>. Iontová hlava je hydrofilní, uhlovodíkový ocas lipofilní. V <b>micele</b> jsou ocasy uvnitř u mastnoty a hlavy venku ve vodě.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> v tvrdé vodě tvoří Ca²⁺ a Mg²⁺ s mýdlem nerozpustné soli. Syntetickému detergentu (sulfonát) to nevadí.</p>`)
+        + sec('3. Fosfolipidy a membrána', `<p>Fosfolipidy jsou <b>diestery kyseliny fosforečné</b>: na jedné straně glycerol (nebo sfingosin), na druhé aminoalkohol. Ve fosfoacylglycerolu je na C1 nasycená a na C2 nenasycená kyselina.</p>
+        <p>V membráně tvoří <b>lipidovou dvojvrstvu</b>: polární hlavy ven do vody, nepolární ocasy dovnitř. Sfingomyeliny stojí na sfingosinu.</p>`) },
+    { id: 't26b', topic: 't26', n: 2, min: 5, t: 'Eikosanoidy, terpeny a steroidy',
+      goal: 'Po lekci víš, jak vznikají prostaglandiny a proč mají protizánětlivé léky nežádoucí účinky, odvodíš terpen z isoprenu a popíšeš steroidní skelet a hormony.',
+      recall: 'Tipni si, z kolika uhlíků je isopren a kolik isoprenů má monoterpen.',
+      tail: 'Vrať se k tipu ze začátku. Isopren má 5 uhlíků, monoterpen dvě jednotky, tedy 10. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t26_q26', 't26_q27', 't26_q28', 't26_q29', 't26_q30', 't26_q33', 't26_q34', 't26_q36', 't26_q37', 't26_q39', 't26_q40', 't26_q42'],
+      beda: 'Terpeny stavíš z lega: kostičky isoprenu C5 spojené hlava–pata. Dvě jsou mono, tři seskvi, čtyři di a osm dá β-karoten.',
+      body: () => sec('1. Prostaglandiny a léky', `<p>Prostaglandiny jsou C20 lipidy s pětičlenným kruhem. Vznikají z <b>kyseliny arachidonové</b> působením cyklooxygenasy (COX).</p>
+        ${tbl(['Enzym', 'Role'], [['COX-1', 'prostaglandiny pro běžné funkce (třeba ochrana žaludku)'], ['COX-2', 'prostaglandiny při zánětu']])}
+        <p>Aspirin, ibuprofen a naproxen blokují obě, a proto mají nežádoucí účinky na žaludek. Celecoxib a rofecoxib jsou selektivní na COX-2. Leukotrieny spouštějí astma.</p>`)
+        + sec('2. Terpeny', `<p>Silice se získávají destilací s vodní parou. <b>Terpen</b> je uhlovodík, <b>terpenoid</b> obsahuje i kyslík. Podle isoprenového pravidla se skelet skládá z jednotek isoprenu C5 spojených hlava–pata.</p>
+        ${tbl(['Skupina', 'Jednotek', 'Uhlíků'], [['monoterpeny', '2', '10'], ['seskviterpeny', '3', '15'], ['diterpeny', '4', '20'], ['triterpeny (lanosterol)', '6', '30'], ['tetraterpeny (β-karoten)', '8', '40']])}`)
+        + sec('3. Steroidy', `<p>Steroidní skelet: tři šestičlenné kruhy A, B, C a pětičlenný D, methyly na C10 a C13. Kondenzované kruhy se nemůžou překlopit. U A-B trans-steroidu jsou H na C5 a CH₃ na C10 na opačných stranách a kostra je plochá. OH cholesterolu na C3 je ekvatoriální.</p>
+        <ul class="ac-ul"><li><b>Estrogeny</b> mají aromatický kruh A s fenolovým OH a chybí jim methyl na C10.</li><li>Progesteron je gestagen, aldosteron mineralokortikoid (Na⁺ a K⁺), hydrokortison glukokortikoid. Ethynylestradiol je syntetický estrogen v antikoncepci.</li></ul>`) },
+    { id: 't27a', topic: 't27', n: 1, min: 5, t: 'Nukleové kyseliny',
+      goal: 'Po lekci rozlišíš nukleosid a nukleotid, DNA a RNA i purinové a pyrimidinové báze, popíšeš páteř řetězce a párování bází v dvoušroubovnici.',
+      recall: 'Zkus si z hlavy napsat, které báze jsou v DNA a se kterou se páruje adenin.',
+      tail: 'Vrať se k papíru ze začátku. DNA má A, G, C a T, adenin se páruje s thyminem dvěma vodíkovými vazbami. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t27_q1', 't27_q2', 't27_q5', 't27_q10', 't27_q12', 't27_q13', 't27_q18', 't27_q26', 't27_q27', 't27_q33', 't27_q36', 't27_q46'],
+      beda: 'A–T se drží dvěma rukama, G–C třemi. Proto je úsek bohatý na G–C pevnější.',
+      body: () => sec('1. Stavební kameny', `<p><b>Nukleosid</b> = cukr + báze, <b>nukleotid</b> = nukleosid + fosfát. Cukr je aldopentosa ve formě β-D-furanosy: v RNA ribosa, v DNA <b>2′-deoxyribosa</b> (na C2′ chybí OH). Uhlíky cukru se značí s čárkou (1′–5′), aby se nepletly s bází.</p>
+        ${tbl(['Báze', 'Typ', 'Kde'], [['adenin, guanin', 'puriny (dva kruhy), na cukr přes N9', 'DNA i RNA'], ['cytosin', 'pyrimidin, na cukr přes N1', 'DNA i RNA'], ['thymin (5-methyluracil)', 'pyrimidin', 'jen DNA'], ['uracil', 'pyrimidin', 'jen RNA']])}
+        <p class="aside">Nukleosidy: adenosin, guanosin, cytidin, uridin, thymidin.</p>`)
+        + sec('2. Řetězec', `<p>Páteř tvoří střídání <b>fosfátu a cukru</b>: fosfát esterově spojí 3′ jednoho a 5′ dalšího cukru. Báze visí na C1′ jako postranní řetězce u bílkovin. Řetězec má 5′-konec a 3′-konec.</p>`)
+        + sec('3. Dvoušroubovnice a přenos informace', `<p>Watsonův–Crickův model: dvě vlákna drží u sebe <b>vodíkové vazby</b> komplementárních bází, A–T (2 vazby) a G–C (3). Šířka 2,0 nm, závit 3,4 nm na 10 párů bází. Žlábky umožňují interkalaci.</p>
+        <p>DNA → (replikace) DNA, DNA → (transkripce) RNA → (translace v ribosomech) bílkovina.</p>`) },
+    { id: 't29a', topic: 't29', n: 1, min: 5, t: 'Deriváty kyseliny uhličité',
+      goal: 'Po lekci víš, proč jsou stálé jen deriváty s oběma nahrazenými OH, popíšeš chemii fosgenu, močoviny a isokyanátů a znáš kondenzační činidlo DCC.',
+      recall: 'Tipni si, proč kyselina uhličitá v čistém stavu neexistuje.',
+      tail: 'Vrať se k tipu ze začátku. Dvě OH na jednom uhlíku samovolně odštěpí vodu. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t29_q1', 't29_q2', 't29_q7', 't29_q8', 't29_q13', 't29_q20', 't29_q23', 't29_q24', 't29_q25', 't29_q29', 't29_q34', 't29_q36'],
+      beda: 'Isokyanát má prostřední uhlík jako terč: nukleofil míří přesně doprostřed mezi N a O. S vodou z něj zbude amin a bublina CO₂.',
+      body: () => sec('1. Kyselina uhličitá a její deriváty', `<p>Uhlík je tu v oxidačním stupni IV jako v CO₂. Kyselina uhličitá (pKa 3,8 a 10,2) i orthouhličitá v čistém stavu neexistují, víc OH na jednom uhlíku odštěpí vodu. <b>Monofunkční</b> deriváty se rozpadají na CO₂ a HX, <b>stálé</b> jsou až deriváty s oběma nahrazenými OH: fosgen, chlorformiáty, karbonáty, karbamáty, močovina.</p>
+        <p class="aside">Urethan je ethyl-karbamát, guanidin diamid-imid kyseliny uhličité, semikarbazid hydrazid kyseliny karbamové.</p>`)
+        + sec('2. Fosgen a močovina', `<p><b>Fosgen</b> (CO + Cl₂) je nejdostupnější derivát. Chová se jako dichlorid kyseliny: s alkoholy a aminy reaguje nukleofilní acylovou substitucí, s vodou dá HCl a CO₂, s primárním aminem a zahřátím isokyanát.</p>
+        <p><b>Močovina</b> je bazičtější než amidy, ale méně než aminy. Alkyluje se na kyslíku, Hofmannovým odbouráním dá hydrazin. S dialkylmalonátem (EtONa) uzavře kruh kyseliny barbiturové.</p>`)
+        + sec('3. Isokyanáty a DCC', `<p>Isokyanát R–N=C=O je heterokumulen. Nukleofil útočí na <b>prostřední uhlík</b>:</p>
+        ${tbl(['Isokyanát +', 'Produkt'], [['voda', 'karbamová kyselina → amin + CO₂'], ['alkohol', 'karbamát (urethan)'], ['amin', 'močovina']])}
+        <p>Vzniká Hofmannovým (z amidu), Curtiovým (z acylazidu) a Lossenovým odbouráváním (z hydroxamové kyseliny). Fenylisothiokyanát je činidlo Edmanova odbourávání.</p>
+        <p><b>DCC</b> je kondenzační činidlo: aktivuje karboxylovou kyselinu na O-acylisomočovinu a změní se na dicyklohexylmočovinu.</p>`) }
   ];
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
