@@ -1,7 +1,7 @@
 /* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu nebo při pomalé síti (3 s) z mezipaměti. */
 const VER = '202610162300';
 const CORE = 'fh-core-' + VER, RT = 'fh-rt-v2';   // v2: písma a 3Dmol se načítají s CORS, staré neprůhledné odpovědi z v1 se nepoužijí
-const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg'];
+const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg'];
 self.addEventListener('install', e => {
   // cache: 'reload' obejde mezipaměť prohlížeče, ať se pod novou verzí neuloží stará stránka
   e.waitUntil(caches.open(CORE).then(c => c.addAll(PRE.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
