@@ -1,8 +1,8 @@
 <!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>FormičkyHub</title>
 <script>addEventListener("load",function(){var b=document.getElementById("boot");b&&b.remove()});try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 /* Rozvržení: jeden úzký pracovní sloupec. Nahoře přepínače sady a režimu, pod nimi jedna karta s otázkou;
    kreslicí plocha je tečkovaný papír z laboratorního sešitu, vzorce se sází jako v přehledu (tučný Arial, barvy prvků). */
@@ -28493,7 +28493,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   let libP = null, viewer = null, cur = null, style = 'ball';
   const loadLib = () => libP || (libP = new Promise((ok, bad) => {
     if (window.$3Dmol) return ok();
-    const s = document.createElement('script'); s.src = LIB; s.async = true;
+    const s = document.createElement('script'); s.src = LIB; s.async = true; s.crossOrigin = 'anonymous';   // CORS: service worker pak pozná a neuloží chybnou odpověď
     s.onload = () => (window.$3Dmol ? ok() : bad()); s.onerror = () => { libP = null; bad(); };
     document.head.appendChild(s);
   }));
@@ -28556,7 +28556,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     msg.hidden = false; msg.textContent = 'Načítám 3D model…';
     box.querySelector('.m3d-x').focus();
     try {
-      await Promise.all([loadLib(), M3D ? null : fetch('m3d.json').then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(j => { M3D = j; })]);
+      await Promise.all([loadLib(), M3D ? null : fetch('m3d.json?v=' + FH_VER).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(j => { M3D = j; })]);
     } catch (e) { msg.textContent = '3D model se nepodařilo načíst. Zkontroluj připojení k internetu.'; return; }
     if (box.hidden) return;
     const data = M3D[id]; if (!data) { msg.textContent = '3D model pro tuto látku chybí.'; return; }
@@ -28588,7 +28588,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161305';
+const FH_VER = '202610161345';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
