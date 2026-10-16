@@ -1071,7 +1071,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
         <li><b>Album kartiček:</b> každá zvládnutá látka se odemkne jako kartička. Posbírej celé album přednášky.</li>
         <li><b>Analytická chemie:</b> Neznámý vzorek, Neznámá organická látka, Třída rozpustnosti, Čti IČ spektrum, Bodotávek a Seřaď postup. Otevřou se v Analytické chemii, odkaz „← Herna“ tě vrátí zpátky.</li>
         <li>Nahoře v Herně si přepneš <b>Vše / Organická / Analytická</b>, volba se pamatuje. Hra, kterou jsi hrála naposledy, má štítek „naposledy“.</li>
-        <li><b>Výzva kamarádce:</b> po Lékárně nebo Neznámé látce pošli odkaz. Kamarádka dostane přesně stejné otázky a uvidí, koho porazila.</li>
+        <li><b>Výzva ostatním:</b> po Lékárně nebo Neznámé látce pošli odkaz. Kdo ho otevře, dostane přesně stejné otázky a zkusí překonat tvůj výsledek.</li>
         <li>Hry se nepočítají do pokroku ani denního cíle.</li>
       </ul></details>
 
@@ -27360,10 +27360,10 @@ document.addEventListener('click', async e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet') && !$('#sheet').hidden) { const c = $('#shClose'); if (c) c.click(); } });
 renderStats(); renderBackup(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0);
 window.addEventListener('hashchange', () => { renderStats(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0); const sh = $('#sheet'); if (sh && !sh.hidden) { sh.hidden = true; modalOff(sh, true); document.body.classList.remove('sheet-open'); } });
-/* ===== Herna: Lékárna, Neznámá látka, Syntézní puzzle, Seřaď to, Album kartiček, výzvy kamarádkám ===== */
+/* ===== Herna: Lékárna, Neznámá látka, Syntézní puzzle, Seřaď to, Album kartiček, výzvy ===== */
 (function () {
   const GS = Object.assign({ on: 0, best: {} }, store.get('fg-herna', {}));
-  let CH = null;   // právě hraná výzva od kamarádky
+  let CH = null;   // právě hraná výzva
   const saveG = () => store.set('fg-herna', GS);
 
   /* --- data pro řazení: jen ověřené tabulky ze slajdů --- */
@@ -27410,7 +27410,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     return out;
   }
   let OS = null;
-  /* náhoda se semínkem: stejné semínko = stejné otázky (výzvy kamarádkám) */
+  /* náhoda se semínkem: stejné semínko = stejné otázky (výzvy) */
   const mulberry = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
   const newSeed = () => (Math.random() * 2147483647) | 0;
   function withRng(rng, fn) { if (!rng) return fn(); const r = Math.random; Math.random = rng; try { return fn(); } finally { Math.random = r; } }
@@ -27984,7 +27984,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
         : `<div class="al-card lock" aria-label="Zamčená kartička"><span class="al-n">${k + 1}</span><div class="al-pic"><span>?</span></div><b>${esc(famName(g) || 'Neznámá látka')}</b></div>`).join('')}</div>`;
   }
 
-  /* --- Výzva kamarádce: odkaz se semínkem a výsledkem --- */
+  /* --- Výzva: odkaz se semínkem a výsledkem --- */
   const GNAME = { lek: 'Lékárně U Formičky', nl: 'Neznámé látce' };
   const b64e = o => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const b64d = s => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/')))));
@@ -28000,7 +28000,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
       const win = r.sc > CH.sc || (r.sc === CH.sc && r.ok > CH.ok), tie = r.sc === CH.sc && r.ok === CH.ok;
       h = `<div class="fb ${win ? 'ok' : tie ? 'info' : 'bad'} ch-res"><p><b>${win ? `Porazila jsi ${esc(CH.by || 'X')}! 🎉` : tie ? 'Remíza!' : `${esc(CH.by || 'X')} zůstává před tebou.`}</b></p><p class="aside">Ty: ${chRes(LAST)} · ${esc(CH.by || 'X')}: ${chRes(CH)}</p></div>`;
     }
-    return h + `<div class="ch-box"><b>${CH ? 'Pošli výzvu zpátky' : 'Vyzvi kamarádku'}</b><p class="aside">Dostane přesně stejné otázky a uvidí tvůj výsledek.</p>
+    return h + `<div class="ch-box"><b>${CH ? 'Pošli výzvu zpátky' : 'Vyzvi ostatní'}</b><p class="aside">Kdo odkaz otevře, dostane přesně stejné otázky a uvidí tvůj výsledek.</p>
       <div class="ch-row"><input id="chName" type="text" maxlength="24" placeholder="Tvoje jméno" value="${esc(myName())}" aria-label="Tvoje jméno"><button type="button" class="btn primary" data-hn="chshare">Poslat výzvu</button></div>
       <div class="ch-prev" id="chPrev" hidden></div><button type="button" class="link" data-hn="chlink">Poslat jen odkaz (třeba pro Instagram)</button><p class="bk-msg" id="chMsg" hidden></p></div>`;
   }
@@ -28070,7 +28070,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     let copied = false;
     try { await navigator.clipboard.writeText(txt + ' ' + url); copied = true; } catch (e) { /* nejde */ }
     const dl = file ? ` <a href="${$('#chPrev').dataset.u}" download="vyzva-formicky.png">Stáhnout obrázek výzvy</a> a pošli ho s odkazem.` : '';
-    msg.innerHTML = copied ? `Odkaz je zkopírovaný, vlož ho kamarádce do chatu.${dl}` : `Zkopíruj odkaz: <input class="ch-url" readonly value="${esc(url)}" onclick="this.select()">${dl}`;
+    msg.innerHTML = copied ? `Odkaz je zkopírovaný, vlož ho do chatu.${dl}` : `Zkopíruj odkaz: <input class="ch-url" readonly value="${esc(url)}" onclick="this.select()">${dl}`;
   }
   function chFromHash() {
     const m = location.hash.match(/^#vyzva=([\w-]+)/); if (!m) return;
@@ -28080,8 +28080,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     CH = c;
     try { if (window.fhCount) fhCount('vyzva-otevrena', true); } catch (e) { /* nic */ }
     open(`<h2 class="hn-h">Výzva!</h2><div class="ch-intro"><p><b>${esc(c.by || 'X')}</b> tě vyzývá v <b>${GNAME[c.g]}</b>.</p>
-      <p class="aside">${esc(chDesc(c))}</p><div class="st-nums lk-sum"><div><b>${c.g === 'lek' ? c.sc + ' Kč' : c.sc + ' b.'}</b><span>její výsledek</span></div><div><b>${c.ok} / ${c.of}</b><span>${c.g === 'lek' ? 'spokojených' : 'uhodnuto'}</span></div></div>
-      <p class="aside">Dostaneš úplně stejné otázky. Překonáš ji?</p><div class="row"><button type="button" class="btn primary" data-hn="chgo">Přijmout výzvu</button><button type="button" class="btn" data-hn="menu">Radši ne</button></div></div>`);
+      <p class="aside">${esc(chDesc(c))}</p><div class="st-nums lk-sum"><div><b>${c.g === 'lek' ? c.sc + ' Kč' : c.sc + ' b.'}</b><span>výsledek k překonání</span></div><div><b>${c.ok} / ${c.of}</b><span>${c.g === 'lek' ? 'spokojených' : 'uhodnuto'}</span></div></div>
+      <p class="aside">Dostaneš úplně stejné otázky. Zvládneš víc?</p><div class="row"><button type="button" class="btn primary" data-hn="chgo">Přijmout výzvu</button><button type="button" class="btn" data-hn="menu">Radši ne</button></div></div>`);
   }
   function chGo() {
     if (!CH) return;
@@ -28382,7 +28382,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610160840';
+const FH_VER = '202610160905';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
