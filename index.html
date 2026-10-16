@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161850';
+const FH_VER = '202610161910';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29425,7 +29425,113 @@ const FH_OL = (() => {
         + sec('2. Thioly a disulfidy', `<p>Thioly nepříjemně zapáchají už ve stopách. Připravují se přes <b>thiomočovinu</b>, protože s NaSH by vzniklý thiolát napadl další halogenalkan a vznikl by sulfid.</p>
         <p>I₂ oxiduje thioly na <b>disulfid</b>, Zn/H⁺ ho redukuje zpět. Stejně se v bílkovinách spojují cysteiny na cystin, disulfidové můstky drží jejich strukturu.</p>`)
         + sec('3. Sulfidy a ochrana karbonylu', `<p>Sulfid se oxiduje postupně: H₂O₂ → sulfoxid, CH₃COOOH → sulfon. Z trimethylsulfonia vzniká ylid (CH₃)₂S⁺–CH₂⁻.</p>
-        <p>Keton se dá <b>chránit</b> jako 1,3-dithiolan: LiAlH₄ pak redukuje jen ester. HgCl₂ vrátí keton, Raneyův nikl síru odstraní a z C=O zbude CH₂.</p>`) }
+        <p>Keton se dá <b>chránit</b> jako 1,3-dithiolan: LiAlH₄ pak redukuje jen ester. HgCl₂ vrátí keton, Raneyův nikl síru odstraní a z C=O zbude CH₂.</p>`) },
+    { id: 't15a', topic: 't15', n: 1, min: 5, t: 'Aldehydy a ketony: názvy, příprava a oxidace',
+      goal: 'Po lekci pojmenuješ aldehyd a keton, víš, jak se připraví oxidací, ozonolýzou, redukcí esteru nebo z alkynu, a odlišíš aldehyd od ketonu oxidací.',
+      recall: 'Tipni si, proč se aldehyd oxiduje snadno a keton skoro vůbec.',
+      tail: 'Vrať se k tipu ze začátku. Keton nemá na karbonylovém uhlíku vodík, oxidace by musela štěpit vazbu C–C. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t15_q1', 't15_q2', 't15_q3', 't15_q4', 't15_q5', 't15_q8', 't15_q9', 't15_q10', 't15_q11', 't15_q13', 't15_q14', 't15_q15'],
+      beda: 'Aldehyd je ten ukecaný, ráda se nechá oxidovat a Tollensovi nakreslí stříbrné zrcátko. Keton mlčí.',
+      body: () => sec('1. Názvy', `<ul class="ac-ul"><li>Aldehyd -al, keton -on. C=O dostane nejnižší lokant: hex-4-en-2-on.</li><li>CHO na kruhu: <b>-karbaldehyd</b> (cyklohexankarbaldehyd).</li><li>Když je hlavní skupinou vyšší skupina (třeba ester), keton se píše předponou <b>oxo-</b>.</li><li>Acyly: formyl HCO–, acetyl CH₃CO–, benzoyl C₆H₅CO–. Akrolein je prop-2-enal.</li></ul>
+        <p>Na rozdíl od esterů a acylchloridů nemají aldehydy a ketony odstupující skupinu (–H a –R neodejdou), proto se na ně nukleofil <b>aduje</b>, nesubstituuje.</p>`)
+        + sec('2. Příprava', `${tbl(['Z čeho', 'Činidlo', 'Produkt'], [['primární alkohol', 'PCC v CH₂Cl₂ (bezvodé)', 'aldehyd, dál se neoxiduje'], ['alken', '1. O₃, 2. Zn, H₃O⁺', 'aldehydy a ketony (=CH₂ dá formaldehyd)'], ['ester', 'DIBAH, −78 °C', 'aldehyd'], ['koncový alkyn', 'H₃O⁺, HgSO₄', 'methylketon'], ['acylchlorid', '(CH₃)₂CuLi', 'keton (kuprát s ketonem už nereaguje)'], ['fenol', 'CHCl₃, NaOH (Reimer–Tiemann)', 'aldehyd přes :CCl₂']])}`)
+        + sec('3. Oxidace', `<p>Aldehyd má na C=O vodík a oxiduje se snadno na kyselinu. <b>Tollensova zkouška</b>: aldehyd redukuje Ag⁺ na kovové stříbro, které vytvoří zrcátko. Ketony běžnými činidly neoxiduješ.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> ve vodném prostředí vzniká z aldehydu hydrát a ten se oxiduje dál na kyselinu. Proto PCC v bezvodém CH₂Cl₂.</p>`) },
+    { id: 't15b', topic: 't15', n: 2, min: 6, t: 'Nukleofilní adice na C=O',
+      goal: 'Po lekci seřadíš karbonyly podle reaktivity a předpovíš produkt s vodou, HCN, Grignardem, aminy, alkoholy a Wittigovým ylidem.',
+      recall: 'Tipni si, jestli je reaktivnější formaldehyd, nebo aceton, a proč.',
+      tail: 'Vrať se k tipu ze začátku. Formaldehyd nemá žádný alkyl, který by stínil nebo stabilizoval δ+. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t15_q16', 't15_q17', 't15_q18', 't15_q7', 't15_q21', 't15_q22', 't15_q23', 't15_q24', 't15_q25', 't15_q27', 't15_q28', 't15_q32'],
+      beda: 'Primární amin s ketonem udělá imin, sekundární enamin. Kdo nemá na dusíku vodík, musí si ho půjčit od α-uhlíku.',
+      body: () => sec('1. Reaktivita', `<p>Nukleofil napadne δ+ karbonylový uhlík. Aldehydy jsou reaktivnější než ketony (jeden alkyl: menší bránění i menší stabilizace δ+), aromatické aldehydy méně než alifatické (kruh rezonancí zmenší δ+). Formaldehyd je ve vodě z 99,9 % hydrát, aceton jen z 0,1 %.</p>
+        <p>Záporné nukleofily (⁻OH, H⁻, R⁻, ⁻CN) se adují přímo. Neutrální (H₂O, ROH, amin) potřebují <b>kyselou katalýzu</b>: protonace kyslíku zvýší elektrofilitu uhlíku.</p>`)
+        + sec('2. C, H a O nukleofily', `${tbl(['Nukleofil', 'Produkt'], [['HCN (kat. ⁻CN)', 'kyanhydrin, nukleofilem je kyanid'], ['RMgX', 'formaldehyd → primární, aldehyd → sekundární, keton → terciární alkohol'], ['ROH, H⁺, odstraňování vody', 'hemiacetal → <b>acetal</b> (chránicí skupina, stálý v zásadě)'], ['Wittigův ylid Ph₃P=CHR', 'alken přesně na místě C=O, hnací silou je vazba P=O']])}`)
+        + sec('3. Dusíkaté nukleofily', `${tbl(['Činidlo', 'Produkt'], [['primární amin', 'imin (C=N)'], ['sekundární amin', 'enamin (na dusíku není H, odejde z α-uhlíku)'], ['NH₂OH', 'oxim'], ['H₂NNH₂, KOH (Wolff–Kižněr)', 'C=O → CH₂, uniká N₂']])}
+        <p class="ac-les-trap"><b>Pozor:</b> iminy a oximy vznikají nejrychleji kolem pH 4–5. V silně kyselém se amin protonuje a přestane být nukleofilem.</p>`) },
+    { id: 'cka', topic: 'ck', n: 1, min: 5, t: 'Karboxylové kyseliny a nitrily',
+      goal: 'Po lekci vysvětlíš, proč jsou karboxylové kyseliny kyselé a jak jejich kyselost ovlivní substituenty, a víš, jak se kyselina připraví a co dělá nitril.',
+      recall: 'Tipni si, proč je kyselina octová (pKa 4,75) o tolik kyselejší než ethanol (16).',
+      tail: 'Vrať se k tipu ze začátku. Karboxylát rozloží záporný náboj na dva kyslíky. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['q2', 'q3', 'q4', 'q5', 'q6', 'q10', 'q11', 'q13', 'q14', 'q17', 'q18', 'q23'],
+      beda: 'Chlor na kyselině je jako bodyguard: odtáhne elektrony a karboxylát je v bezpečí. Čím blíž a čím víc chlorů, tím silnější kyselina.',
+      body: () => sec('1. Stavba a vlastnosti', `<p>Uhlík COOH je sp², skupina je planární. Kyseliny tvoří vodíkovými vazbami <b>dimery</b>, a proto mají vysoké teploty varu. S NaOH dají sůl, která je ve vodě rozpustná.</p>
+        <p>Kyselé jsou díky <b>rezonanci karboxylátu</b>: záporný náboj se rozloží na dva kyslíky, obě vazby C–O v mravenčanu mají 127 pm.</p>`)
+        + sec('2. Kyselost a substituenty', `${tbl(['Látka', 'pKa'], [['ethanol', '16'], ['kyselina octová', '4,75'], ['kyselina mravenčí', '3,75'], ['chloroctová', '2,85'], ['trichloroctová', '0,64'], ['trifluoroctová', '0,23']])}
+        <ul class="ac-ul"><li><b>Akceptor</b> (Cl, F, NO₂) stabilizuje karboxylát a kyselost zvýší, s rostoucí vzdáleností slábne.</li><li><b>Donor</b> (alkyl, OCH₃) karboxylát destabilizuje a kyselost sníží. Proto je mravenčí asi 10× silnější než octová.</li></ul>`)
+        + sec('3. Příprava a nitrily', `<p>Kyselina o uhlík delší vznikne z R–Br přes <b>nitril</b> (NaCN, pak H₃O⁺) nebo karboxylací Grignardova činidla CO₂. Uhlík nitrilu je δ+, hydrolýzou přes amid dá kyselinu. Grignard se na nitril aduje jen jednou (imidový anion další odpuzuje) a hydrolýzou vznikne keton.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> boran (BH₃) redukuje karboxylovou kyselinu na alkohol a nitroskupinu nechá být.</p>`) },
+    { id: 'fda', topic: 'fd', n: 1, min: 5, t: 'Funkční deriváty karboxylových kyselin',
+      goal: 'Po lekci víš, jak se z acylchloridu, anhydridu, esteru a amidu stane jiný derivát, alkohol, keton, aldehyd nebo amin, a pojmenuješ je.',
+      recall: 'Tipni si, který derivát je nejreaktivnější: acylchlorid, ester, nebo amid.',
+      tail: 'Vrať se k tipu ze začátku. Acylchlorid je nejreaktivnější a amid nejstálejší. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['fq9', 'fq10', 'fq12', 'fq13', 'fq8', 'fq15', 'fq16', 'fq17', 'fq18', 'fq19', 'fq25', 'fq27'],
+      beda: 'Grignard je nenasyta, na ester se vrhne dvakrát a skončí u terciárního alkoholu. Gilman se zastaví u ketonu, DIBAH u aldehydu.',
+      body: () => sec('1. Acylchloridy a anhydridy', `<p>Acylchlorid (SOCl₂ z kyseliny) je nejreaktivnější: s vodou dá kyselinu, s alkoholem ester (pyridin vychytá HCl), s 2 NH₃ amid (druhý amoniak zachytí HCl). Anhydrid reaguje stejně, jen mírněji, a uvolní kyselinu.</p>
+        <p>Amid se nepřipravuje přímo z kyseliny a amoniaku, vznikla by jen amonná sůl. p-Aminofenol se acetanhydridem acyluje na dusíku (lepší nukleofil) a vznikne paracetamol.</p>`)
+        + sec('2. Estery', `${tbl(['Reakce', 'Výsledek'], [['Fischerova esterifikace (H⁺)', 'rovnováha, štěpí se C–OH kyseliny a O–H alkoholu'], ['zmýdelnění (NaOH)', '<b>nevratné</b>, karboxylát s alkoholem nereaguje'], ['Baeyer–Villiger (MCPBA)', 'z ketonu ester, O jde k víc substituovanému uhlíku'], ['LiAlH₄', 'primární alkohol'], ['DIBAH, −78 °C', 'aldehyd'], ['2 RMgX', 'terciární alkohol']])}`)
+        + sec('3. Organokovová činidla a amidy', `${tbl(['Acylchlorid +', 'Produkt'], [['R′MgX (nadbytek)', 'terciární alkohol, keton se izolovat nedá'], ['R′₂CuLi (Gilman)', 'keton']])}
+        <p>Amid je nejstálejší derivát, hydrolyzuje se až za tepla v kyselině nebo zásadě. <b>LiAlH₄ redukuje amid na amin</b>, C=O se změní na CH₂.</p>
+        <p class="aside">Názvy: ethyl-ethanoát (ethyl-acetát), ethanoylchlorid, N-methylpropanamid. Laktam je cyklický amid, lakton cyklický ester.</p>`) },
+    { id: 't18a', topic: 't18', n: 1, min: 5, t: 'Enoly, enoláty a α-substituce',
+      goal: 'Po lekci vysvětlíš kyselost α-vodíku, víš, k čemu je LDA, a předpovíš produkt α-halogenace, haloformové reakce, alkylace enolátu i malonesterové a acetoacetátové syntézy.',
+      recall: 'Tipni si, který vodík v acetonu je nejkyselejší a proč.',
+      tail: 'Vrať se k tipu ze začátku. Kyselý je vodík na α-uhlíku, protože enolát nese náboj i na kyslíku. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t18_q1', 't18_q2', 't18_q5', 't18_q6', 't18_q8', 't18_q11', 't18_q12', 't18_q15', 't18_q16', 't18_q20', 't18_q21', 't18_q24'],
+      beda: 'α-Uhlík je soused karbonylu a dělá s ním spolek: jakmile přijde o proton, karbonyl mu pomůže unést záporný náboj.',
+      body: () => sec('1. Kyselý α-vodík', `<p>Vodík na uhlíku hned vedle C=O je kyselý, protože vzniklý <b>enolát</b> rozloží záporný náboj rezonancí i na kyslík.</p>
+        ${tbl(['Látka', 'pKa'], [['pentan-2,4-dion (CH₂ mezi dvěma C=O)', '9'], ['voda', '16'], ['aceton', '19,3'], ['diisopropylamin (konj. kys. LDA)', '~40'], ['ethan', '~60']])}
+        <p>Aceton je v rovnováze skoro jen ve ketoformě. Enol i enolát reagují s elektrofilem na <b>α-uhlíku</b>.</p>`)
+        + sec('2. Halogenace', `${tbl(['Reakce', 'Podmínky', 'Výsledek'], [['α-halogenace ketonu', 'X₂, kyselina', 'přes enol, jeden halogen'], ['Hell–Volhard–Zelinskij', 'Br₂, PBr₃, pak H₂O', 'α-bromkyselina (přes acylbromid, ten snadno enolizuje)'], ['haloformová reakce', 'X₂, NaOH, methylketon', 'karboxylát a CHX₃']])}`)
+        + sec('3. Alkylace enolátů', `<p>Enolát alkyluje halogenalkan mechanismem <b>SN2</b>: allyl a benzyl > CH₃ > primární, terciární ne. <b>LDA</b> (BuLi + diisopropylamin) převede všechen keton na enolát a jako objemná báze se neaduje na C=O. Odtrhne H z méně substituovaného α-uhlíku.</p>
+        ${tbl(['Syntéza', 'Z R–X vznikne'], [['malonesterová (NaOEt)', 'karboxylová kyselina R–CH₂–COOH'], ['acetoacetátová (NaOEt)', 'methylketon R–CH₂–CO–CH₃']])}
+        <p class="ac-les-trap"><b>Pozor:</b> obě syntézy končí dekarboxylací. CO₂ při zahřátí snadno ztrácejí jen malonové kyseliny a β-ketokyseliny.</p>`) },
+    { id: 't18b', topic: 't18', n: 2, min: 5, t: 'Aldolizace, Claisen a Michael',
+      goal: 'Po lekci předpovíš produkt aldolizace, aldolové kondenzace, Claisenovy a Dieckmannovy kondenzace i Michaelovy adice a víš, jak je spojí Robinsonova anelace.',
+      recall: 'Vybav si z lekce 1, co je enolát. Tipni si, co se stane, když enolát narazí na C=O jiné molekuly.',
+      tail: 'Vrať se k tipu ze začátku. Enolát se aduje na C=O a vznikne nová vazba C–C: aldol. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t18_q25', 't18_q26', 't18_q27', 't18_q28', 't18_q29', 't18_q31', 't18_q32', 't18_q34', 't18_q35', 't18_q36', 't18_q37', 't18_q40'],
+      beda: 'Donor a akceptor: enolát přinese elektrony, karbonyl je přijme. Benzaldehyd nemá α-H, a tak může být jen akceptor, žádné zmatky ve směsi.',
+      body: () => sec('1. Aldolizace', `<p>Enolát jedné molekuly (donor) se aduje na C=O druhé (akceptor) a vznikne <b>β-hydroxyaldehyd nebo β-hydroxyketon</b>. Je to rovnováha: u aldehydů výhodná, u ketonů ne (aceton jen asi 5 %).</p>
+        <p><b>Aldolová kondenzace</b>: aldol odštěpí vodu a vznikne konjugovaný enon, to posune rovnováhu. Intramolekulárně dá 1,4-diketon pětičlenný a 1,5-diketon šestičlenný kruh.</p>
+        <p class="aside">Smíšená aldolizace dvou aldehydů s α-H dá čtyři produkty. Čistá je, když jeden partner α-H nemá (benzaldehyd).</p>`)
+        + sec('2. Claisenova kondenzace', `<p>U esteru po adici enolátu <b>odstoupí alkoxid</b> a vznikne <b>β-ketoester</b>. V zásaditém prostředí je hned deprotonovaný, proto se nakonec okyselí H₃O⁺. <b>Dieckmannova reakce</b> je intramolekulární Claisen diesteru a dá cyklický β-ketoester.</p>`)
+        + sec('3. Michaelova adice a Robinsonova anelace', `<p>Nukleofil se aduje na <b>β-uhlík</b> α,β-nenasyceného karbonylu (1,4-adice) a vznikne 1,5-dikarbonylová sloučenina. Ve Storkově reakci je nukleofilem enamin z ketonu a sekundárního aminu.</p>
+        <p><b>Robinsonova anelace</b> = Michaelova adice + intramolekulární aldolová kondenzace, výsledkem je nový šestičlenný kruh s enonem.</p>`) },
+    { id: 't19a', topic: 't19', n: 1, min: 5, t: 'Aminy: bazicita a příprava',
+      goal: 'Po lekci rozlišíš primární, sekundární a terciární amin, seřadíš aminy podle bazicity a vybereš vhodnou cestu k čistému aminu.',
+      recall: 'Tipni si, jestli je silnější báze anilin, nebo cyklohexylamin, a proč.',
+      tail: 'Vrať se k tipu ze začátku. Cyklohexylamin, protože anilin rozprostře volný pár do kruhu. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t19_q1', 't19_q2', 't19_q4', 't19_q7', 't19_q8', 't19_q9', 't19_q10', 't19_q12', 't19_q13', 't19_q15', 't19_q16', 't19_q17'],
+      beda: 'Volný pár dusíku je jeho bazicita. Kdo ho rozdá do kruhu (anilin) nebo do C=O (amid), na proton už nemá.',
+      body: () => sec('1. Typy a vlastnosti', `<p>Primární, sekundární a terciární amin se liší <b>počtem uhlíků na dusíku</b>, ne typem uhlíku: terc-butylamin je primární. Předpona amino- se píše, když je v molekule vyšší skupina (COOH, C=O). Aminy tvoří vodíkové vazby N–H···N, a proto vřou výš než alkany. Rychlá inverze dusíku brání oddělit enantiomery.</p>`)
+        + sec('2. Bazicita', `<p>Volný pár dusíku přijme proton. Bazicita klesá: <b>alkylamin > arylamin > amid</b>.</p>
+        <ul class="ac-ul"><li>Anilin rozprostře volný pár rezonancí do kruhu (záporný náboj ortho a para), protonací by o stabilizaci přišel.</li><li>Amid má volný pár delokalizovaný do C=O, bazický prakticky není.</li></ul>`)
+        + sec('3. Příprava aminů', `${tbl(['Metoda', 'Poznámka'], [['NH₃ + R–X', 'nevhodné, vznikne směs až po kvarterní sůl'], ['Gabrielova syntéza', 'ftalimid + KOH, SN2, čistý primární amin'], ['azid, pak redukce', 'nukleofil útočí na koncový dusík'], ['reduktivní aminace', 'keton + NH₃ → imin → H₂/Ni'], ['Hofmannovo, Curtiovo, Lossenovo odbourání', 'přes isokyanát, amin o <b>jeden uhlík kratší</b>'], ['LiAlH₄ na amid', 'uhlík zůstane']])}`) },
+    { id: 't19b', topic: 't19', n: 2, min: 5, t: 'Reakce aminů, diazoniové soli a nitrosloučeniny',
+      goal: 'Po lekci víš, jak amin acylovat a eliminovat, co dá s kyselinou dusitou, k čemu jsou diazoniové soli a jak se redukuje nitroskupina.',
+      recall: 'Vybav si z organické analýzy, jak kyselina dusitá odliší primární, sekundární a terciární amin.',
+      tail: 'Vrať se k papíru ze začátku. Primární dá diazoniovou sůl, sekundární N-nitrosamin, terciární nic. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t19_q18', 't19_q19', 't19_q20', 't19_q22', 't19_q23', 't19_q24', 't19_q25', 't19_q26', 't19_q27', 't19_q30', 't19_q32', 't19_q37'],
+      beda: 'Hofmannova eliminace je opak Zajceva: objemná skupina N(CH₃)₃⁺ nechá bázi sáhnout jen na nejbližší vodíky, a vznikne méně substituovaný alken.',
+      body: () => sec('1. Reakce aminů', `<ul class="ac-ul"><li><b>Acylace</b> acylchloridem, pyridin vychytá HCl.</li><li><b>Hofmannova eliminace</b> kvarterní amoniové soli dá hlavně <b>méně</b> substituovaný alken (pent-1-en 94 %).</li><li>Anilin se před bromací nebo Friedel–Craftsem <b>acetyluje</b>: acetamidoskupina aktivuje méně (jen jedna substituce) a neváže AlCl₃.</li></ul>`)
+        + sec('2. Kyselina dusitá a diazoniové soli', `<p>Elektrofilem je <b>nitrosoniový ion NO⁺</b>. Primární amin dá diazoniovou sůl, sekundární N-nitrosamin, terciární nereaguje.</p>
+        ${tbl(['Diazoniová sůl', 'Co dělá'], [['alifatická', 'hned ztratí N₂ a vznikne karbokation'], ['aromatická + CuX (Sandmeyer)', 'Ar–X přes arylový radikál'], ['aromatická + fenol nebo N,N-dialkylanilin', 'azobarvivo (kopulace do para)']])}`)
+        + sec('3. Nitro-, nitroso- a oximy', `<p>Nitroskupina má formální náboje N⁺ a O⁻. Nitrobenzen se redukuje postupně: nitrosobenzen → fenylhydroxylamin → <b>anilin</b>. Primární a sekundární nitrososloučeniny se přesmyknou na oximy. <b>Beckmannův přesmyk</b> oximu dá amid (z cyklohexanon-oximu kaprolaktam).</p>
+        <p class="aside">Diazoketon Wolffovým přesmykem ztratí N₂ a dá keten, s vodou kyselinu o uhlík delší.</p>`) },
+    { id: 't20a', topic: 't20', n: 1, min: 5, t: 'Organokovové sloučeniny a cross-coupling',
+      goal: 'Po lekci víš, jak se chovají organolithné sloučeniny, Grignardova činidla a kupráty, a popíšeš katalytický cyklus cross-couplingu s pojmenovanými reakcemi.',
+      recall: 'Tipni si, jaký parciální náboj má uhlík vázaný na lithium nebo hořčík.',
+      tail: 'Vrať se k tipu ze začátku. Uhlík na kovu je δ−, nukleofil i silná báze. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t20_q1', 't20_q4', 't20_q10', 't20_q14', 't20_q15', 't20_q18', 't20_q20', 't20_q23', 't20_q29', 't20_q31', 't20_q33', 't20_q35'],
+      beda: 'Cross-coupling je tanec ve třech krocích: oxidativní adice, transmetalace, reduktivní eliminace. A palladium se po tanci vrátí tam, kde začalo.',
+      body: () => sec('1. Li, Mg a Cu', `<p>Uhlík na elektropozitivním kovu je <b>δ−</b>: nukleofil a silná báze. BuLi slouží hlavně jako velmi silná báze, z diisopropylaminu udělá LDA.</p>
+        ${tbl(['Činidlo', 'Typické reakce'], [['R–MgX', 'C=O → alkohol, CO₂ → kyselina, oxiran → alkohol o 2 C delší, ester → terciární alkohol (2 ekv.)'], ['R₂CuLi (Gilman)', 'acylchlorid → keton, enon → <b>1,4-adice</b>'], ['Zn (Reformatskij)', 'α-halogenester + C=O → β-hydroxyester'], ['ICH₂ZnI (Simmons–Smith)', 'alken → cyklopropan']])}
+        <p class="ac-les-trap"><b>Pozor:</b> s kyselinou Grignard nereaguje adicí, odtrhne proton a zničí se na alkan.</p>`)
+        + sec('2. Katalytický cyklus', `<p>Organokovové sloučeniny přechodných kovů mají kovalentnější vazbu a jsou stálejší. Cross-coupling R–X (elektrofil) + R′–M (nukleofil) jde dokola:</p>
+        <ol class="ac-les-steps"><li><b>oxidativní adice</b> R–X na Pd⁰ (vznikne Pdᴵᴵ)</li><li><b>transmetalace</b> (R′ přejde z kovu M na Pd)</li><li><b>reduktivní eliminace</b> R–R′ a návrat Pd⁰</li></ol>
+        <p>Heckova reakce má místo transmetalace inzerci alkenu a syn-β-eliminaci.</p>`)
+        + sec('3. Pojmenované reakce', `${tbl(['Reakce', 'Kovová složka'], [['Suzuki–Miyaura', 'boronové kyseliny a boronáty, báze'], ['Stille', 'stannan R–SnBu₃'], ['Negishi', 'organozinečnaté R–ZnX'], ['Kumada', 'Grignard, Ni katalyzátor'], ['Hiyama', 'organokřemík + TBAF'], ['Sonogashira', 'terminální alkyn, CuI a báze'], ['Buchwald–Hartwig', 'vazba aryl–N, O, S']])}
+        <p class="aside">Nobelova cena 2010: Heck, Negishi, Suzuki.</p>`) }
   ];
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
