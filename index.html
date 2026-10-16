@@ -583,7 +583,7 @@ body.sheet-file .sheet{position:static}
 .hn-sel select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;max-width:100%}
 .hn-goal{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 12px;border:1px solid var(--accent);border-radius:12px;background:var(--accent-soft)}
 .hn-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.hn-rg{padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .92rem/1.3 inherit;text-align:left;cursor:pointer}
+.hn-rg{padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .92rem/1.3 inherit;text-align:left;cursor:pointer;overflow-wrap:anywhere;min-width:0}
 .hn-rg.bad{border-color:#dc2626;color:var(--muted);text-decoration:line-through}
 
 .hn-hrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -25741,7 +25741,8 @@ const SYN = CHAINS.map(({ a, b, x }) => {
   return synCard([a, b], [x], opts.map(t => [PT(t)]), { id, prompt: 'Jakými dvěma kroky se dostaneš z výchozí látky k produktu?' });
 }).filter(Boolean);
 /* tříkrokové syntézy: dvě navazující dvojice; vyřazené po kontrole (zbytečné okliky) a možnosti vedoucí ke stejnému produktu */
-const SYN3_DROP = new Set(['fd__syn3_d19_d1_d9', 'fd__syn3_d19_d1_d26', 't19__syn3_a55_a35_a38', 't21__syn3_a4_a5_a8', 't22__syn3_a1_a3_a4', 't22__syn3_a3_a4_a6', 't22__syn3_a3_a4_a7', 't23__syn3_a1_a2_a3', 't24__syn3_a17_a18_x3']);
+const SYN3_DROP = new Set(['fd__syn3_d19_d1_d9', 'fd__syn3_d19_d1_d26', 't19__syn3_a55_a35_a38', 't21__syn3_a4_a5_a8', 't22__syn3_a1_a3_a4', 't22__syn3_a3_a4_a6', 't22__syn3_a3_a4_a7', 't23__syn3_a1_a2_a3', 't24__syn3_a17_a18_x3',
+  't09__syn3_a16_a17_a18', 't09__syn3_a17_a18_a16', 't09__syn3_a18_a16_a17', 't13__syn3_a34_a35_a36', 't13__syn3_a35_a36_a34', 't13__syn3_a36_a34_a35']);   // Waldenův cyklus dokola: cíl = výchozí látka
 const SYN3_BAD = {
   t18__syn3_a36_a20_a22: ['① 1. NaOEt, ethanol, 2. H₃O⁺ | ② 1. NaOEt, EtOH, 2. CH₃I, 3. H₃O⁺, zahřívání | ③ 1. NaOEt, EtOH, 2. CH₃CH₂CH₂CH₂Br'],
   t24__syn3_a17_a18_a11: ['① H₃O⁺ | ② H₃O⁺ | ③ 1. NaBH₄, 2. H₂O', '① H₃O⁺ | ② H₂, Pd/C | ③ 1. NaBH₄, 2. H₂O'],
@@ -27514,6 +27515,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 (function () {
   const GS = Object.assign({ on: 0, best: {} }, store.get('fg-herna', {}));
   let CH = null;   // právě hraná výzva
+  let CH0 = null;  // vlastní nastavení her před přijetím výzvy, po výzvě se vrátí
+  const chOff = () => { CH = null; if (CH0) { NL.topic = CH0.nt; NL.n = CH0.nn; L.topics = CH0.lt; L.n = CH0.ln; CH0 = null; } };
   const saveG = () => store.set('fg-herna', GS);
 
   /* --- data pro řazení: jen ověřené tabulky ze slajdů --- */
@@ -27553,8 +27556,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     ORD.forEach(([t, title, ask, dir, unit]) => {
       const T = TOPIC_BY[t]; if (!T) return;
       const tb = Object.values(T.tables || {}).flat().find(x => x.title.startsWith(title)); if (!tb) return;
-      const lab = tb.f === 0 ? 1 : 0;
-      const rows = tb.rows.map(r => ({ name: r[lab], f: tb.f === 0 ? r[0] : '', raw: r[tb.num], v: num(r[tb.num]) })).filter(r => isFinite(r.v) && r.name);
+      const two = tb.f === 0 && tb.cols.length > 2 && tb.num !== 1, lab = two ? 1 : 0;   // vzorec + název; jinak by název byl hodnota
+      const rows = tb.rows.map(r => ({ name: String(r[lab] || '').replace(/\s*\(slajd[^)]*\)/, ''), f: two ? r[0] : '', raw: r[tb.num], v: num(r[tb.num]) })).filter(r => isFinite(r.v) && r.name);
       if (rows.length >= 3) out.push({ t, title: tb.title, ask, dir, unit, rows });
     });
     return out;
@@ -27574,7 +27577,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   }
   /* v nabídce vede odkaz vlevo nahoře na úvod, ve hře zpátky do nabídky */
   function open(html, home) { clearInterval(L.timer); const b = box(); b.innerHTML = `<div class="hn-card"><div class="hn-top">${home ? '<a class="link" href="#" data-hn="close">← FormičkyHub</a>' : '<button type="button" class="link" data-hn="menu">← Herna</button>'}<button type="button" class="m3d-x" data-hn="close" aria-label="Zavřít">×</button></div><div id="hnBody">${html}</div></div>`; b.hidden = false; document.body.classList.add('sheet-open'); b.scrollTop = 0; modalOn(b, 'Herna'); b.tabIndex = -1; b.focus({ preventScroll: true }); }
-  function close() { clearInterval(L.timer); const b = $('#herna'); if (b) b.hidden = true; document.body.classList.remove('sheet-open'); CH = null; renderEntry(); if (b) modalOff(b); }
+  function close() { clearInterval(L.timer); const b = $('#herna'); if (b) b.hidden = true; document.body.classList.remove('sheet-open'); chOff(); renderEntry(); if (b) modalOff(b); }
   const best = k => GS.best[k] || 0;
   /* rozložení Herny: filtr předmětu a naposledy hraná hra (jen vzhled, mimo zálohu) */
   const HUI = Object.assign({ f: '*', last: '' }, store.get('fg-hn-ui', {}));
@@ -27660,10 +27663,14 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     P.g = pool[Math.floor(Math.random() * pool.length)]; P.i = 0; P.wrong = new Set(); P.pts = 0;
     synOpts(); synRender();
   }
+  /* činidlo, se kterým by cesta vedla ke stejnému produktu (SYN_BAD, SYN3_BAD), se nenabízí jako špatné */
+  const synAlt = (path, rs) => path.length === 2 ? pairBad(path[0], path[1], rs[0], rs[1])
+    : (SYN3_BAD[P.g.id] || []).includes(stepsTxt(rs).replace(/\n/g, ' | ')) || pairBad(path[0], path[1], rs[0], rs[1]) || pairBad(path[1], path[2], rs[1], rs[2]);
   function synOpts() {
-    const path = P.g.chain.path, r = path[P.i], L = new Set([reagLine(r.reag)]);
-    (r.wrongReag || []).forEach(w => L.add(reagLine(w)));
-    path.forEach(x => L.add(reagLine(x.reag)));
+    const path = P.g.chain.path, r = path[P.i], ok = reagLine(r.reag), L = new Set([ok]);
+    const add = w => { const t = reagLine(w); if (L.has(t) || synAlt(path, path.map((x, k) => k === P.i ? w : x.reag))) return; L.add(t); };
+    (r.wrongReag || []).forEach(add);
+    path.forEach(x => add(x.reag));
     P.opts = shuf([...L].slice(0, 6));
     if (!P.opts.includes(reagLine(r.reag))) P.opts[0] = reagLine(r.reag);
     P.opts = shuf(P.opts);
@@ -27940,16 +27947,16 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
       ${L.miss.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="lk-miss">${L.miss.map(c => `<li>${esc(c.g.name)} <small>(${esc(TOPIC_BY[c.g.topic].label)})</small></li>`).join('')}</ul>` : ''}
       ${chEndHTML('lek', { sc: L.cash, ok: L.ok, of: L.n })}
       <div class="row"><button type="button" class="btn primary" data-hn="lkgo">Další směna</button><button type="button" class="btn" data-hn="lek">Změnit témata</button><button type="button" class="btn" data-hn="ward">Šatna</button></div>`;
-    CH = null; CARD = null; prepCard();
+    chOff(); CARD = null; prepCard();
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
     const a = b.dataset.hn, have = TOPICS.filter(t => GROUPS.some(g => g.topic === t.id)).map(t => t.id);
-    if (a === 'lek') { open(''); CH = null; L.topics = L.topics || store.get('fg-herna', {}).lkT || []; return lekSetup(); }
+    if (a === 'lek') { open(''); chOff(); L.topics = L.topics || store.get('fg-herna', {}).lkT || []; return lekSetup(); }
     if (a === 'lkall') { const d = L.topics.includes('drugs') ? ['drugs'] : []; L.topics = L.topics.filter(x => x !== 'drugs').length === have.length ? d : d.concat(have); return lekSetup(); }
     if (a === 'lkt') { const t = b.dataset.t; L.topics = L.topics.includes(t) ? L.topics.filter(x => x !== t) : L.topics.concat(t); return lekSetup(); }
     if (a === 'lkn') { L.n = +b.dataset.n; return lekSetup(); }
-    if (a === 'lkgo') { if (!L.topics.length) return; if (!CH || CH.g !== 'lek') CH = null; GS.lkT = L.topics; saveG(); L.seed = CH ? CH.s : newSeed(); L.rng = mulberry(L.seed); Object.assign(L, { i: 0, cash: 0, ok: 0, miss: [], newL: 0, before: IT.filter(unlocked).map(x => x[1]) }); return lekNext(); }
+    if (a === 'lkgo') { if (!CH || CH.g !== 'lek') chOff(); L.topics = L.topics || GS.lkT || []; if (!L.topics.length) return lekSetup(); if (!CH) { GS.lkT = L.topics; saveG(); } L.seed = CH ? CH.s : newSeed(); L.rng = mulberry(L.seed); Object.assign(L, { i: 0, cash: 0, ok: 0, miss: [], newL: 0, before: IT.filter(unlocked).map(x => x[1]) }); return lekNext(); }
     if (a === 'lka') return lekAnswer(+b.dataset.k);
     if (a === 'ward') { open(''); W.sel = null; W.msg = ''; return wardrobe(); }
     if (a === 'wc') { W.cat = b.dataset.c; W.sel = null; W.msg = ''; return wardrobe(); }
@@ -28107,7 +28114,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
       <ul class="lk-miss">${NL.items.map((it, k) => `<li>${esc(it.g.name)} <small>${NL.pts[k] ? '+' + NL.pts[k] + ' b.' : 'neuhodnuto'}</small></li>`).join('')}</ul>
       ${chEndHTML('nl', { sc: NL.score, ok: NL.pts.filter(x => x).length, of: NL.items.length, max })}
       <div class="row"><button type="button" class="btn primary" data-hn="nl">Nová hra</button></div>`;
-    CH = null; CARD = null; prepCard();
+    chOff(); CARD = null; prepCard();
   }
 
   /* --- Album kartiček: zvládnuté látky --- */
@@ -28245,6 +28252,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   }
   function chGo() {
     if (!CH) return;
+    CH0 = CH0 || { nt: NL.topic, nn: NL.n, lt: L.topics, ln: L.n };
     if (CH.g === 'lek') { L.topics = CH.t.filter(t => t === 'drugs' || TOPIC_BY[t]); L.n = CH.n; const b = document.createElement('button'); b.dataset.hn = 'lkgo'; document.body.appendChild(b); b.click(); b.remove(); return; }
     NL.topic = CH.t === '*' || TOPIC_BY[CH.t] ? CH.t : '*'; NL.n = CH.n; nlStart(CH.s);
   }
@@ -28264,7 +28272,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-hn]'); if (!b) return;
     const a = b.dataset.hn;
-    if (a === 'nl') { open(''); CH = null; return nlStart(); }
+    if (a === 'nl') { open(''); chOff(); return nlStart(); }
     if (a === 'nlmore') { NL.shown++; return nlRender(); }
     if (a === 'nlg') return nlGuess(b.dataset.id);
     if (a === 'nlnext') { NL.i++; return nlRound(); }
@@ -28274,7 +28282,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     if (a === 'chgo') return chGo();
   });
   document.addEventListener('change', e => {
-    if (e.target.id === 'nlTopic') { NL.topic = e.target.value; nlStart(); }
+    if (e.target.id === 'nlTopic') { chOff(); NL.topic = e.target.value; nlStart(); }
     if (e.target.id === 'alTopic') { AB.topic = e.target.value; album(); }
   });
   if (/^#vyzva=/.test(location.hash)) setTimeout(chFromHash, 0);
@@ -28588,7 +28596,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161345';
+const FH_VER = '202610161350';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
