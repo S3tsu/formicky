@@ -28847,7 +28847,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161800';
+const FH_VER = '202610161810';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29137,6 +29137,70 @@ const FH_OL = (() => {
   const tbl = (head, rows) => `<div class="ac-tw"><table class="ac-sheet"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
   const LES = [
+    { id: 't01a', topic: 't01', n: 1, min: 5, t: 'Uhlík, orbitaly a hybridizace',
+      goal: 'Po lekci umíš obsadit orbitaly elektrony, víš, jak vzniká vazba σ a π, a z hybridizace sp³, sp² a sp odvodíš tvar molekuly i vazebné úhly.',
+      recall: 'Zkus si z hlavy napsat elektronovou konfiguraci uhlíku a tipnout, jaký úhel svírají vazby v methanu.',
+      tail: 'Vrať se k papíru ze začátku a zkontroluj konfiguraci uhlíku a úhel 109,5°. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+      q: ['t01_q5', 't01_q13', 't01_q14', 't01_q15', 't01_q23', 't01_q29', 't01_q32', 't01_q33', 't01_q37', 't01_q39', 't01_q44', 't01_q48'],
+      beda: 'Hybridizace je jako skládání tanečníků: sp³ tančí ve čtyřech do čtyřstěnu, sp² ve třech do trojúhelníku a sp ve dvou do přímky. Kdo nezbyl, drží vazbu π.',
+      body: () => sec('1. Elektrony v orbitalech', `<p>Orbital je prostor, kde se elektron vyskytuje 90–95 % času. Elektrony se zaplňují podle tří pravidel:</p>
+        ${tbl(['Pravidlo', 'Co říká'], [['výstavbový princip', 'od nejnižší energie: 1s → 2s → 2p → 3s → 3p → 4s → 3d'], ['Pauliho princip', 'v orbitalu nejvýš 2 elektrony s opačným spinem'], ['Hundovo pravidlo', 'rovnocenné orbitaly se nejdřív obsadí po jednom elektronu se stejným spinem']])}
+        <p>Uhlík má v základním stavu <b>1s² 2s² 2px¹ 2py¹</b>. Organická chemie je chemie sloučenin uhlíku. Že organickou látku jde připravit z anorganické, ukázal Wöhler v roce 1828 a tím padla představa o „živé síle“.</p>`)
+        + sec('2. Vazba σ a π', `<p>Vazba <b>σ</b> vzniká čelním překryvem orbitalů podél osy mezi jádry. Vazba <b>π</b> vzniká bočním překryvem orbitalů p a je slabší, proto má C=C (611 kJ·mol⁻¹) méně než dvojnásobek C–C (376). Podle teorie MO patří orbital celé molekule: vazebný MO je součtem atomových orbitalů a má nižší energii.</p>`)
+        + sec('3. Hybridizace a tvar molekuly', `${tbl(['', 'sp³', 'sp²', 'sp'], [['Příklad', 'methan, ethan', 'ethen', 'ethyn'], ['Tvar', 'tetraedr', 'trojúhelník v rovině, p kolmo', 'přímka, dva p kolmo'], ['Úhel', '109,5°', 'asi 120°', '180°'], ['Vazba C–C', 'jednoduchá σ (154 pm)', 'dvojná σ + π', 'trojná σ + 2π (120 pm, nejpevnější)']])}
+        <p>Hybridizovat se dá i dusík a kyslík. V amoniaku je N sp³ s jedním volným párem, ve vodě je O sp³ se dvěma.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> úhel H–O–H ve vodě je jen 104,5°, protože volné páry kyslíku se odpuzují a vazby stlačí. Pořadí úhlů: methan > amoniak > voda.</p>`) },
+    { id: 't02a', topic: 't02', n: 1, min: 5, t: 'Polarita, rezonance, kyseliny a báze',
+      goal: 'Po lekci odhadneš polaritu vazby, spočítáš formální náboj, poznáš rezonanční struktury a podle pKa předpovíš, kam půjde acidobazická reakce.',
+      recall: 'Tipni si, jestli je silnější kyselina ta s nižším, nebo s vyšším pKa. Napiš si to na papír.',
+      tail: 'Vrať se k papíru ze začátku. Silnější kyselina má nižší pKa a rovnováha jde vždy ke slabší kyselině. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t02_q1', 't02_q5', 't02_q14', 't02_q18', 't02_q19', 't02_q31', 't02_q32', 't02_q37', 't02_q38', 't02_q44', 't02_q49', 't02_q52'],
+      beda: 'Proton vždycky utíká od silnější kyseliny ke slabší. Rovnováha leží tam, kde je kyselina s vyšším pKa, jako voda teče z kopce.',
+      body: () => sec('1. Polarita a formální náboj', `<p>Polaritu vazby způsobuje <b>rozdíl elektronegativit</b>. Pod 2 je vazba polární kovalentní, nad 2 převážně iontová. V C–Cl nese uhlík δ+, v C–Li naopak δ−. Posun elektronů po vazbách σ je <b>induktivní efekt</b>: kovy elektrony dodávají (+I), O a Cl je přitahují (−I).</p>
+        <p><b>Formální náboj</b> = valenční elektrony − ½ vazebných − nevazebné. Rychlá kontrola: dusík se čtyřmi vazbami má +1, kyslík s jednou vazbou −1.</p>`)
+        + sec('2. Rezonance', `<p>Rezonanční struktury se liší <b>jen umístěním elektronů π a volných párů</b>, atomy zůstávají na místě. Skutečnou strukturou je rezonanční hybrid a má nižší energii než kterákoli jednotlivá struktura. Proto jsou obě vazby N–O v nitromethanu stejně dlouhé (122 pm).</p>
+        <p class="aside">Každá rezonanční struktura musí být platný Lewisův vzorec. Uhlík s pěti vazbami nikdy.</p>`)
+        + sec('3. Kyseliny a báze', `${tbl(['Pojem', 'Význam'], [['Brønstedova kyselina', 'poskytuje H⁺'], ['Lewisova kyselina', 'přijímá elektronový pár (BF₃, AlCl₃, H⁺)'], ['pKa', '−log Ka, <b>nižší pKa = silnější kyselina</b>'], ['silná kyselina', 'dává slabou konjugovanou bázi']])}
+        <p>Acidobazická reakce běží od silnější kyseliny ke slabší. Hydroxid proto ethyn (pKa 25) nedeprotonuje, voda (15,74) je silnější kyselina. Zvládne to až NaNH₂ (NH₃ 36).</p>
+        <p class="ac-les-trap"><b>Pozor:</b> kyselina octová je kyselejší než methanol, i když náboj nesou v obou kyslíky. Acetát ho navíc rozloží rezonancí na dva kyslíky. A Brønstedovy kyseliny jsou podmnožinou Lewisových, ne naopak.</p>`) },
+    { id: 't03a', topic: 't03', n: 1, min: 5, t: 'Alkany: izomery, názvy a vlastnosti',
+      goal: 'Po lekci poznáš konstituční izomery, pojmenuješ rozvětvený alkan i cykloalkan a vysvětlíš, proč větvení snižuje teplotu varu.',
+      recall: 'Zkus si z hlavy nakreslit všechny izomery C₅H₁₂. Kolik jich je?',
+      tail: 'Vrať se ke kresbě ze začátku. C₅H₁₂ má tři izomery: pentan, isopentan a neopentan. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t03_q3', 't03_q5', 't03_q7', 't03_q10', 't03_q12', 't03_q16', 't03_q19', 't03_q20', 't03_q23', 't03_q24', 't03_q26', 't03_q35'],
+      beda: 'Neopentan je kulička, pentan nudle. Nudle se k sobě lepí víc, a tak vře výš.',
+      body: () => sec('1. Izomery a typy uhlíků', `<p>Alkany mají vzorec <b>CₙH₂ₙ₊₂</b>, cykloalkany s jedním kruhem CₙH₂ₙ. <b>Konstituční izomery</b> mají stejný vzorec, ale jinak pospojované atomy (ethanol a dimethylether). C₄H₁₀ má dva izomery, C₅H₁₂ tři.</p>
+        ${tbl(['Uhlík', 'Váže se na'], [['primární', '1 další uhlík'], ['sekundární', '2 uhlíky'], ['terciární', '3 uhlíky'], ['kvartérní', '4 uhlíky']])}`)
+        + sec('2. Názvosloví', `<ol class="ac-les-steps"><li>najdi nejdelší řetězec, při shodě ten s víc větveními</li><li>čísluj od konce bližšího prvnímu větvení, při shodě rozhodne druhé větvení</li><li>substituenty seřaď abecedně, stejné spoj předponou di-, tri-</li><li>složitý substituent pojmenuj jako samostatnou látku (propan-2-yl, 2-methylpropyl)</li></ol>
+        <p>Alkyl vznikne záměnou -an za -yl. Cykloalkan je kmenem i tehdy, když je řetězec delší (butylcyklopropan).</p>
+        <p class="ac-les-trap"><b>Pozor:</b> „2-ethylpentan“ je chyba, ethyl na C2 prodlužuje řetězec. Správně 3-methylhexan.</p>`)
+        + sec('3. Vlastnosti a reaktivita', `<p>Molekuly alkanů drží pohromadě jen slabé <b>disperzní síly</b>. Větvení teplotu varu snižuje, protože kulovitější molekula má menší povrch: pentan 36,1 °C, isopentan 27,9 °C, neopentan 9,5 °C.</p>
+        <p>Alkany jsou málo reaktivní (parafiny, „malá sloučivost“): hoří, chlorují se na světle, sulfochlorují, sulfoxidují a nitrují. Cis- a trans-izomery cykloalkanů se rotací převést nedají, musela by se rozštěpit vazba v kruhu.</p>`) },
+    { id: 't04a', topic: 't04', n: 1, min: 5, t: 'Konformace: butan a cyklohexan',
+      goal: 'Po lekci umíš nakreslit Newmanovu projekci, seřadit konformace butanu podle energie a říct, kde v židličce cyklohexanu bude objemný substituent.',
+      recall: 'Tipni si, jestli je stabilnější methylcyklohexan s methylem axiálně, nebo ekvatoriálně. Napiš si proč.',
+      tail: 'Vrať se k tipu ze začátku. Ekvatoriální methyl se vyhne dvěma 1,3-diaxiálním interakcím (7,6 kJ·mol⁻¹). Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t04_q1', 't04_q3', 't04_q6', 't04_q10', 't04_q13', 't04_q15', 't04_q19', 't04_q21', 't04_q22', 't04_q26', 't04_q28', 't04_q34'],
+      beda: 'Objemný substituent si v židličce vždycky sedne k oknu, tedy ekvatoriálně. Axiálně by mu do loktů strkali sousedé na C3 a C5.',
+      body: () => sec('1. Konformace ethanu a butanu', `<p>Konformace vzniká <b>otáčením kolem jednoduché vazby</b>. V Newmanově projekci je přední uhlík bod a zadní kruh. Střídavá konformace ethanu je o 12,0 kJ·mol⁻¹ níž než zákrytová (tři zákryty H↔H po 4,0).</p>
+        ${tbl(['Butan (C2–C3)', 'Úhel CH₃–CH₃', 'Energie'], [['antiperiplanární', '180°', '0, nejstabilnější'], ['synklinální (gauche)', '60°', '4,0 kJ·mol⁻¹, jen sterické pnutí'], ['antiklinální', '120°', '16,0 kJ·mol⁻¹'], ['synperiplanární', '0°', '19,0 kJ·mol⁻¹, nejvyšší']])}`)
+        + sec('2. Pnutí v kruzích', `<p>Baeyer předpokládal planární kruhy, a to je chyba. Pnutí má tři složky: <b>úhlové</b> (odchylka od 109,5°), <b>torzní</b> (zákryty) a <b>sterické</b> (atomy příliš blízko). Cyklopropan má úhel o 49° menší a největší pnutí, cyklobutan menší úhlové, ale větší torzní, cyklopentan se zkroutí do „obálky“ a cyklohexan je bez pnutí. Měří se ze spalného tepla.</p>`)
+        + sec('3. Židlička cyklohexanu', `<ul class="ac-ul"><li><b>Židlička</b> je nejstabilnější, všechny vazby jsou střídavé. Vanička je o 29,0, zkřížená vanička o 23,0 kJ·mol⁻¹ výš.</li><li>Axiální vazby jsou rovnoběžné s osou, ekvatoriální míří ven. Při <b>překlopení</b> (bariéra 45 kJ·mol⁻¹) se axiální mění na ekvatoriální, cis/trans se nemění.</li><li>Axiální methyl má dvě <b>1,3-diaxiální</b> interakce s vodíky na C3 a C5, 2 × 3,8 = 7,6 kJ·mol⁻¹. Proto převažuje ekvatoriální.</li></ul>
+        <p class="ac-les-trap"><b>Pozor:</b> oba substituenty ekvatoriálně jdou u 1,2-trans, <b>1,3-cis</b> a 1,4-trans. U 1,3 je to cis, ne trans.</p>`) },
+    { id: 't05a', topic: 't05', n: 1, min: 5, t: 'Typy reakcí a mechanismy',
+      goal: 'Po lekci rozlišíš adici, eliminaci, substituci a přesmyk, popíšeš radikálovou řetězovou reakci, poznáš nukleofil a elektrofil a přečteš energetický diagram.',
+      recall: 'Zkus si napsat, co znamená zahnutá šipka s jedním hrotem a co s plným hrotem.',
+      tail: 'Vrať se k šipkám ze začátku: jeden hrot je jeden elektron, plný hrot pár elektronů. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t05_q1', 't05_q7', 't05_q9', 't05_q16', 't05_q19', 't05_q33', 't05_q36', 't05_q41', 't05_q47', 't05_q51', 't05_q58', 't05_q62'],
+      beda: 'Zahnutá šipka vždycky vede od elektronů k místu, kde chybí. Nukleofil přináší dárek, elektrofil ho rád přijme.',
+      body: () => sec('1. Čtyři typy reakcí', `${tbl(['Typ', 'Co se děje', 'Příklad'], [['adice', 'dva reaktanty → jeden produkt', 'ethen + HBr → bromethan'], ['eliminace', 'jeden reaktant → dva produkty, vznikne násobná vazba', 'bromethan → ethen + HBr'], ['substituce', 'dva reaktanty → dva produkty, atomy si vymění místa', 'CH₄ + Cl₂ → CH₃Cl + HCl'], ['přesmyk', 'přeskupení atomů, vznikne izomer', 'but-1-en → but-2-en']])}
+        <p>Podle mechanismu se reakce dělí na <b>radikálové</b>, <b>iontové (polární)</b>, které jsou běžnější, a pericyklické.</p>`)
+        + sec('2. Radikály a ionty', `<p><b>Homolytické</b> štěpení dá dva radikály (šipka s jedním hrotem, jeden elektron), <b>heterolytické</b> kation a anion (plný hrot, pár elektronů).</p>
+        <p>Radikálová řetězová reakce, třeba chlorace methanu na světle: <b>iniciace</b> (hν rozštěpí Cl₂) → <b>propagace</b> (radikál + molekula → nový radikál) → <b>terminace</b> (srazí se dva radikály, to je vzácné).</p>
+        <p><b>Nukleofil</b> je elektronově bohatý dárce páru (NH₃, OH⁻, C=C), <b>elektrofil</b> elektronově chudý příjemce (H₃O⁺, uhlík v CH₃Br nebo v C=O). Zahnutá šipka vede vždy od nukleofilu k elektrofilu.</p>`)
+        + sec('3. Energie reakce', `${tbl(['Veličina', 'Rozhoduje o'], [['ΔG° = ΔH° − TΔS° = −RT ln K', 'směru a poloze rovnováhy, záporné ΔG° = samovolně k produktům'], ['ΔG‡ (aktivační energie)', 'rychlosti, malé ΔG‡ = rychlá reakce'], ['ΔS', 'adice záporné, eliminace kladné']])}
+        <p><b>Přechodový stav</b> je vrchol energie a izolovat nejde. <b>Meziprodukt</b> leží v mělkém minimu mezi dvěma přechodovými stavy (u adice HBr na ethen karbokation).</p>
+        <p class="ac-les-trap"><b>Pozor:</b> reakce může být termodynamicky výhodná (záporné ΔG°), a přesto pomalá, když má vysokou bariéru ΔG‡.</p>`) },
     { id: 't09a', topic: 't09', n: 1, min: 5, t: 'SN2, nebo SN1?',
       goal: 'Po lekci podle substrátu, nukleofilu a rozpouštědla odhadneš, jestli substituce poběží SN2, nebo SN1, a co to udělá se stereochemií.',
       recall: 'Zkus si z hlavy vybavit, co znamenají písmena a číslice v názvech SN2 a SN1. Napiš si to na papír, na konci se k tomu vrátíš.',
