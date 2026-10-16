@@ -26564,7 +26564,7 @@ const ED_ELS = ['C', 'H', 'O', 'N', 'S', 'X', 'P', 'B', 'Si', 'Li', 'Mg', 'Cu', 
 const ED_ELS_CK = ['C', 'H', 'O', 'N', 'S', 'Cl', 'Br', 'F', 'Na', 'Mg', 'Li'];
 const ED_TITLE = { X: 'X = halogen', Z: 'Z = heteroatom v kruhu' };
 const ED_HINT = {
-  el: 'Klepnutí do plochy přidá atom. Tažením z atomu přidáš další atom s vazbou, tažením z atomu na atom vazbu. Klepnutí na vazbu mění jednoduchou, dvojnou a trojnou.',
+  el: 'Klepnutí do plochy přidá atom. Tažením z atomu přidáš další atom s vazbou, tažením z atomu na atom vazbu. Klepnutí na vazbu mění jednoduchou, dvojnou a trojnou. Vodíky na uhlících se doplní samy, na ostatních atomech je nakresli.',
   R: 'Klepni na atom a přidá se k němu vazba ke zbytku molekuly. Tažením z atomu určíš směr.',
   Rck: 'Klepni na atom a přidá se čára, jejíž konec je CH₃ (jako v čárovém vzorci). Tažením z atomu určíš směr.',
   H: 'Klepni na atom a přidá se k němu vodík. Tažením z atomu určíš směr.',
@@ -26572,6 +26572,12 @@ const ED_HINT = {
   erase: 'Klepni na atom nebo vazbu a zmizí.',
   move: 'Táhni atom. Tažením za prázdné místo posuneš celý vzorec.'
 };
+/* Vložený uhlík ukáže vodíky, se kterými ho vyhodnocení počítá (CH₃, CH₂, CH). Na ostatních atomech se vodíky kreslí. */
+function drawnH(d, i) {
+  const a = d.atoms[i];
+  if (a.el !== 'C') return 0;
+  return Math.max(0, 4 - (a.q ? 1 : 0) - d.bonds.reduce((s, b) => s + (b.a === i || b.b === i ? b.o : 0), 0));
+}
 function mountEditor(host, topic) {
   const ck = topic !== 'fg';
   host.innerHTML = `<div class="tools" role="group" aria-label="Atomy">${((TOPIC_BY[topic] || {}).els || (ck ? ED_ELS_CK : ED_ELS)).map(e =>
@@ -26670,7 +26676,7 @@ function mountEditor(host, topic) {
   };
 
   function draw() {
-    const at = st.atoms.map(a => ({ x: a.x, y: a.y, el: a.el, kind: a.el === 'R' ? 'stub' : 'atom', h: 0, q: a.q }));
+    const at = st.atoms.map((a, i) => ({ x: a.x, y: a.y, el: a.el, kind: a.el === 'R' ? 'stub' : 'atom', h: drawnH(st, i), q: a.q }));
     let s = st.atoms.length ? drawScene(at, st.bonds, { fs: FS, sw: 2 }).svg
       : `<text class="ph" x="${W / 2}" y="${H / 2}" text-anchor="middle" font-size="15">Začni klepnutím sem</text>`;
     if (drag && drag.moved && drag.atom >= 0 && placeable(st.tool) && !leafy(drag.atom)) {
@@ -27210,7 +27216,7 @@ function finishTest() {
   if (S.mode === 'test') renderView();
 }
 function userSVG(d) {
-  const at = d.atoms.map(a => ({ x: a.x, y: a.y, el: a.el, kind: a.el === 'R' ? 'stub' : 'atom', h: 0, q: a.q }));
+  const at = d.atoms.map((a, i) => ({ x: a.x, y: a.y, el: a.el, kind: a.el === 'R' ? 'stub' : 'atom', h: drawnH(d, i), q: a.q }));
   const r = drawScene(at, d.bonds, { fs: 18, sw: 2 }), p = 6;
   const x = r.bb.x1 - p, y = r.bb.y1 - p, w = r.bb.x2 - r.bb.x1 + 2 * p, h = r.bb.y2 - r.bb.y1 + 2 * p;
   return `<svg class="mol" width="${Math.ceil(w * .68)}" height="${Math.ceil(h * .68)}" viewBox="${x.toFixed(1)} ${y.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}" role="img" aria-label="tvůj nákres"><g font-size="18">${r.svg}</g></svg>`;
