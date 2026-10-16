@@ -1,6 +1,6 @@
 <!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>FormičkyHub</title>
-<script>try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
+<script>addEventListener("load",function(){var b=document.getElementById("boot");b&&b.remove()});try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -81,7 +81,15 @@ button{cursor:pointer}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .card-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
-.eyebrow{font-size:.8rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.eyebrow{font-size:.85rem;color:var(--muted);font-weight:600}
+.eyebrow.ask{font:600 1.08rem/1.3 var(--f-display);color:var(--ink)}
+.td-err{font-size:.9rem;color:#c2410c;margin:10px 0 0}
+.boot{min-height:70vh;display:grid;place-content:center;justify-items:center;gap:14px;padding:24px;text-align:center;color:var(--muted)}
+.boot b{font:700 2rem/1 var(--f-display);color:var(--pink)}.boot b span{color:var(--accent)}
+.boot i{display:block;width:140px;height:4px;border-radius:4px;background:var(--line);overflow:hidden;position:relative}
+.boot i::after{content:"";position:absolute;inset:0;width:40%;border-radius:4px;background:var(--accent);animation:bootbar 1.2s ease-in-out infinite}
+@keyframes bootbar{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+@media (prefers-reduced-motion:reduce){.boot i::after{animation:none;width:100%;opacity:.35}}
 .q-name{font:700 clamp(1.5rem,6vw,2rem)/1.15 var(--f-display);margin:0;letter-spacing:-.01em;overflow-wrap:anywhere}
 .q-name span{font:400 1rem/1.3 var(--f-body);color:var(--muted);letter-spacing:0;white-space:nowrap}
 .figure{display:grid;place-items:center;min-height:170px;padding:8px 0;overflow-x:auto}
@@ -642,7 +650,8 @@ body.sheet-file .sheet{position:static}
 .hn-game.last{border-color:var(--accent)}
 .hn-game.last b{padding-right:74px}
 .hn-last{position:absolute;top:10px;right:10px;font:600 .68rem/1 var(--f-body,system-ui);font-style:normal;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:3px 7px;background:var(--surface)}
-@media (max-width:520px){.hn-wrap .hn-games{grid-template-columns:1fr;gap:8px}.hn-game.sm{padding:11px 12px}.hn-game.sm b{font-size:.95rem}.hn-game.sm span{font-size:.8rem}.hn-game.last b{padding-right:0;margin-top:16px}.hn-flt{width:100%}}
+@media (max-width:520px){.hn-wrap .hn-games{grid-template-columns:1fr 1fr;gap:8px}.hn-game.sm{padding:11px 12px}.hn-game.sm b{font-size:.95rem}.hn-game.sm span{font-size:.8rem}.hn-game.last b{padding-right:0}.hn-last{position:static;align-self:flex-start}.hn-flt{width:100%}}
+@media (max-width:359px){.hn-wrap .hn-games{grid-template-columns:1fr}}
 .al-game{background:linear-gradient(135deg,var(--surface) 60%,var(--accent-soft))}
 .nl-clues{margin:8px 0 12px;padding:0;list-style:none;display:grid;gap:6px;counter-reset:nl}
 .nl-clues li{counter-increment:nl;padding:9px 12px 9px 40px;border-radius:10px;background:var(--accent-soft);position:relative;line-height:1.4}
@@ -923,6 +932,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 @media (max-width:560px){.seg.mode button{padding:10px 6px;font-size:.86rem}}
 </style>
 </head><body>
+<div class="boot" id="boot" role="status"><b>Formičky<span>hub</span></b><i aria-hidden="true"></i><span>Načítám látky a otázky…</span></div>
 
 <section class="hub" id="hub" hidden>
   <header class="hub-head">
@@ -1138,7 +1148,6 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   </div>
 
   <div class="kindbox" id="srcBox" hidden>
-    <span class="eyebrow">Karty</span>
     <div class="chips" id="srcChips" role="group" aria-label="Které karty procvičovat"></div>
   </div>
 
@@ -2517,6 +2526,27 @@ const PKA_TABLES = [
 ];
 
 /* ----- sestavení ----- */
+// Co se při načtení nepodařilo (vadná otázka nebo celé téma). Zbytek webu běží dál, úvod to ukáže a hlášení chyby to přiloží.
+const LOAD_ERR = [];
+function loadErr(topic, e, label) { LOAD_ERR.push({ topic, label, msg: e.message }); console.error('Nenačteno (' + topic + '): ' + e.message); }
+/* Teoretická otázka: [set, fam, název, zadání, [4 možnosti], proč, (proč ne ×3), ('q12')]
+   Poslední prvek 'q<číslo>' je pevné ID otázky. Bez něj se ID odvodí z pořadí v seznamu, takže vložení otázky doprostřed
+   by posunulo pokrok uživatelek na jiné otázky. Číslo se nesmí měnit ani znovu použít. */
+const QID = /^q\d+$/;
+function makeQ(topic, r, i, pre, fam, fix) {
+  if (r[4].length !== 4) throw new Error('otázka ' + r[2] + ' musí mít 4 možnosti');
+  const last = r[r.length - 1], own = r.length > 6 && typeof last === 'string' && QID.test(last);
+  const tail = r.slice(6, own ? -1 : undefined), not = tail[0] || null;
+  if (tail.length > 1 || (not && (!Array.isArray(not) || not.length !== 3))) throw new Error('otázka ' + r[2] + ': vysvětlení špatných možností musí být 3');
+  // „¦“ ve správné možnosti: mezi možnostmi se ukáže jen část před ním (ať správná odpověď není nápadně delší), celé znění až ve zpětné vazbě
+  const o0 = r[4][0], cut = typeof o0 === 'string' ? o0.indexOf('¦') : -1;
+  if (r[4].some((o, j) => j && typeof o === 'string' && o.includes('¦'))) throw new Error('„¦“ smí být jen ve správné možnosti (' + r[2] + ')');
+  const id = pre + (own ? last : 'q' + (i + 1));
+  if (BYID[id]) throw new Error('duplicitní ID otázky ' + id + ' (' + r[2] + ')');
+  return { topic, kind: 'q', set: r[0], fam, id, auto: !own, name: r[2], prompt: r[3],
+    opts: r[4].map((o, j) => (Array.isArray(o) ? o.map(x => typeof x === 'string' ? PT(x) : fix(x)) : [typeof o === 'string' ? PT(j === 0 && cut >= 0 ? o.slice(0, cut) : o) : fix(o)])),
+    full: cut >= 0 ? o0.replace('¦', '') : '', why: r[5], not, tip: '' };
+}
 const MOLCACHE = new Map();
 function dmol(dsl) {                     // vzorec do schématu
   if (!MOLCACHE.has(dsl)) MOLCACHE.set(dsl, { mol: parseMol(dsl), ar: dsl.startsWith(RING) });
@@ -2559,7 +2589,7 @@ function dmol(dsl) {                     // vzorec do schématu
     }
   });
   CK_Q.forEach((r, i) => {
-    const q = { topic: 'ck', kind: 'q', set: r[0], fam: r[1], id: 'q' + (i + 1), name: r[2], prompt: r[3], opts: r[4].map(o => [typeof o === 'string' ? PT(o) : fix(o)]), why: r[5], tip: '' };
+    let q; try { q = makeQ('ck', r, i, '', r[1], fix); } catch (e) { return loadErr('ck', e); }
     GROUPS.push(q); BYID[q.id] = q;
   });
 })();
@@ -3262,7 +3292,7 @@ const FD_GLOSS = [
     }
   });
   FD_Q.forEach((r, i) => {
-    const q = { topic: 'fd', kind: 'q', set: r[0], fam: r[1], id: 'fq' + (i + 1), name: r[2], prompt: r[3], opts: r[4].map(o => [typeof o === 'string' ? PT(o) : fix(o)]), why: r[5], tip: '' };
+    let q; try { q = makeQ('fd', r, i, 'f', r[1], fix); } catch (e) { return loadErr('fd', e); }
     GROUPS.push(q); BYID[q.id] = q;
   });
   FD_RX.forEach(r => REACTIONS.push(r));
@@ -3333,11 +3363,11 @@ TOPIC_BY.ck.tables = { ky: PKA_TABLES.map(t => ({ title: t.title, cols: ['Vzorec
     memes: [[['mluvčí','text'], …], …],
     mols: [[set, fam, name, dsl, { par, alts, tip, nodraw }], …],
     rx:   [{ id, set, fam, title, from, reag, to, wrong, wrongReag, noReag, why }, …],
-    q:    [[set, fam, title, prompt, [opts…], why], …]
+    q:    [[set, fam, title, prompt, [opts…], why, (whyNot ×3), ('q12')], …]   // poslední prvek = pevné ID, viz makeQ
   }
   Kódy okruhů (fam) se uvnitř předponují id tématu, takže se mezi přednáškami nebijí.
 */
-function registerTopic(T) {
+function registerTopic0(T) {
   if (TOPIC_BY[T.id]) throw new Error('téma už existuje ' + T.id);
   const F = k => T.id + k;
   const fams = T.fams.map(([k, n]) => [F(k), n]);
@@ -3394,17 +3424,19 @@ function registerTopic(T) {
     REACTIONS.push(r);
   });
   (T.q || []).forEach((r, i) => {
-    if (r[4].length !== 4) throw new Error(T.id + ': otázka ' + r[2] + ' musí mít 4 možnosti');
-    // „¦“ ve správné možnosti: mezi možnostmi se ukáže jen část před ním (ať správná odpověď není nápadně delší), celé znění až ve zpětné vazbě
-    const o0 = r[4][0], cut = typeof o0 === 'string' ? o0.indexOf('¦') : -1;
-    if (r[4].some((o, j) => j && typeof o === 'string' && o.includes('¦'))) throw new Error(T.id + ': „¦“ smí být jen ve správné možnosti (' + r[2] + ')');
-    // nepovinný 7. prvek: proč je která špatná možnost špatně (3 texty ve stejném pořadí jako špatné možnosti)
-    if (r[6] && (!Array.isArray(r[6]) || r[6].length !== 3)) throw new Error(T.id + ': otázka ' + r[2] + ': vysvětlení špatných možností musí být 3');
-    const q = { topic: T.id, kind: 'q', set: r[0], fam: chk(r[1], r[2]), id: T.id + '_q' + (i + 1), name: r[2], prompt: r[3],
-      opts: r[4].map((o, j) => (Array.isArray(o) ? o.map(x => typeof x === 'string' ? PT(x) : fix(x)) : [typeof o === 'string' ? PT(j === 0 && cut >= 0 ? o.slice(0, cut) : o) : fix(o)])),
-      full: cut >= 0 ? o0.replace('¦', '') : '', why: r[5], not: r[6] || null, tip: '' };
+    let q; try { q = makeQ(T.id, r, i, T.id + '_', chk(r[1], r[2]), fix); } catch (e) { return loadErr(T.id, e); }
     GROUPS.push(q); BYID[q.id] = q;
   });
+}
+// Chyba v datech jednoho tématu vyřadí jen to téma (vrátí, co stihlo přidat); ostatní přednášky se načtou normálně.
+function registerTopic(T) {
+  const n0 = GROUPS.length, r0 = REACTIONS.length, t0 = TOPICS.length, had = !!TOPIC_BY[T.id], rk = Object.keys(T.rules || {}).map(k => T.id + k);
+  try { registerTopic0(T); } catch (e) {
+    GROUPS.splice(n0).forEach(g => { if (BYID[g.id] === g) delete BYID[g.id]; });
+    REACTIONS.length = r0; TOPICS.length = t0;
+    if (!had) { delete TOPIC_BY[T.id]; delete FAMS_BY[T.id]; delete METHOD_BY[T.id]; delete GLOSS_BY[T.id]; delete MEMES[T.id]; rk.forEach(k => { delete RULES[k]; }); }
+    loadErr(T.id, e, T.label);
+  }
 }
 /* ===== Téma: 1. Úvod do organické chemie, struktura a vazba ===== */
 {
@@ -25782,7 +25814,7 @@ function renderCtl() {
   if (S.mode === 'study' && on.length < av.length) rest.push('jen ' + av.filter(k => on.includes(k[0])).map(k => k[1].toLowerCase()).join(', '));
   if (!S.mixOn && S.fams) rest.push('okruhy: ' + esc($('#famSum').textContent));
   $('#ctlSumT').innerHTML = open ? '<b>Nastavení procvičování</b>' : `<b>${esc(topic)}</b><span>${rest.join(' · ')}</span>`;
-  $('#ctlSumE').textContent = open ? 'Sbalit' : 'Změnit';
+  $('#ctlSumE').textContent = open ? 'Sbalit' : store.get('fg-ctlopen', null) === null ? 'Změnit téma' : 'Změnit';   // dokud ho neotevřela, ať je jasné, že tu se vybírá přednáška
 }
 $('#ctlSum').addEventListener('click', () => { store.set('fg-ctlopen', !ctlOpen()); renderCtl(); });
 function updateProgress() {
@@ -25904,7 +25936,7 @@ function makeOpts(g) {
 function tipLine(g) { return g.tip ? `<p class="aside"><b>Pomůcka:</b> ${esc(g.tip)}</p>` : ''; }
 function renderName(g) {
   view.innerHTML = `<div class="card">
-      <div class="card-head"><span class="eyebrow">${askTxt(g)}</span></div>
+      <div class="card-head"><span class="eyebrow ask">${askTxt(g)}</span></div>
       <div class="figure">${molSVG(g, 46)}</div>
       <form class="ans" id="ansForm" autocomplete="off">
         <input id="answer" type="text" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="název skupiny" aria-label="Název skupiny">
@@ -26180,7 +26212,7 @@ function renderStudy(g) {
   const opts = Q.opts.map((o, i) => `<button type="button" class="opt${byName ? '' : ' pic'}" data-id="${o.id}"><span class="ltr">${LTR[i]}</span>` +
     (byName ? `<span class="txt">${esc(label(o))}</span>` : `<span class="txt">${molSVG(o, 30)}<span class="cap">${esc(label(o))}</span></span>`) + '</button>').join('');
   view.innerHTML = `<div class="card">
-      <div class="card-head"><span class="eyebrow">${byName ? askTxt(g) : 'Který vzorec patří k názvu?'}</span>
+      <div class="card-head"><span class="eyebrow ask">${byName ? askTxt(g) : 'Který vzorec patří k názvu?'}</span>
         <div class="seg small" id="dirSeg" role="group" aria-label="Směr otázek">
           <button type="button" data-dir="n" aria-pressed="${byName}">Vzorec → název</button>
           <button type="button" data-dir="s" aria-pressed="${!byName}">Název → vzorec</button>
@@ -26843,7 +26875,7 @@ function renderTestQ() {
   const title = `<h2 class="q-name">${esc(g.name)}${g.par ? ` <span>(${esc(g.par)})</span>` : ''}${g.note ? ` <span>${esc(g.note)}</span>` : ''}</h2>`;
   let body;
   if (q.type === 'name') {
-    body = `<span class="eyebrow">${askTxt(g)}</span><div class="figure">${molSVG(g, 46)}</div>
+    body = `<span class="eyebrow ask">${askTxt(g)}</span><div class="figure">${molSVG(g, 46)}</div>
       <form class="ans" id="tForm" autocomplete="off"><input id="tAnswer" type="text" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="název skupiny" aria-label="Název skupiny" value="${esc(q.ans || '')}"></form>`;
   } else if (q.type === 'draw') {
     body = `<span class="eyebrow">Nakresli strukturu</span>${title}<div class="editor" id="ed"></div>`;
@@ -26851,7 +26883,7 @@ function renderTestQ() {
     body = `<span class="eyebrow">${S.mixOn ? esc(tShort(g.topic)) + ' · ' : ''}${esc(famName(g))}</span>${qBody(g, q.order, q.ans)}`;
   } else {
     const byName = q.dir === 'n';
-    body = `<span class="eyebrow">${byName ? askTxt(g) : 'Který vzorec patří k názvu?'}</span>${byName ? `<div class="figure">${molSVG(g, 46)}</div>` : title}
+    body = `<span class="eyebrow ask">${byName ? askTxt(g) : 'Který vzorec patří k názvu?'}</span>${byName ? `<div class="figure">${molSVG(g, 46)}</div>` : title}
       <div class="opts${byName ? '' : ' pics'}" id="opts">${q.opts.map((o, i) => `<button type="button" class="opt${byName ? '' : ' pic'}${q.ans === o.id ? ' sel' : ''}" data-id="${o.id}"><span class="ltr">${LTR[i]}</span><span class="txt">${byName ? esc(label(o)) : molSVG(o, 30)}</span></button>`).join('')}</div>`;
   }
   const open = TT.qs.filter(x => !x.ans).length;
@@ -27085,6 +27117,7 @@ function renderToday() {
       ${window.FH_AC && FH_AC.due() ? `<button type="button" class="btn" data-td="ac">Analytická chemie<small>${FH_AC.due()} ${karet(FH_AC.due())} k opakování</small></button>` : ''}
     </div>
     ${started ? '' : '<p class="td-help">Nevíš, jak začít? <a href="#navod">Přečti si krátký návod</a>.</p>'}
+    ${LOAD_ERR.length ? `<p class="td-err" role="status">Část látek a otázek se nenačetla (${esc([...new Set(LOAD_ERR.map(x => (TOPIC_BY[x.topic] || {}).label || x.label || x.topic))].join(', '))}). Ostatní funguje normálně.</p>` : ''}
     <details class="tp" id="tpBox"${store.get('fg-tpopen', false) ? ' open' : ''}><summary>Témata a tvůj pokrok<small>zvládnuto ${done} z ${all}</small></summary>
       <ol>${TOPICS.map(x => { const r = T[x.id]; return `<li><button type="button" data-td="t" data-t="${x.id}"><span class="tnum" aria-hidden="true">${(x.label.match(/^(\d+)\./) || [, '★'])[1]}</span><span class="tl">${esc(x.label.replace(/^\d+\.\s*/, ''))}</span>
         <span class="tn">${r.done}/${r.all}</span><span class="tb"><i style="width:${r.all ? 100 * r.done / r.all : 0}%"></i></span>${r.due ? `<span class="due">${r.due} k opakování</span>` : ''}</button></li>`; }).join('')}</ol>
@@ -28057,7 +28090,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 
   /* --- vstup na úvodní stránce: sekce Herna --- */
   function renderEntry() {
-    const sub = $('#subjects'); if (!sub) return;
+    const sub = $('#fact') || $('#subjects'); if (!sub) return;     // Herna až pod Béďovou zajímavostí
     let sec = $('#hernaHub');
     if (!sec) {
       sub.insertAdjacentHTML('afterend', `<section id="hernaHub" class="hn-hub" aria-labelledby="hnHubH"><h2 class="fam-h hn-hrow" id="hnHubH"><span class="hn-ico" aria-hidden="true"><svg viewBox="0 0 48 48"><g transform="rotate(-35 24 24)"><g class="cl"><path d="M24 13H15a11 11 0 0 0 0 22h9v-5a3 3 0 0 0 0-6a3 3 0 0 0 0-6z"/></g><g class="cr"><path d="M24 13h9a11 11 0 0 1 0 22h-9v-5a3 3 0 0 1 0-6a3 3 0 0 1 0-6z"/></g></g></svg></span>Herna</h2><div class="hn-wrap" id="hnHubG"></div></section>`);
@@ -28175,6 +28208,33 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   const molOf = (name, t) => GROUPS.find(x => x.kind === 'mol' && x.name === name && (!t || x.topic === t)) || GROUPS.find(x => x.kind === 'mol' && x.name === name);
   let order = [], k = 0;
   { const seen = new Set(), u = FACTS.filter(f => !seen.has(f[0]) && seen.add(f[0])); FACTS.length = 0; FACTS.push(...u); }   // každá látka jen jednou (dřívější výskyt zůstává)
+  /* Kontrola dat jen při vývoji (localhost nebo ?kontrola v adrese): varování do konzole, nic nezastaví. */
+  if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
+    const W = [], warn = (co, kde, detail) => W.push({ co, kde, detail });
+    const txt = o => o.map(x => x.t != null ? x.t : '').join(' ').trim(), plain = o => o.every(x => x.t != null);
+    const qs = GROUPS.filter(g => g.kind === 'q' && !g.rx), auto = {}, next = {};
+    qs.forEach(q => {
+      if (!String(q.prompt || '').trim()) warn('prázdné zadání', q.id, q.name);
+      if (!String(q.why || '').trim()) warn('prázdné vysvětlení', q.id, q.name);
+      if (q.opts.every(plain)) {
+        const L = q.opts.map(o => txt(o).length);
+        if (new Set(q.opts.map(txt)).size < q.opts.length) warn('dvě stejné možnosti', q.id, q.name);
+        if (L[0] >= 1.5 * Math.max(L[1], L[2], L[3])) warn('správná možnost nápadně delší', q.id, `${q.name}: ${L[0]} × ${Math.max(L[1], L[2], L[3])} znaků`);
+      }
+      if (q.auto) auto[q.topic] = (auto[q.topic] || 0) + 1;
+      const n = +(q.id.match(/q(\d+)$/) || [])[1] || 0; next[q.topic] = Math.max(next[q.topic] || 0, n + 1);
+    });
+    Object.entries(auto).forEach(([t, n]) => warn('ID podle pořadí (bez pevného ID)', t, `${n} otázek, další volné číslo q${next[t]}`));
+    FACTS.forEach(([name, , , tid]) => {
+      const g = molOf(name, tid);
+      if (!g) warn('zajímavost bez látky', tid || '?', name);
+      else if (tid && g.topic !== tid) warn('zajímavost ukazuje na jiné téma', tid, `${name} je v ${g.topic}`);
+    });
+    if (typeof M3D_IDS !== 'undefined') M3D_IDS.forEach(id => { if (!BYID[id]) warn('3D model bez látky', id, ''); });
+    LOAD_ERR.forEach(x => warn('nenačteno', x.topic, x.msg));
+    const head = `Kontrola dat: ${qs.length} otázek, ${W.length} varování`;
+    if (W.length) { console.groupCollapsed(head); console.table(W); console.groupEnd(); } else console.info(head);
+  }
   const shuffle = () => { order = FACTS.map((f, i) => i); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } k = 0; };
   const show = anim => {
     if (k >= order.length) shuffle();
@@ -28208,6 +28268,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 
   const APP = new Set(['organicka', 'nove', 'prehled', 'kresleni', 'studium', 'test'].concat(TOPICS.map(t => t.hash).filter(Boolean)));
   const route = () => {
+    const bt = $('#boot'); if (bt) bt.remove();
     const h = (location.hash || '').replace('#', ''), app = APP.has(h), ac = /^analyticka/.test(h);
     $('#hub').hidden = app || ac; $('#appOC').hidden = !app; $('#appAC').hidden = !ac;
     document.title = app ? 'Cvičení · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : 'FormičkyHub';
@@ -28320,7 +28381,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610160603';
+const FH_VER = '202610160700';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -28393,7 +28454,7 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
     const shown = raw.replace(/\n{2,}/g, '\n').trim().slice(0, 900);
     return {
       title: g ? (g.name || g.title || g.id) : 'Otázka',
-      lines: [`Karta: ${g ? g.id : '?'}${g && (g.name || g.title) ? ' (' + (g.name || g.title) + ')' : ''}`, `Téma: ${S.mixOn ? 'Mix' : (t ? t.label : S.topic)}`, `Režim: ${modeName()}`, 'Na obrazovce:', shown]
+      lines: [`Karta: ${g ? g.id : '?'}${g && (g.name || g.title) ? ' (' + (g.name || g.title) + ')' : ''}`, `Téma: ${S.mixOn ? 'Mix' : (t ? t.label : S.topic)}`, `Režim: ${modeName()}`].concat(LOAD_ERR.length ? ['Nenačteno: ' + LOAD_ERR.map(x => x.topic + ' – ' + x.msg).join('; ')] : [], ['Na obrazovce:', shown])
     };
   }
   function send(text) {
@@ -29407,8 +29468,8 @@ function taniView() {
   if (!MP.c) mpNew();
   const { s, v, melt, first, last } = MP.c, T = x => `${num(x, 1)} °C`, okT = MP.step > 0 ? MP.o1[MP.a1] === melt : null;
   const obs = `<div class="ac-mp">${capSVG(0, `do ${T(first - 1)}`)}${capSVG(1, `${T(first)} první krystalky tají`)}${capSVG(2, `${T(melt)} vznikla tavenina`)}${capSVG(2, `${T(last)} zmizel poslední krystal`)}</div>`;
-  const q1 = `<span class="eyebrow">1. Jakou teplotu tání zapíšeš do protokolu?</span><div class="opts${MP.step > 0 ? ' done' : ''}">${MP.o1.map((x, k) => `<button type="button" class="opt${MP.step > 0 ? (x === melt ? ' right' : k === MP.a1 ? ' wrong' : '') : ''}" data-ac="mpa" data-v="${k}"${MP.step > 0 ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${T(x)}</span></button>`).join('')}</div>`;
-  const q2 = MP.step > 0 ? `${okT ? '' : `<p class="aside">Odečítá se v okamžiku vzniku taveniny, tedy ${T(melt)}. Poslední krystal mizí zpravidla o 2–3 °C výš.</p>`}<span class="eyebrow">2. Co z toho plyne o vzorku?</span><div class="opts${MP.done ? ' done' : ''}">${MPV.map(([k, n], i) => `<button type="button" class="opt${MP.done ? (k === v ? ' right' : k === MP.a2 ? ' wrong' : '') : ''}" data-ac="mpa" data-v="${k}"${MP.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[i]}</span><span class="txt">${n}</span></button>`).join('')}</div>` : '';
+  const q1 = `<span class="eyebrow ask">1. Jakou teplotu tání zapíšeš do protokolu?</span><div class="opts${MP.step > 0 ? ' done' : ''}">${MP.o1.map((x, k) => `<button type="button" class="opt${MP.step > 0 ? (x === melt ? ' right' : k === MP.a1 ? ' wrong' : '') : ''}" data-ac="mpa" data-v="${k}"${MP.step > 0 ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${T(x)}</span></button>`).join('')}</div>`;
+  const q2 = MP.step > 0 ? `${okT ? '' : `<p class="aside">Odečítá se v okamžiku vzniku taveniny, tedy ${T(melt)}. Poslední krystal mizí zpravidla o 2–3 °C výš.</p>`}<span class="eyebrow ask">2. Co z toho plyne o vzorku?</span><div class="opts${MP.done ? ' done' : ''}">${MPV.map(([k, n], i) => `<button type="button" class="opt${MP.done ? (k === v ? ' right' : k === MP.a2 ? ' wrong' : '') : ''}" data-ac="mpa" data-v="${k}"${MP.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[i]}</span><span class="txt">${n}</span></button>`).join('')}</div>` : '';
   const why = { cista: `Tavenina vznikla u tabulkové hodnoty ${T(s[1])} a látka tála v úzkém rozmezí. Čistá látka má ostrou teplotu tání.`, mirne: `Teplota tání je o pár stupňů nižší než ${T(s[1])} a látka taje v širším rozmezí. Už malá nečistota teplotu tání sníží.`,
     silne: `Teplota tání je výrazně pod ${T(s[1])} a rozmezí tání je široké. Hodně nečistot = velký pokles.`, jina: `Teplota tání je výš než ${T(s[1])}. Nečistota teplotu tání nikdy nezvýší, takže ve zkumavce je jiná látka.` }[v];
   return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Bodotávek</span><span class="ac-score">Série ${MP.streak} · nejlepší ${(ST.best && ST.best.mp) || 0}</span></div>
