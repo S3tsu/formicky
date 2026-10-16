@@ -10021,6 +10021,11 @@ function registerTopic(T) {
         ['Terciární uhlík je pro útok zezadu příliš bráněný, voda je slabý nukleofil a protické rozpouštědlo stabilizuje karbokation, tedy SN1.', 'Terciární substrát se slabým nukleofilem v alkoholu je typická SN1 (solvolýza).', 'Benzylový kation je stabilizovaný rezonancí a methanol je slabý nukleofil, takže převládne SN1.'], 'q46'],
       ['base', 'sou', 'Racemát prozradí SN1', 'Z opticky čistého (R)-halogenidu vznikl ve vodě racemický alkohol. Jak reakce nejspíš proběhla?', ['SN1', 'SN2', 'E1', 'E2'], 'Racemát prozrazuje planární karbokation, na který voda útočí z obou stran. Vodu jako slabý nukleofil v protickém rozpouštědle čekáš právě u SN1.',
         ['SN2 je jednokroková s útokem zezadu, dala by čistou inverzi, ne racemát.', 'E1 sice jde přes karbokation, ale produktem je alken, ne alkohol.', 'E2 dává alken, ne alkohol.'], 'q47'],
+      /* k lekci 2 (E2, nebo E1?), přibylo 16. 10. 2026 */
+      ['base', 'e2', 'Podmínky pro E2', 'Co platí pro eliminaci E2?', ['silná báze, jeden krok, H a X antiperiplanárně', 'slabá báze, přes karbokation, geometrie je jedno', 'rychlost závisí jen na koncentraci halogenidu', 'probíhá hlavně s vodou nebo alkoholem jako bází'], 'E2 je bimolekulární a jednokroková: silná báze odtrhne H ve chvíli, kdy odchází X, a vazby C–H a C–X musí ležet v jedné rovině proti sobě.',
+        ['To je popis E1: nejdřív vznikne karbokation a na geometrii nezáleží.', 'v = k [RX] platí pro E1 (monomolekulární). U E2 je v rovnici i báze.', 'Slabé báze jako voda a alkohol vedou spíš k E1 (a SN1), E2 chce silnou bázi.'], 'q48'],
+      ['base', 'e1', 'E1 a SN1 spolu', 'Proč E1 obvykle provází SN1?', ['obě začínají vznikem karbokationtu', 'obě potřebují silnou a objemnou bázi', 'obě vyžadují antiperiplanární H a X', 'obě probíhají v jediném kroku'], 'Karbokation buď přijme nukleofil (SN1), nebo odštěpí H⁺ ze sousedního uhlíku (E1). Proto u terciárních substrátů ve vodě nebo v alkoholu vzniká směs a teplo posouvá poměr k alkenu.',
+        ['Obě jdou se slabou bází nebo nukleofilem. Silná báze vede k E2.', 'Antiperiplanární uspořádání vyžaduje E2. U E1 na geometrii nezáleží.', 'Obě jsou dvoukrokové. Jednokrokové jsou SN2 a E2.'], 'q49'],
 
       // ===== extra
       ['extra', 'pri', 'Chlorace propanu', 'Jaký poměr 2-chlorpropan : 1-chlorpropan očekáváš při radikálové chloraci propanu (reaktivity 1,0 : 3,5)?', ['asi 54 : 46', '25 : 75', '90 : 10', '50 : 50'], '2 sekundární H × 3,5 = 7, 6 primárních H × 1,0 = 6. 7 : 6 ≈ 54 : 46.', 'q38'],
@@ -28548,7 +28553,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610161200';
+const FH_VER = '202610161215';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -28805,9 +28810,21 @@ const FH_OL = (() => {
           ['Odstupující skupina', 'čím stabilnější aniont, tím líp: TsO⁻ > I⁻ > Br⁻ > Cl⁻ ≫ F⁻', 'stejně. V kyselém prostředí odstoupí i protonovaná OH jako voda.'],
           ['Rozpouštědlo', 'polární aprotické (HMPA, CH₃CN, DMF, DMSO, aceton). Nukleofil zůstane „nahý“, nejpomaleji to jde v methanolu.', 'polární protické (voda, alkoholy). Stabilizuje karbokation, čím polárnější, tím rychleji.']]))
         + sec('3. Rychlý odhad', `<ul class="ac-ul"><li><b>Methyl a primární</b> → SN2.</li><li><b>Terciární</b> se slabým nukleofilem → SN1. SN2 tam nejde.</li><li><b>Sekundární</b> → rozhodne nukleofil a rozpouštědlo: silný aniont v DMSO → SN2, voda nebo alkohol → SN1.</li><li><b>Allylový a benzylový</b> se slabým nukleofilem → SN1, i když je primární.</li></ul>
-        <p class="ac-les-trap"><b>Pozor:</b> silná báze (OH⁻, RO⁻) a teplo táhnou reakci k eliminaci. Tu probereme v další lekci.</p>`) }
+        <p class="ac-les-trap"><b>Pozor:</b> silná báze (OH⁻, RO⁻) a teplo táhnou reakci k eliminaci. Tu probereme v další lekci.</p>`) },
+    { id: 't09b', topic: 't09', n: 2, min: 5, t: 'E2, nebo E1?',
+      goal: 'Po lekci odhadneš, kterým mechanismem eliminace poběží, který alken převládne a proč u E2 záleží na prostorovém uspořádání.',
+      recall: 'Vybav si z lekce 1, čím se liší SN2 a SN1. Zkus si tipnout, co by mohlo platit pro E2 a E1.',
+      q: ['t09_q48', 't09_q27', 't09_q28', 't09_q29', 't09_q30', 't09_q31', 't09_q32', 't09_q49', 't09_q35', 't09_q36', 't09_q44', 't09_q45'],
+      beda: 'E2 je tanec ve dvojici: báze bere H a X odchází ve stejném taktu, a to jen když stojí proti sobě. E1 je sólo: X odejde, karbokation chvíli postává a pak pustí H⁺.',
+      body: () => sec('1. Eliminace: z halogenidu alken', `<p>Při eliminaci odejde z halogenalkanu HX: X z jednoho uhlíku, H ze sousedního, a mezi nimi vznikne dvojná vazba. Stejně jako u substituce existují dva mechanismy.</p>
+        ${tbl(['', 'E2', 'E1'], [['Průběh', 'jeden krok, bez meziproduktu', 'dva kroky: X odejde, vznikne karbokation, pak odejde H⁺'], ['Rychlost', 'v = k [RX] [báze]', 'v = k [RX]'], ['Báze', 'silná (RO⁻, OH⁻, NR₂⁻)', 'slabá (H₂O, ROH), obvykle spolu s SN1'], ['Geometrie', 'H a X antiperiplanárně (180°, v jedné rovině)', 'na geometrii nezáleží']])}
+        <p class="aside">Důkaz, že E2 trhá vazbu C–H v kroku, který určuje rychlost: deuterovaný substrát eliminuje asi 7× pomaleji (izotopový efekt).</p>`)
+        + sec('2. Který alken vznikne', `<p><b>Zajcevovo pravidlo:</b> při eliminaci HX převládá <b>více substituovaný</b> (stabilnější) alken. Platí pro E1 i pro běžnou E2.</p>
+        <ul class="ac-ul"><li><b>Objemná báze</b> (t-BuOK) odtrhne stericky přístupnější H z CH₃, a převládne méně substituovaný alken.</li><li><b>Primární halogenid</b> eliminuje E2 jen se silnou a objemnou bází (t-BuOK, LDA). Jinak vyhraje SN2.</li><li><b>Teplo</b> podporuje eliminaci před substitucí.</li><li><b>Alkohol s H₂SO₄</b> (terciární) eliminuje mechanismem E1: dehydratace.</li></ul>`)
+        + sec('3. E2 na cyklohexanu', `<p>Na kruhu jsou antiperiplanární jen <b>axiální H a axiální X</b>, tedy trans-diaxiálně. Z konformace s ekvatoriálním halogenem E2 neproběhne.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> proto menthylchlorid s ethoxidem nedá Zajcevův alken. Po překlopení kruhu má axiální H proti Cl jen na jednom sousedním uhlíku, a vznikne méně substituovaný 2-menthen.</p>`) }
   ];
-  const SOON = { t09: ['E2, nebo E1? Eliminace a Zajcevovo pravidlo', 'Substituce, nebo eliminace? Rozhodovací diagram'] };
+  const SOON = { t09: ['Substituce, nebo eliminace? Rozhodovací diagram'] };
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
   if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) LES.forEach(L => L.q.forEach(k => { if (!BYID[k] || BYID[k].kind !== 'q') console.warn(`Lekce ${L.id}: otázka ${k} neexistuje`); }));
   const OP = store.get('fg-les', {});
@@ -29437,6 +29454,12 @@ const AC_TH = [
   ['k_l1caso4', 'ka', 'Proč se Ca²⁺ s H₂SO₄ sráží jen z koncentrovanějších roztoků?', 'CaSO₄ je ze síranů nejrozpustnější', ['CaSO₄ je ze síranů nejméně rozpustný', 'Ca²⁺ tvoří s H₂SO₄ rozpustný komplex', 'Ca²⁺ se sráží jen v zásaditém prostředí'], 'Spolehlivější je kyselina šťavelová: bílá krystalická sraženina šťavelanu vápenatého.', null, 'k'],
   ['k_l1pbso4', 'ka', 'Jak odlišíš bílý PbSO₄ od BaSO₄?', 'PbSO₄ s NH₄HS zčerná', ['BaSO₄ s NH₄HS zčerná', 'PbSO₄ s NH₃ zmodrá', 'BaSO₄ s HCl zežloutne'], 'NH₄HS převede PbSO₄ na černý PbS. Ostatní sírany zůstanou bílé.', null, 'k'],
   ['k_l1scen', 'ka', 'Vzorek s HCl nedá nic, s H₂SO₄ bílou sraženinu. Co v něm může být?', 'Ba²⁺, Sr²⁺, Ca²⁺ nebo Pb²⁺', ['Ag⁺, Hg₂²⁺ nebo Pb²⁺', 'Cu²⁺, Cd²⁺ nebo Bi³⁺', 'Na⁺, K⁺ nebo NH₄⁺'], 'Ag⁺ a Hg₂²⁺ vyloučila HCl. Pb²⁺ zůstává ve hře: z malé koncentrace s HCl uteče, H₂SO₄ ho ale chytí. Cu²⁺, Cd²⁺, Bi³⁺ ani Na⁺, K⁺, NH₄⁺ nerozpustné sírany netvoří.', null, 'k'],
+  /* k lekci 2 (sulfidy: H₂S a NH₄HS), přibylo 16. 10. 2026 */
+  ['k_l2acid', 'ka', 'Proč H₂S v kyselém prostředí sráží méně kationtů než NH₄HS?', 'v kyselém je málo S²⁻, srazí se jen nejméně rozpustné sulfidy', ['v kyselém se sulfidy rozpustí na thiokomplexy', 'H₂S v kyselém zoxiduje kationty na vyšší stupeň', 'kyselina všechny kationty vysráží dřív jako chloridy'], 'H₂S je slabá kyselina a v kyselém prostředí skoro nedisociuje. Proto se kationty dělí na ty, jejichž sulfidy se sráží už z kyselého prostředí, a ty, které se srazí až s NH₄HS v amoniakálním prostředí.', null, 'k'],
+  ['k_l2hydr', 'ka', 'Proč Al³⁺ a Cr³⁺ s NH₄HS nedají sulfid?', 'hydrolyzují a vyloučí se jako hydroxidy', ['jejich sulfidy jsou ve vodě dobře rozpustné', 'zoxidují sulfan na elementární síru', 'tvoří s amoniakem rozpustné komplexy'], 'Al(OH)₃ je bílý, Cr(OH)₃ šedozelený. Hydrolyzující kationty dají v amoniakálním prostředí místo sulfidu hydroxid.', null, 'k'],
+  ['k_l2sb', 'ka', 'Co se stane s oranžovým Sb₂S₃ v nadbytku NH₄HS?', 'rozpustí se na thioantimonitan, kyselinou se vrátí', ['zčerná, protože se vyloučí kovový antimon', 'zežloutne přeměnou na jinou sloučeninu', 'nic, nerozpustí se ani v kyselinách'], 'Sb₂S₃ (a SnS₂) tvoří v nadbytku činidla thiokomplexy. Okyselením HCl se oranžový Sb₂S₃ znovu vyloučí, a toho se využívá i při selektivním důkazu Sb³⁺.', null, 'k'],
+  ['k_l2coni', 'ka', 'Které sulfidy stárnutím polymerují a nerozpustí se ani v kyselinách?', 'CoS a NiS', ['ZnS a MnS', 'FeS a MnS', 'FeS a ZnS'], 'Ostatní sulfidy z NH₄HS se ve zředěných minerálních kyselinách rozpustí, třeba bílý ZnS.', null, 'k'],
+  ['k_l2scen', 'ka', 'Vzorek s H₂S v kyselém prostředí nedá nic, s NH₄HS černou sraženinu. Co v něm může být?', 'Fe²⁺, Co²⁺ nebo Ni²⁺', ['Cu²⁺, Pb²⁺ nebo Hg²⁺', 'Cd²⁺, Sb³⁺ nebo Bi³⁺', 'Na⁺, K⁺ nebo Mg²⁺'], 'Cu²⁺, Pb²⁺ a Hg²⁺ by se srazily černě už s H₂S. Cd²⁺, Sb³⁺ a Bi³⁺ by se srazily taky, navíc žlutě, oranžově a hnědě. Na⁺, K⁺ a Mg²⁺ sulfidy netvoří. Černé sulfidy až z amoniakálního prostředí dávají Fe²⁺, Co²⁺ a Ni²⁺ (a FeS vznikne i z Fe³⁺).', null, 'k'],
   ['a_neutr', 'ka', 'Proč se skupinové srážecí reakce aniontů dělají v neutrálním prostředí?', 'v kyselém by se část sraženin vůbec nevytvořila', ['v neutrálním se nesrážejí kationty', 'v zásaditém by se vyloučil jód', 'činidla jsou stálá jen v neutrálním'], 'Barnaté a stříbrné soli se liší právě stálostí v kyselém prostředí. Teprve vzniklou sraženinu zkoušíš kyselinou.', null, 'a'],
   ['a_ph', 'ka', 'Co může obsahovat vzorek aniontů, který reaguje kysele?', 'volnou kyselinu nebo sůl silné kyseliny a slabé zásady', ['sůl silné zásady a slabé kyseliny', 'jen sůl silné kyseliny a silné zásady', 'volnou silnou zásadu'], 'Zásaditý vzorek: silná zásada nebo sůl silné zásady a slabé kyseliny. Neutrální: sůl silné kyseliny a silné zásady, která nehydrolyzuje.', null, 'a'],
   ['a_kysele', 'ka', 'Které anionty nemůžou být ve vzorku s kyselou reakcí?', 'CO₃²⁻, NO₂⁻, SO₃²⁻ a S₂O₃²⁻', ['SO₄²⁻, PO₄³⁻ a NO₃⁻', 'Cl⁻, Br⁻, I⁻ a SCN⁻', 'SO₄²⁻, Cl⁻ a NO₃⁻'], 'Anionty snadno rozložitelných nebo těkavých kyselin (také S²⁻ a CN⁻) v kyselém prostředí nevydrží. Ztratit se můžou i při neutralizaci kyselinou dusičnou.', null, 'a'],
@@ -30273,9 +30296,24 @@ const AC_LES = [
       + sec('3. H₂SO₄: bílé sírany', `<p>35% H₂SO₄ sráží úplně <b>Ba²⁺ a Pb²⁺</b>, jen z koncentrovanějších roztoků <b>Sr²⁺ a Ca²⁺</b>. Všechny sírany jsou bílé.</p>
       <p class="ac-les-row"><b>BaSO₄</b> &lt; SrSO₄ &lt; <b>CaSO₄</b><br><small>od nejméně po nejvíc rozpustný</small></p>
       <ul class="ac-ul"><li><b>Ca²⁺</b> proto spolehlivěji dokážeš kyselinou šťavelovou (bílý šťavelan vápenatý).</li><li><b>PbSO₄</b> po přidání NH₄HS zčerná, vznikne PbS. Ostatní sírany zůstanou bílé.</li><li><b>Pb²⁺ je v obou sítech:</b> co uteče přes HCl, chytí H₂SO₄.</li></ul>
-      <p class="aside">Skripta u H₂SO₄ v závorce zmiňují i Hg₂²⁺ a Ag⁺. Ty ale dokážeš už s HCl, a tak je v kvízech k H₂SO₄ nepočítáme.</p>`) }
+      <p class="aside">Skripta u H₂SO₄ v závorce zmiňují i Hg₂²⁺ a Ag⁺. Ty ale dokážeš už s HCl, a tak je v kvízech k H₂SO₄ nepočítáme.</p>`) },
+  { id: 'k2', ch: 'ka', n: 2, min: 5, t: 'Sulfidy: H₂S a NH₄HS',
+    goal: 'Po lekci víš, které kationty sráží sulfan z kyselého prostředí, které až hydrogensulfid amonný, a poznáš je podle barvy sraženiny.',
+    recall: 'Vybav si z lekce 1, které kationty sráží HCl a které H₂SO₄. Pak si zkus tipnout, jakou barvu má většina sulfidů.',
+    q: ['g:k:H2S', 't:k_l2acid', 'i:cd:H2S', 'i:sb:H2S', 'i:fe3:H2S', 'g:k:NH4HS', 't:k_l2hydr', 'i:mn:NH4HS', 't:k_l2sb', 't:k_l2coni', 't:k_l2scen', 't:k_odkur'],
+    beda: 'Sulfidy jsou parta v černém. Kdo přijde v barvě, hned se prozradí: CdS ve žluté, Sb₂S₃ v oranžové, MnS v tělové a ZnS v bílé.',
+    body: () => sec('1. H₂S: sulfidy z kyselého prostředí', `${lesTubes([['cerna', 'CuS, PbS…'], ['zluta', 'CdS'], ['oranzova', 'Sb₂S₃'], ['hneda', 'Bi₂S₃, SnS']])}
+      <p>Vzorek nejdřív okyselíš kapkou 3% HCl a pak přidáš nasycený roztok sulfanu. Sraží se <b>Ag⁺, Pb²⁺, Hg₂²⁺, Hg²⁺, Cu²⁺, Cd²⁺, Bi³⁺, Sb³⁺</b> a cín. Zn²⁺ jen neúplně (bílý ZnS).</p>
+      <p>Většina sulfidů je <b>černá</b>. Výjimky si zapamatuj: CdS žlutý, Sb₂S₃ oranžový, Bi₂S₃ a SnS hnědé.</p>
+      <p class="ac-les-trap"><b>Pozor, past:</b> sulfan je redukční činidlo. Fe³⁺ ho zoxiduje na síru, a tak vznikne jen <b>bílý zákal síry</b>, ne sraženina sulfidu.</p>`)
+      + sec('2. NH₄HS: skoro všechno ostatní', `${lesTubes([['cerna', 'FeS, CoS, NiS'], ['telova', 'MnS'], ['bila', 'ZnS, Al(OH)₃'], ['sedozelena', 'Cr(OH)₃']])}
+      <p>Hydrogensulfid amonný je sulfan zneutralizovaný amoniakem. Sráží všechno, co H₂S, a navíc <b>Fe²⁺, Fe³⁺, Co²⁺, Ni²⁺, Mn²⁺, Zn²⁺</b>. Al³⁺ a Cr³⁺ hydrolyzují, takže místo sulfidu dají hydroxid.</p>
+      <p>Nesráží jen kationty alkalických kovů, kovů alkalických zemin a Mg²⁺ (a NH₄⁺).</p>
+      ${tbl(['Zvláštnost', 'Co uvidíš'], [['Sb₂S₃ v nadbytku NH₄HS', 'rozpustí se na thiokomplex, okyselením se oranžová sraženina vrátí'], ['CoS a NiS', 'stárnutím polymerují, nerozpustí se ani v kyselinách'], ['PbSO₄ z lekce 1', 's NH₄HS zčerná na PbS']])}`)
+      + sec('3. Proč dvě síta se sulfidy', `<p>H₂S je slabá kyselina. V kyselém prostředí je sulfidových iontů tak málo, že se vysráží jen nejméně rozpustné sulfidy. V amoniakálním prostředí jich je víc, a srazí se i ty rozpustnější. Odtud dvě skupiny ze staré Böttgerovy soustavy: sulfidy z kyselého a z amoniakálního prostředí.</p>
+      <p>Protože NH₄HS sráží všechny těžké kovy, používá se s (NH₄)₂CO₃ i k jejich <b>odstranění</b> před důkazem Li⁺, Na⁺, K⁺ a Mg²⁺.</p>`) }
 ];
-const AC_LES_SOON = ['Sulfidy: H₂S a NH₄HS', 'NaOH a amfoterní hydroxidy', 'NH₃ a amminkomplexy', 'KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
+const AC_LES_SOON = ['NaOH a amfoterní hydroxidy', 'NH₃ a amminkomplexy', 'KI a octan sodný', 'Co je ve vzorku? Kombinované úlohy'];
 const LES = {}; AC_LES.forEach(L => { LES[L.id] = L; });
 /* kontrola jen při vývoji (localhost nebo ?kontrola): každá otázka lekce musí být existující karta, ID karet se nesmí opakovat */
 if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.test(location.search)) {
