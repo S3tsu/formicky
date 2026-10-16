@@ -27422,7 +27422,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     if (!b) { b = document.createElement('div'); b.id = 'herna'; b.className = 'herna'; b.hidden = true; document.body.appendChild(b); }
     return b;
   }
-  function open(html) { clearInterval(L.timer); const b = box(); b.innerHTML = `<div class="hn-card"><div class="hn-top"><button type="button" class="link" data-hn="menu">← Herna</button><button type="button" class="m3d-x" data-hn="close" aria-label="Zavřít">×</button></div><div id="hnBody">${html}</div></div>`; b.hidden = false; document.body.classList.add('sheet-open'); b.scrollTop = 0; modalOn(b, 'Herna'); b.tabIndex = -1; b.focus({ preventScroll: true }); }
+  /* v nabídce vede odkaz vlevo nahoře na úvod, ve hře zpátky do nabídky */
+  function open(html, home) { clearInterval(L.timer); const b = box(); b.innerHTML = `<div class="hn-card"><div class="hn-top">${home ? '<a class="link" href="#" data-hn="close">← FormičkyHub</a>' : '<button type="button" class="link" data-hn="menu">← Herna</button>'}<button type="button" class="m3d-x" data-hn="close" aria-label="Zavřít">×</button></div><div id="hnBody">${html}</div></div>`; b.hidden = false; document.body.classList.add('sheet-open'); b.scrollTop = 0; modalOn(b, 'Herna'); b.tabIndex = -1; b.focus({ preventScroll: true }); }
   function close() { clearInterval(L.timer); const b = $('#herna'); if (b) b.hidden = true; document.body.classList.remove('sheet-open'); CH = null; renderEntry(); if (b) modalOff(b); }
   const best = k => GS.best[k] || 0;
   /* rozložení Herny: filtr předmětu a naposledy hraná hra (jen vzhled, mimo zálohu) */
@@ -27454,8 +27455,8 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   }
   function menu() {
     open(`<h2 class="hn-h">Herna</h2>
-      <p class="aside">Hry na procvičení. Do pokroku ani denního cíle se nepočítají. Po Lékárně nebo Neznámé látce můžeš vyzvat kamarádku, ať tě překoná.</p>
-      <div class="hn-wrap" id="hnMenuG">${tiles(true)}</div>`);
+      <p class="aside">Hry na procvičení. Do pokroku ani denního cíle se nepočítají. Po Lékárně nebo Neznámé látce můžeš vyzvat ostatní, ať tě překonají.</p>
+      <div class="hn-wrap" id="hnMenuG">${tiles(true)}</div>`, true);
   }
   document.addEventListener('click', e => {
     const f = e.target.closest('[data-hnf]');
@@ -28381,7 +28382,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610160710';
+const FH_VER = '202610160840';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
