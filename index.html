@@ -29084,7 +29084,9 @@ const FH_LES = (() => {
     const anchor = document.getElementById('subjects'); if (!anchor) return;
     let sec = document.getElementById('lesHub');
     if (!sec) {
-      anchor.insertAdjacentHTML('afterend', '<section id="lesHub" class="les-hub" aria-labelledby="lesHubH"><h2 class="fam-h" id="lesHubH">Lekce</h2><p class="aside">Krátký výklad a kvíz, asi 5 minut. Otázky z kvízu se ti pak vracejí v opakování.</p><div id="lesHubG"></div></section>');
+      /* Lekce nad Předměty, hned pod panelem Dnes: na telefonu jsou tak na první obrazovce */
+      const ph = anchor.previousElementSibling && anchor.previousElementSibling.matches('h2') ? anchor.previousElementSibling : anchor;
+      ph.insertAdjacentHTML('beforebegin', '<section id="lesHub" class="les-hub" aria-labelledby="lesHubH"><h2 class="fam-h" id="lesHubH">Lekce</h2><p class="aside">Krátký výklad a kvíz, asi 5 minut. Otázky z kvízu se ti pak vracejí v opakování.</p><div id="lesHubG"></div></section>');
       sec = document.getElementById('lesHub');
     }
     const A = all(), f = SUBJ.some(x => x.k === F) ? F : '*';
