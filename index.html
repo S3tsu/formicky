@@ -950,7 +950,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <section class="fact" id="fact" aria-live="polite">
     <div class="who" id="factWho"></div>
     <div class="fact-body">
-      <span class="eyebrow">Béďa Bobál ti vzkazuje</span>
+      <span class="eyebrow">Béďa Bobík ti vzkazuje</span>
       <h2 id="factT"></h2>
       <p id="factX"></p>
       <span class="cat" id="factC"></span>
@@ -1052,7 +1052,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <details class="g-item"><summary>Drobnosti a zkratky</summary>
       <ul>
         <li>Na počítači: <b>A–D</b> nebo <b>1–4</b> vybere možnost, <b>Enter</b> přejde na další otázku.</li>
-        <li><b>Béďa Bobál</b> dole na stránce radí pomůcky a memes, „Další pomůcka“ přinese novou. Na úvodní stránce má zajímavosti ze všech témat.</li>
+        <li><b>Béďa Bobík</b> dole na stránce radí pomůcky a memes, „Další pomůcka“ přinese novou. Na úvodní stránce má zajímavosti z organické i analytické chemie.</li>
         <li>Klepnutím na logo se mění jeho podoba.</li>
       </ul></details>
 
@@ -1177,7 +1177,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <main id="view"></main>
 
   <footer class="mascot" id="mascot">
-    <svg class="benz" viewBox="0 0 220 146" width="220" height="146" role="img" aria-label="Maskot Béďa Bobál s delšími vlasy a ustupujícími kouty pohupuje v dlaních uhlíkem a dusíkem">
+    <svg class="benz" viewBox="0 0 220 146" width="220" height="146" role="img" aria-label="Maskot Béďa Bobík s delšími vlasy a ustupujícími kouty pohupuje v dlaních uhlíkem a dusíkem">
       <path class="hair" d="M92 43 C72 42 58 60 58 80 C58 92 60 100 53 111 C66 111 74 103 77 96 L77 56 Z"/>
       <path class="hair" d="M128 43 C148 42 162 60 162 80 C162 92 160 100 167 111 C154 111 146 103 143 96 L143 56 Z"/>
       <path class="wisp" d="M105 36 q-2 -8 -10 -9 M110 34 q2 -9 -4 -13 M115 36 q5 -7 12 -5"/>
@@ -1198,7 +1198,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       <path class="face" d="M95 72 q6 -6 12 0 M113 72 q6 -6 12 0 M100 84 q10 9 20 0"/>
     </svg>
     <div class="bubble">
-      <span class="eyebrow">Béďa Bobál radí</span>
+      <span class="eyebrow">Béďa Bobík radí</span>
       <p id="mascotSay"><b>Šest, sedm:</b> uhlík má protonové číslo 6, dusík 7. A C–N je základ aminů, amidů i nitrilů.</p>
       <button type="button" class="link" id="mascotNext">Další pomůcka</button>
     </div>
@@ -28205,6 +28205,37 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     ["karvon", "Máta, nebo kmín", "(R)-Karvon voní po mátě klasnaté, (S)-karvon po kmínu. Stejný vzorec, jen zrcadlový obraz.", "t08"],
     ["(2R,3R)-kyselina vinná", "Pasteurova pinzeta", "Louis Pasteur v roce 1848 ručně pinzetou roztřídil krystalky vínanu sodno-amonného na dva zrcadlové tvary. Tak poprvé rozdělil racemát na enantiomery.", "t08"]
   );
+  /* Analytická chemie: [štítek, nadpis, text, 'ac:kapitola', obrázek]; obrázek (zkumavka, plamen, skvrna) kreslí FH_AC.pic */
+  const ACC = { ka: 'kationty a anionty', org: 'organická analýza', fyz: 'fyzikální vlastnosti', uv: 'fotometrie UV-VIS', ir: 'IČ spektrometrie' };
+  FACTS.push(
+    ["Ba²⁺ · barnatý kationt", "Jed, který se pije", "Rozpustné barnaté soli jsou jedovaté. Síran barnatý je ale tak nerozpustný, že ho pacienti pijí jako kontrastní látku na rentgen.", "ac:ka", { p: 'bila', s: 2 }],
+    ["Cu²⁺ · měďnatý kationt", "Královská modř", "Měďnaté ionty jsou ve vodě světle modré. Po přidání amoniaku vznikne tmavě modrý komplex [Cu(NH₃)₄]²⁺, podle kterého měď poznáš na první pohled.", "ac:ka", { sol: 'tmmodra' }],
+    ["Fe³⁺ · železitý kationt", "Berlínská modř", "Fe³⁺ se žlutou krevní solí dá tmavě modrou sraženinu, berlínskou modř. Je to jedno z prvních umělých barviv, malíři ho znají od začátku 18. století.", "ac:ka", { p: 'tmmodra', s: 2 }],
+    ["SCN⁻ · thiokyanatan", "Krev ve zkumavce", "Thiokyanatan s Fe³⁺ zbarví roztok krvavě červeně. Stejnou reakcí dokážeš železo i thiokyanatan, jen z opačné strany stolu.", "ac:ka", { sol: 'cervena' }],
+    ["Sr²⁺ · strontnatý kationt", "Červený ohňostroj", "Stroncium barví plamen karmínově červeně. Proto jsou jeho soli v červených ohňostrojích a nouzových světlicích.", "ac:ka", { t: 'flame', c: 'karmin' }],
+    ["Na⁺ · sodný kationt", "Žlutá všude", "Sodík barví plamen sytě žlutě a stačí ho nepatrně. Stejnou žlutou svítí sodíkové pouliční lampy.", "ac:ka", { t: 'flame', c: 'zluta' }],
+    ["K⁺ · draselný kationt", "Brýle proti sodíku", "Draslík barví plamen fialově, ale žlutý sodík ho snadno přebije. Přes modré kobaltové sklo žlutá zmizí a fialová zůstane.", "ac:ka", { t: 'flame', c: 'svfialova' }],
+    ["Pb²⁺ · olovnatý kationt", "Zlatý déšť", "Žlutý jodid olovnatý se v horké vodě rozpustí. Když roztok chladne, vylučují se z něj lesklé zlaté šupinky.", "ac:ka", { p: 'zluta', s: 2 }],
+    ["Co²⁺ · kobaltnatý kationt", "Silikagel, který mění barvu", "Kobaltnaté soli jsou s vodou růžové a bez vody modré. Proto modrý silikagel v sáčcích zrůžoví, když nasaje vlhkost.", "ac:ka", { sol: 'ruzova' }],
+    ["Ag⁺ · stříbrný kationt", "Šedne na světle", "Bílý chlorid stříbrný na světle pomalu šedne, vylučuje se z něj kovové stříbro. Na citlivosti stříbrných halogenidů ke světlu stála klasická fotografie.", "ac:ka", { p: 'bila', s: 2 }],
+    ["Ni²⁺ · nikelnatý kationt", "Jahodová sraženina", "Nikl s Čugajevovým činidlem (diacetyldioximem) dá jasně červenou sraženinu. Je to jedna z nejcitlivějších reakcí na nikl.", "ac:ka", { p: 'cervena', s: 2 }],
+    ["NO₃⁻ · dusičnan", "Tichý aniont", "Dusičnan nedá sraženinu s žádným skupinovým činidlem, protože jsou jeho soli rozpustné. Dokazuje se až selektivními reakcemi.", "ac:ka", {}],
+    ["CO₃²⁻ · uhličitan", "Šumí jako minerálka", "Kyselina z uhličitanu uvolní oxid uhličitý a roztok zašumí. Plyn zakalí barytovou vodu bílým uhličitanem barnatým.", "ac:ka", { p: 'bila', s: 1 }],
+    ["NH₄⁺ · amonný kationt", "Prozradí ho nos", "Amonné soli s NaOH při zahřátí uvolní amoniak. Ucítíš ho a navlhčený pH papírek nad zkumavkou zmodrá.", "ac:ka", { t: 'spot', c: 'modra' }],
+    ["Tollensovo činidlo", "Stříbrné zrcátko", "Aldehyd zredukuje Tollensovo činidlo na kovové stříbro, které se vyloučí na stěně zkumavky jako zrcátko. Keton to nedokáže.", "ac:org", { p: 'sedocerna', s: 1 }],
+    ["Lucasovo činidlo", "Kdo se zakalí první", "Lucasovo činidlo (ZnCl₂ v konc. HCl) rozliší alkoholy podle rychlosti. Terciární se zakalí hned, sekundární za pár minut a primární za laboratorní teploty skoro vůbec.", "ac:org", { p: 'bila', s: 1 }],
+    ["Beilsteinova zkouška", "Zelený plamen", "Vyžíhaný měděný drátek se vzorkem barví plamen zeleně, když látka obsahuje chlor, brom nebo jód. Negativní zkouška halogeny vyloučí.", "ac:org", { t: 'flame', c: 'zelena' }],
+    ["2,4-dinitrofenylhydrazin", "Důkaz karbonylu", "2,4-DNPH dá s aldehydy i ketony žlutou až oranžovou sraženinu. Tím potvrdíš skupinu C=O, i když ještě nevíš, jestli jde o aldehyd, nebo keton.", "ac:org", { p: 'zlutooranz', s: 2 }],
+    ["třídy rozpustnosti", "Vyhazovač v klubu", "Neznámou organickou látku zkoušíš postupně ve vodě, etheru, NaOH, NaHCO₃ a HCl. Podle toho, kde se rozpustí, ji zařadíš do třídy S, A, B, M, N nebo I.", "ac:org", {}],
+    ["teplota tání", "Nečistota taje dřív", "Příměs snižuje teplotu tání a rozšiřuje interval tání, podobně jako sůl rozpouští led na silnici. Ostrá teplota tání je známkou čisté látky.", "ac:fyz"],
+    ["sacharosa v polarimetru", "Invertní cukr", "Sacharosa stáčí polarizované světlo doprava (+66,5°). Po hydrolýze na glukosu a fruktosu stáčí směs doleva, protože fruktosa stáčí silně doleva (−92°). Proto se jí říká invertní cukr.", "ac:fyz"],
+    ["index lomu", "Sodíková čára a 20 °C", "Zápis n_D²⁰ znamená index lomu při žluté sodíkové čáře D a 20 °C. S rostoucí teplotou index lomu klesá, proto má refraktometr termostat.", "ac:fyz"],
+    ["thymolová modř", "Tři barvy v jedné lahvičce", "Thymolová modř má dva barevné přechody: kolem pH 2 z červené na žlutou a kolem pH 9 ze žluté na modrou. Jeden indikátor tak ukáže tři barvy.", "ac:uv", { t: 'spot', c: 'modra' }],
+    ["absorbance", "Každá jednička je nula navíc", "Absorbance roste přímo úměrně koncentraci (A = ε·d·c). Při absorbanci 1 projde 10 % světla, při absorbanci 2 už jen 1 %.", "ac:uv"],
+    ["C=O v IČ spektru", "Nejhlasitější pás", "Vazba C=O dává v IČ spektru silný pás kolem 1700 cm⁻¹. Podle přesné polohy rozlišíš ester (1735), aldehyd (1725), keton (1715) a amid (1650).", "ac:ir"],
+    ["O–H v IČ spektru", "Vodíkové můstky pás rozmažou", "Volná skupina O–H dá ostrý pás kolem 3600 cm⁻¹. S vodíkovými můstky se pás posune ke 3300 cm⁻¹ a rozšíří, u karboxylových kyselin přes celou oblast 3300–2500 cm⁻¹.", "ac:ir"],
+    ["C≡N v IČ spektru", "Tichá oblast", "Mezi 2300 a 2000 cm⁻¹ skoro nic neabsorbuje. Ostrý pás tam prozradí trojnou vazbu, nitril C≡N nebo alkyn C≡C.", "ac:ir"]
+  );
   if (!$('#hub')) return;
   const molOf = (name, t) => GROUPS.find(x => x.kind === 'mol' && x.name === name && (!t || x.topic === t)) || GROUPS.find(x => x.kind === 'mol' && x.name === name);
   let order = [], k = 0;
@@ -28227,6 +28258,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     });
     Object.entries(auto).forEach(([t, n]) => warn('ID podle pořadí (bez pevného ID)', t, `${n} otázek, další volné číslo q${next[t]}`));
     FACTS.forEach(([name, , , tid]) => {
+      if (/^ac:/.test(tid || '')) return;   // analytická chemie nemá látku v GROUPS
       const g = molOf(name, tid);
       if (!g) warn('zajímavost bez látky', tid || '?', name);
       else if (tid && g.topic !== tid) warn('zajímavost ukazuje na jiné téma', tid, `${name} je v ${g.topic}`);
@@ -28239,15 +28271,16 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   const shuffle = () => { order = FACTS.map((f, i) => i); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } k = 0; };
   const show = anim => {
     if (k >= order.length) shuffle();
-    const [name, t, x, tid] = FACTS[order[k]], g = molOf(name, tid), tp = g && TOPICS.find(z => z.id === g.topic);
+    const [name, t, x, tid, pc] = FACTS[order[k]], ac = /^ac:/.test(tid || ''), g = ac ? null : molOf(name, tid), tp = g && TOPICS.find(z => z.id === g.topic);
     $('#factT').textContent = t; $('#factX').textContent = x;
-    $('#factC').textContent = name + (tp ? ' · najdeš v tématu ' + tp.label : '');
-    let pic = ''; try { if (g) pic = molSVG(g, 34); } catch (e) { /* bez obrázku */ }
+    $('#factC').textContent = name + (ac ? ' · najdeš v Analytické chemii, ' + ACC[tid.slice(3)] : tp ? ' · najdeš v tématu ' + tp.label : '');
+    let pic = ''; try { if (g) pic = molSVG(g, 34); else if (pc && window.FH_AC) pic = FH_AC.pic(pc); } catch (e) { /* bez obrázku */ }
     $('#factPic').innerHTML = pic;
     $('#factN').textContent = `Zajímavost ${k + 1} z ${order.length}`;
     const box = $('#fact'); box.classList.remove('swap'); if (anim) { void box.offsetWidth; box.classList.add('swap'); }
   };
   shuffle(); show(false);
+  window.FH_FACT = () => show(false);   // Analytická chemie se načítá až po rozcestníku, pak dokreslí obrázek
   $('#factNext').addEventListener('click', () => { k++; show(true); });
 
   /* Logo FormičkyHub: pět variant, náhodně při načtení, klik = další */
@@ -28382,7 +28415,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610160905';
+const FH_VER = '202610160930';
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
@@ -29858,6 +29891,7 @@ window.FH_AC = {
   show, due: () => dueCount(), best: k => (ST.best && ST.best[k || 'vz']) || 0, cards: CARDS.length,
   started: () => Object.keys(ST.r).length > 0,
   stats: () => { const ids = CARDS.map(c => c.id); return { all: ids.length, done: ids.filter(id => ST.r[id] && ST.r[id].b >= 2).length }; },
+  pic: o => o.t === 'flame' ? flameSVG(o.c) : o.t === 'spot' ? spotSVG(o.c) : tubeSVG(o),
   goDue: () => { if (!dueCount(ST.ch)) { const c = AC_CH.map(x => x[0]).sort((a, b) => dueCount(b) - dueCount(a))[0]; ST.ch = c; } ST.mode = 'quiz'; save(); Q.deck = []; Q.empty = false; location.hash = '#analyticka'; newDeck(true); }
 };
 
@@ -29873,6 +29907,7 @@ document.addEventListener('click', e => { const b = e.target.closest('[data-td="
 window.addEventListener('hashchange', () => { if (/^#analyticka/.test(location.hash)) show(); });
 try { if (typeof renderToday === 'function') renderToday(); } catch (e) { /* nic */ }
 try { const g = document.getElementById('hnHubG'); if (g && window.FH_HERNA) FH_HERNA(); } catch (e) { /* nic */ }
+try { if (window.FH_FACT) FH_FACT(); } catch (e) { /* nic */ }
 if (/^#analyticka/.test(location.hash)) show();
 })();
 </script>
