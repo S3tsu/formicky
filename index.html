@@ -30519,7 +30519,7 @@ const AC_BEDA = {
   BaCl2: 'Barnaté soli: SO₄²⁻ nepovolí ani HCl, SO₃²⁻ a CrO₄²⁻ povolí HCl, CO₃²⁻ a PO₄³⁻ povolí už kyselinu octovou.',
   AgNO3: 'Halogenidy a thiokyanatan stříbrný drží i v HNO₃. Ostatní stříbrné soli se v kyselině rozpustí.',
   KMnO4: 'KMnO₄ odbarví redukující anionty: siřičitan, thiosíran, bromid, jodid, thiokyanatan, dusitan.',
-  I2: 'Jód je slabší oxidovadlo: odbarví ho jen siřičitan a thiosíran (a SCN⁻ z koncentrovaných roztoků).',
+  I2: 'Jód je slabší oxidovadlo: odbarví ho jen siřičitan, thiosíran a kyanid (a SCN⁻ z koncentrovaných roztoků).',
   sol: 'Třídění jako vyhazovač v klubu: voda, ether, kyselina, louh, soda. Kdo neprojde nikam a nemá N ani S, jde na konc. H₂SO₄. Kdo nereaguje ani tam, je I jako Ignoruju.',
   solS1: 'S1 jsou malé molekuly do pěti uhlíků. Rozpustí se ve vodě i v etheru, kamarádí se všemi.',
   solS2: 'S2 jsou tak polární, že ether nesnášejí. Cukry a soli zůstanou ve vodě.',
@@ -30554,7 +30554,7 @@ const AC_BEDA = {
 /* Memy na konci kola: [horní text, spodní text, kapitola] */
 const AC_MEMES = [
   ['Když přidáš NH₃ k Cu²⁺', 'a ono to zmodrá jak Šmoula', 'ka'], ['Já: přidám jen kapku NaOH', 'Pb, Al, Zn: rozpustíme se v nadbytku, ať to víš', 'ka'],
-  ['Fe³⁺ a sulfan', 'čekal jsi sulfid, máš síru', 'ka'], ['Sodík v plameni', 'když jsi chtěla vidět draslík', 'ka'],
+  ['Fe³⁺ a sulfan', 'čekala jsi sulfid, máš síru', 'ka'], ['Sodík v plameni', 'když jsi chtěla vidět draslík', 'ka'],
   ['Dusičnan se skupinovými činidly', 'nic, ticho, žádná reakce', 'ka'], ['Ag⁺ + Cl⁻', 'bílá jako tvoje stránka v protokolu před deadlinem', 'ka'],
   ['Lucasovo činidlo a primární alkohol', 'ještě pořád čekám na zákal', 'org'], ['Tollens', 'aldehyd si udělal selfie na stěně zkumavky', 'org'],
   ['Isonitrilová reakce', 'tu si zapamatuješ nosem, ne hlavou', 'org'], ['Třída I', 'nerozpustím se ani v kyselině sírové, jsem inert', 'org'],
@@ -30624,7 +30624,7 @@ const AC_SOL = [
   ['B', 'nerozpustná ve vodě a NaOH, rozpustná v HCl', 'zásadité: aminy (hlavně aromatické), alkaloidy'],
   ['M', 'nerozpustná ve vodě, NaOH i HCl, obsahuje N nebo S', 'neutrální aminy (diaryl-, triaryl-), vyšší amidy, nitro-, nitroso- a azosloučeniny, sulfony'],
   ['N', 'nerozpustná ve vodě, NaOH i HCl, bez N a S, reaguje s konc. H₂SO₄', 'vyšší alkoholy, aldehydy, ketony, estery, nenasycené uhlovodíky'],
-  ['I', 'nerozpustná ve vodě, NaOH i HCl, bez N a S, nereaguje ani s konc. H₂SO₄', 'nasycené uhlovodíky včetně aromatických, diarylethery']
+  ['I', 'nerozpustná ve vodě, NaOH i HCl, bez N a S, nereaguje ani s konc. H₂SO₄', 'nasycené a aromatické uhlovodíky, diarylethery']
 ];
 /* látky do hry Třída rozpustnosti: [název, třída, obsahuje N nebo S] */
 const AC_SUBST = [
@@ -30686,7 +30686,7 @@ const AC_TH = [
   ['k_bottger', 'ka', 'Podle čeho dělil Böttgerův systém kationty do pěti skupin?', 'podle reakcí s HCl, H₂S, NH₄HS a (NH₄)₂CO₃', ['podle barvy plamene a rozpustnosti solí', 'podle reakcí s NaOH, NH₃, KI a octanem', 'podle rozpustnosti dusičnanů a síranů'], 'I. nerozpustné chloridy, II. sulfidy z kyselého prostředí, III. sulfidy a hydroxidy z amoniakálního prostředí, IV. nerozpustné uhličitany, V. nesráží se nic z toho. V původní podobě se už nepoužívá: potřebuje hodně vzorku, plynný sulfan a hodně času.', null, 'k'],
   ['k_bott5', 'ka', 'Které kationty patřily v Böttgerově systému do V. skupiny?', 'ty, které nesráží žádné ze skupinových činidel', ['ty s nerozpustnými chloridy', 'ty se sulfidy srážejícími se z kyselého prostředí', 'ty s nerozpustnými uhličitany'], 'I. chloridy, II. sulfidy z kyselého prostředí, III. sulfidy a hydroxidy z amoniakálního prostředí, IV. uhličitany, V. zbytek.', null, 'k'],
   ['k_neg', 'ka', 'Co ti řekne negativní skupinová reakce?', 'které ionty v roztoku být nemohou', ['které ionty v roztoku určitě jsou', 'že je potřeba vzorek zředit', 'že je činidlo prošlé'], 'Pozitivní skupinová reakce ukáže, které ionty v roztoku být mohou. Konečná identifikace se dělá selektivními (specifickými) reakcemi.', null, 'b'],
-  ['k_spec', 'ka', 'Kdy mluvíme o specifické reakci?', 'když charakteristicky reaguje jen daný iont', ['když reaguje celá skupina iontů', 'když vzniká bílá sraženina', 'když se reakce dělá na filtračním papíře'], 'Selektivní činidlo reaguje s omezeným počtem iontů, specifické nejlépe jen s jedním. Skupinová činidla jsou HCl, H₂SO₄, H₂S a NH₄HS.', null, 'b'],
+  ['k_spec', 'ka', 'Kdy mluvíme o specifické reakci?', 'když charakteristicky reaguje jen daný iont', ['když reaguje celá skupina iontů', 'když vzniká bílá sraženina', 'když se reakce dělá na filtračním papíře'], 'Selektivní činidlo reaguje s omezeným počtem iontů, specifické nejlépe jen s jedním. Skupinová činidla jsou třeba HCl, H₂SO₄, H₂S nebo NH₃.', null, 'b'],
   ['k_prvni', 'ka', 'Který kationt se dokazuje jako první, přímo v původním vzorku?', 'NH₄⁺', ['Ag⁺', 'Na⁺', 'Fe³⁺'], 'NH₄⁺ ruší některé další důkazy (třeba Mg²⁺ s magnesonem nebo K⁺ s dipikrylaminem). Před ním se jen zjistí pH univerzálním papírkem.', null, 'k'],
   ['k_postup', 'ka', 'Co následuje při analýze kationtů hned po zjištění pH a důkazu NH₄⁺?', 'skupinová reakce s HCl', ['skupinová reakce s H₂SO₄', 'selektivní důkazy', 'odstranění kationtů těžkých kovů'], 'Pořadí: pH, NH₄⁺, HCl, H₂SO₄, další skupinová činidla, odstranění těžkých kovů a důkaz Mg²⁺, Na⁺, K⁺, Li⁺, selektivní důkazy, ověření nejednoznačných výsledků.', null, 'k'],
   ['k_kvant', 'ka', 'Jak poznáš, že srážení chloridů bylo kvantitativní?', 'HCl už ve filtrátu nic nevysráží', ['filtrát je zbarvený', 'sraženina na světle zšedne', 'filtrát reaguje zásaditě'], 'Sraženina chloridů se odfiltruje a filtrát se zkouší dál, nejdřív s H₂SO₄.', null, 'k'],
@@ -30755,7 +30755,7 @@ const AC_TH = [
   ['a_oxid', 'ka', 'Které anionty se při odstraňování kationtů v zásaditém prostředí za tepla oxidují?', 'siřičitany, sulfidy a dusitany', ['sírany, fosforečnany a boritany', 'chloridy a bromidy', 'dusičnany a uhličitany'], 'Při odstraňování kationtů těžkých kovů může dojít i k chemické změně aniontů.', null, 'a'],
   ['a_bacl', 'ka', 'Které barnaté soli se nerozpustí ani v silně kyselém prostředí?', 'síran a jodičnan barnatý', ['uhličitan a fosforečnan barnatý', 'siřičitan a thiosíran barnatý', 'chroman a boritan barnatý'], 'Skupina 1 (nerozpustné i v silně kyselém): SO₄²⁻, IO₃⁻. Skupina 2 (rozpustné v 3% HCl, ne v kyselině octové): CrO₄²⁻, SO₃²⁻, S₂O₃²⁻. Skupina 3 (rozpustné už v kyselině octové): PO₄³⁻, CO₃²⁻, BO₂⁻.', null, 'a'],
   ['a_as', 'ka', 'Jakou barvu má sraženina AgNO₃ s arseničnanem AsO₄³⁻?', 'hnědou', ['bílou', 'žlutou', 'černou'], 'Rozpouští se v HNO₃ a je stálá jen v neutrálním prostředí, stejně jako žlutý Ag₃PO₄ nebo červenohnědý Ag₂CrO₄.', null, 'a'],
-  ['a_kmno4', 'ka', 'Které anionty kromě SO₃²⁻, S₂O₃²⁻, Br⁻, I⁻, SCN⁻ a NO₂⁻ ještě odbarví KMnO₄ v kyselém prostředí?', 'S²⁻ a CN⁻', ['SO₄²⁻ a PO₄³⁻', 'NO₃⁻ a CO₃²⁻', 'BO₂⁻ a SO₄²⁻'], 'Jód odbarví z nich jen CN⁻, spolu se SO₃²⁻, S₂O₃²⁻ a SCN⁻ (ten jen z koncentrovaných roztoků).', null, 'a'],
+  ['a_kmno4', 'ka', 'Které anionty kromě SO₃²⁻, S₂O₃²⁻, Br⁻, I⁻, SCN⁻ a NO₂⁻ ještě odbarví KMnO₄ v kyselém prostředí?', 'S²⁻ a CN⁻', ['SO₄²⁻ a PO₄³⁻', 'NO₃⁻ a CO₃²⁻', 'BO₂⁻ a SO₄²⁻'], 'Ze skript u jódu z nich najdeš jen CN⁻ (spolu se SO₃²⁻, S₂O₃²⁻ a SCN⁻ z koncentrovaných roztoků). Sulfid jód ve skutečnosti taky odbarví (S²⁻ + I₂ → S + 2 I⁻), skripta ho ale uvádějí jen u KMnO₄.', null, 'a'],
   ['a_i2', 'ka', 'Kdy má smysl skupinová zkouška s jódem?', 'až když vzorek odbarvil KMnO₄', ['vždy jako první redoxní zkouška', 'jen když je ve vzorku Ag⁺', 'jen v silně kyselém prostředí'], 'Jód je na rozdíl od KMnO₄ jen mírné oxidační činidlo. Dělá se v neutrálním vzorku se zrnkem NaHCO₃ a škrobem.', null, 'a'],
   ['a_ki', 'ka', 'Na co se redukuje dusitan při reakci s KI v kyselém prostředí?', 'na NO', ['na NH₃', 'na N₂', 'na NO₃⁻'], '2 I⁻ + 2 NO₂⁻ + 4 H⁺ → 2 NO + I₂ + 2 H₂O. Chroman se s KI redukuje na Cr³⁺. Vyloučený jód zmodrá škrob.', null, 'a'],
   ['a_devarda', 'ka', 'Proč kladná Devardova reakce nedokazuje jen dusičnan?', 'stejně reagují dusitany a amonné ionty', ['stejně reagují i chloridy', 'reaguje každý redukující aniont', 'NH₃ uvolní sám práškový hliník'], 'Hliník v NaOH redukuje dusičnan na amoniak. Amoniak z dusitanů nebo z NH₄⁺ zbarví papírek stejně.', null, 'a'],
@@ -30766,7 +30766,7 @@ const AC_TH = [
   ['o_mineral', 'org', 'Proč se organická látka před důkazem prvků mineralizuje?', 'aby prvky přešly na dokazatelné ionty', ['aby se odstranila voda', 'aby se zvýšila rozpustnost v etheru', 'aby se látka vyčistila krystalizací'], 'Oxidační (CuO) nebo redukční (Mg + K₂CO₃) mineralizace převede C, N, S a halogeny na CO₂, kyanid, sulfid a halogenidy.'],
   ['o_dvakroky', 'org', 'Ze kterých kroků se skládá klasická organická analýza?', 'důkaz prvků a funkčních skupin', ['jen IČ spektrum a bod tání', 'titrace a vážková analýza', 'jen skupinová činidla jako u kationtů'], 'Doplňkově se určuje třída rozpustnosti. Kvůli izomerům nestačí znát prvky, je nutné dokázat i funkční skupiny.'],
   ['o_keton', 'org', 'Jak se v laboratoři dokáže keton?', 'nepřímo: DNPH ano, Tollens a Schiff ne', ['Tollensovým stříbrným zrcadlem', 'Lucasovým činidlem', 'Beilsteinovou zkouškou'], '2,4-DNPH potvrdí karbonyl, negativní Tollens a Schiff vyloučí aldehyd. Ketony nemají redukční vlastnosti, takže nemají vlastní pozitivní důkaz.'],
-  ['o_aminy', 'org', 'Které aminy nereagují s kyselinou dusitou?', 'terciární', ['primární alifatické', 'primární aromatické', 'sekundární alifatické'], 'Primární alifatické uvolní N₂, primární aromatické dají azobarvivo, sekundární žluté nitrosaminy, terciární nic.'],
+  ['o_aminy', 'org', 'Které aminy nereagují s kyselinou dusitou?', 'terciární', ['primární alifatické', 'primární aromatické', 'sekundární alifatické'], 'Primární alifatické uvolní N₂, primární aromatické dají azobarvivo, sekundární žluté nitrosaminy, terciární nic. Tak to uvádějí skripta. Terciární aromatické aminy (N,N-dimethylanilin) se ve skutečnosti nitrosují na kruhu do polohy para.'],
   ['f_cist', 'fyz', 'Jak se projeví nečistota na teplotě tání?', 'teplota tání klesne a interval tání se rozšíří', ['teplota tání stoupne', 'nijak, pokud nečistota taje výš', 'látka přestane tát úplně'], 'Malé znečištění teplotu tání výrazně sníží, i když nečistota sama taje výš.', 'Nečistota snižuje bod tání jako sůl led na silnici.'],
   ['f_rychl', 'fyz', 'Jak rychle se zahřívá v bodotávku těsně před teplotou tání?', '1–2 °C za minutu', ['4–6 °C za minutu', '10 °C za minutu', '0,1 °C za minutu'], 'Nejdřív 4–6 °C/min, v blízkosti teploty tání 1–2 °C/min.'],
   ['f_krystal', 'fyz', 'Teplota, kdy zmizí poslední krystal, je oproti teplotě tání…', 'asi o 2–3 °C vyšší', ['stejná', 'o 2–3 °C nižší', 'o 10 °C vyšší'], 'Teplota tání se odečte v okamžiku vzniku taveniny. Údaj je reprodukovatelný na ±0,5 °C.'],
@@ -30775,7 +30775,7 @@ const AC_TH = [
   ['f_nd20', 'fyz', 'Co znamená zápis n_D²⁰?', 'index lomu při sodíkové čáře D a 20 °C', ['index lomu při 20 nm', 'index lomu 20% roztoku', 'dvacáté měření indexu lomu'], 'Dolní index = vlnová délka (sodíková čára D), horní = teplota.'],
   ['f_teplo', 'fyz', 'Jak se mění index lomu kapaliny s rostoucí teplotou?', 'klesá o 0,0003–0,0008 na 1 °C', ['roste o 0,01 na 1 °C', 'nemění se', 'roste jen u vody'], 'Proto se měří při definované teplotě (20 nebo 25 °C), termostat ±0,2 °C.', 'Teplá kapalina je řidší, i pro světlo. Index lomu klesá.'],
   ['f_abbe', 'fyz', 'Na čem je založen Abbého refraktometr?', 'na mezním úhlu úplného odrazu', ['na otáčení polarizované roviny', 'na absorpci UV záření', 'na Nernstově rovnici'], 'Rozsah 1,300–1,700, přesnost ±0,0001, lze měřit i za denního světla.'],
-  ['f_ph', 'fyz', 'Jak je definováno pH?', 'pH = −log a(H₃O⁺)', ['pH = log c(OH⁻)', 'pH = −ln a(H₃O⁺)', 'pH = 14 − log c(H₃O⁺)'], 've zředěných roztocích lze aktivitu nahradit koncentrací.'],
+  ['f_ph', 'fyz', 'Jak je definováno pH?', 'pH = −log a(H₃O⁺)', ['pH = log c(OH⁻)', 'pH = −ln a(H₃O⁺)', 'pH = 14 − log c(H₃O⁺)'], 'Ve zředěných roztocích lze aktivitu nahradit koncentrací.'],
   ['f_kw', 'fyz', 'Kolik je iontový součin vody Kw?', '10⁻¹⁴', ['10⁻⁷', '10⁻¹²', '14'], 'Kw = [H₃O⁺]·[OH⁻] = 10⁻¹⁴, v čisté vodě je obojího 10⁻⁷ mol/l.'],
   ['f_elektr', 'fyz', 'Jaký typ elektrody je skleněná elektroda?', 'membránová iontově selektivní elektroda', ['kovová elektroda prvního druhu', 'kalomelová referentní elektroda', 'platinová redoxní elektroda'], 'Uvnitř je pufr a vnitřní referentní (argentchloridová) elektroda.'],
   ['f_kalib', 'fyz', 'Jak se kalibruje pH metr dvěma pufry?', 'v pufru pH 7 OFFSET, v pufru pH 4 SLOPE', ['v pufru pH 4 OFFSET, v pufru pH 7 SLOPE', 'jen jedním pufrem pH 7', 've vodě a v 0,1M HCl'], 'Místo pH 4 může být i pufr pH 10. Kalibrace má přesahovat rozsah pH vzorků. Mezi pufry se elektroda oplachuje a osuší.', 'Nejdřív OFFSET na sedmičce, pak SLOPE. O–S jako Oběd, pak Spánek.'],
@@ -30793,7 +30793,7 @@ const AC_TH = [
   ['u_deriv', 'uv', 'Co ukazují nulové body 1. derivace absorpčního spektra?', 'polohu maxim a minim spektra', ['koncentraci vzorku', 'absorbanci blanku', 'pH roztoku'], 'Derivační spektra pomáhají přesně najít maxima a odlišit podobná spektra.'],
   ['u_amax', 'uv', 'Jak velká absorbance je při měření ještě vhodná?', 'menší než 2', ['větší než 5', 'přesně 0', 'jakákoli, nezáleží na tom'], 'Koncentraci indikátoru vybereme zkusmo ředěním tak, aby A < 2.'],
   ['u_ind', 'uv', 'Proč mění acidobazický indikátor barvu?', 'se změnou pH se mění uspořádání dvojných vazeb v molekule', ['indikátor se při změně pH rozpouští', 'mění se teplota roztoku', 'indikátor se oxiduje vzdušným kyslíkem'], 'Změna konjugace posune absorpční maximum, a tím i barvu.'],
-  ['u_univ', 'uv', 'Jakou barvu má univerzální indikátorový papírek v silně zásaditém roztoku (pH 13)?', 'tmavě modrou', ['červenou', 'žlutou', 'zelenou'], 'Škála jde od červené (pH 0–2) přes žlutou (5–6) a zelenou (8–9) po tmavě modrou (12–14).'],
+  ['u_univ', 'uv', 'Jakou barvu má univerzální indikátorový papírek v silně zásaditém roztoku (pH 13)?', 'tmavě modrou', ['červenou', 'žlutou', 'zelenou'], 'Škála jde od červené (kolem pH 1) přes žlutou (5–6) a zelenou (8–9) po tmavě modrou (13–14).'],
   ['i_oblast', 'ir', 'Která IČ oblast je pro identifikaci organických látek nejdůležitější?', 'střední (MIR) 4000–200 cm⁻¹', ['blízká (NIR) 12 800–4000 cm⁻¹', 'vzdálená (FIR) 200–5 cm⁻¹', 'UV-VIS 190–900 nm'], 'V MIR leží fundamentální vibrace. FIR jsou hlavně rotace, NIR svrchní tóny (overtony).'],
   ['i_fir', 'ir', 'Co vyvolává záření ve vzdálené IČ oblasti (FIR)?', 'změny rotační energie molekuly', ['přechody vnějších elektronů', 'svrchní tóny vibrací', 'ionizaci molekul'], 'FIR má nejnižší energii, je to oblast rotačních spekter.'],
   ['i_nir', 'ir', 'Co jsou svrchní tóny (overtony)?', 'přechody do vyšších vibračních stavů', ['rotační přechody ve FIR', 'elektronové přechody v UV', 'odrazy záření na ATR krystalu'], 'Jde o přechody do druhého a vyššího vibračního stavu, typické pro NIR. Fotony NIR mají nejvyšší energii z IČ oblastí.'],
@@ -31466,10 +31466,10 @@ function whyAC(cd) {
   if (!Q.les && (cd.ch || 'ka') !== 'ka' && CHM[ST.ch].includes('sheet')) h += `<div class="row why-row"><button type="button" class="btn sm" data-ac="mode" data-v="sheet"><span class="why-q">Proč?</span> Projít tahák ke cvičení</button></div>`;
   return h;
 }
-/* Pomůcka ke kartičce: u skupinových otázek podle činidla, jinak podle iontu */
+/* Pomůcka ke kartičce: u skupinových otázek podle činidla (u „nereagují s žádným“ kationty plamen, anionty dusičnan), jinak podle iontu */
 function bedaFor(cd) {
   if (cd.t === 'mc' || cd.t === 'calc') return Q.d.m;
-  if (cd.t === 'grp') return cd.none ? AC_BEDA.no3 : AC_BEDA[cd.rk];
+  if (cd.t === 'grp') return cd.none ? (cd.c === 'k' ? AC_BEDA.flame : AC_BEDA.no3) : AC_BEDA[cd.rk];
   if (cd.t === 'sel' && cd.x.k === 'flame') return AC_BEDA.flame;
   if ((cd.t === 'obs' || cd.t === 'ion') && Math.random() < .35 && AC_BEDA[cd.rk]) return AC_BEDA[cd.rk];
   return AC_BEDA[cd.ion.id];
@@ -31662,6 +31662,7 @@ const AC_LES = [
       <p>Sedm kationtů dá nejdřív sraženinu, ale v nadbytku amoniaku (2M NH₃) se rozpustí na <b>amminkomplex</b>:</p>
       <p class="ac-les-row"><b>Ag⁺ · Cd²⁺ · Zn²⁺ · Cu²⁺ · Ni²⁺ · Co²⁺ · Mn²⁺</b></p>
       ${tbl(['Komplex', 'Barva roztoku'], [['[Ag(NH₃)₂]⁺, [Cd(NH₃)₄]²⁺, [Zn(NH₃)₆]²⁺, [Mn(NH₃)₆]²⁺', 'bezbarvý'], ['[Cu(NH₃)₄]²⁺', '<b>tmavě modrý</b>'], ['[Ni(NH₃)₆]²⁺', '<b>světle modrý</b>'], ['[Co(NH₃)₆]³⁺', '<b>žlutohnědý</b>: růžový Co(OH)₂ se v zásaditém prostředí vzduchem oxiduje']])}
+      <p class="aside">Skripta píšou [Zn(NH₃)₆]²⁺, v učebnicích anorganické chemie najdeš spíš tetraedrický [Zn(NH₃)₄]²⁺.</p>
       <p class="aside">Stejně se rozpustí i AgCl z lekce 1. Proto ho amoniak odliší od Hg₂Cl₂, který zčerná.</p>`)
       + sec('3. NaOH, nebo NH₃?', `${tbl(['Kationt', 'Nadbytek NaOH', 'Nadbytek NH₃'], [['Zn²⁺', 'rozpustí se', 'rozpustí se'], ['Pb²⁺, Al³⁺, Sb³⁺, Sn²⁺', 'rozpustí se', 'zůstane'], ['Cr³⁺', 'rozpustí se na zelený roztok', 'zůstane'], ['Ag⁺, Cd²⁺, Cu²⁺, Ni²⁺, Co²⁺, Mn²⁺', 'zůstane', 'rozpustí se']])}
       <ul class="ac-ul"><li><b>Zn²⁺</b> je jediný, kdo zmizí v obou.</li><li>Amminkomplexy slouží k důkazu (modrá mědi) i k <b>oddělení</b>: Cu²⁺ zůstane v roztoku, Fe(OH)₃ odfiltruješ.</li></ul>
@@ -31793,7 +31794,7 @@ const AC_LES = [
       ${tbl(['Odbarví modrý jód se škrobem', 'Poznámka'], [['SO₃²⁻', 'roztok přitom zkysne'], ['S₂O₃²⁻', 'vznikne tetrathionan, roztok zůstane neutrální'], ['CN⁻', ''], ['SCN⁻', 'jen z koncentrovaných roztoků']])}`)
       + sec('3. KI se škrobem: hledáme oxidující anionty', `<div class="ac-les-tubes">${[['tmmodra', 'jód + škrob']].map(([sol, f]) => tubeSVG({ sol }, f)).join('')}</div>
       <p>V kyselém prostředí oxidující anionty vyloučí z jodidu jód a škrob zmodrá. Takhle se prozradí <b>CrO₄²⁻</b> (redukuje se na Cr³⁺) a <b>NO₂⁻</b> (redukuje se na NO).</p>
-      <p class="ac-les-trap"><b>Pozor, past:</b> redukující a oxidující ionty by spolu zreagovaly. Když vzorek odbarví KMnO₄ siřičitanem, chroman v něm být nemůže. A NO₃⁻ nereaguje se žádným skupinovým činidlem, ten se dokazuje jen selektivně.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> redukující a oxidující ionty by spolu zreagovaly. Když vzorek obsahuje siřičitan (odbarví KMnO₄), chroman v něm být nemůže. A NO₃⁻ nereaguje se žádným skupinovým činidlem, ten se dokazuje jen selektivně.</p>`) },
   { id: 'k14', ch: 'ka', n: 14, min: 5, t: 'Selektivní důkazy: anionty síry, C, P, B a Cr',
     goal: 'Po lekci umíš selektivně dokázat síran, siřičitan, thiosíran, uhličitan, fosforečnan, boritan a chroman.',
     recall: 'Vybav si z lekce 13, čím se liší siřičitan a thiosíran při reakci s jódem. Tipni si, jak bys je odlišila ještě jinak.',
@@ -31856,7 +31857,7 @@ const AC_LES = [
       + sec('2. Fenoly', `${tbl(['Činidlo', 'Co uvidíš', 'Poznámka'], [['FeCl₃ a K₃[Fe(CN)₆] na papíře', 'tmavě modrá skvrna', 'vždy slepý pokus, činidlo časem samo zelená'], ['diazotovaná kyselina sulfanilová a NaOH', 'žluté až červené azobarvivo', 'jen s volnou polohou ortho nebo para'], ['20% NaOH', 'hnědá až fialová', 'vícemocné fenoly a aminofenoly se oxidují']])}`)
       + sec('3. Aldehyd, nebo keton?', `${lesTubes([['fialova', 'DNPH'], ['sedocerna', 'Tollens'], ['modrofialova', 'Schiff']])}
       ${tbl(['Činidlo', 'Aldehyd', 'Keton'], [['2,4-DNPH a NaOH na papíře', 'fialové zbarvení', 'fialové zbarvení'], ['Tollensovo činidlo, mírně zahřát', '<b>stříbrné zrcadlo</b>', 'nic'], ['Schiffovo činidlo, pH asi 3', '<b>modrofialové</b>', 'nic']])}
-      <p class="ac-les-trap"><b>Pozor, past:</b> keton nemá vlastní pozitivní důkaz. Dokazuje se nepřímo: DNPH ukáže karbonyl, Tollens a Schiff vyloučí aldehyd. Tollens navíc reagují i polyfenoly, aminofenoly a redukující cukry.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> keton nemá vlastní pozitivní důkaz. Dokazuje se nepřímo: DNPH ukáže karbonyl, Tollens a Schiff vyloučí aldehyd. S Tollensovým činidlem navíc reagují i polyfenoly, aminofenoly a redukující cukry.</p>`) },
   { id: 'o4', ch: 'org', n: 4, min: 5, t: 'Funkční skupiny: kyseliny, estery, ethery a dusík',
     goal: 'Po lekci umíš dokázat karboxylové kyseliny a jejich deriváty, odhalit kyslíkatou látku a roztřídit aminy, amidy a nitrosloučeniny.',
     recall: 'Vybav si z organiky, co vznikne z primárního aromatického aminu s kyselinou dusitou za chladu. Napiš si to na papír.',
@@ -31940,7 +31941,7 @@ const AC_LES = [
       <p class="aside">Hranice 3000 cm⁻¹: pod ní C–H alkanů, nad ní =C–H alkenů. Pásmo 2300–2000 je jinak tiché, kdo tam křičí, má trojnou vazbu.</p>`)
       + sec('2. Karbonyl a C–O', `${tbl(['C=O', 'cm⁻¹'], [['ester', '~1735'], ['aldehyd', '~1725'], ['keton', '~1715'], ['karboxylová kyselina', '~1710'], ['amid', '~1650']])}
       <p>Ester má navíc silný O=C–O 1300–1100, alkohol C–OH 1150–1040 a ether C–O–C 1150–1070 cm⁻¹.</p>`)
-      + sec('3. O–H, N–H a NO₂', `${tbl(['Pás', 'cm⁻¹', 'Vzhled'], [['O–H volný', '3650–3590', 'ostrý'], ['O–H s vodíkovými můstky', '3400–3200', 'silný a široký'], ['N–H primárního aminu nebo amidu', '3500–3300', 'střední'], ['N–H sekundárního', '~3500', 'střední'], ['C–N aminů', '1350–1000', 'střední'], ['NO₂', '1550 a 1370', 'dva silné pásy']])}
+      + sec('3. O–H, N–H a NO₂', `${tbl(['Pás', 'cm⁻¹', 'Vzhled'], [['O–H volný', '3650–3590', 'ostrý'], ['O–H s vodíkovými můstky', '3400–3200', 'silný a široký'], ['N–H primárního aminu nebo amidu', '3500–3300', 'střední'], ['N–H sekundárního', '~3500', 'střední'], ['N–H terciárního aminu', '—', 'žádný pás'], ['C–N aminů', '1350–1000', 'střední'], ['NO₂', '1550 a 1370', 'dva silné pásy']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> terciární amin nemá na dusíku vodík, takže pás N–H chybí (v tabulce je u něj pomlčka).</p>`) }
 ];
 const AC_LES_SOON = [];
