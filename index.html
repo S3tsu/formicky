@@ -384,7 +384,7 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .fact .pic .ico{width:52px;height:52px}
 .fact .row{grid-column:1/-1;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .fact .row .n{color:var(--muted);font-size:.84rem}
-.fact.hype .who .head{animation:bob .45s ease-out}
+.fact.hype .who .head,.fact.hype .who .flop{animation:bob .45s ease-out}
 @keyframes bob{40%{transform:translateY(-6px)}}
 .fact.swap .fact-body,.fact.swap .pic{animation:factIn .35s ease-out}
 @keyframes factIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -417,7 +417,7 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .back:hover{text-decoration:underline;text-underline-offset:3px}
 .ico{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:520px){ .fact{margin-top:116px;padding:30px 16px 16px} .fact .who{width:180px;left:50%;margin-left:-90px;top:-110px} .fbub{grid-template-columns:1fr} .fact .pic{grid-column:1;grid-row:auto;max-width:none} }
-@media (prefers-reduced-motion:reduce){ .fact.swap .fact-body,.fact.swap .pic,.fact.hype .who .head{animation:none} }
+@media (prefers-reduced-motion:reduce){ .fact.swap .fact-body,.fact.swap .pic,.fact.hype .who .head,.fact.hype .who .flop{animation:none} }
 /* --- Béďa Bobík: kresba (patička, rozcestník) --- */
 :root{--beda-lens:#f6e7a4}
 /* v tmavém režimu zůstává Béďa „samolepka“ jako ve světlém, jen ztlumený a se světlým lemem */
@@ -29103,7 +29103,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     pk.insertAdjacentHTML('afterbegin', '<defs><clipPath id="bdEdge"><rect width="200" height="122"/></clipPath></defs>');
     pk.querySelector('.head').setAttribute('clip-path', 'url(#bdEdge)');
     /* bříško se přes hranu karty převalí */
-    pk.querySelector('.head').insertAdjacentHTML('afterend', '<path class="body" d="M44.4 121 Q46 138 100 140 Q154 138 155.6 121"/><ellipse class="tummy" cx="100" cy="129" rx="32" ry="6.5"/><circle class="navel" cx="100" cy="131" r="2.6"/>');
+    pk.querySelector('.head').insertAdjacentHTML('afterend', '<g class="flop"><path class="body" d="M44.4 121 Q46 138 100 140 Q154 138 155.6 121"/><ellipse class="tummy" cx="100" cy="129" rx="32" ry="6.5"/><circle class="navel" cx="100" cy="131" r="2.6"/></g>');
     pk.classList.add('peek'); bedaPose(pk, Math.floor(Math.random() * BEDA_POSES.length));
     bedaPk = pk; if (!$('#fact').classList.contains('ac')) $('#factWho').replaceChildren(pk);
   }
