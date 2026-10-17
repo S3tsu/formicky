@@ -24281,7 +24281,7 @@ function registerTopic(T) {
       /* ---- fo ---- */
       ['base', 'fo', 'Co je fosfolipid', 'Jaké estery jsou fosfolipidy?',
         ['Diestery kyseliny fosforečné', 'Monoestery kyseliny fosforečné', 'Triestery kyseliny fosforečné', 'Estery kyseliny sírové'],
-        'Fosfát je esterifikovaný na jedné straně glycerolem (nebo sfingosinem), na druhé aminoalkoholem.', 'q21'],
+        'Fosfát je esterifikovaný na jedné straně glycerolem (nebo sfingosinem), na druhé aminoalkoholem. Výjimkou je kyselina fosfatidová, monoester, ze které se fosfoacylglyceroly odvozují.', 'q21'],
       ['base', 'fo', 'Fosfoacylglycerol', 'Kde jsou ve fosfoacylglycerolu nasycená a nenasycená kyselina?',
         ['Na C1 nasycená, na C2 nenasycená', 'Na C1 nenasycená, na C2 nasycená', 'Obě na C1 a C3', 'Na C3 nasycená, na C2 fosfát'],
         'Podle slajdu: C1 nasycená, C2 nenasycená, na C3 fosfát s aminoalkoholem. Konfigurace na C2 je R (L).', 'q22'],
@@ -29933,7 +29933,7 @@ const FH_OL = (() => {
       q: ['t21_q1', 't21_q2', 't21_q3', 't21_q14', 't21_q16', 't21_q24', 't21_q26', 't21_q29', 't21_q30', 't21_q31', 't21_q34', 't21_q35'],
       beda: 'Epoxid je napjatý jako struna. Stačí slabší nukleofil a kruh praskne, a útočník přichází vždycky zezadu.',
       body: () => sec('1. Tři názvoslovné systémy', `${tbl(['Systém', 'Kdy'], [['triviální názvy', '5- a 6-členné kruhy s 1–2 heteroatomy (furan, pyrrol, pyridin)'], ['Hantzsch–Widman', '3-, 4- a 7- až 10-členné kruhy a kruhy s víc heteroatomy'], ['záměnný princip (oxa-, thia-, aza-)', 'kruhy nad 10 členů a bi- a polycykly, třeba 4-thia-1-azabicyklo[3.2.0]heptan v penicilinu']])}
-        <p>U kondenzovaných heterocyklů je <b>základní složkou</b> větší kruh, při stejné velikosti rozhoduje heteroatom N > O > S. Písmeno označuje vazbu základní složky (1–2 = a, 2–3 = b), připojený thiofen je thieno-, furan furo-.</p>`)
+        <p>U kondenzovaných heterocyklů je <b>základní složkou</b> větší kruh, při stejné velikosti rozhoduje heteroatom N > O > S. Podle IUPAC se nejdřív hledá kruh s dusíkem, v příkladech z přednášky ale vychází obojí stejně. Písmeno označuje vazbu základní složky (1–2 = a, 2–3 = b), připojený thiofen je thieno-, furan furo-.</p>`)
         + sec('2. Příprava epoxidů', `<ul class="ac-ul"><li><b>Peroxykyselina</b> (MCPBA) přenese kyslík na oba uhlíky v jednom kroku, geometrie alkenu se zachová (z cis-alkenu cis-epoxid). Z MCPBA zbude kyselina m-chlorbenzoová.</li><li>Z <b>halohydrinu</b> a NaOH: vnitromolekulární SN2, alkoxid vytlačí halogenid zezadu.</li></ul>`)
         + sec('3. Otevírání epoxidů', `${tbl(['Podmínky', 'Kam jde nukleofil', 'Proč'], [['kyselé (H₃O⁺, HX)', 'na terciární uhlík, u primárního a sekundárního spíš na CH₂; útok zezadu', 'náboj se hromadí jako u SN1, ale útok jako u SN2'], ['bez kyseliny, silný nukleofil', 'na méně bráněný CH₂', 'jen sterika, SN2']])}
         <p>Kyselá hydrolýza cyklohexenoxidu dá <b>trans</b>-diol. Grignard s oxiranem prodlouží řetězec o dva uhlíky.</p>
