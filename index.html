@@ -1760,7 +1760,7 @@ const ADD = {
   'hydroperoxid': { syn: ['alkylhydroperoxid'] },
   'aldehyd': { syn: ['aldehydová skupina', 'formyl'], hid: ['formylová skupina'], gen: CARBONYL },
   'keton': { syn: ['ketoskupina', 'oxoskupina'], gen: CARBONYL },
-  'karboxylová kyselina': { syn: ['karbonová kyselina', 'karboxylová skupina', 'karboxyl'] },
+  'karboxylová kyselina': { syn: ['karboxylová skupina', 'karboxyl'], hid: ['karbonová kyselina'] },
   'peroxykyselina': { syn: ['peroxykarboxylová kyselina'] },
   'ester': { syn: ['ester karboxylové kyseliny', 'esterová skupina'] },
   'acylhalogenid': { syn: ['halogenid karboxylové kyseliny', 'chlorid kyseliny'], gen: HAL },
@@ -1829,7 +1829,7 @@ const METHOD = [
 const GLOSS = [
   ['thio-', 'síra místo kyslíku'],
   ['hemi-', 'napůl: jedno –OH zůstalo'],
-  ['iso-', 'zbytek je na dusíku (isokyanát, isonitril)'],
+  ['iso-', 'u kyanátů a nitrilů: zbytek je na dusíku (isokyanát, isonitril); jinak rozvětvený řetězec (isopropyl)'],
   ['peroxy-', 'dva kyslíky za sebou, O–O'],
   ['hydraz-', 'dva dusíky za sebou, N–N'],
   ['ald-', 'na uhlíku je H'],
@@ -2340,7 +2340,7 @@ const CK_RAW = [
     { par: 'kyselina benzen-1,2-dikarboxylová', tip: 'Dvě COOH na benzenu vedle sebe (1,2).' }],
   ['extra', 'nk', 'kyselina cyklohexankarboxylová', CYC6 + '; 1-C!@90; 6=O@30; 6-O@150:h1 | 5-0', { tip: 'COOH na cyklohexanu, proto -karboxylová.' }],
   ['extra', 'nk', 'kyselina 4-methylbenzoová', RING + '; 2-C!@30; 6=O@90; 6-O@-30:h1; 5-C!@210 | 5-0',
-    { par: 'kyselina p-toluylová', alts: ['kyselina p-methylbenzoová'], tip: 'CH₃ v para poloze je elektrondonor: slabší než benzoová (pKa 4,34).' }],
+    { par: 'kyselina p-toluylová', alts: ['kyselina p-methylbenzoová', 'kyselina p-toluová'], tip: 'CH₃ v para poloze je elektrondonor: slabší než benzoová (pKa 4,34).' }],
   ['extra', 'nk', 'kyselina 4-chlorbenzoová', RING + '; 2-C!@30; 6=O@90; 6-O@-30:h1; 5-Cl@210 | 5-0',
     { alts: ['kyselina p-chlorbenzoová'], tip: 'Cl v para poloze odtahuje elektrony: silnější než benzoová (pKa 4,0).' }],
   ['extra', 'nn', 'octan sodný', 'C!; 0-C!@30; 1=O@90; 1-O@-30:-; Na@2.75,0:+', { par: 'natrium-acetát', alts: ['acetát sodný', 'ethanoát sodný'], tip: 'Sůl kyseliny octové s Na⁺.' }],
@@ -2439,12 +2439,12 @@ const CK_RX = [
       { via: '⁻CN', to: [PM(GEN.ch2cn), PT('Br⁻')], t: 'SN2 probíhá v jednom kroku přes tranzitní stav: ⁻CN napadá uhlík ze strany odvrácené od Br a bromid současně odstupuje.' }] },
   { id: 'r6', set: 'base', fam: 'rn', title: 'Hydrolýza nitrilu', from: [PM(GEN.nitr)], reag: 'H₃O⁺ nebo ⁻OH, teplo', to: [PM(GEN.acid), PT('NH₃')],
     wrong: [[PM(GEN.amine)], [PM(GEN.ket)], [PM(GEN.ald)]], wrongReag: ['1. LiAlH₄, ether\n2. H₂O', "1. R'MgX\n2. H₃O⁺", 'SOCl₂'],
-    why: 'Voda se aduje na C≡N, přes amid vznikne kyselina a amoniak (v kyselém prostředí NH₄⁺).',
+    why: 'Voda se aduje na C≡N, přes amid vznikne kyselina a amoniak (v kyselém prostředí NH₄⁺). Amid vzniká tautomerií imidové kyseliny R–C(OH)=NH (na slajdu „imid“).',
     steps: [
       { via: 'H₃O⁺', to: [PM(CKS.nitrilium)], t: 'Protonace dusíku nitrilu zvýší elektrofilitu uhlíku C≡N.' },
       { via: 'H₂O', to: [PM(CKS.imidOH2)], t: 'Voda napadne uhlík, vznikne protonovaný adukt s kladným nábojem na kyslíku.' },
-      { via: '−H⁺', to: [PM(CKS.imid)], t: 'Odštěpením protonu z kyslíku vznikne imid (imidová kyselina, R–C(OH)=NH).' },
-      { via: 'tautomerie', to: [PM(GEN.amide)], t: 'Imid tautomerizuje na stálejší amid (H přejde z O na N).' },
+      { via: '−H⁺', to: [PM(CKS.imid)], t: 'Odštěpením protonu z kyslíku vznikne imidová kyselina (iminol, R–C(OH)=NH).' },
+      { via: 'tautomerie', to: [PM(GEN.amide)], t: 'Imidová kyselina tautomerizuje na stálejší amid (H přejde z O na N).' },
       { via: 'H₃O⁺, H₂O, teplo', to: [PM(GEN.acid), PT('NH₄⁺')], t: 'Amid se dál hydrolyzuje přes tetraedrický meziprodukt na kyselinu. Odstoupí NH₃, v kyselém prostředí jako NH₄⁺ (v zásaditém vznikne karboxylát a NH₃).' }] },
   { id: 'r7', set: 'base', fam: 'pk', title: 'Karboxylace Grignardova činidla', from: [PT('R–MgBr')], reag: '1. CO₂, ether\n2. H₃O⁺', to: [PM(GEN.acid)],
     wrong: [[PM(GEN.roh)], [PM(GEN.ald)], [PM(GEN.ket)]], wrongReag: ['1. SO₂, ether\n2. H₃O⁺', 'NaCN', 'KMnO₄'],
@@ -2516,13 +2516,13 @@ const CK_RX = [
       { via: 'inzerce CO, +CO', to: [PT('CH₃CO–Rh(CO)₂I₃⁻')], t: 'Methyl se přesune na koordinovaný CO (migrační inzerce) a volné místo obsadí další CO. Vznikne acetyl vázaný na Rh.' },
       { via: 'reduktivní eliminace', to: [PM(CKS.acetylI)], t: 'Acetyl se s jodidem odštěpí jako acetyljodid a katalyzátor se obnoví.' },
       { via: 'H₂O', to: [PN('kyselina octová'), PT('HI')], t: 'Hydrolýza acetyljodidu dá kyselinu octovou a HI, který se vrací do cyklu.' }] },
-  { id: 'r17', set: 'base', fam: 'rn', title: 'První krok hydrolýzy nitrilu', from: [PM(GEN.nitr)], reag: 'H₂O (přes imid)', to: [PM(GEN.amide)], noReag: 1,
+  { id: 'r17', set: 'base', fam: 'rn', title: 'První krok hydrolýzy nitrilu', from: [PM(GEN.nitr)], reag: 'H₂O (přes imidovou kyselinu)', to: [PM(GEN.amide)], noReag: 1,
     wrong: [[PM(GEN.amine)], [PM(GEN.ket)], [PM(GEN.alc)]],
-    why: 'Voda se aduje na C≡N, vznikne imid a jeho tautomerií amid. Další hydrolýzou amidu vznikne kyselina.',
+    why: 'Voda se aduje na C≡N, vznikne imidová kyselina (iminol) a její tautomerií amid. Další hydrolýzou amidu vznikne kyselina.',
     steps: [
       { via: '⁻OH', to: [PM(CKS.imidat)], t: 'Hydroxid napadne elektrofilní uhlík C≡N, záporný náboj přejde na dusík.' },
-      { via: 'H₂O (přenos H⁺)', to: [PM(CKS.imid)], t: 'Dusík se protonuje vodou, vznikne imid (R–C(OH)=NH).' },
-      { via: 'tautomerie', to: [PM(GEN.amide)], t: 'Imid tautomerizuje na stálejší amid. Další hydrolýzou amidu by vznikla kyselina.' }] },
+      { via: 'H₂O (přenos H⁺)', to: [PM(CKS.imid)], t: 'Dusík se protonuje vodou, vznikne imidová kyselina (R–C(OH)=NH).' },
+      { via: 'tautomerie', to: [PM(GEN.amide)], t: 'Imidová kyselina tautomerizuje na stálejší amid. Další hydrolýzou amidu by vznikla kyselina.' }] },
 
   { id: 'x1', set: 'extra', fam: 'rk', title: 'Esterifikace', from: [PM(GEN.acid), PM(GEN.rpoh)], reag: 'H⁺ (kat.), teplo', to: [PM(GEN.ester), PT('H₂O')],
     wrong: [[PM(GEN.ether)], [PM(GEN.ket)], [PM(GEN.anh)]], wrongReag: ['NaOH, H₂O', 'SOCl₂', '1. LiAlH₄\n2. H₃O⁺'],
@@ -2560,7 +2560,7 @@ const CK_RX = [
     why: 'Kyanid přidá jeden uhlík (SN2) a hydrolýza nitrilu z něj udělá –COOH. Ze čtyřuhlíkatého bromidu je pětiuhlíkatá kyselina.',
     steps: [
       { via: 'NaCN (SN2)', to: [PN('pentannitril'), PT('NaBr')], t: '⁻CN vytlačí bromid v jednom kroku SN2. Řetězec se prodlouží o jeden uhlík.' },
-      { via: 'H₃O⁺, H₂O', to: [PM(CKS.pentanamid)], t: 'Nitril se protonuje, aduje vodu a přes imid tautomerizuje na amid (pentanamid).' },
+      { via: 'H₃O⁺, H₂O', to: [PM(CKS.pentanamid)], t: 'Nitril se protonuje, aduje vodu a přes imidovou kyselinu (iminol) tautomerizuje na amid (pentanamid).' },
       { via: 'H₃O⁺, teplo', to: [PN('kyselina pentanová'), PT('NH₄⁺')], t: 'Hydrolýza amidu dá kyselinu pentanovou a NH₄⁺.' }] },
   { id: 'x6', set: 'extra', fam: 'pk', title: 'Ethylmagnesiumbromid + CO₂', from: [PT('CH₃CH₂MgBr')], reag: '1. CO₂, ether\n2. H₃O⁺', to: [PN('kyselina propanová')],
     wrong: [[PN('kyselina octová')], [PM(DS.ethanol)], [PM(DS.propanal)]], wrongReag: ['1. SO₂, ether\n2. H₃O⁺', 'NaCN', 'H₂O'],
@@ -2586,8 +2586,8 @@ const CK_RX = [
     why: 'Úplná hydrolýza nitrilu dá kyselinu se stejným počtem uhlíků. Z benzonitrilu je kyselina benzoová.',
     steps: [
       { via: 'H₃O⁺', to: [PM(CKS.bzNitrilium)], t: 'Protonace dusíku zvýší elektrofilitu uhlíku C≡N.' },
-      { via: 'H₂O, −H⁺', to: [PM(CKS.bzImid)], t: 'Voda napadne uhlík a po odštěpení H⁺ vznikne imid (Ph–C(OH)=NH).' },
-      { via: 'tautomerie', to: [PM(DS.benzamid)], t: 'Imid tautomerizuje na benzamid.' },
+      { via: 'H₂O, −H⁺', to: [PM(CKS.bzImid)], t: 'Voda napadne uhlík a po odštěpení H⁺ vznikne imidová kyselina (iminol, Ph–C(OH)=NH).' },
+      { via: 'tautomerie', to: [PM(DS.benzamid)], t: 'Imidová kyselina tautomerizuje na benzamid.' },
       { via: 'H₃O⁺, H₂O', to: [PM(CKS.bzTetra)], t: 'Na protonovaný amid se aduje voda a proton přejde na dusík, vznikne tetraedrický meziprodukt s –NH₃⁺.' },
       { via: '−NH₃, −H⁺', to: [PN('kyselina benzoová'), PT('NH₄⁺')], t: 'Odstoupí NH₃ (v kyselém prostředí jako NH₄⁺) a obnoví se C=O. Vznikne kyselina benzoová.' }] },
   { id: 'x10', set: 'extra', fam: 'rn', title: 'Acetonitril + methylmagnesiumbromid', from: [PN('acetonitril')], reag: '1. CH₃MgBr, ether\n2. H₃O⁺', to: [PM(DS.aceton)],
@@ -2646,7 +2646,7 @@ const CK_Q = [
     ['Vzniklý imidový anion je záporný¦ a další nukleofil odpuzuje', 'Grignardovo činidlo se spotřebuje', 'Produkt je aromatický', 'Hořčík vypadne jako sraženina'],
     'Po první adici je na dusíku záporný náboj. Další záporně polarizovaný uhlík ho odpuzuje. Hydrolýzou pak vznikne keton.', 'q17'],
   ['base', 'rn', 'Meziprodukt hydrolýzy nitrilu', 'Co vzniká jako meziprodukt při hydrolýze nitrilu na kyselinu?',
-    ['amid', 'amin', 'aldehyd', 'ester'], 'Nitril → (imid) → amid → kyselina + NH₃.', 'q18'],
+    ['amid', 'amin', 'aldehyd', 'ester'], 'Nitril → (imidová kyselina) → amid → kyselina + NH₃.', 'q18'],
   ['base', 'rk', 'Selektivní redukce', 'Které činidlo zredukuje karboxylovou kyselinu na alkohol a nitroskupinu nechá být?',
     ['BH₃ (boran)', 'KMnO₄', 'NaCN', 'Ag₂O, NH₄OH'], 'Boran redukuje kyselinu selektivně. KMnO₄ a Ag₂O oxidují, NaCN není redukční činidlo.', 'q19'],
   ['base', 'nn', 'Předpona nitrilu', 'Jak se jmenuje skupina –C≡N, když je v názvu předponou?',
@@ -2688,7 +2688,7 @@ Object.assign(RULES, {
     'Dvě COOH: -diová kyselina (oktandiová, hexandiová).',
     'Triviálně C1–C6: mravenčí, octová, propionová, máselná, valerová, kapronová (caper = kozel).',
     'Dikyseliny C2–C6: Šťastná Máňa Jí Gumové Ananasy (šťavelová, malonová, jantarová, glutarová, adipová).'],
-  nn: ['Přípona -nitril: uhlík C≡N se počítá do řetězce (4-methylpentannitril má 5 C včetně CN).',
+  nn: ['Přípona -nitril: uhlík C≡N se počítá do řetězce (hlavní řetězec 4-methylpentannitrilu má 5 C včetně CN).',
     'CN na kruhu: -karbonitril, uhlík CN se nepočítá (cyklohexankarbonitril).',
     'Triviálně podle kyseliny: octová → acetonitril, benzoová → benzonitril.',
     'Předpona pro –C≡N je kyan-. Soli: octan (acetát), mravenčan (formiát).'],
@@ -3107,7 +3107,7 @@ const FD_RX = [
     why: 'Gilmanovo činidlo (dialkylkuprát) je mírnější nukleofil a s ketonem už nereaguje. Reakce se zastaví na ketonu.',
     steps: [
       { via: 'R′₂CuLi (−LiCl)', to: [PM(FDS.acylCu)], t: 'Kuprát nahradí chlorid na acylovém uhlíku. Vznikne acyl-diorganokuprát (Cu s acylem a dvěma R′).' },
-      { via: 'rozpad (H₂O)', to: [PM(GEN.ket), PT('R′Cu')], t: 'Acyl se spojí s jedním R′ a měď odejde jako R′Cu. Vznikne keton, se kterým mírné Gilmanovo činidlo dál nereaguje.' }
+      { via: 'reduktivní eliminace', to: [PM(GEN.ket), PT('R′Cu')], t: 'Reduktivní eliminací se acyl spojí s jedním R′ a měď odejde jako R′Cu. Vznikne keton, se kterým mírné Gilmanovo činidlo dál nereaguje.' }
     ] },
   { id: 'd11', set: 'base', fam: 'an', title: 'Anhydrid dehydratací', from: [PT('2 CH₃COOH')], reag: 'P₂O₅', to: [PFn('acetanhydrid')],
     wrong: [[PFn('ethyl-acetát')], [PFn('acetylchlorid')], [PM(DF.acetaldehyd)]], wrongReag: ['SOCl₂', "H⁺, R′OH", '1. LiAlH₄\n2. H₃O⁺'],
@@ -3324,7 +3324,7 @@ const FD_RX = [
     why: 'Gilmanovo činidlo se zastaví na ketonu: vznikne acetofenon.',
     steps: [
       { via: '(CH₃)₂CuLi (−LiCl)', to: [PM(FDS.y8cu)], t: 'Kuprát nahradí chlorid na acylovém uhlíku. Vznikne acyl-dimethylkuprát.' },
-      { via: 'rozpad (H₂O)', to: [PM(DF.acetofenon), PT('CH₃Cu')], t: 'Benzoyl se spojí s jedním methylem a měď odejde jako CH₃Cu. Vznikne acetofenon, který s kuprátem dál nereaguje.' }
+      { via: 'reduktivní eliminace', to: [PM(DF.acetofenon), PT('CH₃Cu')], t: 'Reduktivní eliminací se benzoyl spojí s jedním methylem a měď odejde jako CH₃Cu. Vznikne acetofenon, který s kuprátem dál nereaguje.' }
     ] },
   { id: 'y9', set: 'extra', fam: 'es', title: 'Baeyer–Villiger u acetofenonu', from: [PM(DF.acetofenon)], reag: 'MCPBA', to: [PFn('fenyl-acetát')],
     wrong: [[PFn('methyl-benzoát')], [PM(DF.fenylethanol1)], [PM(DF.benzoova)]], wrongReag: ['KMnO₄', '1. LiAlH₄\n2. H₃O⁺', 'NaOH'],
@@ -3418,7 +3418,7 @@ const FD_Q = [
 
   ['extra', 'ns', 'Thioester', 'Kam patří reaktivitou thioester (např. acetyl-CoA)?',
     ['mezi anhydrid a ester', 'nad acylchlorid', 'pod amid', 'stejně jako amid'], 'Thiolát je lepší odstupující skupina než alkoxid, ale horší než karboxylát.', 'q32'],
-  ['extra', 'am', 'Kaprolaktam', 'Co je kaprolaktam?', ['cyklický amid, monomer nylonu 6', 'cyklický ester', 'lineární amid', 'anhydrid kyseliny kapronové'], 'Laktam = cyklický amid, lakton = cyklický ester.', 'q33'],
+  ['extra', 'am', 'Kaprolaktam', 'Co je kaprolaktam?', ['cyklický amid¦, monomer nylonu 6', 'cyklický ester', 'lineární amid', 'anhydrid kyseliny kapronové'], 'Laktam = cyklický amid, lakton = cyklický ester.', 'q33'],
   ['extra', 'ns', 'Nejsnazší hydrolýza', 'Která látka se nejsnáz hydrolyzuje vodou?',
     [PFn('acetylchlorid'), PFn('acetanhydrid'), PFn('ethyl-acetát'), PFn('acetamid')], 'Acylchlorid reaguje s vodou bouřlivě už za studena, amid až za varu s kyselinou nebo zásadou.', 'q34'],
   ['extra', 'es', 'Aspirin', 'Kterou skupinu kyseliny salicylové acetyluje acetanhydrid při výrobě aspirinu?',
@@ -3523,14 +3523,14 @@ const MEMES = {
     [['Sulfid', 'S=O? Žádná.'], ['Sulfoxid', 'Jedna.'], ['Sulfon', 'Dvě. A u kyselin to samý: sulfEnová 0, sulfInová 1 (I jako jednička), sulfOnová 2.']],
     [['Kyslík', 'Dělám alkohol, ether a peroxid.'], ['Síra', 'Já taky. Jen si říkám thiol, sulfid a disulfid.']],
     [['Amin', 'Dusík. Nic víc.'], ['Amid', 'Dusík a hned vedle C=O. To D v amiDu je Dvojná vazba.']],
-    [['Kyanát', 'R–O–C≡N, zbytek držím na kyslíku.'], ['Isokyanát', 'R–N=C=O, já na dusíku.'], ['Předpona iso-', 'Já vždycky ukazuju na dusík.']],
+    [['Kyanát', 'R–O–C≡N, zbytek držím na kyslíku.'], ['Isokyanát', 'R–N=C=O, já na dusíku.'], ['Předpona iso-', 'U kyanátu a nitrilu ukazuju na dusík. Jinde znamenám rozvětvený řetězec.']],
     [['Imin', 'C=N.'], ['Oxim', 'C=N–OH. OX jako kyslík.'], ['Hydrazon', 'C=N–N. Hydraz- jsou dva dusíky.']],
     [['Grignard', 'C–Mg–X.'], ['Gilman', 'Dva uhlíky na mědi s minusem a vedle Li⁺.'], ['Organolitná', 'C–Li. Hotovo.']]
   ],
   ck: [
     [['Kyselina kapronová', 'Proč se mi všichni vyhýbají?'], ['Latina', 'Caper = kozel. Smrdíš po něm.']],
     [['Kyselina mravenčí', 'Mám jeden uhlík a jsem 10× silnější než octová (pKa 3,75).'], ['Kyselina octová', 'Za to může můj methyl. Tlačí elektrony do karboxylátu.']],
-    [['Kyselina trichloroctová', 'Tři chlory = tři bodyguardi pro můj záporný náboj (pKa 0,64).'], ['Kyselina octová', 'Já nemám žádnýho (pKa 4,76).']],
+    [['Kyselina trichloroctová', 'Tři chlory = tři bodyguardi pro můj záporný náboj (pKa 0,64).'], ['Kyselina octová', 'Já nemám žádnýho (pKa 4,75).']],
     [['Cl na C2', 'Kyselinu zesílím nejvíc (pKa 2,86).'], ['Cl na C4', 'Snažil jsem se, ale jsem moc daleko (pKa 4,52).']],
     [['R–Br + NaCN', '+1 uhlík.'], ['R–MgBr + CO₂', 'Taky +1 uhlík.'], ['Zkouška', '„Připravte kyselinu o jeden uhlík delší.“']],
     [['Grignard', 'Vrhnu se na nitril.'], ['Imidový anion', 'Jednou a dost. Se záporným nábojem tě podruhé nepustím.'], ['H₃O⁺', 'Takže z toho bude keton.']],
@@ -4240,7 +4240,7 @@ function registerTopic(T) {
       ['base', 'rez', 'acetátový anion', 'C!; 0-C!@30; 1=O@90; 1-O@-30:-',
         { par: 'ethanoátový anion', alts: ['acetát', 'octanový anion', 'acetátový aniont', 'ethanoát', 'CH3COO-'], tip: 'Konjugovaná báze kyseliny octové. Náboj je rezonancí rozložen na oba kyslíky.' }],
       ['base', 'rez', 'allylbromid', 'C!; 0=C!@30; 1-C!@-30; 2-Br@30',
-        { par: '3-brompropen', alts: ['3-brom-prop-1-en', 'allyl bromid'], tip: 'Odštěpením Br⁻ dá allylový kation stabilizovaný rezonancí.' }],
+        { par: '3-brompropen', alts: ['3-bromprop-1-en', 'allyl bromid'], tip: 'Odštěpením Br⁻ dá allylový kation stabilizovaný rezonancí.' }],
       ['base', 'rez', 'allylový kation', 'C!; 0=C!@30; 1-C!@-30:+',
         { alts: ['allylkation', 'allyl kation', 'prop-2-en-1-ylium'], tip: 'Tříatomové seskupení: kladný náboj střídavě na obou koncových uhlících (C=C–C⁺ ↔ ⁺C–C=C).' }],
       ['base', 'rez', 'aceton', 'C!; 0-C!@30; 1=O@90; 1-C!@-30',
@@ -4317,7 +4317,7 @@ function registerTopic(T) {
       ['base', 'zap', '2-methylbuta-1,3-dien', 'C!; 0=C!@30; 1-C!@-30; 2=C!@30; 1-C!@90',
         { par: 'isopren', alts: ['izopren'], tip: 'Na slajdu 33 příklad čárového vzorce. Stavební jednotka terpenů (karvon).' }],
       ['base', 'zap', 'methylcyklohexan', CYC6 + '; 3-C!@-30 | 5-0',
-        { alts: ['cyklohexylmethan'], tip: 'Šestiúhelník a jedna čárka: 7 uhlíků, 14 vodíků.' }],
+        { tip: 'Šestiúhelník a jedna čárka: 7 uhlíků, 14 vodíků.' }],
       ['base', 'zap', 'fenol', RING + '; 2-O@30:h1 | 5-0',
         { par: 'hydroxybenzen', alts: ['benzenol'], tip: 'OH se v čárovém vzorci vypisuje, H na kruhu ne.' }],
       ['base', 'zap', 'karvon', 'C!; 0-C!@30; 1-C!@-30; 2-C!@-90; 3=C!@-150; 4-C!@150; 2=O@30; 3-C!@-30; 0-C!@150; 8=C!@210; 8-C!@90 | 5-0',
@@ -5119,7 +5119,7 @@ function registerTopic(T) {
         to: [PN('kyselina methansulfonová')],
         wrong: [[PN('methansulfonylchlorid')], [PM(S.methylhydrogensulfat)], [PM(S.methansulfinova)]],
         wrongReag: ['Cl₂, SO₂, hν', 'HNO₃, Δ', 'O₂, hoření'],
-        why: '2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν). Síra je vázaná na uhlík (kyselina sulfonová), ne přes kyslík jako v methylhydrogensulfátu.' },
+        why: '2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν). Síra je vázaná na uhlík (kyselina sulfonová), ne přes kyslík jako v methylhydrogensulfátu. Sulfoxidace se uvádí ve dvou variantách: 2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν), nebo 4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C).' },
       { id: 'a9', steps: [
         { via: 'Δ (cca 400 °C)', to: [PT('HO–NO₂ → HO• + •NO₂')], t: 'Za vysoké teploty v plynné fázi se kyselina dusičná homolyticky rozštěpí na radikály •OH a •NO₂.' },
         { via: '•OH', to: [PT('•CH₃'), PT('H₂O')], t: 'Hydroxylový radikál odtrhne z methanu vodík. Vznikne methylový radikál a voda.' },
@@ -5128,7 +5128,7 @@ function registerTopic(T) {
         to: [PN('nitromethan'), PT('H₂O')],
         wrong: [[PM(S.methylnitrit), PT('H₂O')], [PM(S.methylnitrat), PT('H₂')], [PN('methylalkohol'), PT('HNO₂')]],
         wrongReag: ['Cl₂, SO₂, hν', 'NaNO₂, HCl', 'O₂, SO₂, hν'],
-        why: 'CH₄ + HNO₃ → CH₃NO₂ + H₂O (za tepla). V nitromethanu je dusík vázaný přímo na uhlík. Methylnitrit a methylnitrát jsou estery (C–O–N).' },
+        why: 'CH₄ + HNO₃ → CH₃NO₂ + H₂O (za tepla). V nitromethanu je dusík vázaný přímo na uhlík. Methylnitrit a methylnitrát jsou estery (C–O–N). Slajd uvádí jen tuto rovnici. V tématu 5 (slajdy 17–18) je mechanismus řetězový: •CH₃ reaguje s HNO₃ na CH₃NO₂ a uvolní HO•. Kroky níže ukazují kratší cestu přes •NO₂.' },
 
       // ===== extra
       { id: 'x1', steps: [
@@ -6140,7 +6140,7 @@ function registerTopic(T) {
         { via: 'hν', to: [PT('•CH₃')], t: 'Světlo nastartuje radikálový řetězec, z methanu vznikne methylový radikál.' },
         { via: 'SO₂', to: [PT('CH₃SO₂•')], t: 'Methylový radikál se naváže na síru SO₂. Vznikne vazba C–S jako u sulfochlorace.' },
         { via: 'O₂', to: [PT('CH₃SO₂–O–O•')], t: 'Sulfonylový radikál zachytí molekulu O₂, vznikne peroxyradikál.' },
-        { via: 'CH₄, SO₂', to: [PN('kyselina methansulfonová')], t: 'Peroxyradikál odtrhne H z dalšího methanu (nový •CH₃ pokračuje v řetězci), vzniklá peroxokyselina se pak redukuje na CH₃SO₃H. Tyto kroky slajd neuvádí, jen souhrnnou rovnici.' }],
+        { via: 'CH₄, SO₂', to: [PN('kyselina methansulfonová')], t: 'Peroxyradikál odtrhne H z dalšího methanu (nový •CH₃ pokračuje v řetězci), vzniklá peroxykyselina se pak redukuje na CH₃SO₃H. Tyto kroky slajd neuvádí, jen souhrnnou rovnici.' }],
         set: 'base', fam: 'rad', title: 'Sulfoxidace methanu', from: [PN('methan')], reag: 'O₂, SO₂, hν',
         to: [PN('kyselina methansulfonová')],
         wrong: [[PN('methansulfonylchlorid')], [PM(S.meHSO4)], [PM(S.mesulfin)]],
@@ -6153,7 +6153,7 @@ function registerTopic(T) {
         set: 'base', fam: 'rad', title: 'Nitrace methanu', from: [PN('methan'), PN('kyselina dusičná')], reag: 'Δ', noReag: 1,
         to: [PN('nitromethan'), PN('voda')],
         wrong: [[PM(S.methylnitrit), PN('voda')], [PM(S.methylnitrat), PT('H₂')], [PN('methanol'), PT('HNO₂')]],
-        why: 'CH₄ + HNO₃ → CH₃NO₂ + H₂O (Δ). V nitromethanu je dusík vázaný přímo na uhlík. Methylnitrit a methylnitrát jsou estery (C–O–N).' },
+        why: 'CH₄ + HNO₃ → CH₃NO₂ + H₂O (Δ). V nitromethanu je dusík vázaný přímo na uhlík. Methylnitrit a methylnitrát jsou estery (C–O–N). Řetězec přes HNO₃ odpovídá slajdům 17–18. Karta v tématu 3 ukazuje kratší cestu: •CH₃ + •NO₂ → CH₃NO₂.' },
       { id: 'a9', steps: [
         { via: 'srážka', to: [PN('ethan')], t: 'Každý radikál dodá do nové vazby jeden elektron (koligace). Oba nepárové elektrony zmizí a řetězec končí.' }],
         set: 'base', fam: 'rad', title: 'Terminace •CH₃ + •CH₃', prompt: 'Co vznikne srážkou dvou methylových radikálů?', from: [PT('•CH₃'), PT('•CH₃')], reag: '', noReag: 1,
@@ -6321,7 +6321,7 @@ function registerTopic(T) {
         'Zahřátím se HNO₃ homolyticky štěpí. Oba radikály pak odtrhávají H z methanu.', 'q23'],
       ['base', 'rad', 'Dibenzoylperoxid', 'Jakou roli má dibenzoylperoxid při sulfoxidaci methanu (70–80 °C)?',
         ['radikálový iniciátor místo světla', 'nukleofil, který napadá methan', 'rozpouštědlo pro SO₂ a SO₃', 'zdroj síry pro sulfonovou skupinu'],
-        '4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H. Slabá vazba O–O peroxidu se rozpadá na radikály.', 'q24'],
+        '4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H. Slabá vazba O–O peroxidu se rozpadá na radikály. Sulfoxidace se uvádí ve dvou variantách: 2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν), nebo 4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C).', 'q24'],
       ['base', 'rad', 'Sulfochlorace', 'Co vznikne v propagaci sulfochlorace z •CH₃ a SO₂?',
         ['radikál CH₃SO₂•', 'CH₃SO₂Cl', 'CH₃⁺ a SO₂⁻', 'CH₃OH a SO'],
         'CH₃SO₂• pak odtrhne Cl z Cl₂: CH₃SO₂• + Cl₂ → CH₃SO₂Cl + Cl•.', 'q25'],
@@ -6725,7 +6725,7 @@ function registerTopic(T) {
         'Stupeň nenasycenosti = (z − y)/2, kde CxHy je upravený souhrnný vzorec látky a CxHz alkan se stejným počtem C. Halogeny přičíst k H, kyslík vynechat, dusík odečíst od H.',
         'Alkeny jsou planární. Otočení o 90° zruší překryv orbitalů p (π vazbu): bariéra 268 kJ·mol⁻¹, u ethanu jen 12 kJ·mol⁻¹. Proto u alkenů existují cis/trans izomery.',
         'Příprava: eliminace je opak adice. Bromcyklohexan + KOH v ethanolu → cyklohexen. 1-Methylcyklohexan-1-ol + H₂SO₄ (H₂O, THF, 50 °C) → 1-methylcyklohexen.'],
-      nom: ['Kmen = nejdelší řetězec, který obsahuje dvojnou vazbu („ne“ delší řetězec bez ní). Koncovka -en, poloha dvojné vazby se píše před -en: hex-2-en.',
+      nom: ['Kmen = nejdelší řetězec, který obsahuje dvojnou vazbu („ne“ delší řetězec bez ní). Novější doporučení IUPAC (2013) dává přednost nejdelšímu řetězci, i když dvojnou vazbu nemá. V kurzu platí pravidlo výše. Koncovka -en, poloha dvojné vazby se píše před -en: hex-2-en.',
         'Číslovat od konce bližšího dvojné vazbě: CH₃CH₂CH₂CH=CHCH₃ = hex-2-en, ne hex-4-en. Pak substituenty: 2-methylhex-3-en.',
         'Více dvojných vazeb: -dien, -trien (2-methylbuta-1,3-dien = isopren).',
         'Cykloalkeny: dvojná vazba má vždy polohy 1 a 2, číslovat tak, aby substituenty měly co nejnižší lokanty (1-methylcyklohexen, 1,5-dimethylcyklopenten).',
@@ -6854,7 +6854,7 @@ function registerTopic(T) {
       ['base', 'ez', '(Z)-2-isopropylbut-2-en-1-ol', S.zIprButenol, { nodraw: 1, par: '(Z)-2-(propan-2-yl)but-2-en-1-ol', alts: ['Z-2-isopropylbut-2-en-1-ol'], tip: 'Na C2: CH₂OH (O,H,H) > isopropyl (C,C,H), rozhoduje první odlišný atom (O > C). CH₂OH a CH₃ na stejné straně = Z.' }],
       // ----- st
       ['base', 'st', 'pent-2-en', S.pent2en, { alts: ['2-penten', 'penten-2'], tip: 'Má dvě vazby sp³–sp², je stabilnější než pent-1-en. Na slajdech jako trans. S HBr dá směs 2- a 3-brompentanu.' }],
-      ['base', 'st', 'pent-1-en', S.pent1en, { alts: ['1-penten', 'penten-1'], tip: 'Monosubstituovaný, méně stabilní (jedna vazba sp³–sp², jedna sp³–sp³). S KI a H₃PO₄ dá 2-jodpentan.' }],
+      ['base', 'st', 'pent-1-en', S.pent1en, { alts: ['1-penten', 'penten-1'], tip: 'Monosubstituovaný, méně stabilní (jedna vazba sp³–sp², ostatní sp³–sp³; pent-2-en má dvě vazby sp³–sp²). S KI a H₃PO₄ dá 2-jodpentan.' }],
       // ----- ea
       ['base', 'ea', 'ethylový kation', S.ethylKat, { par: 'ethylium', alts: ['ethylkation', 'ethyl kation'], tip: 'Intermediární karbokation adice HBr na ethen. Primární, málo stabilní.' }],
       ['base', 'ea', 'bromethan', S.bromethan, { par: 'ethylbromid', alts: ['brometan'], tip: 'Produkt adice HBr na ethen.' }],
@@ -6946,7 +6946,7 @@ function registerTopic(T) {
       ['extra', 'ox', 'acetaldehyd', S.acetaldehyd, { par: 'ethanal', alts: ['acetaldehyd CH3CHO'], tip: 'Z uhlíku s vodíkem vznikne ozonolýzou (Zn) aldehyd. KMnO₄ by ho zoxidoval na kyselinu octovou.' }],
       ['extra', 'ox', 'kyselina hexandiová', S.adipova, { par: 'kyselina adipová', alts: ['adipová kyselina'], tip: 'Cyklohexen + KMnO₄, H₃O⁺: kruh se otevře, oba uhlíky dvojné vazby (s H) dají COOH.' }],
       ['extra', 'ox', 'kyselina octová', S.octova, { par: 'kyselina ethanová', alts: ['octová kyselina'], tip: 'But-2-en + KMnO₄, H₃O⁺: dvě molekuly kyseliny octové.' }],
-      ['extra', 'kh', '1,1,2-trimethylcyklopropan', S.trimeCyProp, { tip: '2-Methylbut-2-en + CH₂I₂, Zn(Cu): CH₂ se přidá na obě strany dvojné vazby.' }],
+      ['extra', 'kh', '1,1,2-trimethylcyklopropan', S.trimeCyProp, { tip: '2-Methylbut-2-en + CH₂I₂, Zn(Cu): CH₂ se naváže na oba uhlíky dvojné vazby.' }],
       ['extra', 'ox', '7-oxabicyklo[4.1.0]heptan', S.epoxid, { par: 'cyklohexenoxid', alts: ['1,2-epoxycyklohexan', 'cyklohexen-oxid', '7-oxabicyklo(4.1.0)heptan'], tip: 'Epoxid z cyklohexenu a peroxykyseliny (mCPBA). Na slajdech není, obdoba adice karbenu (tříčlenný kruh).' }]
     ],
     rx: [
@@ -7183,7 +7183,7 @@ function registerTopic(T) {
           { via: 'R′₂C:', to: [PM(I.gCyklopropan)], t: 'Jeden krok: π elektrony alkenu zaplní prázdný orbital p karbenu a elektronový pár karbenu vytvoří druhou vazbu C–C. Geometrie alkenu se zachová.' }] },
       { id: 'a28', set: 'base', fam: 'kh', title: 'Vznik dichlorkarbenu', prompt: 'Co vznikne z chloroformu a KOH?', from: [PFN('chloroform')], reag: 'KOH',
         to: [PT(':CCl₂ (dichlorkarben)'), PT('KCl + H₂O')],
-        wrong: [[PT('CH₂Cl₂ + KCl')], [PT('CCl₄ + KOH')], [PT('HCOOK + KCl')]],
+        wrong: [[PT('CH₂Cl₂ + KCl')], [PT('CCl₄ + KOH')], [PT('CHCl₂OH + KCl')]],
         wrongReag: ['HCl', 'Zn(Cu)', 'H₂, Pd'],
         why: 'KOH odtrhne kyselý vodík chloroformu (−H₂O). Trichlormethanidový anion pak ztratí Cl⁻ (−KCl) a zbude neutrální dichlorkarben.',
         steps: [
@@ -7497,7 +7497,7 @@ function registerTopic(T) {
       ['base', 'kh', 'Katalyzátory hydrogenace', 'Co je Adamsův katalyzátor?', ['PtO₂', 'Pd/C', 'Zn(Cu)', 'OsO₄'], 'Hydrogenace je heterogenní katalýza na Pt nebo Pd (Pd/C, PtO₂).', 'q48'],
       ['base', 'kh', 'Syn adice', 'Proč hydrogenace 1,2-dimethylcyklohexenu dá cis-1,2-dimethylcyklohexan?', ['oba H přicházejí z povrchu katalyzátoru ze stejné strany¦ (syn adice)', 'atomy H se adují postupně z opačných stran dvojné vazby', 'vzniká karbokation a methyl se na něm otočí do polohy cis', 'cis izomer je stálejší a trans se na kovu přešmykne na cis'], 'Slajd 46: alken leží na povrchu kovu, oba atomy H k němu přijdou zespodu.', 'q49'],
       // ----- ox
-      ['base', 'ox', 'OsO₄', 'Jakou stereochemii má diol z OsO₄?', ['cis (syn adice přes cyklický osmiát)', 'trans (anti adice)', 'racemát cis a trans 1 : 1', 'diol nevzniká, alken se rozštěpí'], 'Oba kyslíky pocházejí z jedné molekuly OsO₄. NaHSO₃ pak cyklický osmiát rozštěpí.', 'q50'],
+      ['base', 'ox', 'OsO₄', 'Jakou stereochemii má diol z OsO₄?', ['cis (syn adice přes cyklický osmiát)', 'trans (anti adice)', 'směs cis a trans 1 : 1', 'diol nevzniká, alken se rozštěpí'], 'Oba kyslíky pocházejí z jedné molekuly OsO₄. NaHSO₃ pak cyklický osmiát rozštěpí.', 'q50'],
       ['base', 'ox', 'HIO₄', 'Co dělá kyselina jodistá HIO₄?', ['štěpí 1,2-dioly na karbonylové sloučeniny', 'hydroxyluje alkeny syn-adicí na cis-1,2-dioly', 'redukuje aldehydy a ketony na alkoholy', 'aduje jod na dvojnou vazbu za vzniku 1,2-dijodidů'], 'Přes cyklický jodistanový ester: cis-1-methylcyklohexan-1,2-diol → 6-oxoheptanal.', 'q51'],
       ['base', 'ox', 'Molozonid a ozonid', 'Jaké je pořadí meziproduktů ozonolýzy?', ['molozonid → ozonid → karbonylové sloučeniny', 'ozonid → molozonid → karbonylové sloučeniny', 'epoxid → diol → karbonylové sloučeniny', 'karbokation → ozonid → alkoholy'], 'Molozonid (1,2,3-trioxolan) vznikne při −78 °C, přeskupí se na ozonid (1,2,4-trioxolan), ten Zn redukčně rozštěpí.', 'q52'],
       ['base', 'ox', 'KMnO₄ a uhlík s H', 'Co vznikne působením KMnO₄, H₃O⁺ z uhlíku dvojné vazby, který nese jeden vodík a jeden alkyl (RCH=)?', ['karboxylová kyselina', 'keton R–CO–R', 'aldehyd R–CHO', 'sekundární alkohol'], 'Aldehyd se v KMnO₄ dál oxiduje. Uhlík se dvěma alkyly dá keton.', 'q53'],
@@ -8177,7 +8177,7 @@ function registerTopic(T) {
         to: [PN('vitamin A')],
         wrong: [[PM(S.dehydroretinol)], [PM(S.retinal)], [PM(S.dihydroretinol)]],
         wrongReag: ['H₂, Lindlarův katalyzátor', 'Li, NH₃ (l)', 'KMnO₄'],
-        why: 'Zahřátím se cis dvojná vazba přesmykne na stabilnější trans. Vznikne all-trans retinol, vitamin A.',
+        why: 'Zahřátím se cis dvojná vazba izomeruje na stabilnější trans. Vznikne all-trans retinol, vitamin A.',
         steps: [
           { via: 'Δ', to: [PN('vitamin A')], t: 'Cis C7=C8 se izomeruje na trans. Konstituce se nemění, mění se jen geometrie.' }] },
       { id: 'a27', set: 'base', fam: 'red', title: 'Li v kapalném NH₃', from: [PM(S.rAlkynR)], reag: 'Li, NH₃ (l)',
@@ -8577,7 +8577,7 @@ function registerTopic(T) {
         'Chirální molekuly nemají rovinu symetrie. Methylcyklohexan rovinu symetrie má (achirální), 2-methylcyklohexanon ne (chirální).',
         'Stereocentrum hledej jako uhlík se čtyřmi různými skupinami: 5-bromnonan (butyl + butyl) je achirální, 5-bromdekan (butyl + pentyl) chirální.',
         'Racemická směs (racemát) = enantiomery v poměru 50 : 50.'],
-      op: ['Opticky aktivní látka stáčí rovinu polarizovaného světla: pravotočivá (+), levotočivá (−). Rovinně polarizované světlo popsal J. B. Biot.',
+      op: ['Opticky aktivní látka stáčí rovinu polarizovaného světla: pravotočivá (+), levotočivá (−). Optickou aktivitu objevil J. B. Biot.',
         'Polarimetr: zdroj světla → polarizátor → kyveta s roztokem → analyzátor → pozorovatel.',
         'Specifická otáčivost [α]D²⁵ = α / (c · l): α = pozorovaný úhel ve °, l = délka kyvety v dm, c = koncentrace v g·ml⁻¹. Standard: 1 dm, 1 g·ml⁻¹, 589 nm (sodíková čára D).',
         'Enantiomery točí o stejný úhel na opačné strany (kyselina vinná +12° a −12°). Racemát i meso forma jsou opticky neaktivní (0°).',
@@ -8735,7 +8735,7 @@ function registerTopic(T) {
       ['base', 'pr', 'butan-2-ol', zz(4) + '; 1-O@90:h1',
         { alts: ['sek-butanol', 'sek-butylalkohol', '2-butanol'], tip: 'Chirální alkohol z butanonu. Adicí H ze strany Re vznikne (S), ze strany Si (R) (slajd 30).' }],
       ['base', 'pr', 'kyselina fumarová', 'C!; 0=O@90; 0-O@-150:h1; 0-C!@-30; 3=C!@30; 4-C!@-30; 5=O@-90; 5-O@30:h1',
-        { par: 'kyselina (E)-butendiová', alts: ['kyselina trans-butendiová', 'kyselina (E)-but-2-endiová'], tip: 'Prochirální alken ze slajdu 31. Na C2: COOH (1) > CH=CHCOOH (2) > H (3). Adicí vody vznikne kyselina jablečná.' }],
+        { par: 'kyselina (E)-butendiová', alts: ['kyselina trans-butendiová', 'kyselina (E)-but-2-endiová'], tip: 'Prochirální alken ze slajdu 31. Na C2: COOH (1) > =CH–COOH (2) > H (3). Adicí vody vznikne kyselina jablečná.' }],
       ['base', 'pr', 'kyselina jablečná', 'C!; 0=O@90; 0-O@-150:h1; 0-C!@-30; 3-O@-90:h1; 3-C!@30; 5-C!@-30; 6=O@-90; 6-O@30:h1',
         { par: 'kyselina 2-hydroxybutandiová', alts: ['kyselina hydroxyjantarová'], tip: 'Chirální produkt adice vody na kyselinu fumarovou (slajd 31, na slajdu jako (S)). V citrátovém cyklu ji tvoří enzym fumaráza.' }],
 
@@ -8887,7 +8887,7 @@ function registerTopic(T) {
     q: [
       // ----- en
       ['base', 'en', 'Enantiomery', 'Co jsou enantiomery?',
-        ['molekuly, které nejsou identické se svými zrcadlovými obrazy', 'izomery se stejným vzorcem, ale jinak pospojovanými atomy', 'stereoizomery, které nejsou navzájem zrcadlovými obrazy', 'konformery, které vznikají rotací kolem jednoduché vazby σ'],
+        ['dvojice stereoizomerů, které jsou navzájem zrcadlovými obrazy', 'izomery se stejným vzorcem, ale jinak pospojovanými atomy', 'stereoizomery, které nejsou navzájem zrcadlovými obrazy', 'konformery, které vznikají rotací kolem jednoduché vazby σ'],
         'Zvláštní druh stereoizomerů (enantio = opačný). Stereoizomery, které zrcadlovými obrazy nejsou, jsou diastereomery.', 'q1'],
       ['base', 'en', 'Chirální', 'Co znamená, že je molekula chirální?',
         ['není identická se svým zrcadlovým obrazem', 'stáčí rovinu polarizovaného světla vždy doprava', 'je překrytelná se svým zrcadlovým obrazem', 'obsahuje dvojnou vazbu C=C s cis/trans izomerií'],
