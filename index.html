@@ -418,7 +418,7 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .ico{fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 @media (max-width:520px){ .fact{margin-top:116px;padding:30px 16px 16px} .fact .who{width:180px;left:50%;margin-left:-90px;top:-110px} .fbub{grid-template-columns:1fr} .fact .pic{grid-column:1;grid-row:auto;max-width:none} }
 @media (prefers-reduced-motion:reduce){ .fact.swap .fact-body,.fact.swap .pic,.fact.hype .who .head{animation:none} }
-/* --- Béďa Bobík: kresba (patička, rozcestník, Analytická chemie) --- */
+/* --- Béďa Bobík: kresba (patička, rozcestník) --- */
 :root{--beda-lens:#f6e7a4}
 /* v tmavém režimu zůstává Béďa „samolepka“ jako ve světlém, jen ztlumený a se světlým lemem */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bd2{--ink:#2a1f30;--surface:#ece4ea;--accent-soft:#b7d9d8;--accent:#0b6870;--muted:#5d4f61;--pink:#d23a70;--el-n:#1d3fd1;--beda-lens:#e4d189;filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}}
@@ -988,6 +988,73 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-beda p{margin:0;font-size:.93rem}
 .ac-beda-pic{flex:none;width:78px;line-height:0}
 .ac-beda-pic svg,.ac-meme-pic svg{width:100%;height:auto}
+/* --- Pazík: maskot Analytické chemie (kresba a animace, viz blok Pazík v JS) --- */
+:root{--pz-fur:#c9a682;--pz-fur2:#9c7a5c;--pz-face:#f4e8d3;--pz-patch:#6b4f3f;--pz-claw:#f1e6cc;--pz-mouth:#5a2f3a;--pz-lens:#cfe9e8;--pz-grey:#d6d2da;--pz-grey2:#a59fab}
+.pz{overflow:visible;--ink:#24192a;--surface:#ffffff;--muted:#68596b;--accent:#0b6870;--accent-soft:#dcefee;--pink:#d23a70}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pz{--ink:#2a1f30;--surface:#ece4ea;--muted:#5d4f61;--accent:#0b6870;--accent-soft:#b7d9d8;--pink:#d23a70;--pz-fur:#b8987a;--pz-fur2:#8d6f56;--pz-face:#e6dac6;--pz-patch:#62493b;--pz-claw:#e4d8c0;--pz-lens:#bcd9d8;--pz-grey:#cbc6cf;--pz-grey2:#9a94a0;filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}}
+:root[data-theme="dark"] .pz{--ink:#2a1f30;--surface:#ece4ea;--muted:#5d4f61;--accent:#0b6870;--accent-soft:#b7d9d8;--pink:#d23a70;--pz-fur:#b8987a;--pz-fur2:#8d6f56;--pz-face:#e6dac6;--pz-patch:#62493b;--pz-claw:#e4d8c0;--pz-lens:#bcd9d8;--pz-grey:#cbc6cf;--pz-grey2:#9a94a0;filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}
+.pz .ln{stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.pz .fur{fill:var(--pz-fur);stroke:var(--ink);stroke-width:4.5;stroke-linejoin:round}
+.pz .face{fill:var(--pz-face)} .pz .patch{fill:var(--pz-patch)}
+.pz .tick{stroke:var(--pz-fur2);stroke-width:3;stroke-linecap:round;fill:none}
+.pz .lmo{stroke:var(--ink);stroke-width:16;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.pz .lmf{stroke:var(--pz-fur);stroke-width:8;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.pz .clo{stroke:var(--ink);stroke-width:7;stroke-linecap:round;fill:none}
+.pz .clf{stroke:var(--pz-claw);stroke-width:2.6;stroke-linecap:round;fill:none}
+.pz .eye{fill:var(--ink)} .pz .white{fill:var(--surface)} .pz .glint{fill:var(--surface)}
+.pz .nose{fill:var(--ink)} .pz .mouth{fill:var(--pz-mouth);stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round}
+.pz .teeth{fill:var(--surface)}
+.pz .grey{fill:var(--pz-grey);stroke:var(--ink);stroke-width:4;stroke-linejoin:round} .pz .greyf{fill:var(--pz-grey)} .pz .gtick{stroke:var(--pz-grey2);stroke-width:2.5;stroke-linecap:round;fill:none}
+.pz .specs{fill:var(--surface);fill-opacity:.22;stroke:var(--ink);stroke-width:3.5}
+.pz .cheek{fill:var(--pink);opacity:.3}
+.pz .glass{fill:var(--surface);fill-opacity:.55;stroke:var(--ink);stroke-width:4;stroke-linejoin:round}
+.pz .liq{fill:var(--accent-soft)} .pz .liq2{fill:#7cc6c4} .pz .pinkliq{fill:#f4a6c4}
+.pz .ppt{fill:#f2c230} .pz .flame{fill:#5aa8e6;stroke:var(--ink);stroke-width:3;stroke-linejoin:round} .pz .flame2{fill:#ffd36b}
+.pz .metal{fill:var(--muted);stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round}
+.pz .lens{fill:var(--pz-lens);fill-opacity:.85;stroke:var(--ink);stroke-width:4}
+.pz .strap{stroke:var(--accent);stroke-width:5;stroke-linecap:round;fill:none}
+.pz .tile{fill:var(--surface);stroke:var(--ink);stroke-width:3.5}
+.pz .cell{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.pz .hl{fill:#f2c230} .pz .hd{fill:var(--accent-soft)}
+.pz .spark{stroke:#e0a400;stroke-width:3;stroke-linecap:round;fill:none}
+.pz text{font-family:Arial,Helvetica,"Liberation Sans",sans-serif;font-weight:700;fill:var(--ink)}
+/* ===== animace: všechno pomalu, jak se na lenochoda sluší ===== */
+.pz .blink{transform-box:fill-box;transform-origin:center 60%;animation:pzblink 7s ease-in-out infinite}
+@keyframes pzblink{0%,80%,100%{transform:scaleY(1)}86%,92%{transform:scaleY(.12)}}
+.pz .sway{transform-origin:100px 186px;animation:pzsway 3.5s ease-in-out infinite alternate}
+@keyframes pzsway{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+.pz .creep{animation:pzcreep 3.5s ease-in-out infinite alternate}
+@keyframes pzcreep{from{transform:translateY(2px)}to{transform:translateY(-4px)}}
+.pz .drip{transform-box:fill-box;transform-origin:center top;animation:pzdrip 3.5s ease-in infinite}
+@keyframes pzdrip{0%{transform:translateY(-8px) scale(.2);opacity:0}10%{opacity:1}45%{transform:translateY(-8px) scale(1)}75%{transform:translateY(8px) scale(1);opacity:1}85%,100%{transform:translateY(10px) scale(1);opacity:0}}
+.pz .bub{animation:pzbub 1.75s ease-in infinite}
+.pz .bub:nth-of-type(2){animation-delay:-.58s}.pz .bub:nth-of-type(3){animation-delay:-1.17s}
+@keyframes pzbub{0%{transform:translateY(4px);opacity:0}20%{opacity:1}100%{transform:translateY(-14px);opacity:0}}
+.pz .flk{transform-box:fill-box;transform-origin:center bottom;animation:pzflk .35s ease-in-out infinite alternate}
+@keyframes pzflk{from{transform:scale(.94,.9)}to{transform:scale(1.04,1.08)}}
+.pz .tw{transform-box:fill-box;transform-origin:center;animation:pztw 1.75s ease-in-out infinite}
+.pz .tw2{animation-delay:-.9s}
+@keyframes pztw{0%,100%{transform:scale(.5);opacity:.3}50%{transform:scale(1.15);opacity:1}}
+.pz .flake{animation:pzflake 3.5s linear infinite}
+.pz .flake.f2{animation-delay:-1.2s}.pz .flake.f3{animation-delay:-2.4s}
+@keyframes pzflake{0%{transform:translateY(-14px);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(12px);opacity:0}}
+.pz .tap{transform-origin:112px 118px;animation:pztap 1.75s ease-in-out infinite}
+@keyframes pztap{0%,40%,100%{transform:rotate(0)}55%{transform:rotate(-5deg)}70%{transform:rotate(1deg)}}
+.pz .hl{animation:pzhl 1.75s ease-in-out infinite}
+@keyframes pzhl{0%,50%,100%{opacity:1}65%{opacity:.45}}
+.pz .scr{transform-origin:134px 118px;animation:pzscr .35s ease-in-out infinite alternate}
+@keyframes pzscr{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.pz .sweat{animation:pzsweat 1.75s ease-in infinite}
+@keyframes pzsweat{0%{transform:translateY(-4px);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateY(12px);opacity:0}}
+.pz .swing{transform-origin:100px 118px;animation:pzswing 3.5s ease-in-out infinite alternate}
+@keyframes pzswing{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+/* lenochodí zaseknutí: třída .nap na svg na chvíli zastaví všechny pohyby (viz PAZI.nap) */
+.pz.nap *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.pz *{animation:none!important}}
+.ac-meme-pic .pz{filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}
+.fact.ac{border-top-color:var(--accent)}
+.fact .who.pzw{width:200px;left:24px;top:-118px}
+@media (max-width:520px){.fact .who.pzw{width:170px;left:50%;margin-left:-85px;top:-100px}}
 .ac-meme{margin:0;position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#3a3550,#1d1a28);padding:12px 12px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
 .ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
 .ac-meme-pic{width:min(220px,70%);line-height:0;--ink:#f4f1f7;--muted:#a8a0b8;--surface:#2a2638;--accent-soft:#4a3f66}
@@ -1058,7 +1125,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <div class="who" id="factWho"></div>
     <div class="fbub">
     <div class="fact-body">
-      <span class="eyebrow">Béďa Bobík ti vzkazuje</span>
+      <span class="eyebrow" id="factWhoName">Béďa Bobík ti vzkazuje</span>
       <h2 id="factT"></h2>
       <p id="factX"></p>
       <span class="cat" id="factC"></span>
@@ -1164,6 +1231,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       <ul>
         <li>Na počítači: <b>A–D</b> nebo <b>1–4</b> vybere možnost, <b>Enter</b> přejde na další otázku.</li>
         <li><b>Béďa Bobík</b> dole na stránce radí pomůcky a memes, „Další pomůcka“ přinese novou. Na úvodní stránce má zajímavosti z organické chemie.</li>
+        <li><b>Lenochod Pazík</b> radí v Analytické chemii u karet, her a lekcí a na úvodní stránce říká zajímavosti z analytiky. Občas se na chvíli zasekne, je to lenochod.</li>
         <li>Klepnutím na logo se mění jeho podoba.</li>
       </ul></details>
 
@@ -27309,6 +27377,188 @@ function bedaPose(svg, i) {
   svg.dataset.pose = i;
 }
 
+/* ===== Pazík: maskot Analytické chemie (lenochod, jméno po Pazourkovi) =====
+   Kreslený ve stylu Bédi (.bd2), ale samostatně: třída .pz, vlastní barvy, stejný „samolepkový“ tmavý režim.
+   Pózy A–D střídají pomůcky, E je při chybě, peek visí za drápy přes hranu zajímavosti na úvodu.
+   Všechno se pomalu hýbe; jednou za 10–16 s Pazík na pár vteřin úplně ztuhne (třída .nap). */
+const PAZIK = (() => {
+/* končetina s obrysem: tlustý inkoust + srst uvnitř */
+const limb = d => `<path class="lmo" d="${d}"/><path class="lmf" d="${d}"/>`;
+/* tři dlouhé zahnuté drápy; x,y = konec ruky, a = směr ve stupních */
+const claws = (x, y, a, n = 3, len = 15) => {
+  let s = '';
+  for (let i = 0; i < n; i++) {
+    const o = (i - (n - 1) / 2) * 5.5;
+    const d = `M0 ${o} q${len * .75} ${-1} ${len} ${7 + i}`;
+    s += `<path class="clo" d="${d}"/><path class="clf" d="${d}"/>`;
+  }
+  return `<g transform="translate(${x} ${y}) rotate(${a})">${s}</g>`;
+};
+/* jeden dlouhý ukazující dráp */
+const pointer = (x, y, a) => {
+  const d = 'M0 0 q14 -2 24 2';
+  return `<g transform="translate(${x} ${y}) rotate(${a})"><path class="clo" d="${d}"/><path class="clf" d="${d}"/>` +
+    [-1, 1].map(o => `<path class="clo" d="M0 ${o * 5} q6 ${o * 2} 7 ${o * 7}"/><path class="clf" d="M0 ${o * 5} q6 ${o * 2} 7 ${o * 7}"/>`).join('') + '</g>';
+};
+
+/* hlava: šedivé vlasy, kulaté brýle, šedivé vousy; look = posun zorniček, o = otevřenější oči */
+/* šedivá ofina a vousy kolem pusy (Setsu vybral 2026-10-17) */
+const STYLE = { hair: 'ofina', beard: 'kolem' };
+const HAIR = {};
+const HAIRF = { ofina: `<path class="grey" d="M56 54 C54 36 76 24 100 24 C124 24 146 36 144 54 L137 49 L131 57 L123 48 L115 57 L107 48 L100 57 L93 48 L85 57 L77 48 L69 57 L63 49 Z"/>` };
+const BEARD = { kolem: `<path class="grey" style="stroke-width:3" d="M76 95 C73 106 84 119 100 121 C116 119 127 106 124 95 L119.5 97.5 C119.5 102.5 111 105 100 105 C89 105 80.5 102.5 80.5 97.5 Z"/><path class="grey" style="stroke-width:3" d="M100 89.5 C94 86.5 84 87.5 78 94 C86 93.5 93 94 100 92.8 C107 94 114 93.5 122 94 C116 87.5 106 86.5 100 89.5 Z"/>` };
+function head({ look = 0, wow = false, cringe = false } = {}) {
+  const st = STYLE;
+  const eye = (cx, flip) => {
+    const w = 9;
+    return `<path class="white" d="M${cx - w} 71 a${w} ${wow ? 8 : 6.5} 0 0 0 ${2 * w} 0 z"/>` +
+      `<path class="eye" d="M${cx - 4.5 + look} 71 a4.5 ${wow ? 5 : 4.3} 0 0 0 9 0 z"/>` +
+      `<circle class="glint" cx="${cx + 2 + look}" cy="73.5" r="1.4"/>` +
+      `<path class="ln" style="stroke-width:3.5" d="M${cx - w - 2} ${flip ? 71 : 72.5} Q${cx} ${wow ? 65 : 67} ${cx + w + 2} ${flip ? 72.5 : 71}"/>`;
+  };
+  return `<g class="head">
+    <path class="fur" d="M100 26 C72 26 52 42 52 66 C52 92 74 108 100 108 C126 108 148 92 148 66 C148 42 128 26 100 26 Z"/>
+    ${HAIR[st.hair] || ''}
+    <path class="tick" d="M58 58 l6 3 M56 70 l7 1 M142 58 l-6 3 M144 70 l-7 1"/>
+    <path class="face" d="M100 46 C76 46 62 56 62 72 C62 90 80 102 100 102 C120 102 138 90 138 72 C138 56 124 46 100 46 Z"/>
+    ${HAIRF[st.hair] || ''}
+    <ellipse class="patch" cx="80" cy="74" rx="16" ry="10" transform="rotate(-24 80 74)"/>
+    <ellipse class="patch" cx="120" cy="74" rx="16" ry="10" transform="rotate(24 120 74)"/>
+    ${cringe
+      ? `<path class="ln" style="stroke-width:3.5" d="M70 70 Q80 76 90 71 M71 76 Q80 79 89 75 M110 71 Q120 76 130 70 M111 75 Q120 79 129 76"/>
+         <path class="ln" style="stroke-width:4" d="M66 58 Q76 52 90 52 M134 58 Q124 52 110 52"/>`
+      : `<g class="blink">${eye(80, 0)}</g><g class="blink">${eye(120, 1)}</g>`}
+    <path class="ln" style="stroke-width:3.5" d="M53 66 L66 70 M147 66 L134 70 M93 70 q7 -6 14 0"/>
+    <circle class="specs" cx="80" cy="72" r="14"/><circle class="specs" cx="120" cy="72" r="14"/>
+    <path class="ln" style="stroke:var(--surface);stroke-width:2.5;opacity:.75" d="M71 64 q4 -3 8 -3 M111 64 q4 -3 8 -3"/>
+    <ellipse class="nose" cx="100" cy="84" rx="8" ry="5.5"/><ellipse class="glint" cx="97" cy="82.5" rx="2.4" ry="1.3"/>
+    ${cringe
+      ? `<path class="teeth" style="stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round" d="M78 92 Q90 87 100 89 Q112 91 124 86 L121 97 Q110 99 100 97 Q90 96 80 99 Z"/>
+         <path class="ln" style="stroke-width:2.2" d="M80 94 Q90 91.5 100 93 Q111 94.5 122 91.5 M88 89.6 v8 M96 89 v8 M104 89.6 v8 M112 89.6 v8.6"/>`
+      : wow
+      ? `<ellipse class="mouth" cx="100" cy="96" rx="6" ry="5"/>`
+      : `<path class="mouth" d="M77 91 Q100 108 123 91 Q100 96 77 91 Z"/><path class="teeth" d="M84 93.6 Q100 97.6 116 93.6 L114.6 97.4 Q100 101 85.4 97.4 Z"/>`}
+    ${BEARD[st.beard] || ''}
+    <ellipse class="cheek" cx="67" cy="88" rx="7" ry="4.5"/><ellipse class="cheek" cx="133" cy="88" rx="7" ry="4.5"/>
+  </g>`;
+}
+const body = (cx = 100) => `<g class="torso">
+  <path class="fur" d="M${cx} 100 C${cx - 40} 100 ${cx - 40} 128 ${cx - 38} 146 C${cx - 36} 166 ${cx - 20} 176 ${cx} 176 C${cx + 20} 176 ${cx + 36} 166 ${cx + 38} 146 C${cx + 40} 128 ${cx + 40} 100 ${cx} 100 Z"/>
+  <ellipse class="face" cx="${cx}" cy="146" rx="21" ry="22"/>
+  <path class="tick" d="M${cx - 32} 132 l6 2 M${cx - 33} 146 l6 1 M${cx + 32} 132 l-6 2 M${cx + 33} 146 l-6 1"/>
+</g>`;
+const legs = (cx = 100) => `${limb(`M${cx - 16} 164 L${cx - 20} 182`)}${limb(`M${cx + 16} 164 L${cx + 20} 182`)}` +
+  claws(cx - 22, 184, 160, 3, 10) + claws(cx + 22, 184, 20, 3, 10);
+const svg = (vb, inner, label) =>
+  `<svg class="pz" viewBox="${vb}" role="img" aria-label="${label}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+
+/* A: objímá byretu jako větev, z byrety kápne růžová kapka (fenolftalein) */
+function A() {
+  const ticks = [40, 52, 64, 76, 88, 100, 112, 124, 136].map((y, i) => `M150 ${y} h${i % 2 ? 5 : 9}`).join(' ');
+  return svg('0 0 200 210', `
+    <rect class="glass" x="147" y="4" width="22" height="160" rx="5"/>
+    <rect class="liq" x="151" y="40" width="14" height="121" rx="3"/>
+    <path class="ln" style="stroke-width:2.5" d="${ticks}"/>
+    <path class="glass" d="M151 164 h14 l-4 18 h-6 z"/>
+    <path class="metal" d="M141 168 h34 a3 3 0 0 1 0 7 h-34 a3 3 0 0 1 0 -7 z"/>
+    <path class="glass" d="M155 182 h6 v14 h-6 z"/>
+    <path class="pinkliq drip" style="stroke:var(--ink);stroke-width:3" d="M158 198 q-5 6 0 9 q5 -3 0 -9 z"/>
+    <g class="creep">${limb('M76 120 L64 150')}${claws(62, 152, 100, 3, 11)}
+    ${legs(96)}
+    ${limb('M112 162 Q140 168 150 160')}${claws(150, 158, -40, 3, 10)}
+    ${body(96)}
+    <g transform="rotate(9 100 70) translate(-6 0)">${head({ look: 2.5 })}</g>
+    ${limb('M120 116 Q142 104 152 84')}${claws(152, 82, -20)}
+    ${limb('M104 132 Q132 138 150 124')}${claws(152, 122, -10)}</g>
+  `, 'Lenochod Pazík objímá byretu jako větev a z byrety kape růžová kapka');
+}
+
+/* B: v drápech kádinka s tyrkysovým roztokem */
+function B() {
+  return svg('0 0 200 200', `
+    ${legs()}<g class="sway">${body()}
+    ${head()}
+    ${limb('M66 120 Q58 146 80 152')}
+    ${limb('M134 120 Q142 146 120 152')}
+    <path class="liq2" d="M82 146 h36 v20 a4 4 0 0 1 -4 4 h-28 a4 4 0 0 1 -4 -4 z"/>
+    <g><circle class="glint bub" cx="92" cy="160" r="2.6"/><circle class="glint bub" cx="104" cy="164" r="1.8"/><circle class="glint bub" cx="110" cy="162" r="2"/></g>
+    <path class="ln" style="stroke-width:3.5" d="M76 126 h46 M79 126 v40 a4 4 0 0 0 4 4 h30 a4 4 0 0 0 4 -4 v-40 M85 136 h7 M85 146 h7"/>
+    ${claws(80, 152, 10, 3, 9)}${claws(120, 152, 170, 3, 9)}</g>
+  `, 'Lenochod Pazík drží kádinku s tyrkysovým roztokem');
+}
+
+/* C: nad kahanem pomalu ohřívá zkumavku se žlutou sraženinou (zlatý déšť PbI₂), kouká s údivem */
+function C() {
+  return svg('0 0 200 200', `
+    <path class="metal" d="M150 186 h36 a3 3 0 0 0 0 -7 h-8 v-38 h-20 v38 h-8 a3 3 0 0 0 0 7 z"/>
+    <path class="ln" style="stroke-width:2.5;stroke:var(--surface)" d="M162 148 v26"/>
+    <g class="flk"><path class="flame" d="M168 141 C156 132 158 116 168 100 C178 116 180 132 168 141 Z"/>
+    <path class="flame2" d="M168 138 C163 132 164 124 168 116 C172 124 173 132 168 138 Z"/></g>
+    ${legs(90)}${body(90)}
+    ${limb('M58 120 Q46 140 64 150')}${claws(66, 151, 20, 3, 9)}
+    <g transform="translate(-10 0)">${head({ look: 4, wow: true })}</g>
+    <g transform="rotate(-28 160 82)">
+      <path class="glass" d="M152 40 h16 v52 a8 8 0 0 1 -16 0 z"/>
+      <path class="ppt" d="M154 76 h12 v16 a6 6 0 0 1 -12 0 z"/>
+      <circle class="ppt flake" cx="158" cy="66" r="1.6"/><circle class="ppt flake f2" cx="163" cy="62" r="1.3"/><circle class="ppt flake f3" cx="160" cy="58" r="1.4"/>
+      <path class="ln" style="stroke-width:3.5" d="M148 40 h24"/>
+    </g>
+    ${limb('M118 118 Q132 104 140 72')}${claws(141, 70, -70, 3, 11)}
+    <path class="spark tw" d="M186 52 v10 M181 57 h10"/><path class="spark tw tw2" d="M132 30 v8 M128 34 h8"/>
+  `, 'Lenochod Pazík s údivem ohřívá nad kahanem zkumavku se žlutou sraženinou');
+}
+
+/* D: dlouhým drápem ukazuje do tabulky reakcí, jedna buňka svítí žlutě */
+function D() {
+  const cells = [];
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) {
+    const x = 132 + c * 20, y = 52 + r * 18;
+    cells.push(`<rect class="${r === 0 ? 'cell hd' : (r === 2 && c === 1 ? 'cell hl' : 'cell')}" x="${x}" y="${y}" width="20" height="18"/>`);
+  }
+  return svg('0 0 200 200', `
+    <rect class="tile" x="126" y="34" width="72" height="98" rx="8"/>
+    <text x="162" y="48" text-anchor="middle" style="font-size:10px;fill:var(--muted)">Ag⁺ Pb²⁺</text>
+    ${cells.join('')}
+    ${legs(84)}${body(84)}
+    ${limb('M54 120 Q46 144 68 150')}${claws(70, 151, 15, 3, 9)}
+    <g transform="translate(-16 0)">${head({ look: 4 })}</g>
+    <g class="tap">${limb('M112 118 Q130 112 140 98')}${pointer(140, 98, -42)}</g>
+  `, 'Lenochod Pazík ukazuje dlouhým drápem do tabulky reakcí');
+}
+
+/* E: chyba v testu. Bolestný úšklebek, zmáčknuté oči, dráp se drbe na zátylku, kapka potu */
+function E() {
+  return svg('0 0 200 200', `
+    ${legs()}${body()}
+    ${limb('M66 120 Q56 140 70 152')}${claws(72, 153, 20, 3, 9)}
+    <g transform="rotate(-9 100 70)">${head({ cringe: true })}</g>
+    <g class="scr">${limb('M134 118 Q160 100 150 56')}${claws(148, 52, -120, 3, 12)}</g>
+    <path class="sweat" style="fill:#9fd3f0;stroke:var(--ink);stroke-width:3;stroke-linejoin:round" d="M50 40 q-7 10 -2 15 q7 3 9 -4 q0 -5 -7 -11 z"/>
+  `, 'Lenochod Pazík se bolestně šklebí a drbe se na zátylku, protože se stala chyba');
+}
+
+/* Pazík visí za drápy přes horní hranu karty (náhrada Béďova vykukování); hrana karty y = 118 */
+function peek() {
+  return svg('0 0 200 136', `
+    <g class="swing">${limb('M66 92 Q52 104 56 118')}${limb('M134 92 Q148 104 144 118')}
+    ${head()}</g>
+    ${claws(56, 118, 90, 3, 13)}${claws(144, 118, 90, 3, 13)}
+  `, 'Lenochod Pazík visí za drápy přes horní hranu karty');
+}
+
+/* jednou za 10–16 s Pazíka na 2,5–4 s úplně zastaví uprostřed pohybu, pak pokračuje */
+function nap(el) {
+  if (!el || el._nap) return;
+  const go = () => { el._nap = setTimeout(() => { el.classList.add('nap'); setTimeout(() => { el.classList.remove('nap'); go(); }, 2500 + Math.random() * 1500); }, 10000 + Math.random() * 6000); };
+  go();
+}
+const POSES = [A, B, C, D];
+let napT = 0;
+const napLoop = () => { napT = setTimeout(() => { const L = document.querySelectorAll('svg.pz'); L.forEach(s => s.classList.add('nap')); setTimeout(() => { L.forEach(s => s.classList.remove('nap')); napLoop(); }, 2500 + Math.random() * 1500); }, 10000 + Math.random() * 6000); };
+napLoop();
+return { A, B, C, D, E, peek, any: () => POSES[Math.floor(Math.random() * POSES.length)]() };
+})();
+
 /* ===== Maskot dole na stránce ===== */
 let cheerT = 0;
 function cheer() {
@@ -28669,12 +28919,18 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const head = `Kontrola dat: ${qs.length} otázek, ${W.length} varování`;
     if (W.length) { console.groupCollapsed(head); console.table(W); console.groupEnd(); } else console.info(head);
   }
-  /* Béďa je maskot organiky: zajímavosti z Analytické chemie (tid 'ac:…') zůstávají ve FACTS, ale Béďa je neříká; převezme je maskot Analytické chemie */
-  const shuffle = () => { order = FACTS.map((f, i) => i).filter(i => !/^ac:/.test(FACTS[i][3] || '')); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } k = 0; };
+  /* zajímavosti z organiky říká Béďa, z Analytické chemie (tid 'ac:…') Pazík; kdo mluví, přepne show() */
+  let bedaPk = null; const pazPk = document.createElement('div');
+  const shuffle = () => { order = FACTS.map((f, i) => i); for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; } k = 0; };
   const show = anim => {
     if (k >= order.length) shuffle();
     const [name, t, x, tid, pc] = FACTS[order[k]], ac = /^ac:/.test(tid || ''), g = ac ? null : molOf(name, tid), tp = g && TOPICS.find(z => z.id === g.topic);
     $('#factT').textContent = t; $('#factX').textContent = x;
+    const who = $('#factWho'), box0 = $('#fact');
+    box0.classList.toggle('ac', ac); who.classList.toggle('pzw', ac);
+    $('#factWhoName').textContent = ac ? 'Pazík ti vzkazuje' : 'Béďa Bobík ti vzkazuje';
+    if (ac) { pazPk.innerHTML = PAZIK.peek(); const sv = pazPk.firstElementChild; sv.removeAttribute('role'); sv.removeAttribute('aria-label'); sv.setAttribute('aria-hidden', 'true'); who.replaceChildren(sv); }
+    else if (bedaPk && who.firstElementChild !== bedaPk) who.replaceChildren(bedaPk);
     /* štítek: kde to najdeš, jako odkaz rovnou na kapitolu Analytiky nebo téma organiky */
     const fc = $('#factC'); fc.textContent = name;
     if (ac || tp) {
@@ -28718,9 +28974,9 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     /* bříško se přes hranu karty převalí */
     pk.querySelector('.head').insertAdjacentHTML('afterend', '<path class="body" d="M44.4 121 Q46 138 100 140 Q154 138 155.6 121"/><ellipse class="tummy" cx="100" cy="129" rx="32" ry="6.5"/><circle class="navel" cx="100" cy="131" r="2.6"/>');
     pk.classList.add('peek'); bedaPose(pk, Math.floor(Math.random() * BEDA_POSES.length));
-    $('#factWho').replaceChildren(pk);
+    bedaPk = pk; if (!$('#fact').classList.contains('ac')) $('#factWho').replaceChildren(pk);
   }
-  $('#factNext').addEventListener('click', () => { const box = $('#fact'); bedaPose($('#factWho svg')); box.classList.remove('hype'); void box.offsetWidth; box.classList.add('hype'); });
+  $('#factNext').addEventListener('click', () => { const box = $('#fact'); if (!box.classList.contains('ac')) bedaPose($('#factWho svg')); box.classList.remove('hype'); void box.offsetWidth; box.classList.add('hype'); });
 
 
   const nQ = GROUPS.filter(g => g.kind === 'q').length, nM = GROUPS.filter(g => g.kind === 'mol').length;
@@ -30690,14 +30946,14 @@ function specView() {
   return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Čti IČ spektrum</span><span class="ac-score">Série ${SP.streak} · nejlepší ${(ST.best && ST.best.ir) || 0}</span></div>
     ${specSVG(s, SP.done)}<p class="ac-sub">Jaká látka má tohle spektrum? Dívej se na oblast nad 3000, tiché pásmo 2300–2000 a karbonyl kolem 1700 cm⁻¹.</p>
     <div class="opts${SP.done ? ' done' : ''}">${SP.opts.map((o, k) => `<button type="button" class="opt${SP.done ? (o === s ? ' right' : o === SP.picked ? ' wrong' : '') : ''}" data-ac="spg" data-v="${k}"${SP.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${escA(o[1])}</span></button>`).join('')}</div>
-    ${SP.done ? `<div class="fb ${SP.ok ? 'ok' : 'bad'}"><p><b>${SP.ok ? 'Správně!' : `Tohle je ${escA(s[1])}.`}</b> ${escA(s[3])}</p></div>${acTipBox(AC_BEDA['sp:' + s[0]] || AC_BEDA['ir:co'])}<div class="row"><button type="button" class="btn primary" data-ac="spnew">Další spektrum</button></div>` : ''}</div>`;
+    ${SP.done ? `<div class="fb ${SP.ok ? 'ok' : 'bad'}"><p><b>${SP.ok ? 'Správně!' : `Tohle je ${escA(s[1])}.`}</b> ${escA(s[3])}</p></div>${acTipBox(AC_BEDA['sp:' + s[0]] || AC_BEDA['ir:co'], !SP.ok)}<div class="row"><button type="button" class="btn primary" data-ac="spnew">Další spektrum</button></div>` : ''}</div>`;
 }
 
 /* --- Pomůcky a memy ---
-   Béďa Bobík patří jen organice, tady zatím žádný maskot není. Texty zůstávají v AC_BEDA a AC_MEMES;
-   až bude mít Analytická chemie vlastního maskota, stačí doplnit AC_MASCOT (jméno a kresbu SVG). */
-const AC_MASCOT = { name: '', svg: '' };
-function acTipBox(m) { return m ? `<div class="ac-beda${AC_MASCOT.svg ? '' : ' bare'}">${AC_MASCOT.svg ? `<div class="ac-beda-pic">${AC_MASCOT.svg}</div>` : ''}<p><b>${AC_MASCOT.name ? escA(AC_MASCOT.name) + ' radí' : 'Pomůcka'}:</b> ${escA(m)}</p></div>` : ''; }
+   Béďa Bobík patří jen organice, tady radí lenochod Pazík (kresba v bloku Pazík). Texty zůstávají v AC_BEDA a AC_MEMES;
+   svg vrací pokaždé náhodnou pózu A–D, bad() pózu E pro špatnou odpověď. */
+const AC_MASCOT = { name: 'Pazík', get svg() { return PAZIK.any(); }, bad: () => PAZIK.E() };
+function acTipBox(m, bad) { const pic = AC_MASCOT.svg && (bad && AC_MASCOT.bad ? AC_MASCOT.bad() : AC_MASCOT.svg); return m ? `<div class="ac-beda${pic ? '' : ' bare'}">${pic ? `<div class="ac-beda-pic">${pic}</div>` : ''}<p><b>${AC_MASCOT.name ? escA(AC_MASCOT.name) + ' radí' : 'Pomůcka'}:</b> ${escA(m)}</p></div>` : ''; }
 function memeCard() {
   const L = AC_MEMES.filter(x => x[2] === ST.ch), m = L.length ? pick(L) : pick(AC_MEMES);
   return `<figure class="ac-meme" aria-label="Vtip: ${escA(m[0])}, ${escA(m[1])}"><span class="mt">${escA(m[0])}</span>${AC_MASCOT.svg ? `<div class="ac-meme-pic">${AC_MASCOT.svg}</div>` : ''}<span class="mb">${escA(m[1])}</span></figure>`;
@@ -30878,7 +31134,7 @@ function taniView() {
     silne: `Teplota tání je výrazně pod ${T(s[1])} a rozmezí tání je široké. Hodně nečistot = velký pokles.`, jina: `Teplota tání je výš než ${T(s[1])}. Nečistota teplotu tání nikdy nezvýší, takže ve zkumavce je jiná látka.` }[v];
   return `<div class="card ac-game"><div class="card-head"><span class="eyebrow">Bodotávek</span><span class="ac-score">Série ${MP.streak} · nejlepší ${(ST.best && ST.best.mp) || 0}</span></div>
     <h2 class="q-name ac-long">${escA(s[0])}</h2><p class="ac-sub">Na štítku je ${escA(s[0])}, podle tabulek taje při ${T(s[1])}. Zahříváš 1–2 °C za minutu a pozoruješ kapiláru:</p>${obs}${q1}${q2}
-    ${MP.done ? `<div class="fb ${MP.ok ? 'ok' : 'bad'}"><p><b>${MP.ok ? 'Správně!' : 'Tohle ne úplně.'}</b> ${escA(why)}</p></div>${acTipBox(AC_BEDA.tani)}<div class="row"><button type="button" class="btn primary" data-ac="mpnew">Další vzorek</button></div>` : ''}</div>`;
+    ${MP.done ? `<div class="fb ${MP.ok ? 'ok' : 'bad'}"><p><b>${MP.ok ? 'Správně!' : 'Tohle ne úplně.'}</b> ${escA(why)}</p></div>${acTipBox(AC_BEDA.tani, !MP.ok)}<div class="row"><button type="button" class="btn primary" data-ac="mpnew">Další vzorek</button></div>` : ''}</div>`;
 }
 
 /* ===== Analytická chemie: procvičování, tabulka, přehled iontů a hra Neznámý vzorek ===== */
@@ -31051,7 +31307,7 @@ function feedback(cd, ok) {
   } else {
     body = `<p>${cd.set.length ? `Správně: <b>${cd.set.map(i => ION[i].f).join(', ')}</b>` : 'Správně: žádný.'}</p>${cd.ex && cd.rk === 'NaOH' ? '<p class="aside">Vzniklé roztoky jsou bezbarvé, jen chromitan je zelený.</p>' : ''}${cd.rk === 'H2S' && cd.c === 'k' && !cd.ex ? '<p class="aside">Pozor na Fe³⁺: oxiduje sulfan a vznikne jen bílý zákal síry, ne sraženina sulfidu.</p>' : ''}`;
   }
-  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${acTipBox(bedaFor(cd))}`;
+  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${acTipBox(bedaFor(cd), !ok)}`;
 }
 /* „Proč?“ u špatné odpovědi: výklad z lekce, všechny reakce iontu nebo celá skupina s činidlem; u cvičení 3–6 odkaz na tahák (kolo se nepřeruší, v kvízu lekce chybí, ten by se odchodem zahodil) */
 function whyAC(cd) {
