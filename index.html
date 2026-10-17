@@ -713,6 +713,7 @@ body.sheet-file .sheet{position:static}
 .rep-msg:empty{display:none}
 .rep-done{margin:8px 0;font-size:1.05rem}
 #webBox p{margin:0 0 10px}
+#webBox .ver{align-self:center;font-size:.85rem;color:var(--muted)}
 .moved{background:var(--foam);color:var(--ink);border-bottom:2px solid var(--pink);padding:12px 16px;display:grid;gap:4px;font-size:.92rem;line-height:1.4}
 .moved a{color:var(--pink-ink)}
 
@@ -29264,8 +29265,55 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
   }
   window.fhCount = gcCount;
 
-  /* --- offline režim --- */
-  if ('serviceWorker' in navigator) window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
+  /* --- offline režim a nové verze --- */
+  /* Nainstalovaná aplikace na iPhonu a iPadu se po návratu z pozadí nenačte znovu a stažení dolů v ní nefunguje,
+     takže by zůstala u staré verze, dokud ji člověk úplně nezavře. Proto se při otevření, po návratu do aplikace
+     a každých 30 minut zeptá na číslo verze v sw.js. Novější verzi po návratu rovnou načte (běžící test ne),
+     jinak ukáže lištu. Každou verzi načte sama jen jednou, ať se stránka nezacyklí, když server ještě dává starou. */
+  let swReg = null;
+  if ('serviceWorker' in navigator) window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(r => { swReg = r; }).catch(() => {});
+    checkVer(true);
+  });
+  let lastCheck = 0, updating = false;
+  async function newerVer() {
+    try {
+      const res = await fetch('sw.js?kontrola=' + Date.now(), { cache: 'no-store' });
+      const m = res.ok && /VER = '(\d{12})'/.exec(await res.text());
+      return m && m[1] > FH_VER ? m[1] : null;
+    } catch (e) { return null; }   // bez internetu nic
+  }
+  async function loadNew() {
+    if (updating) return; updating = true;
+    try {   // nový service worker stáhne novou stránku do mezipaměti a převezme řízení, pak teprve znovu načíst
+      if (swReg) {
+        await swReg.update();
+        const w = swReg.installing || swReg.waiting;
+        if (w) await new Promise(ok => { navigator.serviceWorker.addEventListener('controllerchange', ok, { once: true }); setTimeout(ok, 5000); });
+      }
+    } catch (e) { /* načte se i tak, stránka jde nejdřív ze sítě */ }
+    location.reload();
+  }
+  const verBar = () => { if (!$('#verBar')) document.body.insertAdjacentHTML('afterbegin', '<div class="stale-bar" id="verBar" role="status"><span>Je tu nová verze Formiček.</span><button type="button" class="btn primary sm" id="verGo">Načíst novou verzi</button></div>'); };
+  async function checkVer(auto) {
+    if (updating || Date.now() - lastCheck < 5000) return;
+    lastCheck = Date.now();
+    const v = await newerVer(); if (!v) return;
+    let tried = null; try { tried = sessionStorage.getItem('fh-ver-auto'); } catch (e) { /* nic */ }
+    if (auto && tried !== v && TT.phase !== 'run') { try { sessionStorage.setItem('fh-ver-auto', v); } catch (e) { /* nic */ } loadNew(); }
+    else verBar();
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVer(true); });
+  window.addEventListener('pageshow', e => { if (e.persisted) checkVer(true); });
+  setInterval(() => { if (!document.hidden) checkVer(false); }, 30 * 60000);
+  document.addEventListener('click', async e => {
+    if (e.target.closest('#verGo')) { loadNew(); return; }
+    const b = e.target.closest('#verCheck'); if (!b) return;
+    b.disabled = true; b.textContent = 'Hledám novou verzi…';
+    lastCheck = 0;
+    if (await newerVer()) loadNew();
+    else { b.textContent = navigator.onLine === false ? 'Nejsi připojená k internetu' : 'Máš nejnovější verzi'; setTimeout(() => { b.disabled = false; b.textContent = 'Zkontrolovat novou verzi'; }, 3000); }
+  });
 
   /* --- karta na úvodní stránce: instalace + připomínky --- */
   let deferred = null;
@@ -29274,7 +29322,7 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
   function renderWeb() {
     const box = $('#webBox'), sec = $('#webSec'); if (!box || !sec) return;
     let inst;
-    if (installed()) inst = '<p>Aplikace je nainstalovaná. Funguje i bez internetu, nové verze se stáhnou samy při připojení.</p>';
+    if (installed()) inst = `<p>Aplikace je nainstalovaná. Funguje i bez internetu, nové verze se stáhnou samy při připojení.</p><div class="row"><button type="button" class="btn" id="verCheck">Zkontrolovat novou verzi</button><span class="ver">Verze ${FH_VER}</span></div>`;
     else if (deferred) inst = '<p>Přidej si Formičky na plochu jako aplikaci. Spustí se bez prohlížeče a fungují i bez internetu.</p><div class="row"><button type="button" class="btn primary" id="webInstall">Nainstalovat aplikaci</button></div>';
     else if (isIOS) inst = '<p>Přidej si Formičky na plochu jako aplikaci: v Safari klepni na <b>Sdílet</b> (čtvereček se šipkou) a pak <b>Přidat na plochu</b>. Pak fungují i bez internetu.</p>';
     else inst = '<p>Formičky jdou přidat na plochu jako aplikace: v menu prohlížeče zvol <b>Instalovat aplikaci</b> nebo <b>Přidat na plochu</b>. Pak fungují i bez internetu.</p>';
