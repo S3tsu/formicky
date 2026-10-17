@@ -1065,6 +1065,14 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .pz .starp{fill:#ffcf33;stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round;transform-box:fill-box;transform-origin:center;animation:pzstar .6s cubic-bezier(.3,1.6,.5,1) both,pztwk 1.75s ease-in-out .6s infinite}
 @keyframes pzstar{from{transform:scale(0) rotate(-90deg)}to{transform:scale(1) rotate(0)}}
 @keyframes pztwk{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.12) rotate(12deg)}}
+.pz .wave{transform-origin:134px 94px;animation:pzwave 1.75s ease-in-out infinite alternate}
+@keyframes pzwave{from{transform:rotate(-8deg)}to{transform:rotate(14deg)}}
+.pz .zz{animation:pzzz 3.5s linear infinite}.pz .zz.z2{animation-delay:-1.17s}.pz .zz.z3{animation-delay:-2.33s}
+@keyframes pzzz{0%{transform:translate(0,6px);opacity:0}20%{opacity:1}100%{transform:translate(12px,-22px);opacity:0}}
+.pz .breathe{transform-origin:100px 118px;animation:pzbreathe 3.5s ease-in-out infinite}
+@keyframes pzbreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.02,1.035)}}
+.pz .tapdn{transform-origin:134px 94px;animation:pztapdn 1.75s ease-in-out infinite}
+@keyframes pztapdn{0%,40%,100%{transform:rotate(0)}55%{transform:rotate(6deg)}70%{transform:rotate(-1deg)}}
 @media (prefers-reduced-motion:reduce){.pz *{animation:none!important}}
 .ac-meme-pic .pz{filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}
 .fact.ac{border-top-color:var(--accent)}
@@ -27405,7 +27413,7 @@ function bedaPose(svg, i) {
 /* ===== Pazík: maskot Analytické chemie (lenochod, jméno po Pazourkovi) =====
    Kreslený ve stylu Bédi (.bd2), ale samostatně: třída .pz, vlastní barvy, stejný „samolepkový“ tmavý režim.
    Pózy A–D střídají pomůcky, E je při chybě, F1–F3 po správné odpovědi (palec, tleskání, hurá) s hvězdičkami
-   v očích, které rostou s počtem správných odpovědí v řadě; peek visí za drápy přes hranu zajímavosti na úvodu.
+   v očích, které rostou s počtem správných odpovědí v řadě; nad zajímavostí na úvodu se střídá šest póz (PEEKS: visí, spí, mává, kádinka, zkumavka, ukazuje).
    Všechno se pomalu hýbe; jednou za 10–16 s Pazík na pár vteřin úplně ztuhne (třída .nap). */
 const PAZIK = (() => {
 /* končetina s obrysem: tlustý inkoust + srst uvnitř */
@@ -27436,7 +27444,7 @@ const BEARD = { kolem: `<path class="grey" style="stroke-width:3" d="M76 95 C73 
 /* hvězdička do oka: střed x,y, poloměr r */
 const star = (x, y, r) => { let d = ''; for (let i = 0; i < 10; i++) { const a = Math.PI / 5 * i - Math.PI / 2, q = i % 2 ? r * .45 : r; d += (i ? 'L' : 'M') + (x + q * Math.cos(a)).toFixed(1) + ' ' + (y + q * Math.sin(a)).toFixed(1) + ' '; } return d + 'Z'; };
 /* stars = kolik správných odpovědí v řadě (1–5): hvězdičky v očích rostou */
-function head({ look = 0, wow = false, cringe = false, happy = false, stars = 0 } = {}) {
+function head({ look = 0, wow = false, cringe = false, happy = false, stars = 0, sleep = false } = {}) {
   const st = STYLE;
   const eye = (cx, flip) => {
     const w = 9;
@@ -27454,6 +27462,8 @@ function head({ look = 0, wow = false, cringe = false, happy = false, stars = 0 
     <ellipse class="patch" cx="80" cy="74" rx="16" ry="10" transform="rotate(-24 80 74)"/>
     <ellipse class="patch" cx="120" cy="74" rx="16" ry="10" transform="rotate(24 120 74)"/>
     ${stars ? ''
+      : sleep
+      ? `<path class="ln" style="stroke:var(--surface);stroke-width:3.5" d="M71 71 Q80 78 89 71 M111 71 Q120 78 129 71"/>`
       : happy
       ? `<path class="white" style="stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round" d="M70 76 Q80 63 90 76 Q80 70 70 76 Z M110 76 Q120 63 130 76 Q120 70 110 76 Z"/>`
       : cringe
@@ -27614,6 +27624,57 @@ function peek() {
   `, 'Lenochod Pazík visí za drápy přes horní hranu karty');
 }
 
+/* další pózy nad kartou na úvodu (hrana karty y = 118); střídají se po „Další zajímavost“ */
+const HANG_L = `${limb('M66 92 Q52 104 56 118')}`, CLAW_L = claws(56, 118, 90, 3, 13);
+/* spí: hlava na drápech složených na hraně, z pusy stoupá Zzz */
+function peekSpi() {
+  return svg('0 0 200 136', `
+    <g class="breathe">${head({ sleep: true })}</g>
+    ${limb('M58 98 Q56 116 92 116')}${claws(94, 115, 0, 3, 11)}
+    ${limb('M142 98 Q144 116 108 116')}${claws(106, 115, 180, 3, 11)}
+    <text class="zz" x="150" y="44" style="font-size:16px">z</text><text class="zz z2" x="158" y="34" style="font-size:20px">Z</text><text class="zz z3" x="146" y="30" style="font-size:13px">z</text>
+  `, 'Lenochod Pazík spí s hlavou na drápech položených na hraně karty');
+}
+/* mává: jednou rukou visí, druhou pomalu mává */
+function peekMava() {
+  return svg('0 0 200 136', `
+    ${HANG_L}${head()}${CLAW_L}
+    <g class="wave">${limb('M134 94 Q160 84 164 56')}${claws(164, 53, -80, 3, 12)}</g>
+  `, 'Lenochod Pazík visí na hraně karty a pomalu mává');
+}
+/* kádinka: postavil si na hranu kádinku s bublinkami a drží ji */
+function peekKadinka() {
+  return svg('0 0 200 136', `
+    ${HANG_L}${head({ look: 3 })}${CLAW_L}
+    <path class="liq2" d="M153 100 h24 v14 a3 3 0 0 1 -3 3 h-18 a3 3 0 0 1 -3 -3 z"/>
+    <g><circle class="glint bub" cx="160" cy="112" r="2"/><circle class="glint bub" cx="168" cy="114" r="1.6"/><circle class="glint bub" cx="172" cy="110" r="1.8"/></g>
+    <path class="ln" style="stroke-width:3.5" d="M148 84 h33 M151 84 v31 a3 3 0 0 0 3 3 h22 a3 3 0 0 0 3 -3 v-31 M156 92 h6 M156 100 h6"/>
+    ${limb('M134 92 Q146 108 146 104')}${claws(148, 104, 0, 3, 9)}
+  `, 'Lenochod Pazík drží na hraně karty kádinku s bublinkami');
+}
+/* zkumavka: zvedá zkumavku se zlatým deštěm a s úžasem se na ni dívá */
+function peekZkumavka() {
+  return svg('0 0 200 136', `
+    ${HANG_L}${head({ look: 4, wow: true })}${CLAW_L}
+    <g transform="rotate(18 168 40)">
+      <path class="glass" d="M160 12 h16 v44 a8 8 0 0 1 -16 0 z"/>
+      <path class="ppt" d="M162 44 h12 v12 a6 6 0 0 1 -12 0 z"/>
+      <circle class="ppt flake" cx="166" cy="36" r="1.6"/><circle class="ppt flake f2" cx="171" cy="32" r="1.3"/><circle class="ppt flake f3" cx="168" cy="28" r="1.4"/>
+      <path class="ln" style="stroke-width:3.5" d="M156 12 h24"/>
+    </g>
+    ${limb('M134 92 Q156 86 160 62')}${claws(160, 60, -70, 3, 11)}
+    <path class="spark tw" d="M186 26 v8 M182 30 h8"/>
+  `, 'Lenochod Pazík s úžasem zvedá zkumavku se zlatou sraženinou');
+}
+/* ukazuje: natahuje se přes hranu a dlouhým drápem ťuká dolů do textu zajímavosti */
+function peekUkazuje() {
+  return svg('0 0 200 136', `
+    ${HANG_L}${head({ look: 4 })}${CLAW_L}
+    <g class="tapdn">${limb('M134 94 Q158 100 160 118')}${pointer(160, 120, 80)}</g>
+  `, 'Lenochod Pazík ukazuje drápem dolů na text zajímavosti');
+}
+const PEEKS = [peek, peekSpi, peekMava, peekKadinka, peekZkumavka, peekUkazuje];
+
 /* jednou za 10–16 s Pazíka na 2,5–4 s úplně zastaví uprostřed pohybu, pak pokračuje */
 function nap(el) {
   if (!el || el._nap) return;
@@ -27624,7 +27685,9 @@ const POSES = [A, B, C, D], YAY = [F1, F2, F3];
 let napT = 0;
 const napLoop = () => { napT = setTimeout(() => { const L = document.querySelectorAll('svg.pz'); L.forEach(s => s.classList.add('nap')); setTimeout(() => { L.forEach(s => s.classList.remove('nap')); napLoop(); }, 2500 + Math.random() * 1500); }, 10000 + Math.random() * 6000); };
 napLoop();
-return { A, B, C, D, E, peek, any: () => POSES[Math.floor(Math.random() * POSES.length)](), yay: n => YAY[Math.floor(Math.random() * YAY.length)](n || 1) };
+let lastPk = -1;
+const peekAny = () => { let i = Math.floor(Math.random() * (PEEKS.length - (lastPk < 0 ? 0 : 1))); if (lastPk >= 0 && i >= lastPk) i++; lastPk = i; return PEEKS[i](); };
+return { A, B, C, D, E, peek: peekAny, any: () => POSES[Math.floor(Math.random() * POSES.length)](), yay: n => YAY[Math.floor(Math.random() * YAY.length)](n || 1) };
 })();
 
 /* ===== Maskot dole na stránce ===== */
