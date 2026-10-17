@@ -1062,6 +1062,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 @keyframes pzhurR{from{transform:rotate(40deg)}to{transform:rotate(-4deg)}}
 .pz .conf{animation:pzconf 1.75s ease-out infinite}.pz .conf.c2{animation-delay:-.6s}.pz .conf.c3{animation-delay:-1.2s}
 @keyframes pzconf{0%{transform:translateY(-6px);opacity:0}20%{opacity:1}100%{transform:translateY(16px);opacity:0}}
+.pz .starp{fill:#ffcf33;stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round;transform-box:fill-box;transform-origin:center;animation:pzstar .6s cubic-bezier(.3,1.6,.5,1) both,pztwk 1.75s ease-in-out .6s infinite}
+@keyframes pzstar{from{transform:scale(0) rotate(-90deg)}to{transform:scale(1) rotate(0)}}
+@keyframes pztwk{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.12) rotate(12deg)}}
 @media (prefers-reduced-motion:reduce){.pz *{animation:none!important}}
 .ac-meme-pic .pz{filter:drop-shadow(0 0 1.2px rgba(236,228,234,.9)) drop-shadow(0 0 .6px rgba(236,228,234,.9))}
 .fact.ac{border-top-color:var(--accent)}
@@ -27401,8 +27404,8 @@ function bedaPose(svg, i) {
 
 /* ===== Pazík: maskot Analytické chemie (lenochod, jméno po Pazourkovi) =====
    Kreslený ve stylu Bédi (.bd2), ale samostatně: třída .pz, vlastní barvy, stejný „samolepkový“ tmavý režim.
-   Pózy A–D střídají pomůcky, E je při chybě, F1–F3 po správné odpovědi (palec, tleskání, hurá),
-   peek visí za drápy přes hranu zajímavosti na úvodu.
+   Pózy A–D střídají pomůcky, E je při chybě, F1–F3 po správné odpovědi (palec, tleskání, hurá) s hvězdičkami
+   v očích, které rostou s počtem správných odpovědí v řadě; peek visí za drápy přes hranu zajímavosti na úvodu.
    Všechno se pomalu hýbe; jednou za 10–16 s Pazík na pár vteřin úplně ztuhne (třída .nap). */
 const PAZIK = (() => {
 /* končetina s obrysem: tlustý inkoust + srst uvnitř */
@@ -27430,7 +27433,10 @@ const STYLE = { hair: 'ofina', beard: 'kolem' };
 const HAIR = {};
 const HAIRF = { ofina: `<path class="grey" d="M56 54 C54 36 76 24 100 24 C124 24 146 36 144 54 L137 49 L131 57 L123 48 L115 57 L107 48 L100 57 L93 48 L85 57 L77 48 L69 57 L63 49 Z"/>` };
 const BEARD = { kolem: `<path class="grey" style="stroke-width:3" d="M76 95 C73 106 84 119 100 121 C116 119 127 106 124 95 L119.5 97.5 C119.5 102.5 111 105 100 105 C89 105 80.5 102.5 80.5 97.5 Z"/><path class="grey" style="stroke-width:3" d="M100 89.5 C94 86.5 84 87.5 78 94 C86 93.5 93 94 100 92.8 C107 94 114 93.5 122 94 C116 87.5 106 86.5 100 89.5 Z"/>` };
-function head({ look = 0, wow = false, cringe = false, happy = false } = {}) {
+/* hvězdička do oka: střed x,y, poloměr r */
+const star = (x, y, r) => { let d = ''; for (let i = 0; i < 10; i++) { const a = Math.PI / 5 * i - Math.PI / 2, q = i % 2 ? r * .45 : r; d += (i ? 'L' : 'M') + (x + q * Math.cos(a)).toFixed(1) + ' ' + (y + q * Math.sin(a)).toFixed(1) + ' '; } return d + 'Z'; };
+/* stars = kolik správných odpovědí v řadě (1–5): hvězdičky v očích rostou */
+function head({ look = 0, wow = false, cringe = false, happy = false, stars = 0 } = {}) {
   const st = STYLE;
   const eye = (cx, flip) => {
     const w = 9;
@@ -27447,7 +27453,8 @@ function head({ look = 0, wow = false, cringe = false, happy = false } = {}) {
     ${HAIRF[st.hair] || ''}
     <ellipse class="patch" cx="80" cy="74" rx="16" ry="10" transform="rotate(-24 80 74)"/>
     <ellipse class="patch" cx="120" cy="74" rx="16" ry="10" transform="rotate(24 120 74)"/>
-    ${happy
+    ${stars ? ''
+      : happy
       ? `<path class="white" style="stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round" d="M70 76 Q80 63 90 76 Q80 70 70 76 Z M110 76 Q120 63 130 76 Q120 70 110 76 Z"/>`
       : cringe
       ? `<path class="ln" style="stroke-width:3.5" d="M70 70 Q80 76 90 71 M71 76 Q80 79 89 75 M110 71 Q120 76 130 70 M111 75 Q120 79 129 76"/>
@@ -27456,6 +27463,7 @@ function head({ look = 0, wow = false, cringe = false, happy = false } = {}) {
     <path class="ln" style="stroke-width:3.5" d="M53 66 L66 70 M147 66 L134 70 M93 70 q7 -6 14 0"/>
     <circle class="specs" cx="80" cy="72" r="14"/><circle class="specs" cx="120" cy="72" r="14"/>
     <path class="ln" style="stroke:var(--surface);stroke-width:2.5;opacity:.75" d="M71 64 q4 -3 8 -3 M111 64 q4 -3 8 -3"/>
+    ${stars ? (r => `<g class="stars"><path class="starp" d="${star(80, 72, r)}"/><path class="starp" d="${star(120, 72, r)}"/></g>`)(4 + 2.6 * Math.min(stars, 5)) : ''}
     <ellipse class="nose" cx="100" cy="84" rx="8" ry="5.5"/><ellipse class="glint" cx="97" cy="82.5" rx="2.4" ry="1.3"/>
     ${cringe
       ? `<path class="teeth" style="stroke:var(--ink);stroke-width:3.5;stroke-linejoin:round" d="M78 92 Q90 87 100 89 Q112 91 124 86 L121 97 Q110 99 100 97 Q90 96 80 99 Z"/>
@@ -27563,12 +27571,12 @@ function E() {
 }
 
 /* F1: po správné odpovědi pomalu zvedne dráp jako palec nahoru, oči má šťastně přivřené */
-function F1() {
+function F1(n = 0) {
   const up = 'M0 0 q-2 -14 4 -22';
   return svg('0 0 200 200', `
     ${legs()}${body()}
     ${limb('M66 120 Q56 140 70 152')}${claws(72, 153, 20, 3, 9)}
-    ${head({ happy: true })}
+    ${head(n ? { stars: n } : { happy: true })}
     <g class="thumb">${limb('M134 118 Q156 112 160 90')}
       <circle class="fur" cx="161" cy="88" r="9"/>
       <g transform="translate(163 81)"><path class="clo" d="${up}"/><path class="clf" d="${up}"/></g>
@@ -27576,22 +27584,22 @@ function F1() {
   `, 'Lenochod Pazík spokojeně zvedá dráp jako palec nahoru');
 }
 /* F2: pomalé tleskání drápy před bříškem */
-function F2() {
+function F2(n = 0) {
   return svg('0 0 200 200', `
     ${legs()}${body()}
-    ${head({ happy: true })}
+    ${head(n ? { stars: n } : { happy: true })}
     <g class="clapL">${limb('M66 120 Q64 136 92 134')}${claws(94, 133, -10, 3, 10)}</g>
     <g class="clapR">${limb('M134 120 Q136 136 108 134')}${claws(106, 133, 190, 3, 10)}</g>
     <path class="spark tw" d="M100 108 v-8 M92 112 l-6 -5 M108 112 l6 -5"/>
   `, 'Lenochod Pazík pomalu tleská');
 }
 /* F3: hurá, obě ruce nad hlavou a padají barevné konfety */
-function F3() {
+function F3(n = 0) {
   return svg('0 0 200 200', `
     <g class="hurL">${limb('M66 118 Q48 92 46 58')}${claws(46, 55, -95, 3, 11)}</g>
     <g class="hurR">${limb('M134 118 Q152 92 154 58')}${claws(154, 55, -85, 3, 11)}</g>
     ${legs()}${body()}
-    ${head({ happy: true })}
+    ${head(n ? { stars: n } : { happy: true })}
     <rect class="conf" x="30" y="30" width="6" height="4" rx="1" style="fill:var(--pink)"/><rect class="conf c2" x="168" y="26" width="6" height="4" rx="1" style="fill:#f2c230"/>
     <rect class="conf c3" x="100" y="6" width="6" height="4" rx="1" style="fill:#5aa8e6"/><rect class="conf c2" x="62" y="12" width="5" height="4" rx="1" style="fill:#7cc6c4"/><rect class="conf" x="138" y="10" width="5" height="4" rx="1" style="fill:var(--pink)"/>
   `, 'Lenochod Pazík zvedá obě ruce nad hlavu, hurá');
@@ -27612,11 +27620,11 @@ function nap(el) {
   const go = () => { el._nap = setTimeout(() => { el.classList.add('nap'); setTimeout(() => { el.classList.remove('nap'); go(); }, 2500 + Math.random() * 1500); }, 10000 + Math.random() * 6000); };
   go();
 }
-const POSES = [A, B, C, D], YAY = [F1, F2, F3], pick = L => L[Math.floor(Math.random() * L.length)]();
+const POSES = [A, B, C, D], YAY = [F1, F2, F3];
 let napT = 0;
 const napLoop = () => { napT = setTimeout(() => { const L = document.querySelectorAll('svg.pz'); L.forEach(s => s.classList.add('nap')); setTimeout(() => { L.forEach(s => s.classList.remove('nap')); napLoop(); }, 2500 + Math.random() * 1500); }, 10000 + Math.random() * 6000); };
 napLoop();
-return { A, B, C, D, E, peek, any: () => pick(POSES), yay: () => pick(YAY) };
+return { A, B, C, D, E, peek, any: () => POSES[Math.floor(Math.random() * POSES.length)](), yay: n => YAY[Math.floor(Math.random() * YAY.length)](n || 1) };
 })();
 
 /* ===== Maskot dole na stránce ===== */
@@ -31012,7 +31020,7 @@ function specView() {
 /* --- Pomůcky a memy ---
    Béďa Bobík patří jen organice, tady radí lenochod Pazík (kresba v bloku Pazík). Texty zůstávají v AC_BEDA a AC_MEMES;
    svg vrací pokaždé náhodnou pózu A–D, bad() pózu E pro špatnou odpověď. */
-const AC_MASCOT = { name: 'Pazík', get svg() { return PAZIK.any(); }, bad: () => PAZIK.E(), yay: () => PAZIK.yay() };
+const AC_MASCOT = { name: 'Pazík', get svg() { return PAZIK.any(); }, bad: () => PAZIK.E(), yay: () => PAZIK.yay(acStreak) };
 function acTipBox(m, res) { const pic = AC_MASCOT.svg && (res === false && AC_MASCOT.bad ? AC_MASCOT.bad() : res === true && AC_MASCOT.yay ? AC_MASCOT.yay() : AC_MASCOT.svg); return m ? `<div class="ac-beda${pic ? '' : ' bare'}">${pic ? `<div class="ac-beda-pic">${pic}</div>` : ''}<p><b>${AC_MASCOT.name ? escA(AC_MASCOT.name) + ' radí' : 'Pomůcka'}:</b> ${escA(m)}</p></div>` : ''; }
 /* Pazík dole pod Analytickou chemií: jako Béďa v organice, „Další pomůcka“ = nová póza a pomůcka nebo vtip */
 function acMascotNext() {
@@ -31022,11 +31030,13 @@ function acMascotNext() {
   if (Math.random() < .4) { const m = AC_MEMES[Math.floor(Math.random() * AC_MEMES.length)]; say.innerHTML = `<b>${escA(m[0])}:</b> ${escA(m[1])}`; return; }
   const v = Object.values(AC_BEDA); say.innerHTML = escA(v[Math.floor(Math.random() * v.length)]);
 }
-/* po odpovědi: správně = gesto (palec, tleskání, hurá) a poskočí, chyba = šklebí se; po chvíli zpátky */
-let acCheerT = 0;
+/* po odpovědi: správně = gesto (palec, tleskání, hurá) s hvězdičkami v očích a poskočí, chyba = šklebí se; po chvíli zpátky.
+   acStreak = správné odpovědi v řadě; hvězdičky rostou do pěti, chyba je vynuluje */
+let acCheerT = 0, acStreak = 0;
 function acCheer(ok) {
+  acStreak = ok ? acStreak + 1 : 0;
   const box = $('#acMascot'); if (!box) return;
-  box.querySelector('.pzpic').innerHTML = ok ? PAZIK.yay() : PAZIK.E();
+  box.querySelector('.pzpic').innerHTML = ok ? PAZIK.yay(acStreak) : PAZIK.E();
   box.classList.remove('hype'); if (ok) { void box.offsetWidth; box.classList.add('hype'); }
   clearTimeout(acCheerT); acCheerT = setTimeout(() => { box.classList.remove('hype'); box.querySelector('.pzpic').innerHTML = PAZIK.any(); }, 4000);
 }
