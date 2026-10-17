@@ -1195,7 +1195,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <details class="g-item"><summary>Analytická chemie</summary>
       <ul>
         <li>Nahoře vybereš <b>cvičení</b>: 1–2 Kationty a anionty, 3 Organická analýza, 4 Fyzikální vlastnosti, 5 Fotometrie UV-VIS a 6 IČ spektrometrie.</li>
-        <li><b>Lekce</b> jsou krátký výklad, asi na 5 minut, s kvízem na konci. Otázky z kvízu se ti pak vracejí v Procvičování.</li>
+        <li><b>Lekce</b> jsou krátký výklad, asi na 5 až 6 minut, s kvízem na konci. Otázky z kvízu se ti pak vracejí v Procvičování.</li>
         <li><b>Procvičování</b> jsou kartičky, které se opakují v rozestupech. Karty na dnešek najdeš v aplikaci („Zopakovat … na dnešek“) i na úvodní stránce v panelu Dnes. U cvičení 1–2 si vybereš druhy otázek: Co uvidíš, Který iont, Skupinová činidla, Selektivní důkazy a Teorie a postupy.</li>
         <li><b>Tabulka</b> a <b>Ionty</b> (u cvičení 1–2) ukazují reakce iontů se skupinovými činidly, <b>Tahák</b> (u cvičení 3–6) shrnuje celé cvičení na jednu stránku.</li>
         <li>Zbylé záložky jsou hry, stejné jako v Herně. Odpovědi z analytiky se počítají do denního cíle.</li>
@@ -1210,7 +1210,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 
     <details class="g-item"><summary>Režimy: Lekce, Studium, Pojmenuj, Nakresli, Test, Přehled</summary>
       <ul>
-        <li><b>Lekce:</b> krátký výklad k části přednášky, asi na 5 minut, s kvízem na konci. Lekce jsou ke všem přednáškám. Otázky z kvízu se ti pak vracejí ve Studiu.</li>
+        <li><b>Lekce:</b> krátký výklad k části přednášky, asi na 5 až 6 minut, s kvízem na konci. Lekce jsou ke všem přednáškám. Otázky z kvízu se ti pak vracejí ve Studiu.</li>
         <li><b>Studium:</b> vybíráš ze čtyř možností A–D. U názvosloví jde přepnout směr „Vzorec → název“ nebo „Název → vzorec“.</li>
         <li><b>Pojmenuj:</b> název napíšeš sama. Drobný překlep se uzná a aplikace upozorní na správný pravopis. Tlačítko „Nevím“ rovnou ukáže odpověď. Při chybě se zvýrazní, čím se tvůj název liší, a napíše se, kde je chyba: lokanty, substituent, hlavní řetězec, koncovka nebo pořadí.</li>
         <li><b>Nakresli:</b> vzorec kreslíš do plochy. „Nápověda“ poradí další krok, „Ukázat řešení“ ukáže vzor a pak se ohodnotíš sama (hodí se, když kreslíš na papír).</li>
@@ -1829,7 +1829,7 @@ const METHOD = [
 const GLOSS = [
   ['thio-', 'síra místo kyslíku'],
   ['hemi-', 'napůl: jedno –OH zůstalo'],
-  ['iso-', 'u kyanátů a nitrilů: zbytek je na dusíku (isokyanát, isonitril); jinak rozvětvený řetězec (isopropyl)'],
+  ['iso-', 'u kyanátů a nitrilů: zbytek je na dusíku (isokyanát, isonitril); u alkylů rozvětvený řetězec (isopropyl); jinde obecně izomer (isochinolin)'],
   ['peroxy-', 'dva kyslíky za sebou, O–O'],
   ['hydraz-', 'dva dusíky za sebou, N–N'],
   ['ald-', 'na uhlíku je H'],
@@ -3523,7 +3523,7 @@ const MEMES = {
     [['Sulfid', 'S=O? Žádná.'], ['Sulfoxid', 'Jedna.'], ['Sulfon', 'Dvě. A u kyselin to samý: sulfEnová 0, sulfInová 1 (I jako jednička), sulfOnová 2.']],
     [['Kyslík', 'Dělám alkohol, ether a peroxid.'], ['Síra', 'Já taky. Jen si říkám thiol, sulfid a disulfid.']],
     [['Amin', 'Dusík. Nic víc.'], ['Amid', 'Dusík a hned vedle C=O. To D v amiDu je Dvojná vazba.']],
-    [['Kyanát', 'R–O–C≡N, zbytek držím na kyslíku.'], ['Isokyanát', 'R–N=C=O, já na dusíku.'], ['Předpona iso-', 'U kyanátu a nitrilu ukazuju na dusík. Jinde znamenám rozvětvený řetězec.']],
+    [['Kyanát', 'R–O–C≡N, zbytek držím na kyslíku.'], ['Isokyanát', 'R–N=C=O, já na dusíku.'], ['Předpona iso-', 'U kyanátu a nitrilu ukazuju na dusík, u alkylu na rozvětvení (isopropyl). Jinde jsem prostě izomer (isochinolin).']],
     [['Imin', 'C=N.'], ['Oxim', 'C=N–OH. OX jako kyslík.'], ['Hydrazon', 'C=N–N. Hydraz- jsou dva dusíky.']],
     [['Grignard', 'C–Mg–X.'], ['Gilman', 'Dva uhlíky na mědi s minusem a vedle Li⁺.'], ['Organolithná', 'C–Li. Hotovo.']]
   ],
@@ -5119,7 +5119,7 @@ function registerTopic(T) {
         to: [PN('kyselina methansulfonová')],
         wrong: [[PN('methansulfonylchlorid')], [PM(S.methylhydrogensulfat)], [PM(S.methansulfinova)]],
         wrongReag: ['Cl₂, SO₂, hν', 'HNO₃, Δ', 'O₂, hoření'],
-        why: '2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν). Síra je vázaná na uhlík (kyselina sulfonová), ne přes kyslík jako v methylhydrogensulfátu. Sulfoxidace se uvádí ve dvou variantách: 2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν), nebo 4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C).' },
+        why: '2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν). Síra je vázaná na uhlík (kyselina sulfonová), ne přes kyslík jako v methylhydrogensulfátu. Přednáška 5 uvádí i druhou variantu: 4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C).' },
       { id: 'a9', steps: [
         { via: 'Δ (cca 400 °C)', to: [PT('HO–NO₂ → HO• + •NO₂')], t: 'Za vysoké teploty v plynné fázi se kyselina dusičná homolyticky rozštěpí na radikály •OH a •NO₂.' },
         { via: '•OH', to: [PT('•CH₃'), PT('H₂O')], t: 'Hydroxylový radikál odtrhne z methanu vodík. Vznikne methylový radikál a voda.' },
@@ -6140,12 +6140,12 @@ function registerTopic(T) {
         { via: 'hν', to: [PT('•CH₃')], t: 'Světlo nastartuje radikálový řetězec, z methanu vznikne methylový radikál.' },
         { via: 'SO₂', to: [PT('CH₃SO₂•')], t: 'Methylový radikál se naváže na síru SO₂. Vznikne vazba C–S jako u sulfochlorace.' },
         { via: 'O₂', to: [PT('CH₃SO₂–O–O•')], t: 'Sulfonylový radikál zachytí molekulu O₂, vznikne peroxyradikál.' },
-        { via: 'CH₄, SO₂', to: [PN('kyselina methansulfonová')], t: 'Peroxyradikál odtrhne H z dalšího methanu (nový •CH₃ pokračuje v řetězci), vzniklá peroxykyselina se pak redukuje na CH₃SO₃H. Tyto kroky slajd neuvádí, jen souhrnnou rovnici.' }],
+        { via: 'CH₄, SO₂', to: [PN('kyselina methansulfonová')], t: 'Peroxyradikál odtrhne H z dalšího methanu (nový •CH₃ pokračuje v řetězci), vzniklá peroxykyselina se pak redukuje na CH₃SO₃H. Tyto kroky přednášky neuvádějí, jen souhrnné rovnice.' }],
         set: 'base', fam: 'rad', title: 'Sulfoxidace methanu', from: [PN('methan')], reag: 'O₂, SO₂, hν',
         to: [PN('kyselina methansulfonová')],
         wrong: [[PN('methansulfonylchlorid')], [PM(S.meHSO4)], [PM(S.mesulfin)]],
         wrongReag: ['Cl₂, SO₂, hν', 'HNO₃, Δ', 'O₂, hoření'],
-        why: '2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν). Síra je vázaná přímo na uhlík (kyselina sulfonová), ne přes kyslík jako v methylhydrogensulfátu.' },
+        why: '2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν). Síra je vázaná přímo na uhlík (kyselina sulfonová), ne přes kyslík jako v methylhydrogensulfátu. Přednáška 5 ukazuje druhou variantu: 4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C).' },
       { id: 'a8', steps: [
         { via: 'Δ', to: [PT('HO•'), PT('•NO₂')], t: 'Iniciace: zahřátím se HNO₃ homolyticky rozštěpí na hydroxylový radikál a •NO₂.' },
         { via: '•NO₂ nebo HO•', to: [PT('•CH₃'), PT('HNO₂ nebo H₂O')], t: 'Propagace: radikál odtrhne z methanu vodík, vznikne methylový radikál.' },
@@ -6321,7 +6321,7 @@ function registerTopic(T) {
         'Zahřátím se HNO₃ homolyticky štěpí. Oba radikály pak odtrhávají H z methanu.', 'q23'],
       ['base', 'rad', 'Dibenzoylperoxid', 'Jakou roli má dibenzoylperoxid při sulfoxidaci methanu (70–80 °C)?',
         ['radikálový iniciátor místo světla', 'nukleofil, který napadá methan', 'rozpouštědlo pro SO₂ a SO₃', 'zdroj síry pro sulfonovou skupinu'],
-        '4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H. Slabá vazba O–O peroxidu se rozpadá na radikály. Sulfoxidace se uvádí ve dvou variantách: 2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν), nebo 4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C).', 'q24'],
+        '4 CH₄ + O₂ + 2 SO₂ + 2 SO₃ → 4 CH₃SO₃H (dibenzoylperoxid, 70–80 °C). Slabá vazba O–O peroxidu se rozpadá na radikály. Přednáška 3 uvádí i variantu se světlem: 2 CH₄ + O₂ + 2 SO₂ → 2 CH₃SO₃H (hν).', 'q24'],
       ['base', 'rad', 'Sulfochlorace', 'Co vznikne v propagaci sulfochlorace z •CH₃ a SO₂?',
         ['radikál CH₃SO₂•', 'CH₃SO₂Cl', 'CH₃⁺ a SO₂⁻', 'CH₃OH a SO'],
         'CH₃SO₂• pak odtrhne Cl z Cl₂: CH₃SO₂• + Cl₂ → CH₃SO₂Cl + Cl•.', 'q25'],
@@ -8577,7 +8577,7 @@ function registerTopic(T) {
         'Chirální molekuly nemají rovinu symetrie. Methylcyklohexan rovinu symetrie má (achirální), 2-methylcyklohexanon ne (chirální).',
         'Stereocentrum hledej jako uhlík se čtyřmi různými skupinami: 5-bromnonan (butyl + butyl) je achirální, 5-bromdekan (butyl + pentyl) chirální.',
         'Racemická směs (racemát) = enantiomery v poměru 50 : 50.'],
-      op: ['Opticky aktivní látka stáčí rovinu polarizovaného světla: pravotočivá (+), levotočivá (−). Optickou aktivitu objevil J. B. Biot.',
+      op: ['Opticky aktivní látka stáčí rovinu polarizovaného světla: pravotočivá (+), levotočivá (−). Optickou aktivitu organických látek (kapalin a roztoků) objevil J. B. Biot.',
         'Polarimetr: zdroj světla → polarizátor → kyveta s roztokem → analyzátor → pozorovatel.',
         'Specifická otáčivost [α]D²⁵ = α / (c · l): α = pozorovaný úhel ve °, l = délka kyvety v dm, c = koncentrace v g·ml⁻¹. Standard: 1 dm, 1 g·ml⁻¹, 589 nm (sodíková čára D).',
         'Enantiomery točí o stejný úhel na opačné strany (kyselina vinná +12° a −12°). Racemát i meso forma jsou opticky neaktivní (0°).',
@@ -10137,7 +10137,7 @@ function registerTopic(T) {
       ['base', 'sn2', 'Tosylace', 'Proč se konfigurace při tosylaci alkoholu (TsCl, pyridin) nezmění?', ['vazba C–O se neštěpí¦, reaguje jen kyslík se sírou', 'tosylace probíhá přes karbokation', 'pyridin vrátí konfiguraci zpět', 'TsCl napadá uhlík dvakrát'], 'Na slajdu 20: (R)-alkohol [α] +33° → (R)-tosylát +31°. Inverze přijde až při SN2 s acetátem. Značení (R) je podle slajdu, v literatuře se (+)-enantiomer značí (S). Na principu (retence, inverze) to nic nemění.', 'q14'],
       ['base', 'sn2', 'Substrát SN2', 'Který substrát reaguje SN2 nejpomaleji?', ['(CH₃)₃CBr', '(CH₃)₃CCH₂Br (neopentyl)', '(CH₃)₂CHBr', 'CH₃CH₂Br'], 'Terciární < 1, neopentyl 1, sekundární 500, primární 40 000, methyl 2 000 000 (slajd 27).', 'q15'],
       ['base', 'sn2', 'Nukleofilita', 'Který nukleofil reaguje s CH₃Br nejrychleji?', ['HS⁻', 'OH⁻', 'Cl⁻', 'NH₃'], 'HS⁻ a CN⁻ 125 000, I⁻ 100 000, CH₃O⁻ 25 000, OH⁻ 16 000, Cl⁻ 1 000, NH₃ 700 (slajd 30).', 'q16'],
-      ['base', 'sn2', 'Trendy nukleofility', 'Co z následujícího platí o nukleofilitě?', ['v protických rozpouštědlech roste dolů ve skupině¦: HS⁻ > HO⁻, I⁻ > Br⁻ > Cl⁻', 'neutrální molekuly jsou silnější než anionty', 'nesouvisí s bazicitou', 'klesá dolů ve skupině: Cl⁻ > Br⁻ > I⁻'], 'Slajd 31: nukleofilita zhruba koreluje s bazicitou (⁻OH > CH₃COO⁻), roste s atomovým číslem ve skupině, anionty jsou reaktivnější než neutrální nukleofily. V protických rozpouštědlech vodíkové vazby nejvíc obalí malé anionty (Cl⁻, HO⁻), proto jsou slabší nukleofily než I⁻ a HS⁻.', 'q17'],
+      ['base', 'sn2', 'Trendy nukleofility', 'Co z následujícího platí o nukleofilitě?', ['v protických rozpouštědlech roste dolů ve skupině¦: HS⁻ > HO⁻, I⁻ > Br⁻ > Cl⁻', 'neutrální molekuly jsou silnější než anionty', 'nesouvisí s bazicitou', 'v protických rozpouštědlech klesá dolů ve skupině: Cl⁻ > Br⁻ > I⁻'], 'Slajd 31: nukleofilita zhruba koreluje s bazicitou (⁻OH > CH₃COO⁻), roste s atomovým číslem ve skupině, anionty jsou reaktivnější než neutrální nukleofily. V protických rozpouštědlech vodíkové vazby nejvíc obalí malé anionty (Cl⁻, HO⁻), proto jsou slabší nukleofily než I⁻ a HS⁻. V polárních aprotických rozpouštědlech (DMF, DMSO) se pořadí halogenidů obrací: Cl⁻ > Br⁻ > I⁻.', 'q17'],
       ['base', 'sn2', 'Odstupující skupina', 'Která skupina odstupuje při SN2 nejlépe?', ['TsO⁻', 'I⁻', 'Cl⁻', 'F⁻'], 'TsO⁻ 60 000, I⁻ 30 000, Br⁻ 10 000, Cl⁻ 200, F⁻ 1, ⁻OH ≪ 1. Nejlépe odstupují nejstabilnější anionty.', 'q18'],
       ['base', 'sn2', 'Rozpouštědlo SN2', 'Ve kterém rozpouštědle proběhne 1-brombutan + N₃⁻ nejrychleji?', ['HMPA', 'DMSO', 'H₂O', 'CH₃OH'], 'CH₃OH 1, H₂O 7, DMSO 1 300, DMF 2 800, CH₃CN 5 000, HMPA 200 000 (slajd 36).', 'q19'],
       ['base', 'sn2', 'Protická rozpouštědla', 'Proč protická rozpouštědla SN2 zpomalují?', ['solvatují nukleofil vodíkovými vazbami a snižují energii základního stavu', 'stabilizují přechodový stav víc než výchozí solvatovaný nukleofil', 'solvatují jen kationty kovů a anion nukleofilu nechají nesolvatovaný', 'zvyšují viskozitu roztoku, takže se částice srážejí méně často'], 'Solvatovaný anion je stabilnější, ΔG‡ roste. Polární aprotická rozpouštědla solvatují kation, nukleofil zůstane reaktivní.',
@@ -13452,7 +13452,7 @@ function registerTopic(T) {
       re: ['Ethery jsou málo reaktivní, štěpí je silné kyseliny HBr a HI (zahřívání).',
         'Primární a sekundární alkyl: halogenid napadne protonovaný ether SN2 na méně bráněném uhlíku. Ethyl(isopropyl)ether + HI → isopropylalkohol + jodethan.',
         'Aryl–O se neštěpí: ethyl(fenyl)ether + HBr → fenol + bromethan.',
-        'Terciární, benzylové a allylové ethery se štěpí přes karbokation (SN1, E1) už za mírných podmínek. terc-Butylethery štěpí CF₃COOH už při 0 °C: terc-butyl(cyklohexyl)ether → cyklohexanol + 2-methylpropen.',
+        'Terciární, benzylové a allylové ethery se štěpí přes karbokation (SN1, E1) snáz než primární a sekundární ethery. terc-Butylethery štěpí CF₃COOH už při 0 °C: terc-butyl(cyklohexyl)ether → cyklohexanol + 2-methylpropen.',
         'Claisenův přesmyk: allyl(aryl)ether se při 250 °C přesmykne na o-allylfenol. Cyklický šestičlenný přechodový stav, pak tautomerizace dienonu na fenol.'],
       ep: ['Průmyslově: ethen + O₂ na Ag₂O při 300 °C → 1,2-epoxyethan. V laboratoři alken + peroxykyselina (MCPBA), jeden krok.',
         'Halohydrin + NaOH: alkoxid vnitromolekulární SN2 vytlačí halogenid (cyklohexen → trans-2-chlorcyklohexanol → 1,2-epoxycyklohexan).',
@@ -13622,7 +13622,7 @@ function registerTopic(T) {
       ['extra', 'na', '1,2-dimethoxyethan', 'C!; 0-O@-30; 1-C!@30; 2-C!@-30; 3-O@30; 4-C!@-30', { alts: ['DME', 'glyme'], tip: 'Dva kyslíky chelatují kationty kovů, rozpouštědlo.' }],
       ['extra', 'na', 'tetrahydropyran', 'O; 0-C!@-30; 1-C!@-90; 2-C!@-150; 3-C!@150; 4-C!@90 | 5-0', { par: 'oxan', alts: ['THP'], tip: 'Šestičlenná obdoba THF. Kruh pyranos.' }],
       ['extra', 'na', '2-methyltetrahydrofuran', H5('O') + '; 1-C!@18 | 4-0', { par: '2-methyloxolan', tip: 'THF s methylem vedle kyslíku.' }],
-      ['extra', 'na', 'benzyl(methyl)ether', RING + '; 2-C!@30; 6-O@-30; 7-C!@30 | 5-0', { par: '(methoxymethyl)benzen', tip: 'Benzylový ether, štěpí se přes benzylový kation už za mírných podmínek.' }],
+      ['extra', 'na', 'benzyl(methyl)ether', RING + '; 2-C!@30; 6-O@-30; 7-C!@30 | 5-0', { par: '(methoxymethyl)benzen', tip: 'Benzylový ether, přes benzylový kation se štěpí snáz než dialkylethery.' }],
       ['extra', 'na', '12-crown-4-ether', crown(12), { par: '12-crown-4', nodraw: 1, tip: '12 atomů v kruhu, 4 kyslíky. Malá dutina, váže Li⁺.' }],
       ['extra', 'na', '15-crown-5-ether', crown(15), { par: '15-crown-5', nodraw: 1, tip: '15 atomů, 5 kyslíků. Váže Na⁺.' }],
       ['extra', 'pe', '1-methylcyklohexen', CYE + '; 2-C!@30 | 5-0', { par: '1-methylcyklohex-1-en', tip: 'Trisubstituovaný alken. Alkoxymerkurace dá ether na terciárním uhlíku.' }],
@@ -14082,7 +14082,7 @@ function registerTopic(T) {
       ['base', 're', 'Štěpení etherů', 'Čím se ethery štěpí podle slajdu 8?', ['silnými halogenovodíkovými kyselinami¦ (HBr, HI)', 'zředěným roztokem hydroxidu sodného', 'horkou vodou bez přídavku kyseliny', 'hydridem NaBH₄ v ethanolu'], 'Ethery jsou jinak málo reaktivní, proto se používají jako rozpouštědla.', 'q14'],
       ['base', 're', 'Kam jde halogenid', 'Na který uhlík napadne I⁻ protonovaný ethyl(isopropyl)ether?', ['na méně bráněný ethyl (SN2)', 'na isopropyl (stabilnější kation)', 'na kyslík', 'na oba stejně'], 'Primární a sekundární alkyly: SN2 na méně stericky bráněném uhlíku. Vznikne jodethan a isopropylalkohol.', 'q15'],
       ['base', 're', 'Aryl(alkyl)ether', 'Proč ethyl(fenyl)ether s HBr nedá brombenzen?', ['na sp² uhlík aromátu SN2 neprobíhá', 'brombenzen hned zhydrolyzuje', 'fenyl je moc malý', 'HBr reaguje jen s alkeny'], 'Bromid napadne ethyl. Vznikne fenol a bromethan.', 'q16'],
-      ['base', 're', 'Terciární ethery', 'Jak se štěpí terciární, benzylové a allylové ethery (slajd 9)?', ['přes karbokation (SN1, E1)¦ už za mírných podmínek', 'jen SN2 s HI za varu', 'vůbec se neštěpí', 'jen bazicky'], 'Stabilní kation vznikne snadno. terc-Butylethery štěpí CF₃COOH už při 0 °C: terc-butyl(cyklohexyl)ether dá cyklohexanol a 2-methylpropen.', 'q17'],
+      ['base', 're', 'Terciární ethery', 'Jak se štěpí terciární, benzylové a allylové ethery (slajd 9)?', ['přes karbokation (SN1, E1)¦, snáz než primární a sekundární ethery', 'jen SN2 s HI za varu', 'vůbec se neštěpí', 'jen bazicky'], 'Stabilní kation vznikne snadno. terc-Butylethery štěpí CF₃COOH už při 0 °C: terc-butyl(cyklohexyl)ether dá cyklohexanol a 2-methylpropen.', 'q17'],
       ['base', 're', 'Meziprodukt Claisena', 'Co je meziproduktem Claisenova přesmyku (slajd 11)?', ['6-allylcyklohexa-2,4-dien-1-on¦, který se tautomerizuje na fenol', 'fenoxidový anion a allylový kation', 'allylový radikál', 'epoxid'], 'Dienon není aromatický. Přesun H na kyslík obnoví aromaticitu.', 'q18'],
       // ----- ep
       ['base', 'ep', 'Terciární epoxid', 'Kam jde Cl⁻ u 1,2-epoxy-2-methylpropanu a HCl (slajd 16)?', ['hlavně na terciární uhlík (60 %)¦, mechanismus SN1', 'hlavně na primární uhlík (60 %)', 'na oba uhlíky přesně napůl (50 %)', 'jen na terciární uhlík (100 %)'], 'Terciární uhlík unese kladný náboj, proto převládne 2-chlor-2-methylpropan-1-ol.', 'q19'],
@@ -19533,7 +19533,7 @@ function registerTopic(T) {
         'Šestičlenné: pyridin, dva N: pyridazin (1,2), pyrimidin (1,3), pyrazin (1,4), tři N: 1,3,5-triazin.',
         'Kondenzované: indol (benzen + pyrrol), chinolin (N u spoje), isochinolin (N o atom dál), chinazolin (1,3), chinoxalin (1,4).',
         'Purin = pyrimidin + imidazol, pteridin = pyrimidin + pyrazin, akridin = tři kruhy a N uprostřed.'],
-      ko: ['Základní složka je větší kruh. Při stejné velikosti rozhoduje heteroatom: N > O > S. Podle IUPAC se ale nejdřív hledá kruh s dusíkem, velikost kruhu přijde na řadu až po heteroatomu a počtu kruhů. V příkladech z přednášky vychází obojí stejně.',
+      ko: ['Základní složka je větší kruh. Při stejné velikosti rozhoduje heteroatom: N > O > S. Benzen je ale vždy jen připojená složka (benzo-), i když je větší: indol = benzo[b]pyrrol. Podle IUPAC se nejdřív hledá kruh s dusíkem, velikost kruhu přijde na řadu až po heteroatomu a počtu kruhů. U dvojic heterocyklů z přednášky vychází obojí stejně.',
         'Vazby základní složky se značí písmeny: 1–2 = a, 2–3 = b, 3–4 = c.',
         'Čísla v hranaté závorce jsou polohy připojené složky. Jejich pořadí jde ve směru číslování základní složky.',
         'Předpony připojené složky: furo-, thieno-, pyrrolo-, pyrido-, benzo-.',
@@ -20006,7 +20006,7 @@ function registerTopic(T) {
         'Akridin je dusíkatý analog anthracenu.', 'q13'],
       /* kondenzované */
       ['base', 'ko', 'Základní složka', 'Proč je ve furo[3,2-b]pyridinu základní složkou pyridin?', ['je to větší kruh', 'kyslík má přednost před dusíkem', 'je abecedně dřív', 'obsahuje víc dvojných vazeb'],
-        'Nejdřív rozhoduje velikost kruhu, až při stejné velikosti heteroatom N > O > S. Podle IUPAC by rozhodl hlavně dusík, tady vyjde obojí stejně.', 'q14'],
+        'Nejdřív rozhoduje velikost kruhu, až při stejné velikosti heteroatom N > O > S. Podle IUPAC by rozhodl už dusík (pyridin ho má, furan ne), tady vyjde obojí stejně.', 'q14'],
       ['base', 'ko', 'Thieno[3,2-b]furan', 'Proč je v thieno[3,2-b]furanu základní složkou furan?', ['oba kruhy jsou stejně velké a O má přednost před S', 'furan je větší kruh', 'síra má přednost před kyslíkem', 'thiofen nemůže být základní složkou nikdy'],
         'Pořadí heteroatomů: N > O > S.', 'q15'],
       ['base', 'ko', 'Písmena vazeb', 'Co znamená písmeno „b“ ve furo[3,2-b]pyridinu?', ['vazbu 2–3 pyridinu¦, na kterou je furan připojen', 'polohu kyslíku ve furanu', 'druhý kruh v pořadí', 'atom 2 furanu'],
@@ -21491,7 +21491,7 @@ function registerTopic(T) {
       cl: ['Chemiluminiscence: energie exotermní reakce se neuvolní jako teplo, ale jako světlo. Je to obrácená fotochemická reakce.',
         'Syntéza luminolu: kyselina 3-nitroftalová + hydrazin (v propan-1,2-diolu) → cyklický hydrazid, pak redukce NO₂ → NH₂ (Na₂S₂O₄, NaOH).',
         'Luminol: NaOH (dianion), pak H₂O₂ a K₃[Fe(CN)₆] → N₂ + 3-aminoftalát v excitovaném stavu (triplet → ISC → singlet) → hν. Tak to uvádí slajd. V literatuře vzniká aminoftalát rovnou v excitovaném singletu a světlo je jeho fluorescence.',
-        '„Zhášeče“ (fluorescein, fenolftalein, rhodamin B) převezmou energii excitovaného aminoftalátu a vyzáří světlo své barvy.',
+        '„Zhášeče“ ze slajdu (fluorescein, fenolftalein, rhodamin B) převezmou energii excitovaného aminoftalátu. Fluorescein a rhodamin B ji vyzáří jako světlo své barvy, fenolftalein nefluoreskuje.',
         'TCPO z 2,4,6-trichlorfenolu a oxalyl-chloridu (triethylamin, toluen). S H₂O₂ dá 1,2-dioxetandion, ten se rozpadne na 2 CO₂ a excituje fluorescer.',
         'Použití: identifikace stop krve (luminol), osvětlovací tyčinky (TCPO + fluorescer).'],
       mo: ['Pericyklické reakce: součinný mechanismus přes cyklický přechodový stav, bez intermediátů.',
@@ -23949,7 +23949,7 @@ function registerTopic(T) {
         'Molekula má iontovou (hydrofilní) hlavu a uhlovodíkový (lipofilní) ocas, proto emulguje.',
         'Micela: ocasy dovnitř do mastnoty, hlavy ven do vody.',
         'V tvrdé vodě vznikají nerozpustné vápenaté a hořečnaté soli. Syntetickým detergentům (alkylbenzensulfonáty) tvrdá voda nevadí.'],
-      fo: ['Fosfolipidy jsou většinou diestery kyseliny fosforečné.',
+      fo: ['Fosfolipidy jsou diestery kyseliny fosforečné (výjimkou je kyselina fosfatidová, ta je monoester).',
         'Fosfoacylglyceroly: glycerol + 2 mastné kyseliny (na C1 nasycená, na C2 nenasycená) + fosfát s aminoalkoholem. Na C2 konfigurace R (L).',
         'Aminoalkohol: cholin → fosfatidylcholin (lecithin), 2-aminoethanol → fosfatidylethanolamin (kefalin), serin → fosfatidylserin.',
         'Tvoří lipidové dvojvrstvy buněčných membrán (asi 40 %, tloušťka 5 nm): bariéra pro vodu a ionty.',
@@ -24255,7 +24255,7 @@ function registerTopic(T) {
         'Arachidonová je C20 se čtyřmi cis dvojnými vazbami (5, 8, 11, 14). Arachová je C20 nasycená.', 'q12'],
       ['base', 'mk', 'Teplota tání', 'Která kyselina má nejnižší teplotu tání?',
         ['Arachidonová (−49,5 °C)', 'Stearová (68,8 °C)', 'Olejová (13,4 °C)', 'Laurová (43,2 °C)'],
-        'Každá cis dvojná vazba zalomí řetězec a sníží teplotu tání. Delší nasycený řetězec ji naopak zvyšuje.', 'q13'],
+        'Cis dvojné vazby zalomí řetězec a teplotu tání výrazně sníží (arachidonová se čtyřmi má −49,5 °C). Delší nasycený řetězec ji naopak zvyšuje.', 'q13'],
       ['base', 'mk', 'Olejová vs. stearová', 'Čím se liší kyselina olejová od stearové?',
         ['Má jednu cis dvojnou vazbu na C9¦, počet uhlíků (18) je stejný', 'Má jednu trans dvojnou vazbu na C9', 'Má dvě cis dvojné vazby na C9 a C12', 'Má na C12 navíc hydroxylovou skupinu'],
         'Olejová = (Z)-oktadec-9-enová. Hydrogenací vznikne stearová.', 'q14'],
@@ -24916,7 +24916,7 @@ function registerTopic(T) {
     rules: {
       uv: ['Uhlík je v oxidačním stupni IV a nese víc než jednu OH. Kyselina uhličitá ani orthouhličitá v čistém stavu neexistují.',
         'Kyselina orthouhličitá C(OH)₄ → −H₂O → kyselina uhličitá ⇌ CO₂ + H₂O. Kyselina uhličitá vzniká hydratací CO₂.',
-        'Disociace: 1. stupeň → hydrogenuhličitan (bikarbonát), pKa 3,8. 2. stupeň → uhličitan, pKa 10,2. Hodnota 3,8 platí pro samotnou H₂CO₃. Ve fyziologii (hydrogenuhličitanový pufr) se používá zdánlivá pKa 6,35, ve které je započtený i rozpuštěný CO₂.',
+        'Disociace: 1. stupeň → hydrogenuhličitan (bikarbonát), pKa 3,8. 2. stupeň → uhličitan, pKa 10,2. Hodnota 3,8 platí pro samotnou H₂CO₃. Zdánlivá pKa₁, ve které je započtený i rozpuštěný CO₂, je 6,35 při 25 °C. V krvi (37 °C, hydrogenuhličitanový pufr) se počítá s 6,1.',
         'Monofunkční deriváty (nahrazená jen jedna OH) jsou nestálé: kyselina chlormravenčí → CO₂ + HCl, ethyl-hydrogen-karbonát → CO₂ + ethanol, kyselina karbamová → CO₂ + NH₃.',
         'Halogenidy kyseliny orthouhličité: CCl₄, CBr₄. CCl₄ se hydrolyzuje přes fosgen až na CO₂ + HCl.',
         'CBr₄ + 4 CH₃ONa → methyl-orthokarbonát. Ten s H⁺ chrání karbonyl jako ketal (vedlejší produkt dimethyl-karbonát).'],
@@ -29488,7 +29488,7 @@ const FH_LES = (() => {
     if (!sec) {
       /* Lekce nad Předměty, hned pod panelem Dnes: na telefonu jsou tak na první obrazovce */
       const ph = anchor.previousElementSibling && anchor.previousElementSibling.matches('h2') ? anchor.previousElementSibling : anchor;
-      ph.insertAdjacentHTML('beforebegin', '<section id="lesHub" class="les-hub" aria-labelledby="lesHubH"><h2 class="fam-h" id="lesHubH">Lekce</h2><p class="aside">Krátký výklad a kvíz, asi 5 minut. Otázky z kvízu se ti pak vracejí v opakování.</p><div id="lesHubG"></div></section>');
+      ph.insertAdjacentHTML('beforebegin', '<section id="lesHub" class="les-hub" aria-labelledby="lesHubH"><h2 class="fam-h" id="lesHubH">Lekce</h2><p class="aside">Krátký výklad a kvíz, asi 5 až 6 minut. Otázky z kvízu se ti pak vracejí v opakování.</p><div id="lesHubG"></div></section>');
       sec = document.getElementById('lesHub');
     }
     const A = all(), f = SUBJ.some(x => x.k === F) ? F : '*';
@@ -29806,7 +29806,7 @@ const FH_OL = (() => {
         + sec('2. Příprava', `${tbl(['Metoda', 'Podmínka'], [['Williamsonova syntéza (RO⁻ + R′X)', 'SN2, R′X methyl nebo primární, alkoxid z alkoholu a NaH'], ['alkoxymerkurace alkenu', 'Markovnikov, bez přesmyků'], ['kyselá kondenzace ethanolu', 'SN2 na protonovaném ethanolu']])}
         <p class="ac-les-trap"><b>Pozor:</b> methoxid s terciárním halogenidem dá jen alken (E2), ne ether.</p>`)
         + sec('3. Štěpení etherů a epoxidů', `<p>Ethery jsou málo reaktivní (proto rozpouštědla), štěpí je až HBr a HI:</p>
-        ${tbl(['Substrát', 'Kam jde X⁻'], [['primární a sekundární alkyly', 'SN2 na méně bráněný uhlík'], ['aryl-alkyl ether', 'vždy na alkyl, vznikne fenol (na aromát SN2 nejde)'], ['terciární, benzylový, allylový', 'SN1/E1 už za mírných podmínek, terc-butylether štěpí i CF₃COOH při 0 °C']])}
+        ${tbl(['Substrát', 'Kam jde X⁻'], [['primární a sekundární alkyly', 'SN2 na méně bráněný uhlík'], ['aryl-alkyl ether', 'vždy na alkyl, vznikne fenol (na aromát SN2 nejde)'], ['terciární, benzylový, allylový', 'SN1/E1 snáz než primární a sekundární, terc-butylether štěpí i CF₃COOH při 0 °C']])}
         <p><b>Epoxid</b> se otevírá snadno kvůli pnutí: v kyselém prostředí jde nukleofil na <b>terciární</b> uhlík (charakter SN1), mezi primárním a sekundárním ale vyhraje méně bráněný. Silný nukleofil bez kyseliny (OH⁻, RMgBr) jde vždy na <b>méně</b> bráněný uhlík (SN2).</p>`) },
     { id: 't14b', topic: 't14', n: 2, min: 5, t: 'Thioly a sulfidy',
       goal: 'Po lekci pojmenuješ sirné sloučeniny podle vaznosti síry, víš, jak se připraví thiol a jak se thiol, disulfid, sulfoxid a sulfon převádějí jeden na druhý.',
@@ -29933,7 +29933,7 @@ const FH_OL = (() => {
       q: ['t21_q1', 't21_q2', 't21_q3', 't21_q14', 't21_q16', 't21_q24', 't21_q26', 't21_q29', 't21_q30', 't21_q31', 't21_q34', 't21_q35'],
       beda: 'Epoxid je napjatý jako struna. Stačí slabší nukleofil a kruh praskne, a útočník přichází vždycky zezadu.',
       body: () => sec('1. Tři názvoslovné systémy', `${tbl(['Systém', 'Kdy'], [['triviální názvy', '5- a 6-členné kruhy s 1–2 heteroatomy (furan, pyrrol, pyridin)'], ['Hantzsch–Widman', '3-, 4- a 7- až 10-členné kruhy a kruhy s víc heteroatomy'], ['záměnný princip (oxa-, thia-, aza-)', 'kruhy nad 10 členů a bi- a polycykly, třeba 4-thia-1-azabicyklo[3.2.0]heptan v penicilinu']])}
-        <p>U kondenzovaných heterocyklů je <b>základní složkou</b> větší kruh, při stejné velikosti rozhoduje heteroatom N > O > S. Podle IUPAC se nejdřív hledá kruh s dusíkem, v příkladech z přednášky ale vychází obojí stejně. Písmeno označuje vazbu základní složky (1–2 = a, 2–3 = b), připojený thiofen je thieno-, furan furo-.</p>`)
+        <p>U kondenzovaných heterocyklů je <b>základní složkou</b> větší kruh, při stejné velikosti rozhoduje heteroatom N > O > S. Benzen je vždy jen připojená složka (benzo-), i když je větší (indol = benzo[b]pyrrol). Podle IUPAC se nejdřív hledá kruh s dusíkem, u dvojic heterocyklů z přednášky ale vychází obojí stejně. Písmeno označuje vazbu základní složky (1–2 = a, 2–3 = b), připojený thiofen je thieno-, furan furo-.</p>`)
         + sec('2. Příprava epoxidů', `<ul class="ac-ul"><li><b>Peroxykyselina</b> (MCPBA) přenese kyslík na oba uhlíky v jednom kroku, geometrie alkenu se zachová (z cis-alkenu cis-epoxid). Z MCPBA zbude kyselina m-chlorbenzoová.</li><li>Z <b>halohydrinu</b> a NaOH: vnitromolekulární SN2, alkoxid vytlačí halogenid zezadu.</li></ul>`)
         + sec('3. Otevírání epoxidů', `${tbl(['Podmínky', 'Kam jde nukleofil', 'Proč'], [['kyselé (H₃O⁺, HX)', 'na terciární uhlík, u primárního a sekundárního spíš na CH₂; útok zezadu', 'náboj se hromadí jako u SN1, ale útok jako u SN2'], ['bez kyseliny, silný nukleofil', 'na méně bráněný CH₂', 'jen sterika, SN2']])}
         <p>Kyselá hydrolýza cyklohexenoxidu dá <b>trans</b>-diol. Grignard s oxiranem prodlouží řetězec o dva uhlíky.</p>
@@ -30066,7 +30066,7 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Dvě OH na jednom uhlíku samovolně odštěpí vodu. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t29_q1', 't29_q2', 't29_q7', 't29_q8', 't29_q13', 't29_q20', 't29_q23', 't29_q24', 't29_q25', 't29_q29', 't29_q34', 't29_q36'],
       beda: 'Isokyanát má prostřední uhlík jako terč: nukleofil míří přesně doprostřed mezi N a O. S vodou z něj zbude amin a bublina CO₂.',
-      body: () => sec('1. Kyselina uhličitá a její deriváty', `<p>Uhlík je tu v oxidačním stupni IV jako v CO₂. Kyselina uhličitá (pKa 3,8 a 10,2; v krvi se počítá se zdánlivou pKa₁ 6,35, která zahrnuje i rozpuštěný CO₂) i orthouhličitá v čistém stavu neexistují, víc OH na jednom uhlíku odštěpí vodu. <b>Monofunkční</b> deriváty se rozpadají na CO₂ a HX, <b>stálé</b> jsou až deriváty s oběma nahrazenými OH: fosgen, chlorformiáty, karbonáty, karbamáty, močovina.</p>
+      body: () => sec('1. Kyselina uhličitá a její deriváty', `<p>Uhlík je tu v oxidačním stupni IV jako v CO₂. Kyselina uhličitá (pKa 3,8 a 10,2; zdánlivá pKa₁ se započteným rozpuštěným CO₂ je 6,35, v krvi při 37 °C 6,1) i orthouhličitá v čistém stavu neexistují, víc OH na jednom uhlíku odštěpí vodu. <b>Monofunkční</b> deriváty se rozpadají na CO₂ a HX, <b>stálé</b> jsou až deriváty s oběma nahrazenými OH: fosgen, chlorformiáty, karbonáty, karbamáty, močovina.</p>
         <p class="aside">Urethan je ethyl-karbamát, guanidin diamid-imid kyseliny uhličité, semikarbazid hydrazid kyseliny karbamové.</p>`)
         + sec('2. Fosgen a močovina', `<p><b>Fosgen</b> (CO + Cl₂) je nejdostupnější derivát. Chová se jako dichlorid kyseliny: s alkoholy a aminy reaguje nukleofilní acylovou substitucí, s vodou dá HCl a CO₂, s primárním aminem a zahřátím isokyanát.</p>
         <p><b>Močovina</b> je bazičtější než amidy, ale méně než aminy. Alkyluje se na kyslíku, Hofmannovým odbouráním dá hydrazin. S dialkylmalonátem (EtONa) uzavře kruh kyseliny barbiturové.</p>`)
@@ -30520,7 +30520,7 @@ const AC_BEDA = {
   BaCl2: 'Barnaté soli: SO₄²⁻ nepovolí ani HCl, SO₃²⁻ a CrO₄²⁻ povolí HCl, CO₃²⁻ a PO₄³⁻ povolí už kyselinu octovou.',
   AgNO3: 'Halogenidy a thiokyanatan stříbrný drží i v HNO₃. Ostatní stříbrné soli se v kyselině rozpustí.',
   KMnO4: 'KMnO₄ odbarví redukující anionty: siřičitan, thiosíran, bromid, jodid, thiokyanatan, dusitan.',
-  I2: 'Jód je slabší oxidovadlo: odbarví ho jen siřičitan, thiosíran a kyanid (a SCN⁻ z koncentrovaných roztoků).',
+  I2: 'Jód je slabší oxidovadlo: podle skript ho odbarví jen siřičitan, thiosíran a kyanid (a SCN⁻ z koncentrovaných roztoků).',
   sol: 'Třídění jako vyhazovač v klubu: voda, ether, kyselina, louh, soda. Kdo neprojde nikam a nemá N ani S, jde na konc. H₂SO₄. Kdo nereaguje ani tam, je I jako Ignoruju.',
   solS1: 'S1 jsou malé molekuly do pěti uhlíků. Rozpustí se ve vodě i v etheru, kamarádí se všemi.',
   solS2: 'S2 jsou tak polární, že ether nesnášejí. Cukry a soli zůstanou ve vodě.',
@@ -30756,7 +30756,7 @@ const AC_TH = [
   ['a_oxid', 'ka', 'Které anionty se při odstraňování kationtů v zásaditém prostředí za tepla oxidují?', 'siřičitany, sulfidy a dusitany', ['sírany, fosforečnany a boritany', 'chloridy a bromidy', 'dusičnany a uhličitany'], 'Při odstraňování kationtů těžkých kovů může dojít i k chemické změně aniontů.', null, 'a'],
   ['a_bacl', 'ka', 'Které barnaté soli se nerozpustí ani v silně kyselém prostředí?', 'síran a jodičnan barnatý', ['uhličitan a fosforečnan barnatý', 'siřičitan a thiosíran barnatý', 'chroman a boritan barnatý'], 'Skupina 1 (nerozpustné i v silně kyselém): SO₄²⁻, IO₃⁻. Skupina 2 (rozpustné v 3% HCl, ne v kyselině octové): CrO₄²⁻, SO₃²⁻, S₂O₃²⁻. Skupina 3 (rozpustné už v kyselině octové): PO₄³⁻, CO₃²⁻, BO₂⁻.', null, 'a'],
   ['a_as', 'ka', 'Jakou barvu má sraženina AgNO₃ s arseničnanem AsO₄³⁻?', 'hnědou', ['bílou', 'žlutou', 'černou'], 'Rozpouští se v HNO₃ a je stálá jen v neutrálním prostředí, stejně jako žlutý Ag₃PO₄ nebo červenohnědý Ag₂CrO₄.', null, 'a'],
-  ['a_kmno4', 'ka', 'Které anionty kromě SO₃²⁻, S₂O₃²⁻, Br⁻, I⁻, SCN⁻ a NO₂⁻ ještě odbarví KMnO₄ v kyselém prostředí?', 'S²⁻ a CN⁻', ['SO₄²⁻ a PO₄³⁻', 'NO₃⁻ a CO₃²⁻', 'BO₂⁻ a SO₄²⁻'], 'Ze skript u jódu z nich najdeš jen CN⁻ (spolu se SO₃²⁻, S₂O₃²⁻ a SCN⁻, ten jen z koncentrovaných roztoků). Sulfid jód ve skutečnosti taky odbarví (S²⁻ + I₂ → S + 2 I⁻), skripta ho ale uvádějí jen u KMnO₄.', null, 'a'],
+  ['a_kmno4', 'ka', 'Které anionty kromě SO₃²⁻, S₂O₃²⁻, Br⁻, I⁻, SCN⁻ a NO₂⁻ ještě odbarví KMnO₄ v kyselém prostředí?', 'S²⁻ a CN⁻', ['SO₄²⁻ a PO₄³⁻', 'NO₃⁻ a CO₃²⁻', 'BO₂⁻ a SO₄²⁻'], 'Z těchto dvou odbarví podle skript jód jen CN⁻ (stejně jako SO₃²⁻, S₂O₃²⁻ a SCN⁻ z koncentrovaných roztoků). Sulfid jód ve skutečnosti odbarví taky (S²⁻ + I₂ → S + 2 I⁻), skripta ho ale uvádějí jen u KMnO₄.', null, 'a'],
   ['a_i2', 'ka', 'Kdy má smysl skupinová zkouška s jódem?', 'až když vzorek odbarvil KMnO₄', ['vždy jako první redoxní zkouška', 'jen když je ve vzorku Ag⁺', 'jen v silně kyselém prostředí'], 'Jód je na rozdíl od KMnO₄ jen mírné oxidační činidlo. Dělá se v neutrálním vzorku se zrnkem NaHCO₃ a škrobem.', null, 'a'],
   ['a_ki', 'ka', 'Na co se redukuje dusitan při reakci s KI v kyselém prostředí?', 'na NO', ['na NH₃', 'na N₂', 'na NO₃⁻'], '2 I⁻ + 2 NO₂⁻ + 4 H⁺ → 2 NO + I₂ + 2 H₂O. Chroman se s KI redukuje na Cr³⁺. Vyloučený jód zmodrá škrob.', null, 'a'],
   ['a_devarda', 'ka', 'Proč kladná Devardova reakce nedokazuje jen dusičnan?', 'stejně reagují dusitany a amonné ionty', ['stejně reagují i chloridy', 'reaguje každý redukující aniont', 'NH₃ uvolní sám práškový hliník'], 'Hliník v NaOH redukuje dusičnan na amoniak. Amoniak z dusitanů nebo z NH₄⁺ zbarví papírek stejně.', null, 'a'],
