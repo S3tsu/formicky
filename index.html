@@ -889,6 +889,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-logo{grid-column:2;grid-row:1;line-height:0}
 .ac-logo svg{width:56px;height:56px}
 #acDue:empty{display:none}
+#acDue{display:flex;flex-wrap:wrap;gap:4px 18px}
 #acView{display:flex;flex-direction:column;gap:12px;min-width:0}
 .ac-sub{margin:0;color:var(--muted)}
 .q-name.ac-long{font-size:clamp(1.15rem,4.6vw,1.45rem);line-height:1.3}
@@ -1198,7 +1199,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       <ul>
         <li>Nahoře vybereš <b>cvičení</b>: 1–2 Kationty a anionty, 3 Organická analýza, 4 Fyzikální vlastnosti, 5 Fotometrie UV-VIS a 6 IČ spektrometrie.</li>
         <li><b>Lekce</b> jsou krátký výklad, asi na 5 až 6 minut, s kvízem na konci. Otázky z kvízu se ti pak vracejí v Procvičování.</li>
-        <li><b>Procvičování</b> jsou kartičky, které se opakují v rozestupech. Karty na dnešek najdeš v aplikaci („Zopakovat … na dnešek“) i na úvodní stránce v panelu Dnes. U cvičení 1–2 si vybereš druhy otázek: Co uvidíš, Který iont, Skupinová činidla, Selektivní důkazy a Teorie a postupy.</li>
+        <li><b>Procvičování</b> jsou kartičky, které se opakují v rozestupech. Karty na dnešek najdeš v aplikaci („Zopakovat … na dnešek“) i na úvodní stránce v panelu Dnes. <b>Slabá místa</b> nabídnou nejvýš 40 karet z vybraného cvičení, ve kterých chybuješ častěji, než se trefíš. U cvičení 1–2 si vybereš druhy otázek: Co uvidíš, Který iont, Skupinová činidla, Selektivní důkazy a Teorie a postupy.</li>
         <li><b>Tabulka</b> a <b>Ionty</b> (u cvičení 1–2) ukazují reakce iontů se skupinovými činidly, <b>Tahák</b> (u cvičení 3–6) shrnuje celé cvičení na jednu stránku.</li>
         <li>Zbylé záložky jsou hry, stejné jako v Herně. Odpovědi z analytiky se počítají do denního cíle.</li>
       </ul></details>
@@ -31435,14 +31436,24 @@ const SRI = [0, 1, 2, 4, 8, 16, 32];
 function mark(id, ok) {   // posouvá se jen karta, která je na řadě; po chybě týž den se vrátí zítra
   const t = day(), r = ST.r[id] || { b: 0, d: t, ok: 0, bad: 0 };
   if (ok) { r.ok++; if (r.m === t) { r.b = 1; r.d = t + 1; } else if (r.d <= t) { r.b = Math.min(r.b + 1, 6); r.d = t + SRI[r.b]; } } else { r.bad++; r.b = 1; r.d = t; r.m = t; }
+  r.x = ok ? 1 : 0;   // poslední odpověď, pro Slabá místa
   ST.r[id] = r; save();
   try { if (typeof dailyTick === 'function') dailyTick(); } catch (e) { /* denní cíl je jen v organice */ }
+}
+/* Slabá místa jako v organice: karty, ve kterých se chybuje častěji, než se trefuje, nebo naposledy zkažené; nejvýš 40 nejhorších z vybraného cvičení */
+const acWeak = id => { const r = ST.r[id]; return r && r.bad && (r.bad * 2 >= r.ok || r.x === 0) ? Math.max(1, r.bad * 2 - r.ok + (r.x === 0 ? 2 : 0) + 1) : 0; };
+const weakCards = ch => CARDS.filter(cd => (cd.ch || 'ka') === ch && acWeak(cd.id) > 0).sort((a, b) => acWeak(b.id) - acWeak(a.id)).slice(0, 40);
+function weakDeck() {
+  ST.cls = 'b'; ST.types = TYPES.map(x => x[0]); save();   // slabá karta může ležet mimo vybrané ionty nebo druhy otázek
+  Q.deck = mix(weakCards(ST.ch)); Q.i = 0; Q.ok = 0; Q.missed = []; Q.les = null; Q.weak = true;
+  Q.empty = !Q.deck.length;
+  next(true);
 }
 const Q = { deck: [], i: 0, ok: 0, cur: null, done: false, pick: new Set(), opts: null };
 function newDeck(onlyDue) {
   const pool = CARDS.filter(inPool), t = day();
   const d = mix(pool.filter(cd => due(cd.id))), fresh = mix(pool.filter(cd => !ST.r[cd.id])), rest = mix(pool.filter(cd => ST.r[cd.id] && !due(cd.id))).sort((a, b) => ST.r[a.id].b - ST.r[b.id].b);
-  Q.deck = (onlyDue ? d : d.concat(fresh, rest)).slice(0, 15); Q.i = 0; Q.ok = 0; Q.missed = []; Q.les = null;
+  Q.deck = (onlyDue ? d : d.concat(fresh, rest)).slice(0, 15); Q.i = 0; Q.ok = 0; Q.missed = []; Q.les = null; Q.weak = false;
   Q.empty = !Q.deck.length;
   next(true);
 }
@@ -31527,13 +31538,15 @@ function bedaFor(cd) {
   return AC_BEDA[cd.ion.id];
 }
 function quizView() {
+  if (Q.empty && Q.weak) return '<div class="card"><p>Slabá místa tu zatím nejsou. Objeví se karty, ve kterých se v tomhle prohlížeči chybovalo častěji, než se trefilo.</p></div>';
   if (Q.empty) return `<div class="card"><p>${ST.types.length ? 'V tomhle výběru teď nic není.' : 'Vyber aspoň jeden druh otázek.'}</p></div>`;
   if (!Q.cur && Q.les) return lesEnd();
   if (!Q.cur) {
     const n = Q.deck.length;
-    return `${memeCard()}<div class="card ac-end"><span class="eyebrow">Kolo hotové</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
+    const nw = Q.weak ? weakCards(ST.ch).length : 0;
+    return `${memeCard()}<div class="card ac-end"><span class="eyebrow">${Q.weak ? 'Slabá místa prošlá' : 'Kolo hotové'}</span><h2 class="q-name">${Q.ok} z ${n} správně</h2>
       ${Q.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${Q.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
-      <div class="row"><button type="button" class="btn primary" data-ac="again">Další kolo</button>${ST.ch === 'ka' ? '<button type="button" class="btn" data-ac="mode" data-v="table">Projít tabulku</button>' : '<button type="button" class="btn" data-ac="mode" data-v="sheet">Projít tahák</button>'}</div></div>`;
+      <div class="row">${Q.weak && nw ? '<button type="button" class="btn primary" data-ac="weak">Projít znovu</button><button type="button" class="btn" data-ac="again">Zpět na všechny karty</button>' : `<button type="button" class="btn primary" data-ac="again">${Q.weak ? 'Zpět na všechny karty' : 'Další kolo'}</button>`}${ST.ch === 'ka' ? '<button type="button" class="btn" data-ac="mode" data-v="table">Projít tabulku</button>' : '<button type="button" class="btn" data-ac="mode" data-v="sheet">Projít tahák</button>'}</div></div>`;
   }
   const cd = Q.cur;
   if (!Q.opts) Q.opts = optsFor(cd);
@@ -32014,7 +32027,7 @@ function lesList() {
 function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) }); }
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
-  Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false;
+  Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false; Q.weak = false;
   LS.open = id; LS.step = 'quiz';
   next(true); window.scrollTo(0, 0);
 }
@@ -32065,7 +32078,9 @@ function render() {
   $a('#appAC').classList.toggle('returning', Object.keys(ST.r || {}).length > 0);   // popis kapitoly jen napoprvé, jako v organice
   const tb = $a('#acTypes'); tb.hidden = ST.mode !== 'quiz' || ST.ch !== 'ka';
   tb.innerHTML = `<span class="eyebrow">Otázky</span><div class="chips">${TYPES.map(([v, n]) => `<button type="button" class="chip" data-ac="type" data-v="${v}" aria-pressed="${ST.types.includes(v)}">${n}</button>`).join('')}</div>`;
-  const nd = dueCount(ST.ch); $a('#acDue').innerHTML = nd && ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done)) ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${nd === 1 ? 'kartu' : nd < 5 ? 'karty' : 'karet'} na dnešek</button>` : '';
+  const nd = dueCount(ST.ch), nw = weakCards(ST.ch).length, kw = n => n === 1 ? 'kartu' : n < 5 ? 'karty' : 'karet', atStart = ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done));
+  $a('#acDue').innerHTML = atStart ? (nd ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${kw(nd)} na dnešek</button>` : '')
+    + (nw && !Q.weak ? `<button type="button" class="link" data-ac="weak">Slabá místa: ${nw} ${nw === 1 ? 'karta' : nw < 5 ? 'karty' : 'karet'}, kde chybuješ</button>` : '') : '';
   const V = { les: lesView, table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView };
   box.innerHTML = (V[ST.mode] || quizView)();
   acAnnounce(box, nLog);
@@ -32109,6 +32124,7 @@ document.addEventListener('click', e => {
   if (a === 'type') { ST.types = ST.types.includes(v) ? ST.types.filter(x => x !== v) : ST.types.concat(v); save(); return newDeck(); }
   if (a === 'due') { dueWiden(); if (ST.mode !== 'quiz') setMode('quiz'); return newDeck(true); }
   if (a === 'again') return newDeck();
+  if (a === 'weak') { if (ST.mode !== 'quiz') setMode('quiz'); return weakDeck(); }
   if (a === 'next') return next();
   if (a === 'opt') { if (Q.done) return; const o = Q.opts[+v]; o.picked = 1; return answer(o.ok, missTxt(Q.cur)); }
   if (a === 'pk') { if (Q.done) return; Q.pick.has(v) ? Q.pick.delete(v) : Q.pick.add(v); b.setAttribute('aria-pressed', Q.pick.has(v)); return; }
