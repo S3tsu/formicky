@@ -1139,8 +1139,8 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 /* zkumavky */
 .lx-lab{border-top:4px solid var(--accent)}
 .lx-rack{display:flex;flex-wrap:wrap;gap:6px 4px;padding:10px 6px 0;border-bottom:6px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:4px}
-.lx-tb{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;width:56px;min-height:44px;padding:4px 2px 8px;border:0;border-radius:12px 12px 0 0;background:none;color:var(--ink);font:inherit;cursor:pointer}
-.lx-tb b{font:700 .85rem/1.1 var(--f-chem)}
+.lx-tb{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;width:64px;min-height:44px;padding:4px 2px 8px;border:0;border-radius:12px 12px 0 0;background:none;color:var(--ink);font:inherit;cursor:pointer}
+.lx-tb b{font:700 1rem/1.1 var(--f-chem);white-space:nowrap}
 .lx-tb .ac-tube svg{width:36px;height:78px}
 .lx-tb.tip{background:var(--foam)}
 .lx-tb.tip::after{content:"tip";position:absolute;top:2px;right:4px;font:700 .62rem/1 var(--f-body);color:var(--pink-ink)}
@@ -1165,19 +1165,19 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 @keyframes lx-late{0%,70%{opacity:.15}100%{opacity:1}}
 /* Newman */
 .lx-nw-in{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.lx-nw-pic{width:200px;max-width:52%;flex:none;touch-action:none;cursor:grab;user-select:none}
+.lx-nw-pic{width:220px;max-width:100%;flex:none;touch-action:none;cursor:grab;user-select:none}
 .lx-nw-pic line{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
-.lx-nw-pic text{font:600 13px var(--f-chem);fill:var(--ink)}
+.lx-nw-pic text{font:700 15px var(--f-chem);fill:var(--ink)}
 .lx-nw-c{fill:var(--surface);stroke:var(--ink);stroke-width:2.5}
-.lx-me-f{fill:var(--accent)} .lx-me-b{fill:var(--pink)}
-.lx-nw-pic .lx-me-t{fill:#fff;font-size:11px}
+.lx-me-f,.lx-me-b{stroke-width:2.5} .lx-me-f{fill:color-mix(in srgb,var(--accent) 18%,var(--surface));stroke:var(--accent)} .lx-me-b{fill:color-mix(in srgb,var(--pink) 18%,var(--surface));stroke:var(--pink)}
+.lx-nw-pic .lx-me-t{font-size:14px}
 .lx-nw-side{flex:1;min-width:160px;display:flex;flex-direction:column;gap:4px}
 .lx-nw-name{margin:0;display:flex;flex-direction:column;min-height:2.8em}
 .lx-nw-name b{font:700 1.08rem/1.2 var(--f-display)} .lx-nw-name span{color:var(--muted);font-size:.9rem}
 .lx-low .lx-nw-name span{color:var(--ok);font-weight:600}
 .lx-nw-ang{margin:0;font-size:.8rem;color:var(--muted)}
-.lx-nw-plot{width:100%;max-width:300px}
-.lx-nw-plot text{font:10px var(--f-body);fill:var(--muted)}
+.lx-nw-plot{width:100%;max-width:316px}
+.lx-nw-plot text{font:13px var(--f-body);fill:var(--muted)}
 .lx-ax{stroke:var(--line);fill:none} .lx-curve{fill:none;stroke:var(--pink);stroke-width:2.5}
 .lx-nw-v{stroke:var(--accent);stroke-dasharray:3 3} .lx-nw-dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
 .lx-nw-ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -1248,6 +1248,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-paper{width:30px;height:70px;border-radius:4px;border:1px solid var(--line);flex:none}
 /* Lambert–Beer */
 .lx-lb-pic{width:100%;max-width:340px}
+.lx-w .lx-lb-pic text{font:700 17px var(--f-chem);fill:var(--ink)}
 .lx-beam{fill:#f2cd1f}
 .lx-cuv{fill:var(--pink);stroke:var(--ink);stroke-width:1.5}
 /* polarimetr */
@@ -29866,7 +29867,7 @@ const FH_LES = (() => {
   function lbOut(c, d) {
     const A = EPS * d * c / 1000, T = Math.pow(10, -A);
     return `<svg class="lx-lb-pic" viewBox="0 0 300 90" aria-hidden="true"><rect x="10" y="38" width="100" height="14" class="lx-beam"/><rect x="${210 - 0}" y="38" width="80" height="14" class="lx-beam" style="opacity:${Math.max(.04, T).toFixed(3)}"/>
-      <rect x="${160 - 25 * d}" y="14" width="${50 * d}" height="62" rx="4" class="lx-cuv" style="fill-opacity:${Math.min(.95, .1 + A * .3).toFixed(2)}"/><text x="60" y="30" text-anchor="middle">I₀</text><text x="250" y="30" text-anchor="middle">I</text></svg>
+      <rect x="${160 - 25 * d}" y="14" width="${50 * d}" height="62" rx="4" class="lx-cuv" style="fill-opacity:${Math.min(.95, .1 + A * .3).toFixed(2)}"/><text x="60" y="30" text-anchor="middle">I<tspan dy="4" font-size="12">0</tspan></text><text x="250" y="30" text-anchor="middle">I</text></svg>
       <p class="lx-big"><b>A = ${cz(A, 2)}</b><span>A = ε·d·c = ${EPS.toLocaleString('cs')} · ${d} · ${cz(c / 1000, 5)}</span><span>propustnost T = 10${sup('-')}ᴬ = ${T >= .01 ? cz(T * 100, T >= .1 ? 0 : 1) : cz(T * 100, 2)} %</span></p>
       ${A > 2 ? '<p class="lx-warn">Absorbance je nad 2, vzorek zřeď.</p>' : ''}`;
   }
@@ -30004,17 +30005,17 @@ const FH_OL = (() => {
   const nwName = t => { const m = t > 180 ? 360 - t : t; return NW.find(n => Math.abs(n[0] - m) <= 4) || null; };
   function newman() {
     return `<div class="lx-nw" data-lxw="nw"><p class="lx-q"><b>Zatoč si:</b> chyť zadní uhlík a otáčej, nebo použij posuvník. Sleduj, kde je energie nejnižší.</p>
-      <div class="lx-nw-in"><svg class="lx-nw-pic" viewBox="0 0 220 220" role="img" aria-label="Newmanova projekce butanu podél vazby C2–C3"><g class="lx-nw-back"></g><circle cx="110" cy="110" r="46" class="lx-nw-c"/><g class="lx-nw-front"></g></svg>
+      <div class="lx-nw-in"><svg class="lx-nw-pic" viewBox="-6 -6 232 232" role="img" aria-label="Newmanova projekce butanu podél vazby C2–C3"><g class="lx-nw-back"></g><circle cx="110" cy="110" r="46" class="lx-nw-c"/><g class="lx-nw-front"></g></svg>
       <div class="lx-nw-side"><p class="lx-nw-name" aria-live="polite"></p><p class="lx-nw-ang"></p>
-      <svg class="lx-nw-plot" viewBox="0 0 300 128" aria-hidden="true"><path d="M24 104H296M24 16V104" class="lx-ax"/>${NW.concat([[240], [300], [360]]).map(([t]) => `<text x="${nwX(t)}" y="120" text-anchor="${t === 360 ? 'end' : 'middle'}">${t}°</text>`).join('')}<text x="20" y="20" text-anchor="end">E</text><path d="${NWPATH}" class="lx-curve"/><line class="lx-nw-v" y1="16" y2="104"/><circle class="lx-nw-dot" r="5"/></svg></div></div>
+      <svg class="lx-nw-plot" viewBox="0 0 316 128" aria-hidden="true"><path d="M24 104H296M24 16V104" class="lx-ax"/>${NW.concat([[240], [300], [360]]).map(([t]) => `<text x="${nwX(t)}" y="120" text-anchor="middle">${t}°</text>`).join('')}<text x="20" y="20" text-anchor="end">E</text><path d="${NWPATH}" class="lx-curve"/><line class="lx-nw-v" y1="16" y2="104"/><circle class="lx-nw-dot" r="5"/></svg></div></div>
       <div class="lx-nw-ctl"><label class="lx-nw-lbl">Úhel CH₃–CH₃ <input type="range" min="0" max="360" step="5" value="180" data-lxw="nwr"></label><button type="button" class="btn" data-lxw="nwplay">Přehrát otočku</button><button type="button" class="btn" data-lxw="nw3d" aria-expanded="false">Ukázat ve 3D</button></div>
       <div class="lx-nw-3d" hidden><div class="lx-nw-3v" role="img" aria-label="Prostorový model butanu, otáčí se spolu s Newmanovou projekcí"></div><p class="lx-nw-3n">Model otáčíš tažením, úhel mezi methyly posuvníkem nebo v Newmanově projekci. Barevné kuličky jsou uhlíky methylů.</p><div class="row"><button type="button" class="btn" data-lxw="nwv" data-v="nw">Pohled podél vazby C2–C3</button><button type="button" class="btn" data-lxw="nwv" data-v="side">Pohled ze strany</button></div></div></div>`;
   }
   function nwSet(w, t) {
     t = ((Math.round(t) % 360) + 360) % 360; const nm = nwName(t); if (nm) t = t > 180 ? 360 - nm[0] : nm[0];
     const P = (a, r) => [110 + r * Math.cos((a - 90) * Math.PI / 180), 110 + r * Math.sin((a - 90) * Math.PI / 180)];
-    const bond = (a, r0, r1, me, cls) => { const [x0, y0] = P(a, r0), [x1, y1] = P(a, r1), [lx, ly] = P(a, r1 + (me ? 15 : 9));
-      return `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>${me ? `<circle class="${cls}" cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="15"/><text class="lx-me-t" x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle">CH₃</text>` : `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle">H</text>`}`; };
+    const bond = (a, r0, r1, me, cls) => { const [x0, y0] = P(a, r0), [x1, y1] = P(a, r1), [lx, ly] = P(a, r1 + (me ? 20 : 10));
+      return `<line x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>${me ? `<circle class="${cls}" cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="20"/><text class="lx-me-t" x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle">CH<tspan dy="3" font-size="11">3</tspan></text>` : `<text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" text-anchor="middle">H</text>`}`; };
     w.querySelector('.lx-nw-front').innerHTML = [0, 120, 240].map((a, i) => bond(a, 0, 62, !i, 'lx-me-f')).join('');
     w.querySelector('.lx-nw-back').innerHTML = [0, 120, 240].map((a, i) => bond(a + t, 46, 70, !i, 'lx-me-b')).join('');
     const nx = nwX(t), ny = nwY(nwE(t)), v = w.querySelector('.lx-nw-v'), d = w.querySelector('.lx-nw-dot');
