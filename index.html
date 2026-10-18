@@ -2814,6 +2814,55 @@ function dmol(dsl) {                     // vzorec do schématu
     GROUPS.push(q); BYID[q.id] = q;
   });
 })();
+/* Funkční skupiny: teoretické otázky k lekcím (přehled z 2. a 3. přednášky), přibylo 18. 10. 2026. Pevná ID fg_qN. */
+const FG_Q = [
+  ['base', 'o', 'Alkohol', 'Která skupina je typická pro alkohol?', ['C–OH¦ (OH na nasyceném uhlíku)', 'C–O–C', 'H–C=O', 'C=O mezi dvěma uhlíky'], 'V přehledu funkčních skupin: alkohol (1°, 2°, 3°) C–OH, ether C–O–C, aldehyd H–C=O, keton C=O mezi dvěma uhlíky.',
+    ['C–O–C je ether: kyslík mezi dvěma uhlíky, bez vodíku na kyslíku.', 'H–C=O je aldehyd.', 'C=O mezi dvěma uhlíky je keton.'], 'q1'],
+  ['base', 'co', 'Aldehyd, nebo keton', 'Čím se liší aldehyd od ketonu?', ['aldehyd má na C=O vodík¦, keton dva uhlíky', 'keton má na C=O vodík', 'aldehyd má na C=O skupinu OH', 'keton obsahuje navíc OH'], 'Aldehyd: na karbonylovém uhlíku je vodík a jeden uhlíkový zbytek. Keton: na karbonylovém uhlíku jsou dva uhlíkové zbytky.',
+    ['Je to naopak: vodík na C=O má aldehyd.', 'C=O s OH je karboxylová kyselina.', 'Keton má jen C=O mezi dvěma uhlíky, žádnou OH.'], 'q2'],
+  ['base', 'co', 'Karboxylová kyselina', 'Která skupina je karboxylová kyselina?', ['–C(=O)–OH', '–C(=O)–O–C', '–C(=O)–H', '–C(=O)–X'], 'Karboxylová kyselina má na karbonylovém uhlíku skupinu OH (COOH). Ester ji má nahrazenou O–C, aldehyd vodíkem, acylhalogenid halogenem.',
+    ['–C(=O)–O–C je ester.', '–C(=O)–H je aldehyd.', '–C(=O)–X je acylhalogenid.'], 'q3'],
+  ['base', 'co', 'Ester', 'Jakou skupinu má ester?', ['–C(=O)–O–C', '–C(=O)–OH', '–C(=O)–N', 'C–O–C bez C=O'], 'Ester: karbonyl vázaný na kyslík, který nese další uhlíkový zbytek. Bez C=O by šlo o ether.',
+    ['–C(=O)–OH je karboxylová kyselina.', '–C(=O)–N je amid.', 'C–O–C bez karbonylu je ether.'], 'q4'],
+  ['base', 'co', 'Acylhalogenid', 'Co je acylhalogenid?', ['C=O vázaný na halogen', 'nasycený uhlík s halogenem', 'C=O vázaný na dusík', 'S(=O)₂ vázaná na halogen'], 'Acylhalogenid má halogen přímo na karbonylovém uhlíku (R–CO–X). Halogen na nasyceném uhlíku je alkylhalogenid, na skupině SO₂ sulfonylhalogenid.',
+    ['Halogen na nasyceném uhlíku je alkylhalogenid (1°, 2°, 3°).', 'C=O na dusíku je amid.', 'SO₂ s halogenem je sulfonylhalogenid.'], 'q5'],
+  ['base', 'o', 'Hemiketal', 'Co nese uhlík hemiketalu?', ['OH, OR a dva uhlíkové zbytky', 'OH, OR a vodík', 'dvě OR a vodík', 'dvě OR a dva uhlíkové zbytky'], 'Hemiacetal: OH, OR a H. Hemiketal: OH, OR a dva uhlíky. Acetal: dvě OR a H. Ketal: dvě OR a dva uhlíky.',
+    ['OH, OR a vodík je hemiacetal.', 'Dvě OR a vodík je acetal.', 'Dvě OR a dva uhlíkové zbytky je ketal.'], 'q6'],
+  ['base', 'o', 'Ketal', 'Která skupina je ketal?', ['dvě OR na uhlíku bez vodíku', 'dvě OR na uhlíku s vodíkem', 'OH a OR na uhlíku bez vodíku', 'C=O mezi dvěma uhlíky'], 'Ketal má na jednom uhlíku dvě skupiny OR a dva uhlíkové zbytky, vodík žádný. S vodíkem by to byl acetal.',
+    ['Dvě OR a vodík je acetal.', 'OH a OR bez vodíku je hemiketal.', 'C=O mezi dvěma uhlíky je keton, z něj ketal vzniká.'], 'q7'],
+  ['base', 'o', 'Enol ether', 'Co je enol ether?', ['ether, jehož kyslík je na uhlíku dvojné vazby', 'skupina OH na uhlíku dvojné vazby', 'kyslík mezi dvěma karbonyly', 'kumulované C=C=O'], 'V přehledu funkčních skupin: enol ether má kyslík etheru vázaný přímo na uhlík C=C.',
+    ['OH na uhlíku dvojné vazby je enol, ne enol ether.', 'Kyslík mezi dvěma karbonyly je anhydrid.', 'C=C=O je keten.'], 'q8'],
+  ['base', 'o', 'Keten', 'Jak vypadá keten?', ['C=C=O', 'C=C=C', 'N=C=O', 'C=C–OH'], 'Keten má dvě kumulované dvojné vazby: C=C=O. C=C=C je alen, N=C=O isokyanát.',
+    ['C=C=C je alen.', 'N=C=O je isokyanát.', 'C=C–OH je enol.'], 'q9'],
+  ['base', 'o', 'Proč funkční skupiny', 'Co podle přednášky určuje reaktivitu organické sloučeniny?', ['funkční skupiny, které obsahuje', 'hlavně velikost molekuly', 'počet uhlíků v řetězci', 'hlavně její teplota tání'], 'Přes 19 milionů organických látek se dá roztřídit do desítek kategorií podle funkčních skupin. Reaktivita je dána funkčními skupinami bez ohledu na velikost a složitost molekuly.',
+    ['Na velikosti a složitosti molekuly reaktivita podle přednášky nezávisí.', 'Délka řetězce mění fyzikální vlastnosti, ne typ reaktivity.', 'Teplota tání je fyzikální vlastnost.'], 'q10'],
+  ['base', 'n', 'Nitril', 'Která skupina je nitril?', ['–C≡N', '–N=C=O', '–N=N⁺=N⁻', '–C=N–'], 'Nitril má trojnou vazbu uhlík–dusík. N=C=O je isokyanát, N=N⁺=N⁻ azid, C=N imin.',
+    ['–N=C=O je isokyanát.', '–N=N⁺=N⁻ je azid.', 'Dvojná vazba C=N je imin (aldimin, ketimin).'], 'q11'],
+  ['base', 'n', 'Oxim, nebo hydrazon', 'Čím se liší oxim od hydrazonu?', ['oxim má C=N–OH¦, hydrazon C=N–N', 'oxim má C=N–N, hydrazon C=N–OH', 'oxim má C≡N, hydrazon C=N', 'oxim nemá vůbec vazbu C=N'], 'Oba mají vazbu C=N. U oximu je na dusíku OH, u hydrazonu další dusík.',
+    ['Je to naopak.', 'C≡N je nitril, oxim má dvojnou vazbu C=N.', 'Oxim i hydrazon mají vazbu C=N.'], 'q12'],
+  ['base', 'n', 'Aldimin', 'Co nese aldimin na uhlíku vazby C=N?', ['vodík a uhlíkový zbytek', 'dva uhlíkové zbytky', 'skupinu OH a vodík', 'další dusík a vodík'], 'Aldimin je imin odvozený od aldehydu: na uhlíku C=N je vodík. Ketimin má na tomto uhlíku dva uhlíky.',
+    ['Dva uhlíkové zbytky má ketimin.', 'OH je na dusíku oximu, ne na uhlíku iminu.', 'Další dusík je na dusíku hydrazonu.'], 'q13'],
+  ['base', 'n', 'Nitro, nebo nitroso', 'Čím se liší nitrosloučenina od nitrososloučeniny?', ['nitro má na dusíku dva kyslíky¦ (–NO₂), nitroso jeden (–N=O)', 'nitro má na dusíku jeden kyslík', 'nitro je na uhlík vázané přes kyslík', 'nitro má na dusíku dva vodíky'], 'Nitroskupina –NO₂ (N⁺ a O⁻), nitrososkupina –N=O. Obě jsou na uhlík vázané dusíkem.',
+    ['Jeden kyslík má nitrososkupina.', 'Přes kyslík je vázaný ester kyseliny dusičné (nitrát), ne nitrosloučenina.', 'Dva vodíky na dusíku má primární amin.'], 'q14'],
+  ['base', 'n', 'Azid', 'Jak je stavěná azidová skupina?', ['tři dusíky za sebou¦ (–N=N⁺=N⁻)', 'dva dusíky spojené dvojnou vazbou', 'dusík vázaný na dva kyslíky', 'uhlík s trojnou vazbou k dusíku'], 'Azid je řetízek tří dusíků. Acylazid ho má na karbonylovém uhlíku.',
+    ['Dva dusíky s dvojnou vazbou jsou azoskupina.', 'Dusík se dvěma kyslíky je nitroskupina.', 'C≡N je nitril.'], 'q15'],
+  ['base', 's', 'Thiol, nebo sulfid', 'Čím se liší thiol od sulfidu?', ['thiol má –SH¦, sulfid síru mezi dvěma uhlíky', 'thiol má S–S, sulfid –SH', 'thiol má S=O, sulfid –SH', 'thiol má síru mezi dvěma uhlíky'], 'Thiol (starším názvem merkaptan) je sirná obdoba alkoholu, sulfid sirná obdoba etheru. S–S je disulfid, S=O sulfoxid.',
+    ['S–S je disulfid.', 'S=O je sulfoxid.', 'Síra mezi dvěma uhlíky je sulfid.'], 'q16'],
+  ['base', 's', 'Disulfid', 'Která skupina je disulfid?', ['C–S–S–C', 'C–S–C', 'C–S(=O)–C', 'C–S(=O)₂–C'], 'Disulfid má dvě síry vedle sebe. C–S–C je sulfid, C–S(=O)–C sulfoxid, C–S(=O)₂–C sulfon.',
+    ['C–S–C je sulfid.', 'Jeden kyslík na síře má sulfoxid.', 'Dva kyslíky na síře má sulfon.'], 'q17'],
+  ['base', 's', 'Sulfonová kyselina', 'Jak vypadá sulfonová kyselina?', ['R–S(=O)₂–OH', 'R–S(=O)₂–X', 'R–S(=O)₂–O–R', 'R–S(=O)–R'], 'Sulfonová kyselina má na síře dva kyslíky a skupinu OH. Halogen místo OH je sulfonylhalogenid, OR sulfonát ester.',
+    ['S halogenem je to sulfonylhalogenid.', 'S OR je to sulfonát ester.', 'R–S(=O)–R je sulfoxid.'], 'q18'],
+  ['base', 'cu', 'Karbamát, nebo močovina', 'Čím se liší karbamát od močoviny?', ['karbamát má C=O mezi O a N¦, močovina mezi dvěma N', 'karbamát má C=O mezi dvěma O', 'karbamát má C=O mezi dvěma N', 'karbamát má skupinu N=C=N'], 'Karbonát: O–C(=O)–O. Karbamát: O–C(=O)–N. Močovina: N–C(=O)–N. N=C=N je karbodiimid.',
+    ['C=O mezi dvěma kyslíky je karbonát.', 'C=O mezi dvěma dusíky je močovina.', 'N=C=N je karbodiimid.'], 'q19'],
+  ['base', 'cu', 'Isokyanát', 'Která skupina je isokyanát?', ['N=C=O', 'N=C=S', 'N=C=N', 'C=C=O'], 'Isokyanát má kumulované vazby N=C=O. Se sírou místo kyslíku je to isothiokyanát, N=C=N karbodiimid, C=C=O keten.',
+    ['N=C=S je isothiokyanát.', 'N=C=N je karbodiimid.', 'C=C=O je keten.'], 'q20']
+];
+(function () {
+  FG_Q.forEach((r, i) => {
+    let q; try { q = makeQ('fg', r, i, 'fg_', r[1], x => x); } catch (e) { return loadErr('fg', e); }
+    GROUPS.push(q); BYID[q.id] = q;
+  });
+})();
 const REACTIONS = CK_RX;
 const FAMS_BY = { fg: FAMS, ck: CK_FAMS };
 const METHOD_BY = { fg: METHOD, ck: CK_METHOD };
@@ -29583,6 +29632,27 @@ const FH_OL = (() => {
   const tbl = (head, rows) => `<div class="ac-tw"><table class="ac-sheet"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
   const LES = [
+    { id: 'fga', topic: 'fg', n: 1, min: 5, t: 'Kyslíkaté skupiny a karbonyly',
+      goal: 'Po lekci poznáš alkohol, ether, aldehyd, keton, karboxylovou kyselinu a její deriváty a odlišíš hemiacetal, acetal, hemiketal a ketal.',
+      recall: 'Zkus si na papír nakreslit alkohol, ether, aldehyd a keton. Každý stačí jako kousek molekuly kolem kyslíku.',
+      tail: 'Vrať se ke kresbám ze začátku a zkontroluj je s přehledem. Co jsi nevěděla z hlavy, zopakuješ zítra.',
+      q: ['t03_q1', 'fg_q10', 'fg_q1', 'fg_q2', 'fg_q3', 'fg_q4', 'fg_q5', 't02_q60', 'fg_q6', 'fg_q7', 'fg_q8', 'fg_q9'],
+      beda: 'Kyslík je v přehledu všude, rozhoduje, kdo ho drží. Na vodíku je to alkohol, mezi dvěma uhlíky ether a na C=O s vodíkem aldehyd.',
+      body: () => sec('1. Proč funkční skupiny', `<p>Organických látek je přes 19 milionů, ale podle <b>funkčních skupin</b> se dají roztřídit do pár desítek kategorií, jejichž chování se dá předvídat. Funkční skupina je skupina atomů s charakteristickým chemickým chováním a reaktivitu molekuly určuje bez ohledu na její velikost.</p>`)
+        + sec('2. Kyslík jednoduchou vazbou', `${tbl(['Skupina', 'Jak vypadá'], [['alkohol (1°, 2°, 3°)', 'C–OH'], ['ether', 'C–O–C'], ['enol ether', 'kyslík etheru na uhlíku C=C'], ['hemiacetal', 'na uhlíku OH, OR a H'], ['hemiketal', 'na uhlíku OH, OR a dva uhlíky'], ['acetal', 'na uhlíku dvě OR a H'], ['ketal', 'na uhlíku dvě OR a dva uhlíky']])}`)
+        + sec('3. Karbonyl a deriváty kyselin', `${tbl(['Skupina', 'Co je na C=O'], [['aldehyd', 'vodík a uhlík'], ['keton', 'dva uhlíky'], ['karboxylová kyselina', 'OH'], ['ester', 'O–C'], ['amid (1°, 2°, 3°)', 'dusík'], ['acylhalogenid', 'halogen']])}
+        <p class="aside">Keten má kumulované vazby C=C=O, podobně jako alen C=C=C.</p>
+        <p class="ac-les-trap"><b>Pozor:</b> rozhoduje, co sedí přímo na karbonylovém uhlíku. Halogen na nasyceném uhlíku je alkylhalogenid, ne acylhalogenid.</p>`) },
+    { id: 'fgb', topic: 'fg', n: 2, min: 5, t: 'Dusík, síra a deriváty kyseliny uhličité',
+      goal: 'Po lekci poznáš aminy, nitrily, iminy, oximy, hydrazony, azidy, nitro- a nitrososloučeniny, sirné skupiny i karbamát, močovinu a isokyanát.',
+      recall: 'Vybav si z lekce 1, čím se liší alkohol a ether. Tipni si, jak budou vypadat jejich sirné obdoby.',
+      tail: 'Vrať se k tipu ze začátku. Thiol je sirný alkohol a sulfid sirný ether. Co jsi nevěděla, zopakuješ zítra.',
+      q: ['t19_q1', 'fg_q11', 'fg_q12', 'fg_q13', 'fg_q14', 'fg_q15', 'fg_q16', 't02_q58', 'fg_q18', 't02_q59', 'fg_q19', 'fg_q20'],
+      beda: 'Síra je kyslíkova sestřenice z venkova: thiol místo alkoholu, sulfid místo etheru. A čím víc kyslíků si na sebe navlékne, tím vznešenější jméno: sulfoxid, sulfon.',
+      body: () => sec('1. Dusík', `${tbl(['Skupina', 'Jak vypadá'], [['amin (1°, 2°, 3°)', 'dusík na 1, 2 nebo 3 uhlících'], ['nitril', '–C≡N'], ['aldimin, ketimin', 'C=N, na uhlíku H a uhlík, nebo dva uhlíky'], ['oxim', 'C=N–OH'], ['hydrazon', 'C=N–N'], ['hydrazin, hydrazid', 'N–N, hydrazid má dusík na C=O'], ['azid, acylazid', '–N=N⁺=N⁻, acylazid na C=O'], ['nitro-, nitrososloučenina', '–NO₂, –N=O'], ['hydroxamová kyselina', 'C(=O)–N–OH']])}`)
+        + sec('2. Síra', `${tbl(['Skupina', 'Jak vypadá'], [['thiol (merkaptan)', 'C–SH'], ['sulfid', 'C–S–C'], ['disulfid', 'C–S–S–C'], ['sulfoxid', 'C–S(=O)–C'], ['sulfon', 'C–S(=O)₂–C'], ['sulfonová kyselina', 'R–S(=O)₂–OH'], ['sulfonylhalogenid, sulfonát ester', 'R–S(=O)₂–X, R–S(=O)₂–O–R']])}`)
+        + sec('3. Deriváty kyseliny uhličité a kumulované skupiny', `${tbl(['Skupina', 'Jak vypadá'], [['karbonát', 'O–C(=O)–O'], ['karbamát', 'O–C(=O)–N'], ['močovina', 'N–C(=O)–N'], ['karbamoylhalogenid', 'X–C(=O)–N'], ['isokyanát, isothiokyanát', 'N=C=O, N=C=S'], ['karbodiimid', 'N=C=N'], ['ketenimin', 'C=C=N']])}
+        <p class="ac-les-trap"><b>Pozor:</b> u aminu rozhoduje počet uhlíků na dusíku, ne typ uhlíku. A nitril –C≡N neplést s isokyanátem –N=C=O.</p>`) },
     { id: 't01a', topic: 't01', n: 1, min: 5, t: 'Uhlík, orbitaly a hybridizace',
       goal: 'Po lekci umíš obsadit orbitaly elektrony, víš, jak vzniká vazba σ a π, a z hybridizace sp³, sp² a sp odvodíš tvar molekuly i vazebné úhly.',
       recall: 'Zkus si z hlavy napsat elektronovou konfiguraci uhlíku a tipnout, jaký úhel svírají vazby v methanu.',
