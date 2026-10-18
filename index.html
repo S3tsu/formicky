@@ -3747,7 +3747,13 @@ const MEMES = {
     [['Amin', 'Dusík. Nic víc.'], ['Amid', 'Dusík a hned vedle C=O. To D v amiDu je Dvojná vazba.']],
     [['Kyanát', 'R–O–C≡N, zbytek držím na kyslíku.'], ['Isokyanát', 'R–N=C=O, já na dusíku.'], ['Předpona iso-', 'U kyanátu a nitrilu ukazuju na dusík, u alkylu na rozvětvení (isopropyl). Jinde jsem prostě izomer (isochinolin).']],
     [['Imin', 'C=N.'], ['Oxim', 'C=N–OH. OX jako kyslík.'], ['Hydrazon', 'C=N–N. Hydraz- jsou dva dusíky.']],
-    [['Grignard', 'C–Mg–X.'], ['Gilman', 'Dva uhlíky na mědi s minusem a vedle Li⁺.'], ['Organolithná', 'C–Li. Hotovo.']]
+    [['Grignard', 'C–Mg–X.'], ['Gilman', 'Dva uhlíky na mědi s minusem a vedle Li⁺.'], ['Organolithná', 'C–Li. Hotovo.']],
+    [['Keten', 'C=C=O. Kumulované vazby jako alen.'], ['Alen', 'C=C=C. Jen tam, kde máš kyslík, mám já uhlík.'], ['Já u testu', 'Takže keten není keton. Zapsáno.']],
+    [['CH₂Cl', 'Mám halogen, takže jsem acylhalogenid?'], ['C=O', 'Beze mě ne. Jsi alkylhalogenid.'], ['Acylchlorid', 'Halogen musí sedět přímo na karbonylovém uhlíku.']],
+    [['Enol', 'Mám OH na uhlíku dvojné vazby.'], ['Enol ether', 'Já tam mám OR. Ether, jehož kyslík sedí na C=C.']],
+    [['Nitril', '–C≡N. Na R sedí uhlík, trojná vazba.'], ['Isokyanát', '–N=C=O. Na R sedí dusík, dvě dvojné.'], ['Já u testu', 'Koukám, kdo drží R. To rozhodne.']],
+    [['terc-Butylamin', 'Sedím na terciárním uhlíku, takže jsem terciární amin?'], ['Dusík', 'Na mně visí jediný uhlík. Jsi primární.']],
+    [['Karbonát', 'O–C(=O)–O.'], ['Karbamát', 'O–C(=O)–N. Napůl.'], ['Močovina', 'N–C(=O)–N. Dusík z obou stran.']]
   ],
   ck: [
     [['Kyselina kapronová', 'Proč se mi všichni vyhýbají?'], ['Latina', 'Caper = kozel. Smrdíš po něm.']],
@@ -4003,9 +4009,12 @@ function registerTopic(T) {
       [['Ethan', 'C–C 154 pm.'], ['Ethen', 'C=C 133 pm.'], ['Ethyn', 'C≡C 120 pm a 835 kJ. Nejkratší a nejpevnější.']],
       [['Methan', '109,5°, žádný volný pár.'], ['Amoniak', 'Mám jeden volný pár: 107,3°.'], ['Voda', 'Já dva: 104,5°. Volné páry tlačí.']],
       [['Elektron 1', 'Můžu si sednout k tobě do orbitalu?'], ['Elektron 2', 'Jen s opačným spinem. Pauli.']],
-      [['Tři prázdné 2p', 'Kam si sedneš?'], ['Elektron', 'Každý zvlášť a všichni stejný spin. Hund.']],
+      [['Tři prázdné 2p', 'Kam si sednete?'], ['Tři elektrony', 'Každý zvlášť a všichni stejný spin. Hund.']],
       [['Vazebný MO', 'Součet, nižší energie, elektrony mezi jádry.'], ['Antivazebný MO', 'Rozdíl, vyšší energie, uzel uprostřed. V H₂ jsem prázdný.']],
-      [['Na', 'Dám ti elektron.'], ['Cl', 'Beru. Iontová vazba.'], ['Uhlík', 'Já nic nedávám ani neberu. Já sdílím.']]
+      [['Na', 'Dám ti elektron.'], ['Cl', 'Beru. Iontová vazba.'], ['Uhlík', 'Já nic nedávám ani neberu. Já sdílím.']],
+      [['C–C', '376 kJ·mol⁻¹.'], ['C=C', 'Tak to mám 752, ne?'], ['Vazba π', 'Kdepak. Jsem jen boční překryv, dohromady máš 611.']],
+      [['Amoniak', 'Mám jen tři vazby, takže jsem sp²?'], ['Volný pár', 'Já se počítám taky. Jsi sp³.']],
+      [['Uhlík', 'Mám 1s² 2s² 2p⁴?'], ['Kyslík', 'To jsem já. Ty máš 1s² 2s² 2px¹ 2py¹.']]
     ],
     mols: [
       // ----- historie
@@ -4441,7 +4450,10 @@ function registerTopic(T) {
       [['HCl', 'pKa −7, proton dávám hned.'], ['Cl⁻', 'A já ho zpátky nechci. Silná kyselina, slabá konjugovaná báze.']],
       [['Voda', 'S HCl jsem báze.'], ['Voda', 'S NH₂⁻ jsem kyselina. Prostě amfoterní.']],
       [['BF₃', 'Mám prázdný orbital.'], ['Diethylether', 'A já volný pár. Lewisův adukt?'], ['Formální náboje', 'B minus, O plus.']],
-      [['Brønstedova kyselina', 'Já dávám H⁺.'], ['Lewisova kyselina', 'Já beru elektronový pár. A ty jsi moje podmnožina.']]
+      [['Brønstedova kyselina', 'Já dávám H⁺.'], ['Lewisova kyselina', 'Já beru elektronový pár. A ty jsi moje podmnožina.']],
+      [['Dusík se čtyřmi vazbami', 'Proč mám plus?'], ['Formální náboj', '5 valenčních − ½ · 8 vazebných − 0 nevazebných = +1.']],
+      [['Methanol', 'Záporný náboj nesu na kyslíku, stejně jako ty.'], ['Acetát', 'Jenže já ho rezonancí rozdělím na dva kyslíky. Proto je octová kyselejší.']],
+      [['Rezonanční struktura', 'Posunu vodík a mám novou strukturu!'], ['Rezonance', 'To ne. Atomy zůstávají na místě, hýbu jen elektrony π a volnými páry.']]
     ],
     mols: [
       // ----- en
@@ -5094,7 +5106,10 @@ function registerTopic(T) {
       [['cis-1,2-Dimethylcyklopropan', 'Otočím se kolem vazby a budu trans.'], ['Kruh', 'Rotace v kruhu? Leda bys mě rozštípl.']],
       [['Ethyl', 'Proč jsem v názvu první, když mám vyšší lokant?'], ['Abeceda', 'Protože e je před m. Na velikosti lokantu pořadí nezáleží.']],
       [['Kvartérní uhlík', 'Čtyři uhlíkoví sousedi, žádný vodík.'], ['Primární uhlík', 'Já mám jednoho souseda a tři vodíky.']],
-      [['Isooktan', '2,2,4-trimethylpentan, vřu při 99,3 °C.'], ['Oktan', 'Já jsem rovný a vřu při 125,7 °C. Větvení teplotu varu snižuje.']]
+      [['Isooktan', '2,2,4-trimethylpentan, vřu při 99,3 °C.'], ['Oktan', 'Já jsem rovný a vřu při 125,7 °C. Větvení teplotu varu snižuje.']],
+      [['2-Ethylpentan', 'Mám krásný název.'], ['Nejdelší řetězec', 'Přes tvůj ethyl mám šest uhlíků. Jsi 3-methylhexan.']],
+      [['C₅H₁₂', 'Kolik nás je?'], ['Pentan, isopentan, neopentan', 'Tři. A C₄H₁₀ jen dva.']],
+      [['Číslování', 'Od kterého konce začnu?'], ['První větvení', 'Od toho, který je blíž ke mně. Při shodě rozhodne druhé větvení.']]
     ],
     mols: [
       // ----- fs
@@ -5692,7 +5707,10 @@ function registerTopic(T) {
       [['Vanička', 'Moje stěžňové vodíky se strkají, 29 kJ·mol⁻¹.'], ['Twist-boat', 'Trochu se zkroutím a mám jen 23.'], ['Židlička', 'A já nula.']],
       [['trans-1,2-Dimethylcyklohexan', 'e,e za 3,8, nebo a,a za 15,2? Jasná volba.'], ['cis-1,2-Dimethylcyklohexan', 'Já mám obě možnosti za 11,4. Je mi to jedno.']],
       [['Cyklopropan', 'Úhel 60°, vazby ohnuté jak banán.'], ['Cyklopentan', 'Já mám 108°, jen se zkroutím do obálky kvůli zákrytům.']],
-      [['Norbornan', 'Bicyklo[2.2.1]heptan: můstky 2, 2, 1 a dva uzlové atomy, 2 + 2 + 1 + 2 = 7.'], ['Dekalin', 'Můj nejkratší můstek je nula. Bicyklo[4.4.0]dekan.']]
+      [['Norbornan', 'Bicyklo[2.2.1]heptan: můstky 2, 2, 1 a dva uzlové atomy, 2 + 2 + 1 + 2 = 7.'], ['Dekalin', 'Můj nejkratší můstek je nula. Bicyklo[4.4.0]dekan.']],
+      [['cis-1,3-Dimethylcyklohexan', 'Oba methyly ekvatoriálně, pohoda.'], ['trans-1,3-Dimethylcyklohexan', 'Já mám vždycky jeden axiálně.'], ['Já u testu', 'U 1,3 je to cis. Trans je u 1,2 a 1,4.']],
+      [['Axiální methyl', 'Po překlopení jsem ekvatoriální!'], ['cis', 'A já zůstávám cis. Překlopení mě nezmění.']],
+      [['Butan gauche', 'Methyly 60° od sebe, 4,0 kJ·mol⁻¹.'], ['Axiální methyl', 'Já mám dvě takové interakce. Slajdy mi je počítají po 3,8.']]
     ],
     mols: [
       // ----- ko
@@ -6180,7 +6198,10 @@ function registerTopic(T) {
       [['Přechodový stav', 'Jsem na vrcholu, mě nikdo neizoluje.'], ['Meziprodukt', 'Já sedím v dolíku mezi dvěma vrcholy. Existuju aspoň chvilku.']],
       [['ΔG‡', 'Jsem malé, reakce poběží rychle.'], ['ΔG°', 'O rychlosti nerozhoduji. Já jen říkám, kam to dopadne.']],
       [['Adice', 'Proč mám záporné ΔS?'], ['Entropie', 'Ze dvou molekul jedna. Míň volnosti pohybu.']],
-      [['C–H', '438 kJ, štěpí se.'], ['H–Cl', '432 kJ, a C–Cl 351 kJ se tvoří.'], ['ΔH°', '681 − 783 = −102. Exotermická.']]
+      [['C–H a Cl–Cl', '438 + 243 = 681 kJ, štěpíme se.'], ['C–Cl a H–Cl', '351 + 432 = 783 kJ, tvoříme se.'], ['ΔH°', '681 − 783 = −102 kJ·mol⁻¹. Exotermická.']],
+      [['Přesmyk', 'Já nikoho dalšího nepotřebuju. Jen přeskládám atomy.'], ['But-1-en', 'A ze mě je but-2-en. Izomer.']],
+      [['Šipka s jedním hrotem', 'Nesu jeden elektron. Vzniknou radikály.'], ['Šipka s plným hrotem', 'Já nesu celý pár. Vzniknou ionty.']],
+      [['C=C', 'Já jsem nukleofil? Vždyť nemám náboj.'], ['Nukleofil', 'Stačí být elektronově bohatý a dát pár. NH₃ taky nemá náboj.']]
     ],
     mols: [
       // ----- typ
@@ -7027,9 +7048,15 @@ function registerTopic(T) {
       [['Sekundární kation', 'Vedle mě je terciární uhlík s vodíkem.'], ['Hydridový posun', 'Tak si ho vezmi. Terciární je stabilnější.']],
       [['Br⁻', 'Chci k uhlíku zepředu.'], ['Bromoniový ion', 'Zepředu sedím já. Jdi zezadu.'], ['Výsledek', 'Trans. Anti adice.']],
       [['Hydroxymerkurace', 'OH dávám na víc substituovaný uhlík.'], ['Hydroborace', 'Já na méně substituovaný. Jsme komplementární.']],
-      [['Pd', 'Vodíky mám na povrchu.'], ['Alken', 'Tak si lehnu a vezmu si oba ze stejné strany.'], ['Výsledek', 'Syn adice, cis-1,2-dimethylcyklohexan.']],
+      [['Pd', 'Vodíky mám na povrchu.'], ['1,2-Dimethylcyklohexen', 'Tak si lehnu a vezmu si oba ze stejné strany.'], ['Výsledek', 'Syn adice, cis-1,2-dimethylcyklohexan.']],
       [['OsO₄', 'Dva kyslíky naráz, ze stejné strany.'], ['Diol', 'Takže cis.']],
-      [['Ozon', 'Rozsekám dvojnou vazbu.'], ['Zn', 'A já zajistím, že z aldehydů nebudou kyseliny.'], ['KMnO₄', 'U mě by byly.']]
+      [['Ozon', 'Rozsekám dvojnou vazbu.'], ['Zn', 'A já zajistím, že z aldehydů nebudou kyseliny.'], ['KMnO₄', 'U mě by byly.']],
+      [['C₇H₈O', 'Kolik mám kruhů a vazeb π?'], ['Stupeň nenasycenosti', 'Kyslík vynech, alkan C₇ má 16 H: (16 − 8) / 2 = 4.']],
+      [['–CH=O', 'Mám jen jeden kyslík. Prohraju s –CH₂OH?'], ['CIP', 'Ne. Dvojná vazba se počítá dvakrát: máš (O, O, H) proti (O, H, H).']],
+      [['2-Methylpropen', 'Jsem E, nebo Z?'], ['Dva vodíky na C1', 'Ani jedno. Když jeden uhlík nese dvě stejné skupiny, izomery nejsou.']],
+      [['Br₂', 'Normálně si vezmu oba uhlíky.'], ['Voda', 'Jenže mě je nadbytek. Bromoniový ion napadnu já.'], ['Halohydrin', 'Br a OH, a zase anti.']],
+      [['H₂O, H⁺', 'Udělám alkohol podle Markovnikova.'], ['Volný karbokation', 'A cestou se možná přesmyknu.'], ['Hydroxymerkurace', 'U mě stejný alkohol, ale bez přesmyku.']],
+      [['OsO₄', 'Mám cis-diol, oba OH ze stejné strany.'], ['HIO₄', 'Hezký diol. Rozštípnu ho na dva karbonyly.']]
     ],
     mols: [
       // ----- zak
@@ -8039,7 +8066,10 @@ function registerTopic(T) {
       [['Alkan', 'pKa 60.'], ['Alken', '44.'], ['Alkyn', '25. Mám totiž 50 % s-charakteru.']],
       [['KMnO₄', 'Trojnou vazbu rozštípnu na dvě kyseliny.'], ['Koncové CH', 'A já odcházím jako CO₂.']],
       [['CaC₂', 'Kápni na mě vodu.'], ['Acetylen', 'A je tu acetylen. Plus Ca(OH)₂.']],
-      [['Hex-1-yn', 'Přidej HBr.'], ['Markovnikov', 'H na konec, Br doprostřed. A podruhé zase doprostřed.']]
+      [['Hex-1-yn', 'Přidej HBr.'], ['Markovnikov', 'H na koncový uhlík, Br na C2. A druhý Br zase na C2: 2,2-dibromhexan.']],
+      [['Hept-1-en-6-yn', 'Proč dostal en jedničku?'], ['Číslování', 'Z obou stran vyjde 1 a 6. Při shodě má přednost dvojná vazba.']],
+      [['Vnitřní alkyn', 'NaNH₂, udělej ze mě acetylid.'], ['NaNH₂', 'Z čeho? Nemáš koncový vodík.']],
+      [['HBr', 'Na alkyn půjdu přes karbokation jako u alkenu?'], ['Vinylový kation', 'Přese mě: R–C⁺=CH₂.']]
     ],
     mols: [
       // ===== base
@@ -30278,18 +30308,18 @@ const FH_OL = (() => {
     mv(e); s.addEventListener('pointermove', mv); s.addEventListener('pointerup', () => s.removeEventListener('pointermove', mv), { once: true });
   });
   const LES = [
-    { id: 'fga', topic: 'fg', n: 1, min: 5, t: 'Kyslíkaté skupiny a karbonyly',
+    { id: 'fga', topic: 'fg', mem: [0, 1, 4, 8, 9, 10], n: 1, min: 5, t: 'Kyslíkaté skupiny a karbonyly',
       goal: 'Po lekci poznáš alkohol, ether, aldehyd, keton, karboxylovou kyselinu a její deriváty a odlišíš hemiacetal, acetal, hemiketal a ketal.',
       recall: 'Zkus si na papír nakreslit alkohol, ether, aldehyd a keton. Každý stačí jako kousek molekuly kolem kyslíku.',
       tail: 'Vrať se ke kresbám ze začátku a zkontroluj je s přehledem. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t03_q1', 'fg_q10', 'fg_q1', 'fg_q2', 'fg_q3', 'fg_q4', 'fg_q5', 't02_q60', 'fg_q6', 'fg_q7', 'fg_q8', 'fg_q9'],
-      beda: 'Kyslík je v přehledu všude, rozhoduje, kdo ho drží. Na vodíku je to alkohol, mezi dvěma uhlíky ether a na C=O s vodíkem aldehyd.',
+      beda: 'Kyslík je v přehledu všude, rozhoduje, kdo ho drží. Uhlík a vodík: alkohol. Dva uhlíky: ether. A když je kyslík na C=O, rozhodne, co ještě sedí na uhlíku: vodík aldehyd, OH kyselina.',
       body: () => sec('1. Proč funkční skupiny', `<p>Organických látek je přes 19 milionů, ale podle <b>funkčních skupin</b> se dají roztřídit do pár desítek kategorií, jejichž chování se dá předvídat. Funkční skupina je skupina atomů s charakteristickým chemickým chováním a reaktivitu molekuly určuje bez ohledu na její velikost.</p>`)
         + sec('2. Kyslík jednoduchou vazbou', `${tbl(['Skupina', 'Jak vypadá'], [['alkohol (1°, 2°, 3°)', 'C–OH'], ['ether', 'C–O–C'], ['enol ether', 'kyslík etheru na uhlíku C=C'], ['hemiacetal', 'na uhlíku OH, OR a H'], ['hemiketal', 'na uhlíku OH, OR a dva uhlíky'], ['acetal', 'na uhlíku dvě OR a H'], ['ketal', 'na uhlíku dvě OR a dva uhlíky']])}`)
         + sec('3. Karbonyl a deriváty kyselin', `${tbl(['Skupina', 'Co je na C=O'], [['aldehyd', 'vodík a uhlík'], ['keton', 'dva uhlíky'], ['karboxylová kyselina', 'OH'], ['ester', 'O–C'], ['amid (1°, 2°, 3°)', 'dusík'], ['acylhalogenid', 'halogen']])}
         <p class="aside">Keten má kumulované vazby C=C=O, podobně jako alen C=C=C.</p>
         <p class="ac-les-trap"><b>Pozor:</b> rozhoduje, co sedí přímo na karbonylovém uhlíku. Halogen na nasyceném uhlíku je alkylhalogenid, ne acylhalogenid.</p>`) },
-    { id: 'fgb', topic: 'fg', n: 2, min: 5, t: 'Dusík, síra a deriváty kyseliny uhličité',
+    { id: 'fgb', topic: 'fg', mem: [2, 3, 5, 6, 11, 12, 13], n: 2, min: 5, t: 'Dusík, síra a deriváty kyseliny uhličité',
       goal: 'Po lekci poznáš aminy, nitrily, iminy, oximy, hydrazony, azidy, nitro- a nitrososloučeniny, sirné skupiny i karbamát, močovinu a isokyanát.',
       recall: 'Vybav si z lekce 1, čím se liší alkohol a ether. Tipni si, jak budou vypadat jejich sirné obdoby.',
       tail: 'Vrať se k tipu ze začátku. Thiol je sirný alkohol a sulfid sirný ether. Co jsi nevěděla, zopakuješ zítra.',
@@ -30299,12 +30329,12 @@ const FH_OL = (() => {
         + sec('2. Síra', `${tbl(['Skupina', 'Jak vypadá'], [['thiol (merkaptan)', 'C–SH'], ['sulfid', 'C–S–C'], ['disulfid', 'C–S–S–C'], ['sulfoxid', 'C–S(=O)–C'], ['sulfon', 'C–S(=O)₂–C'], ['sulfonová kyselina', 'R–S(=O)₂–OH'], ['sulfonylhalogenid, sulfonát ester', 'R–S(=O)₂–X, R–S(=O)₂–O–R']])}`)
         + sec('3. Deriváty kyseliny uhličité a kumulované skupiny', `${tbl(['Skupina', 'Jak vypadá'], [['karbonát', 'O–C(=O)–O'], ['karbamát', 'O–C(=O)–N'], ['močovina', 'N–C(=O)–N'], ['karbamoylhalogenid', 'X–C(=O)–N'], ['isokyanát, isothiokyanát', 'N=C=O, N=C=S'], ['karbodiimid', 'N=C=N'], ['ketenimin', 'C=C=N']])}
         <p class="ac-les-trap"><b>Pozor:</b> u aminu rozhoduje počet uhlíků na dusíku, ne typ uhlíku. A nitril –C≡N neplést s isokyanátem –N=C=O.</p>`) },
-    { id: 't01a', topic: 't01', n: 1, min: 5, t: 'Uhlík, orbitaly a hybridizace',
+    { id: 't01a', topic: 't01', mem: [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11], n: 1, min: 5, t: 'Uhlík, orbitaly a hybridizace',
       goal: 'Po lekci umíš obsadit orbitaly elektrony, víš, jak vzniká vazba σ a π, a z hybridizace sp³, sp² a sp odvodíš tvar molekuly i vazebné úhly.',
       recall: 'Zkus si z hlavy napsat elektronovou konfiguraci uhlíku a tipnout, jaký úhel svírají vazby v methanu.',
       tail: 'Vrať se k papíru ze začátku a zkontroluj konfiguraci uhlíku a úhel 109,5°. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t01_q5', 't01_q13', 't01_q14', 't01_q15', 't01_q23', 't01_q29', 't01_q32', 't01_q33', 't01_q37', 't01_q39', 't01_q44', 't01_q48'],
-      beda: 'Hybridizace je jako skládání tanečníků: sp³ tančí ve čtyřech do čtyřstěnu, sp² ve třech do trojúhelníku a sp ve dvou do přímky. Kdo nezbyl, drží vazbu π.',
+      beda: 'Hybridizace je jako skládání tanečníků: sp³ tančí ve čtyřech do čtyřstěnu, sp² ve třech do trojúhelníku a sp ve dvou do přímky. Kdo zbyl mimo tanec (nehybridizovaný orbital p), drží vazbu π.',
       body: () => sec('1. Elektrony v orbitalech', `<p>Orbital je prostor, kde se elektron vyskytuje 90–95 % času. Elektrony se zaplňují podle tří pravidel:</p>
         ${tbl(['Pravidlo', 'Co říká'], [['výstavbový princip', 'od nejnižší energie: 1s → 2s → 2p → 3s → 3p → 4s → 3d'], ['Pauliho princip', 'v orbitalu nejvýš 2 elektrony s opačným spinem'], ['Hundovo pravidlo', 'rovnocenné orbitaly se nejdřív obsadí po jednom elektronu se stejným spinem']])}
         <p>Uhlík má v základním stavu <b>1s² 2s² 2px¹ 2py¹</b>. Organická chemie je chemie sloučenin uhlíku. Že organickou látku jde připravit z anorganické, ukázal Wöhler v roce 1828 a tím padla představa o „živé síle“.</p>`)
@@ -30313,7 +30343,7 @@ const FH_OL = (() => {
         <p>Hybridizovat se dá i dusík a kyslík. V amoniaku je N sp³ s jedním volným párem, ve vodě je O sp³ se dvěma.</p>
         ${FH_LES.ord({ q: 'molekuly podle vazebného úhlu.', top: 'největší úhel', bottom: 'nejmenší úhel', items: [['methan', '109,5°, žádný volný pár'], ['amoniak', 'jeden volný pár'], ['voda', '104,5°, dva volné páry']] })}
         <p class="ac-les-trap"><b>Pozor:</b> úhel H–O–H ve vodě je jen 104,5°, protože volné páry kyslíku se odpuzují a vazby stlačí. Pořadí úhlů: methan > amoniak > voda.</p>`) },
-    { id: 't02a', topic: 't02', n: 1, min: 5, t: 'Polarita, rezonance, kyseliny a báze',
+    { id: 't02a', topic: 't02', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], n: 1, min: 5, t: 'Polarita, rezonance, kyseliny a báze',
       goal: 'Po lekci odhadneš polaritu vazby, spočítáš formální náboj, poznáš rezonanční struktury a podle pKa předpovíš, kam půjde acidobazická reakce.',
       recall: 'Tipni si, jestli je silnější kyselina ta s nižším, nebo s vyšším pKa. Napiš si to na papír.',
       tail: 'Vrať se k papíru ze začátku. Silnější kyselina má nižší pKa a rovnováha jde vždy ke slabší kyselině. Co jsi nevěděla, zopakuješ zítra.',
@@ -30326,7 +30356,7 @@ const FH_OL = (() => {
         + sec('3. Kyseliny a báze', `${tbl(['Pojem', 'Význam'], [['Brønstedova kyselina', 'poskytuje H⁺'], ['Lewisova kyselina', 'přijímá elektronový pár (BF₃, AlCl₃, H⁺)'], ['pKa', '−log Ka, <b>nižší pKa = silnější kyselina</b>'], ['silná kyselina', 'dává slabou konjugovanou bázi']])}
         <p>Acidobazická reakce běží od silnější kyseliny ke slabší. Hydroxid proto ethyn (pKa 25) nedeprotonuje, voda (15,74) je silnější kyselina. Zvládne to až NaNH₂ (NH₃ 36).</p>
         <p class="ac-les-trap"><b>Pozor:</b> kyselina octová je kyselejší než methanol, i když náboj nesou v obou kyslíky. Acetát ho navíc rozloží rezonancí na dva kyslíky. A Brønstedovy kyseliny jsou podmnožinou Lewisových, ne naopak.</p>`) },
-    { id: 't03a', topic: 't03', n: 1, min: 5, t: 'Alkany: izomery, názvy a vlastnosti',
+    { id: 't03a', topic: 't03', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], n: 1, min: 5, t: 'Alkany: izomery, názvy a vlastnosti',
       goal: 'Po lekci poznáš konstituční izomery, pojmenuješ rozvětvený alkan i cykloalkan a vysvětlíš, proč větvení snižuje teplotu varu.',
       recall: 'Zkus si z hlavy nakreslit všechny izomery C₅H₁₂. Kolik jich je?',
       tail: 'Vrať se ke kresbě ze začátku. C₅H₁₂ má tři izomery: pentan, isopentan a neopentan. Co jsi nevěděla, zopakuješ zítra.',
@@ -30340,7 +30370,7 @@ const FH_OL = (() => {
         + sec('3. Vlastnosti a reaktivita', `<p>Molekuly alkanů drží pohromadě jen slabé <b>disperzní síly</b>. Větvení teplotu varu snižuje, protože kulovitější molekula má menší povrch: pentan 36,1 °C, isopentan 27,9 °C, neopentan 9,5 °C.</p>
         ${FH_LES.ord({ q: 'izomery C₅H₁₂ podle teploty varu.', top: 'nejvyšší teplota varu', bottom: 'nejnižší teplota varu', items: [['pentan', '36,1 °C'], ['isopentan', '27,9 °C'], ['neopentan', '9,5 °C']] })}
         <p>Alkany jsou málo reaktivní (parafiny, „malá sloučivost“): hoří, chlorují se na světle, sulfochlorují, sulfoxidují a nitrují. Cis- a trans-izomery cykloalkanů se rotací převést nedají, musela by se rozštěpit vazba v kruhu.</p>`) },
-    { id: 't04a', topic: 't04', n: 1, min: 5, t: 'Konformace: butan a cyklohexan',
+    { id: 't04a', topic: 't04', mem: [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11], n: 1, min: 5, t: 'Konformace: butan a cyklohexan',
       goal: 'Po lekci umíš nakreslit Newmanovu projekci, seřadit konformace butanu podle energie a říct, kde v židličce cyklohexanu bude objemný substituent.',
       recall: 'Tipni si, jestli je stabilnější methylcyklohexan s methylem axiálně, nebo ekvatoriálně. Napiš si proč.',
       tail: 'Vrať se k tipu ze začátku. Ekvatoriální methyl se vyhne dvěma 1,3-diaxiálním interakcím (7,6 kJ·mol⁻¹). Co jsi nevěděla, zopakuješ zítra.',
@@ -30354,7 +30384,7 @@ const FH_OL = (() => {
         ${chair()}
         ${FH_LES.ord({ q: 'konformace cyklohexanu podle energie.', top: 'nejvyšší energie', bottom: 'nejnižší energie', items: [['vanička', 'o 29,0 kJ·mol⁻¹ výš než židlička'], ['zkřížená vanička', 'o 23,0 kJ·mol⁻¹ výš než židlička'], ['židlička', 'nejstabilnější, bez pnutí']] })}
         <p class="ac-les-trap"><b>Pozor:</b> oba substituenty ekvatoriálně jdou u 1,2-trans, <b>1,3-cis</b> a 1,4-trans. U 1,3 je to cis, ne trans.</p>`) },
-    { id: 't05a', topic: 't05', n: 1, min: 5, t: 'Typy reakcí a mechanismy',
+    { id: 't05a', topic: 't05', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], n: 1, min: 5, t: 'Typy reakcí a mechanismy',
       goal: 'Po lekci rozlišíš adici, eliminaci, substituci a přesmyk, popíšeš radikálovou řetězovou reakci, poznáš nukleofil a elektrofil a přečteš energetický diagram.',
       recall: 'Zkus si napsat, co znamená zahnutá šipka s jedním hrotem a co s plným hrotem.',
       tail: 'Vrať se k šipkám ze začátku: jeden hrot je jeden elektron, plný hrot pár elektronů. Co jsi nevěděla, zopakuješ zítra.',
@@ -30368,7 +30398,7 @@ const FH_OL = (() => {
         + sec('3. Energie reakce', `${tbl(['Veličina', 'Rozhoduje o'], [['ΔG° = ΔH° − TΔS° = −RT ln K', 'směru a poloze rovnováhy, záporné ΔG° = samovolně k produktům'], ['ΔG‡ (aktivační energie)', 'rychlosti, malé ΔG‡ = rychlá reakce'], ['ΔS', 'adice záporné, eliminace kladné']])}
         <p><b>Přechodový stav</b> je vrchol energie a izolovat nejde. <b>Meziprodukt</b> leží v mělkém minimu mezi dvěma přechodovými stavy (u adice HBr na ethen karbokation).</p>
         <p class="ac-les-trap"><b>Pozor:</b> reakce může být termodynamicky výhodná (záporné ΔG°), a přesto pomalá, když má vysokou bariéru ΔG‡.</p>`) },
-    { id: 't06a', topic: 't06', n: 1, min: 5, t: 'Alkeny: stavba, názvy a E/Z',
+    { id: 't06a', topic: 't06', mem: [0, 1, 2, 10, 11, 12], n: 1, min: 5, t: 'Alkeny: stavba, názvy a E/Z',
       goal: 'Po lekci spočítáš stupeň nenasycenosti, pojmenuješ alken, určíš E/Z podle priorit CIP a seřadíš alkeny podle stability.',
       recall: 'Tipni si, proč u but-2-enu existují cis/trans izomery, a u butanu ne.',
       tail: 'Vrať se k tipu ze začátku. Kolem dvojné vazby se neotáčí, otočení by zrušilo vazbu π. Co jsi nevěděla, zopakuješ zítra.',
@@ -30383,7 +30413,7 @@ const FH_OL = (() => {
         ${tbl(['Krok', 'Co udělat'], [['1', 'na každém uhlíku dvojné vazby zvlášť urči prioritu podle protonového čísla prvního atomu'], ['2', 'při shodě porovnej další sféru, rozhodne první rozdíl'], ['3', 'násobná vazba se počítá jako zdvojený atom (–CH=O jako C s O, O, H)'], ['4', 'priority 1 na stejné straně = <b>Z</b>, na opačných = <b>E</b>']])}`)
         + sec('3. Stabilita alkenů', `<p>Víc alkylů na dvojné vazbě = stabilnější alken: R₂C=CR₂ > R₂C=CHR > RCH=CHR ≈ R₂C=CH₂ > RCH=CH₂. Pomáhá hyperkonjugace a pevnější vazby sp³–sp².</p>
         <p class="ac-les-trap"><b>Pozor:</b> trans-but-2-en je stabilnější než cis, cis má sterické pnutí mezi methyly. Poznáš to i z hydrogenačního tepla: kdo uvolní víc tepla, startoval výš.</p>`) },
-    { id: 't06b', topic: 't06', n: 2, min: 6, t: 'Reakce alkenů',
+    { id: 't06b', topic: 't06', mem: [3, 4, 5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 6, t: 'Reakce alkenů',
       goal: 'Po lekci předpovíš produkt adice HX, X₂, vody a H₂ na alken, včetně regiochemie (Markovnikov) a stereochemie (syn, nebo anti).',
       recall: 'Vybav si z lekce 1, který alken je stabilnější. Tipni si, který karbokation bude stabilnější: terciární, nebo primární.',
       tail: 'Vrať se k tipu ze začátku. Terciární karbokation je nejstabilnější a podle něj se řídí Markovnikovo pravidlo. Co jsi nevěděla, zopakuješ zítra.',
@@ -30395,7 +30425,7 @@ const FH_OL = (() => {
         + sec('2. Halogeny a voda', `${tbl(['Reakce', 'Produkt', 'Stereochemie'], [['Br₂', '1,2-dibromid přes bromoniový ion', '<b>anti</b> (trans)'], ['Br₂ ve vodě', 'halohydrin (voda napadne bromoniový ion)', 'anti'], ['H₂O, H⁺', 'alkohol podle Markovnikova', 'hrozí přesmyky'], ['hydroxymerkurace', 'alkohol podle Markovnikova', 'bez přesmyků'], ['hydroborace (BH₃·THF, pak H₂O₂, OH⁻)', 'OH na <b>méně</b> substituovaný uhlík', '<b>syn</b>']])}`)
         + sec('3. Redukce, karbeny a oxidace', `${tbl(['Činidlo', 'Výsledek'], [['H₂, Pd/C nebo PtO₂', 'alkan, syn adice z povrchu katalyzátoru'], [':CCl₂, Simmons–Smith (CH₂I₂, Zn(Cu))', 'cyklopropan'], ['OsO₄, pak NaHSO₃', 'cis-1,2-diol (syn)'], ['HIO₄', 'rozštěpí 1,2-diol na karbonyly'], ['O₃, pak Zn', 'aldehydy a ketony'], ['KMnO₄, H₃O⁺', 'RCH= dá kyselinu, R₂C= keton']])}
         <p class="ac-les-trap"><b>Pozor:</b> u kyselé hydratace jde reakce přes volný karbokation, a ten se může přesmyknout. Hydroborace ani hydroxymerkurace volný karbokation netvoří.</p>`) },
-    { id: 't07a', topic: 't07', n: 1, min: 5, t: 'Alkyny',
+    { id: 't07a', topic: 't07', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], n: 1, min: 5, t: 'Alkyny',
       goal: 'Po lekci víš, jak je stavěná trojná vazba, jak se alkyn hydratuje a redukuje na cis-, nebo trans-alken a proč jde koncový alkyn deprotonovat.',
       recall: 'Tipni si, jestli je kyselejší ethan, ethen, nebo ethyn. Napiš si pořadí.',
       tail: 'Vrať se k pořadí ze začátku: alkyn (pKa 25) > alken (44) > alkan (60). Co jsi nevěděla, zopakuješ zítra.',
