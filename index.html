@@ -989,6 +989,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-uni b{font-size:.7rem;color:#fff;text-shadow:0 0 2px #000}
 .ac-beda{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1.5px dashed var(--pink);background:color-mix(in srgb,var(--pink) 6%,var(--surface))}
 .ac-beda p{margin:0;font-size:.93rem}
+.ac-beda-pic.bd-ico{width:64px;align-self:flex-start;border-radius:50%;overflow:hidden;background:color-mix(in srgb,var(--pink) 14%,var(--surface));border:1.5px solid color-mix(in srgb,var(--pink) 45%,var(--line))}
 .ac-beda-pic{flex:none;width:78px;line-height:0}
 .ac-beda-pic svg,.ac-meme-pic svg{width:100%;height:auto}
 /* --- Pazík: maskot Analytické chemie (kresba a animace, viz blok Pazík v JS) --- */
@@ -31077,6 +31078,15 @@ const FH_OL = (() => {
         <p><b>DCC</b> je kondenzační činidlo: aktivuje karboxylovou kyselinu na O-acylisomočovinu a změní se na dicyklohexylmočovinu.</p>`) }
   ];
   /* memy k lekci: L.mem = indexy v MEMES[téma], bez něj všechny memy tématu */
+  /* Béďa u pomůcky v lekci: jen hlava z kresby v patičce, vlevo jako ikonka v chatu */
+  const bedaHead = () => {
+    const m = document.querySelector('#mascot svg'); if (!m) return '';
+    const c = m.cloneNode(true);
+    ['role', 'aria-label', 'width', 'height', 'id'].forEach(a => c.removeAttribute(a));
+    c.setAttribute('aria-hidden', 'true'); c.setAttribute('viewBox', '38 22 124 124');
+    c.querySelectorAll('.legs, .pose-b > *, .pose-f > *').forEach(e => e.remove());
+    return c.outerHTML;
+  };
   const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem || M.map((_, i) => i)).filter(i => M[i]).map(i => [M[i], L.topic + ':' + i]); };
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
@@ -31115,7 +31125,7 @@ const FH_OL = (() => {
     const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
     const L = BY[O.open], fk = fhFocusKey(b, ATT);
     if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
-    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' }) });
+    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' }) });
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
       b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
