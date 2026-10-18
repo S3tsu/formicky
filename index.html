@@ -989,7 +989,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-uni b{font-size:.7rem;color:#fff;text-shadow:0 0 2px #000}
 .ac-beda{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1.5px dashed var(--pink);background:color-mix(in srgb,var(--pink) 6%,var(--surface))}
 .ac-beda p{margin:0;font-size:.93rem}
-.ac-beda-pic.bd-ico{width:64px;align-self:flex-start;border-radius:50%;overflow:hidden;background:color-mix(in srgb,var(--pink) 14%,var(--surface));border:1.5px solid color-mix(in srgb,var(--pink) 45%,var(--line))}
+.ac-beda-pic.bd-ico{width:84px;align-self:flex-start}
 .ac-beda-pic{flex:none;width:78px;line-height:0}
 .ac-beda-pic svg,.ac-meme-pic svg{width:100%;height:auto}
 /* --- Pazík: maskot Analytické chemie (kresba a animace, viz blok Pazík v JS) --- */
@@ -31079,12 +31079,13 @@ const FH_OL = (() => {
   ];
   /* memy k lekci: L.mem = indexy v MEMES[téma], bez něj všechny memy tématu */
   /* Béďa u pomůcky v lekci: jen hlava z kresby v patičce, vlevo jako ikonka v chatu */
-  const bedaHead = () => {
+  const bedaHead = i => {
     const m = document.querySelector('#mascot svg'); if (!m) return '';
     const c = m.cloneNode(true);
     ['role', 'aria-label', 'width', 'height', 'id'].forEach(a => c.removeAttribute(a));
-    c.setAttribute('aria-hidden', 'true'); c.setAttribute('viewBox', '38 22 124 124');
-    c.querySelectorAll('.legs, .pose-b > *, .pose-f > *').forEach(e => e.remove());
+    c.setAttribute('aria-hidden', 'true'); c.setAttribute('viewBox', '0 0 200 168');
+    c.querySelector('.legs').remove();
+    bedaPose(c, i == null ? Math.floor(Math.random() * BEDA_POSES.length) : i);   // pokaždé jiná póza (67, ruce, lupa, kafe, kapsle)
     return c.outerHTML;
   };
   const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem || M.map((_, i) => i)).filter(i => M[i]).map(i => [M[i], L.topic + ':' + i]); };
