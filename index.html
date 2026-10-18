@@ -8898,14 +8898,20 @@ function registerTopic(T) {
     memes: [
       [['CH₂XY', 'Podívej, v zrcadle jsem úplně stejný.'], ['CHXYZ', 'Já ne. Čtyři různé ruce, a jsem chirální.']],
       [['(R)-limonen', 'Voním po pomerančích.'], ['(S)-limonen', 'Stejný vzorec, ale já jsem citron.'], ['Nos', 'Já jsem chirální receptor, poznám vás.']],
-      [['(R)-karvon', 'Máta.'], ['(S)-karvon', 'Kmín.'], ['Student', 'A to se liší jen klínkem?']],
+      [['(R)-karvon', 'Máta.'], ['(S)-karvon', 'Kmín.'], ['Já u testu', 'A to se liší jen klínkem?']],
       [['meso-kyselina vinná', 'Mám dvě stereocentra, a stejně točím nula.'], ['(R,R)-kyselina vinná', 'Protože máš uvnitř zrcadlo.']],
       [['Karbokation', 'Jsem plochý, Br⁻ může přijít shora i zdola.'], ['2-Brombutan', 'Takže mě bude půl R a půl S. Racemát.']],
       [['Br⁻', 'Bromoniový ion mi zakrývá jednu stranu.'], ['trans-But-2-en', 'Tak přijď zezadu a udělej ze mě meso.']],
       [['Amin', 'Mám tři různé skupiny a pár, jsem chirální!'], ['Deštník', 'Jen dokud se nepřeklopíš. A to děláš pořád.'], ['Fosfan', 'Já se překlápím pomalu, mě oddělíš.']],
       [['Fischerova projekce', 'Vodorovně k tobě, svisle od tebe.'], ['H vodorovně', 'Takže až určíš R, napiš S.']],
       [['Polarimetr', '[α] = α / (c · l).'], ['Racemát', 'Já ti vrátím nulu. (+) a (−) se vyruší.']],
-      [['Butanon', 'Shora Re, zespodu Si.'], ['H⁻', 'Ze strany Re dělám (S)-butan-2-ol.'], ['NaBH₄', 'Já vám to bez enzymu stejně udělám 50 : 50.']]
+      [['Butanon', 'Shora Re, zespodu Si.'], ['H⁻', 'Ze strany Re dělám (S)-butan-2-ol.'], ['NaBH₄', 'Já vám to bez enzymu stejně udělám 50 : 50.']],
+      [['–CHO', 'Mám jen jeden kyslík, tak proč se počítám jako C s (O, O, H)?'], ['CIP', 'Dvojná vazba se počítá dvakrát. Zdvojený atom.'], ['–CH₂OH', 'A já s (O, H, H) prohrávám.']],
+      [['(R)-kyselina mléčná', 'Jsem R, takže točím doprava, ne?'], ['Polarimetr', 'Omyl, naměřím ti (−).'], ['CIP', 'R/S je jen moje písmenko. S (+)/(−) nesouvisí.']],
+      [['COOH', 'Mám tři kyslíky, musím vyhrát!'], ['OH', 'Já mám kyslík přímo na stereocentru. Rozhoduje první atom.'], ['Já u testu', 'Takže OH > COOH > CH₃ > H.']],
+      [['Kyselina vinná', 'Dvě stereocentra, to je 2² = 4 stereoizomery.'], ['Meso forma', 'Jenže (R,S) a (S,R) jsem já, jen dvakrát.'], ['Já u testu', 'Takže tři. Napsat 4 je klasika.']],
+      [['(2R,3R)', 'Se (2S,3S) jsme enantiomery, teplotu tání máme stejnou.'], ['(2R,3S)', 'Já jsem diastereomer. Mám jiné fyzikální vlastnosti.']],
+      [['Achirální výchozí látka', 'Vznikne ze mě jeden enantiomer?'], ['Achirální činidlo', 'Nikdy. Vždycky racemát.'], ['Enzym', 'Leda bych přišel já.']]
     ],
     mols: [
       // ----- en
@@ -9821,11 +9827,20 @@ function registerTopic(T) {
       [['Nukleofil', 'Jdu na uhlík zepředu.'], ['Br', 'Tam sedím já.'], ['SN2', 'Takže zezadu. A konfigurace se obrátí jako deštník ve větru.']],
       [['Neopentylbromid', 'Jsem primární, tak proč jsem tak pomalý?'], ['terc-butyl vedle', 'Protože já ti stojím přímo za zády.']],
       [['Voda', 'Obejmu každý anion vodíkovými vazbami.'], ['Nukleofil', 'Pusť mě, nemůžu útočit.'], ['DMSO', 'Já obejmu jen Na⁺. Ty jdi, jsi volný.']],
-      [['terc-Butylový kation', 'Jsem planární, nukleofil mě může napadnout z obou stran.'], ['Chirální substrát', 'Takže ze mě bude racemát?'], ['Br⁻', 'Skoro. Chvíli ještě stojím u tebe jako iontový pár.']],
+      [['Karbokation', 'Jsem planární, nukleofil mě může napadnout z obou stran.'], ['(R)-substrát', 'Takže ze mě bude racemát?'], ['Br⁻', 'Skoro. Chvíli u tebe stojím jako iontový pár a jednu stranu stíním.']],
       [['2-Brombutan', 'Kterou dvojnou vazbu udělám?'], ['Zajcev', 'Tu víc substituovanou. But-2-en 81 %.'], ['t-BuOK', 'Se mnou ne. Jsem moc objemný, beru krajní vodíky.']],
       [['H', 'Stojím nahoře v ekvatoriální poloze.'], ['Cl', 'Já jsem axiálně dole.'], ['E2', 'Tak to nic. Potřebuju vás oba axiálně, naproti sobě.']],
       [['C–H', 'Rozštěpíš mě rychle.'], ['C–D', 'Mě o 5 kJ·mol⁻¹ hůř. Sedmkrát pomaleji.'], ['E2', 'Takže štěpení C–H je v kroku určujícím rychlost.']],
-      [['Ethoxid', 'Na terciární uhlík se nedostanu.'], ['terc-Butylbromid', 'Tak mi aspoň vezmi vodík.'], ['Výsledek', '97 % 2-methylpropenu.']]
+      [['Ethoxid', 'Na terciární uhlík se nedostanu.'], ['terc-Butylbromid', 'Tak mi aspoň vezmi vodík.'], ['Výsledek', '97 % 2-methylpropenu.']],
+      [['SN2', 'Moje rychlost závisí na [RX] i [Nu].'], ['SN1', 'Mně stačí v = k [RX].'], ['Nukleofil', 'Tak proč na mě vůbec čekáš?'], ['SN1', 'Přijdeš až po pomalém kroku.']],
+      [['SN2', 'Převrátila jsem geometrii, takže z R je S.'], ['CIP', 'Počkej, záleží na prioritě nového substituentu.'], ['Já u testu', 'Obrat geometrie ještě neznamená obrat písmenka.']],
+      [['Benzylbromid', 'Jsem primární, a stejně jdu SN1.'], ['Tabulka SN2', 'Primární přece patří mně!'], ['Benzylový kation', 'Jsem dost stabilní, tak to zvládnu sám.']],
+      [['H', 'Stojím nahoře a X taky nahoře. Půjde to?'], ['E2', 'Ne. Potřebuju vás naproti sobě, 180°, v jedné rovině.'], ['E1', 'Mně je to jedno, já mám karbokation.']],
+      [['Menthylchlorid', 'Zajcev mi slíbil víc substituovaný alken.'], ['Kruh', 'Jenže axiální H proti tvému Cl mám jen na jednom sousedovi.'], ['2-Menthen', 'Takže vyhraju já, méně substituovaný.']],
+      [['1-Brombutan', 'Ethoxide, eliminuješ mě?'], ['Ethoxid', 'U primárního vyhraje SN2.'], ['t-BuOK', 'Na tebe musím já. Objemná báze, but-1-en.']],
+      [['CN⁻', 'Jsem aniont, takže u sekundárního dělám E2?'], ['Diagram', 'Ne, silná báze nejsi. Silné a nebazické jdou SN2.'], ['EtO⁻', 'E2 je moje parketa.']],
+      [['Terciární halogenid ve vodě', 'Za studena dám hlavně alkohol.'], ['Kahan', 'A za tepla?'], ['Alken', 'Pak je tu víc mě. Teplo vždycky táhne k eliminaci.']],
+      [['2-Brompropan', 'Jsem sekundární, nevím, co se mnou bude.'], ['CH₃COO⁻', 'Jsem slabá báze. Ester, 100 % SN2.'], ['EtO⁻', 'Se mnou propen, asi 80 % E2.']]
     ],
     mols: [
       // ----- nom
@@ -10585,7 +10600,13 @@ function registerTopic(T) {
       [['Aceton', 'Šest vodíků, a všechny stejné.'], ['¹H NMR', 'Tak dostaneš jeden singlet a nic víc.']],
       [['TMS', 'Já jsem nula.'], ['OCH₃', 'Mě kyslík odstínil, jsem až na 3,7.'], ['CH₃C=O', 'A já se držím u 2,1.']],
       [['¹²C', 'Spin nemám, do NMR nejdu.'], ['¹³C', 'Já jo, ale je mě jen 1,1 %. Musíte mě sčítat tisíckrát.']],
-      [['FID', 'Jsem jen napětí, které v čase slábne.'], ['Fourierova transformace', 'A já z tebe udělám spektrum.']]
+      [['FID', 'Jsem jen napětí, které v čase slábne.'], ['Fourierova transformace', 'A já z tebe udělám spektrum.']],
+      [['Rádiové vlny', 'Mám nejmenší energii ze všech.'], ['NMR', 'A mně stačíte.'], ['UV', 'Já mám kratší vlnovou délku než vy, a tedy víc energie.']],
+      [['O–H', 'Bydlím nad 2500, u vazeb k vodíku.'], ['C≡N', 'Já mezi 2500 a 2000, trojná vazba.'], ['Otisk prstu', 'A já pod 1500. Každá látka mě má jiný.']],
+      [['M − 15', 'Někdo nám utekl.'], ['MS', 'Patnáctka je methyl.'], ['M − 29', 'U mě ethyl. A u M − 43 propyl.']],
+      [['Elektrony', 'Stíníme jádro, signál jde doprava, k nižšímu δ.'], ['Kyslík', 'Já je odtáhnu. Odstíním a posunu signál doleva.'], ['Já u testu', 'Odstíněný = vlevo = vyšší δ.']],
+      [['Toluen', 'Mám sedm uhlíků.'], ['¹³C NMR', 'Ale jen pět signálů, ekvivalentní uhlíky mají jeden společný.'], ['Hexan', 'U mě je šest uhlíků a jen tři signály.']],
+      [['CH₃C=O v ethyl-acetátu', 'Kolik mám sousedů? Karbonyl žádné H nemá.'], ['n + 1', 'Tak 0 + 1, jsi singlet.'], ['OCH₂', 'A já kvartet, vedle mám CH₃.']]
     ],
     mols: [
       // ----- msi
@@ -11112,13 +11133,16 @@ function registerTopic(T) {
     },
     memes: [
       [['Penta-1,4-dien', 'Mám dvě dvojné vazby, ale nic mezi námi není.'], ['CH₂', 'Já jsem ten, kdo stojí mezi vámi.'], ['Buta-1,3-dien', 'U nás si π elektrony podávají ruce.']],
-      [['Buta-1,3-dien', 'Hydrogenace mě stojí jen 236 kJ·mol⁻¹.'], ['Penta-1,4-dien', 'Mě 253.'], ['Konjugace', '16 kJ·mol⁻¹ je moje stabilizace.']],
+      [['Buta-1,3-dien', 'Hydrogenací uvolním jen 236 kJ·mol⁻¹.'], ['Dva izolované alkeny', 'My bychom pustili 2 × 126 = 252.'], ['Konjugace', 'Těch 16 kJ·mol⁻¹ rozdílu je moje stabilizace.']],
       [['H⁺', 'Sednu si na C2.'], ['Primární kation', 'Tak to bych byl já. Radši ne.'], ['H⁺', 'Dobře, C1. Vznikne allylový kation.']],
       [['Allylový kation', 'Kladný náboj mám na C2 i na C4.'], ['Br⁻', 'Při 0 °C skončím hlavně na C2. Při 40 °C se adukty vracejí do rovnováhy a vyhraje C4.']],
       [['1,2-Adukt', 'Jsem rychlejší!'], ['1,4-Adukt', 'Ale já jsem stabilnější. Počkej, až se ohřeje na 40 °C.']],
       [['ψ₂', 'Jsem HOMO, mám jednu uzlovou rovinu.'], ['ψ₃*', 'Já LUMO, mám dvě. Pošli mi elektron, stačí UV foton.']],
       [['Hexatrien', 'Moje λmax je 258 nm.'], ['Oktatetraen', '290.'], ['β-Karoten', '455 a jsem vidět. Oranžově.']],
-      [['11-cis-Retinal', 'Svítí na mě světlo!'], ['Světlo', 'Narovnej se na trans. Z rhodopsinu je metarhodopsin II a vidíme.']]
+      [['11-cis-Retinal', 'Svítí na mě světlo!'], ['Světlo', 'Narovnej se na trans. Z rhodopsinu je metarhodopsin II a vidíme.']],
+      [['Vazba C2–C3 v butadienu', 'Mám 148 pm.'], ['C–C v butanu', 'Já 153. Proč jsi kratší?'], ['Vazba C2–C3', 'Tvoří mě orbitaly sp² a π elektrony sahají i ke mně.']],
+      [['40 °C', 'Všechno je vratné, adukty se rozpadají a znovu vznikají.'], ['1,2-Adukt', 'Tak mi nestačí být rychlý?'], ['1,4-Adukt', 'Ne. Rozhoduje stabilita, vnitřní dvojná vazba, 85 %.']],
+      [['β-Karoten', 'Mám tak dlouhou konjugaci, že pohltím modré světlo.'], ['Mrkev', 'Proto jsem oranžová.'], ['Vitamin A', 'A já z tebe v těle vzniknu.']]
     ],
     mols: [
       // ----- zak
@@ -11921,7 +11945,13 @@ function registerTopic(T) {
       [['Cl', 'Indukčně elektrony beru, kruh zpomalím.'], ['Volný pár Cl', 'Ale rezonancí pomůžu σ-komplexu v ortho a para.'], ['Chlorbenzen', 'Para 64 %, meta 1 %.']],
       [['Fenol', 'Nitruji se tisíckrát rychleji než benzen.'], ['Nitrobenzen', 'Já 6 × 10⁻⁸. Nechte mě být.']],
       [['Chlorbenzen', 'NaOH mi nic neudělá.'], ['340 °C, 18 MPa', 'Opravdu?'], ['Benzyn', 'Na chvilku jsem tu já. Pak fenol.']],
-      [['Meisenheimerův adukt', 'Nesu záporný náboj.'], ['NO₂ v ortho', 'Podržím ti ho.'], ['NO₂ v meta', 'Já na něj nedosáhnu.']]
+      [['Meisenheimerův adukt', 'Nesu záporný náboj.'], ['NO₂ v ortho', 'Podržím ti ho.'], ['NO₂ v meta', 'Já na něj nedosáhnu.']],
+      [['Cykloheptatrien', 'Tři dvojné vazby v kruhu, 6 π. Jsem aromatický?'], ['CH₂', 'Ne, já jsem sp³ a kruh přerušuju.'], ['Tropyliový kation', 'Odtrhni mu H⁻ a máš mě, aromatického.']],
+      [['Benzen', 'Napadnu NO₂⁺ a na chvíli přijdu o aromaticitu.'], ['σ-Komplex', 'Proto jsem pomalý krok.'], ['H⁺', 'Odcházím a aromaticita je zpátky.']],
+      [['AlCl₃', 'U alkylace jsem katalyzátor.'], ['Keton z acylace', 'Jenže u acylace tě držím u sebe.'], ['Já u testu', 'Katalyzátor jen u alkylace, zapsáno.']],
+      [['NO₂⁺', 'Fenole, kam mám jít?'], ['OH', 'Do ortho a para. σ-Komplex tam podržím oxoniovou strukturou.'], ['m-Nitrofenol', 'A ze mě nevznikne nic, 0 %.']],
+      [['σ-Komplex po ataku ortho', 'Mám kladný náboj na uhlíku s NO₂. To nevydržím.'], ['NO₂', 'Já elektrony beru, nepomůžu ti.'], ['Poloha meta', 'Tak zbydu já.']],
+      [['Dva substituenty v meta', 'Mezi námi je volné místo.'], ['E⁺', 'Tam se nevejdu, je to stericky bráněné.']]
     ],
     mols: [
       // ----- nom
@@ -12849,7 +12879,13 @@ function registerTopic(T) {
       [['Terciární alkohol', 'S HBr to vezmu přes karbokation.'], ['Primární alkohol', 'Já na to mám PBr₃. Zezadu, SN2.']],
       [['SOCl₂', 'Chlor ti dám ze stejné strany, retence.'], ['Pyridin', 'Se mnou ne. Chlorid půjde zezadu, inverze.']],
       [['[O]', 'Primární alkohol, udělám z tebe aldehyd a pak kyselinu.'], ['Terciární alkohol', 'Já nemám na uhlíku žádný vodík.'], ['[O]', 'Tak nic.']],
-      [['Kumen', 'Dám O₂ a kyselinu.'], ['Kumenhydroperoxid', 'Rozpadnu se na dvě suroviny najednou.'], ['Fenol a aceton', 'Jsme tady oba.']]
+      [['Kumen', 'Dej mi O₂.'], ['Kumenhydroperoxid', 'Teď kyselinu a rozpadnu se na dvě suroviny najednou.'], ['Fenol a aceton', 'Jsme tady oba.']],
+      [['RMgX', 'Co dostanu s formaldehydem?'], ['HCHO', 'Primární alkohol o uhlík delší.'], ['Keton', 'Se mnou terciární.']],
+      [['Benzylalkohol', 'Mám benzenový kruh i OH. Jsem fenol?'], ['Fenol', 'Ne, tvoje OH sedí na CH₂. Jsi obyčejný primární alkohol.']],
+      [['(CH₃)₃COH', 'pKa 18, kyselina nic moc.'], ['(CF₃)₃COH', 'Já 5,4. Fluory mi záporný náboj stabilizují.']],
+      [['TsCl', 'Napojím se na kyslík, vazba C–O zůstane. Konfigurace beze změny.'], ['Tosylát', 'A teď jsem výborná odstupující skupina.'], ['CN⁻', 'Tak jdu zezadu. Teprve teď inverze.']],
+      [['Terciární alkohol', 'Dehydratuju se nejsnáz, přes karbokation.'], ['Primární alkohol', 'Já nejhůř.'], ['H₂SO₄', 'Nejdřív vás stejně musím protonovat.']],
+      [['OsO₄', 'Ode mě je cis-diol.'], ['MCPBA a voda', 'Od nás trans-diol, přes epoxid.'], ['Já u testu', 'Osmium = cis, epoxid = trans.']]
     ],
     mols: [
       // ----- nom
@@ -13758,10 +13794,16 @@ function registerTopic(T) {
       [['Allyl(fenyl)ether', 'Při 250 °C se mi allyl přestěhuje.'], ['o-Allylfenol', 'Do polohy ortho, přes šestičlenný kruh. A já jsem zase aromatický.']],
       [['18-crown-6', 'Mám šest kyslíků a díru přesně na K⁺.'], ['KMnO₄', 'Díky, konečně se rozpustím i v benzenu.']],
       [['Thiol', 'Proč všichni odcházejí?'], ['Nos', 'Protože tě cítím už od dveří.']],
-      [['Cystein', 'Dva SH, trocha oxidace…'], ['Cystin', '…a máme disulfidový můstek. Zn/H⁺ nás zase rozdělí.']],
+      [['Dva cysteiny', 'Dvě SH, trocha oxidace…'], ['Cystin', '…a máme disulfidový můstek. Zn/H⁺ nás zase rozdělí.']],
       [['Sulfid', 'H₂O₂, dej mi jeden kyslík.'], ['Sulfoxid', 'Peroxykyselina, dej mi druhý.'], ['Sulfon', 'Teď mám dva a víc nechci.']],
       [['Sulfonium-ylid', 'Napadnu aldehyd a pak odejdu jako dimethylsulfid.'], ['Benzaldehyd', 'A ze mě je styrenoxid.']],
-      [['Dithiolan', 'Schovám ti keton, LiAlH₄ na něj nedosáhne.'], ['HgCl₂', 'A já ho zase vrátím.'], ['Ra-Ni', 'Já ho vrátím jako CH₂.']]
+      [['Dithiolan', 'Schovám ti keton, LiAlH₄ na něj nedosáhne.'], ['HgCl₂', 'A já ho zase vrátím.'], ['Ra-Ni', 'Já ho vrátím jako CH₂.']],
+      [['Epoxid v kyselině', 'Nukleofil jde na terciární uhlík, mám charakter SN1.'], ['OH⁻ bez kyseliny', 'Já jdu vždycky na méně bráněný uhlík. SN2.']],
+      [['terc-Butylether', 'Mě rozštípne už CF₃COOH při 0 °C.'], ['Primární ether', 'Mě až HBr nebo HI.']],
+      [['Alkohol', 'Chci být alkoxid.'], ['NaH', 'Vezmu ti proton a odletím jako H₂.'], ['Williamson', 'Teď mi dej methyl nebo primární halogenid.']],
+      [['NaSH', 'Udělám ti thiol.'], ['Thiolát', 'A hned napadnu další halogenalkan.'], ['Thiomočovina', 'Proto se jde přese mě. Žádný sulfid navíc.']],
+      [['Sulfid', 'Síra dvouvazná.'], ['Sulfoxid', 'Čtyřvazná.'], ['Sulfon', 'Šestivazná. A sulfonamid je můj bratranec.']],
+      [['Trimethylsulfonium', 'Mám na síře kladný náboj.'], ['Báze', 'Tak ti vezmu proton z CH₃ hned vedle.'], ['Ylid', '(CH₃)₂S⁺–CH₂⁻. Plus a mínus vedle sebe.']]
     ],
     mols: [
       /* --- ethery: názvosloví a struktura --- */
@@ -30439,7 +30481,7 @@ const FH_OL = (() => {
         <p>pKa: alkan 60, alken 44, alkyn 25. Acetylidový anion nese náboj v orbitalu sp s 50 % s-charakteru, blízko jádra, a proto je stabilnější. NaNH₂ koncový alkyn deprotonuje, protože NH₃ (36) je slabší kyselina.</p>
         <p>Acetylid pak reaguje s primárním halogenidem mechanismem SN2 a <b>prodlouží řetězec</b>: R–C≡CH → 1. NaNH₂, 2. R′CH₂Br → R–C≡C–CH₂R′.</p>
         <p class="ac-les-trap"><b>Pozor:</b> hydroxid na deprotonaci alkynu nestačí, voda (15,74) je silnější kyselina než alkyn.</p>`) },
-    { id: 't08a', topic: 't08', n: 1, min: 5, t: 'Chiralita a konfigurace R/S',
+    { id: 't08a', topic: 't08', mem: [0, 7, 8, 10, 11, 12], n: 1, min: 5, t: 'Chiralita a konfigurace R/S',
       goal: 'Po lekci najdeš stereogenní centrum, určíš konfiguraci R/S podle pravidel CIP a víš, co měří polarimetr.',
       recall: 'Vezmi do ruky obě dlaně. Proč je nejde na sebe položit tak, aby se kryly? Zkus to vysvětlit jednou větou.',
       tail: 'Vrať se k větě ze začátku. Ruce jsou zrcadlové obrazy, které nejsou totožné, a přesně to je chiralita. Co jsi nevěděla, zopakuješ zítra.',
@@ -30454,18 +30496,18 @@ const FH_OL = (() => {
         + sec('3. R, nebo S', `<p>Natoč molekulu tak, aby skupina s prioritou 4 mířila <b>od tebe</b>. Když 1 → 2 → 3 jde po směru hodinových ručiček, je to <b>R</b>, proti směru <b>S</b>.</p>
         <p class="ac-les-trap"><b>Pozor:</b> když skupina 4 míří k tobě (třeba vodorovné H ve Fischerově projekci), výsledek obrať. A R/S vůbec nesouvisí se znaménkem (+)/(−).</p>
         ${FH_LES.w.rs()}`) },
-    { id: 't08b', topic: 't08', n: 2, min: 5, t: 'Diastereomery, meso a stereochemie reakcí',
+    { id: 't08b', topic: 't08', mem: [1, 2, 3, 4, 5, 6, 9, 13, 14, 15], n: 2, min: 5, t: 'Diastereomery, meso a stereochemie reakcí',
       goal: 'Po lekci rozlišíš enantiomery, diastereomery a meso formu, spočítáš počet stereoizomerů a předpovíš stereochemii adice Br₂ a HBr.',
       recall: 'Vybav si z lekce 1, co je enantiomer. Tipni si, kolik stereoizomerů má kyselina vinná se dvěma stereocentry.',
       tail: 'Vrať se k tipu ze začátku. Kyselina vinná má jen tři stereoizomery, protože jeden je meso. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t08_q36', 't08_q37', 't08_q39', 't08_q41', 't08_q43', 't08_q44', 't08_q49', 't08_q52', 't08_q53', 't08_q57', 't08_q62', 't08_q67'],
-      beda: 'Cis + anti = racemát, trans + anti = meso. Kdo si to zapamatuje jako rýmovačku, nemusí pak kreslit.',
+      beda: 'Br₂ na but-2-en: cis + anti = racemát, trans + anti = meso. Zapamatuj si to jako říkanku a nemusíš pak kreslit.',
       body: () => sec('1. Diastereomery a meso', `<p><b>Diastereomery</b> jsou stereoizomery, které nejsou enantiomery: třeba (2R,3R) a (2R,3S). Mají <b>různé</b> fyzikální vlastnosti. Látka s n stereocentry má nejvýš <b>2ⁿ</b> stereoizomerů.</p>
         <p><b>Meso</b> sloučenina má stereocentra i rovinu symetrie, a proto je achirální. Kyselina vinná má tak jen tři stereoizomery: (R,R), (S,S) a meso.</p>`)
         + sec('2. Stereochemie adic', `${tbl(['Reakce', 'Produkt'], [['HBr na but-1-en', '<b>racemát</b>, planární karbokation se napadá z obou stran stejně'], ['Br₂ na cis-but-2-en (anti)', 'racemát (2R,3R) a (2S,3S)'], ['Br₂ na trans-but-2-en (anti)', '<b>meso</b>-2,3-dibrombutan'], ['HBr na chirální alken', 'diastereomery v nestejném poměru, směs je opticky aktivní']])}
         <p class="aside">Z achirálních látek bez chirálního činidla vznikne vždy racemát.</p>`)
         + sec('3. Další stereocentra a biologie', `<ul class="ac-ul"><li>Dusík v aminu se rychle invertuje jako deštník, enantiomery nejde oddělit. Fosfor a síra v sulfoxidu jsou stálá stereocentra, volný pár má nejnižší prioritu.</li><li><b>Prochirální</b> molekula se jedním krokem změní na chirální (butanon → butan-2-ol). Strany se značí Re a Si.</li><li>Receptory v těle jsou chirální, proto mají enantiomery léčiv různé účinky. (R)-karvon voní po mátě, (S) po kmínu.</li></ul>`) },
-    { id: 't09a', topic: 't09', n: 1, min: 5, t: 'SN2, nebo SN1?',
+    { id: 't09a', topic: 't09', mem: [0, 2, 3, 4, 5, 10, 11, 12], n: 1, min: 5, t: 'SN2, nebo SN1?',
       goal: 'Po lekci podle substrátu, nukleofilu a rozpouštědla odhadneš, jestli substituce poběží SN2, nebo SN1, a co to udělá se stereochemií.',
       recall: 'Zkus si z hlavy vybavit, co znamenají písmena a číslice v názvech SN2 a SN1. Napiš si to na papír, na konci se k tomu vrátíš.',
       tail: 'Vrať se k papíru ze začátku a zkontroluj, co znamená SN2 a SN1. Co jsi nevěděla z hlavy, zopakuješ zítra.',
@@ -30481,7 +30523,7 @@ const FH_OL = (() => {
           ['Rozpouštědlo', 'polární aprotické (HMPA, CH₃CN, DMF, DMSO, aceton). Nukleofil zůstane „nahý“, nejpomaleji to jde v methanolu.', 'polární protické (voda, alkoholy). Stabilizuje karbokation, čím polárnější, tím rychleji.']]))
         + sec('3. Rychlý odhad', `<ul class="ac-ul"><li><b>Methyl a primární</b> → SN2.</li><li><b>Terciární</b> se slabým nukleofilem → SN1. SN2 tam nejde.</li><li><b>Sekundární</b> → rozhodne nukleofil a rozpouštědlo: silný aniont v DMSO → SN2, voda nebo alkohol → SN1.</li><li><b>Allylový a benzylový</b> se slabým nukleofilem → SN1, i když je primární.</li></ul>
         <p class="ac-les-trap"><b>Pozor:</b> silná báze (OH⁻, RO⁻) a teplo táhnou reakci k eliminaci. Tu probereme v další lekci.</p>`) },
-    { id: 't09b', topic: 't09', n: 2, min: 5, t: 'E2, nebo E1?',
+    { id: 't09b', topic: 't09', mem: [6, 7, 8, 13, 14, 15], n: 2, min: 5, t: 'E2, nebo E1?',
       goal: 'Po lekci odhadneš, kterým mechanismem eliminace poběží, který alken převládne a proč u E2 záleží na prostorovém uspořádání.',
       recall: 'Vybav si z lekce 1, čím se liší SN2 a SN1. Zkus si tipnout, co by mohlo platit pro E2 a E1.',
       tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s tím, co teď víš o E2 a E1. Co jsi nevěděla z hlavy, zopakuješ zítra.',
@@ -30494,7 +30536,7 @@ const FH_OL = (() => {
         <ul class="ac-ul"><li><b>Objemná báze</b> (t-BuOK) odtrhne stericky přístupnější H z CH₃, a převládne méně substituovaný alken.</li><li><b>Primární halogenid</b> eliminuje E2 jen se silnou a objemnou bází (t-BuOK, LDA). Jinak vyhraje SN2.</li><li><b>Teplo</b> podporuje eliminaci před substitucí.</li><li><b>Alkohol s H₂SO₄</b> (terciární) eliminuje mechanismem E1: dehydratace.</li></ul>`)
         + sec('3. E2 na cyklohexanu', `<p>Na kruhu jsou antiperiplanární jen <b>axiální H a axiální X</b>, tedy trans-diaxiálně. Z konformace s ekvatoriálním halogenem E2 neproběhne.</p>
         <p class="ac-les-trap"><b>Pozor:</b> proto menthylchlorid s ethoxidem nedá Zajcevův alken. Po překlopení kruhu má axiální H proti Cl jen na jednom sousedním uhlíku, a vznikne méně substituovaný 2-menthen.</p>`) },
-    { id: 't09c', topic: 't09', n: 3, min: 5, t: 'Substituce, nebo eliminace?',
+    { id: 't09c', topic: 't09', mem: [9, 16, 17, 18], n: 3, min: 5, t: 'Substituce, nebo eliminace?',
       goal: 'Po lekci projdeš rozhodovací diagram a u halogenidu odhadneš, jestli převládne SN1, SN2, E1, nebo E2.',
       recall: 'Vybav si z lekcí 1 a 2, co chce SN2, co SN1 a co E2. Zkus si na papír napsat, na co by ses ptala jako první, když máš rozhodnout mezi nimi.',
       tail: 'Vrať se k papíru ze začátku a porovnej svou první otázku s diagramem. Co jsi nevěděla z hlavy, zopakuješ zítra.',
@@ -30512,7 +30554,7 @@ const FH_OL = (() => {
           ['2-brompropan + CH₃COONa', 'ester, 100 % (SN2)', 'acetát je slabá báze'], ['2-brompropan + CH₃CH₂ONa', 'propen, asi 80 % (E2)', 'ethoxid je silná báze'],
           ['terciární bromid + ethanol', 'ether, asi 80 % (SN1)', 'bez báze, přes karbokation'], ['terciární bromid + CH₃CH₂ONa', 'alken, asi 97 % (E2)', 'silná báze']])}
         <p class="ac-les-trap"><b>Pozor:</b> zvýšená teplota vždy podporuje eliminaci. Stejný terciární halogenid dá ve vodě za tepla víc alkenu než za studena.</p>`) },
-    { id: 't10a', topic: 't10', n: 1, min: 5, t: 'IČ a hmotnostní spektrometrie',
+    { id: 't10a', topic: 't10', mem: [0, 1, 2, 3, 4, 10, 11, 12], n: 1, min: 5, t: 'IČ a hmotnostní spektrometrie',
       goal: 'Po lekci víš, na co odpovídá která spektrální metoda, najdeš v IČ spektru hlavní pásy a z hmotnostního spektra vyčteš molekulový ion, ztráty fragmentů a izotopy Cl a Br.',
       recall: 'Tipni si, které záření má větší energii: UV, nebo infračervené. A proč?',
       tail: 'Vrať se k tipu ze začátku. UV má kratší vlnovou délku, a tedy vyšší energii. Co jsi nevěděla, zopakuješ zítra.',
@@ -30526,7 +30568,7 @@ const FH_OL = (() => {
         <p>Keton C=O 1715, ester 1735 (a C–O 1250 a 1050), alkohol široký O–H kolem 3350 cm⁻¹.</p>`)
         + sec('3. Hmotnostní spektrum', `<p>Při ionizaci nárazem elektronu (70 eV) vznikne z molekuly <b>kationradikál M⁺•</b>, molekulový ion. Spektrometr: iontový zdroj → analyzátor (třeba TOF, kvadrupól) → detektor.</p>
         <ul class="ac-ul"><li><b>Základní pík</b> je nejintenzivnější (100 %), nemusí to být molekulový ion. Hexan: M⁺• 86, základní pík 57.</li><li>Ztráta CH₃ = −15, ethylu −29, propylu −43.</li><li>Jeden Cl: M a M+2 v poměru <b>3 : 1</b>, jeden Br <b>1 : 1</b>, dva Cl 9 : 6 : 1.</li></ul>`) },
-    { id: 't10b', topic: 't10', n: 2, min: 5, t: 'NMR spektroskopie',
+    { id: 't10b', topic: 't10', mem: [5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'NMR spektroskopie',
       goal: 'Po lekci spočítáš signály v ¹³C a ¹H NMR, odhadneš chemický posun a z pravidla n + 1 určíš multiplicitu.',
       recall: 'Tipni si, kolik signálů bude mít aceton v ¹H NMR a proč.',
       tail: 'Vrať se k tipu ze začátku. Aceton má jediný singlet, všech šest H je ekvivalentních. Co jsi nevěděla, zopakuješ zítra.',
@@ -30539,7 +30581,7 @@ const FH_OL = (() => {
         + sec('3. ¹H NMR', `<ul class="ac-ul"><li><b>Počet signálů</b> = počet typů ekvivalentních H.</li><li><b>Integrál</b> = relativní počet H daného typu.</li><li><b>Multiplicita</b>: n sousedních H → n + 1 čar (1 singlet, 2 dublet, 3 triplet, 4 kvartet).</li><li>Protony, které se navzájem štěpí, mají stejnou interakční konstantu J.</li></ul>
         <p class="ac-les-trap"><b>Pozor:</b> v ethyl-acetátu je CH₃C=O singlet, protože soused C=O žádné H nemá. OCH₂ je kvartet a CH₃ ethylu triplet.</p>
         ${FH_LES.w.nmr()}`) },
-    { id: 't11a', topic: 't11', n: 1, min: 5, t: 'Konjugované dieny a UV',
+    { id: 't11a', topic: 't11', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n: 1, min: 5, t: 'Konjugované dieny a UV',
       goal: 'Po lekci vysvětlíš, proč je konjugovaný dien stabilnější, předpovíš 1,2- a 1,4-adukt podle teploty a víš, jak konjugace posouvá absorpci v UV.',
       recall: 'Tipni si, který produkt vznikne rychleji a který je stabilnější, když se HBr aduje na buta-1,3-dien.',
       tail: 'Vrať se k tipu ze začátku. Za studena vyhraje rychlejší 1,2-adukt, za tepla stabilnější 1,4-adukt. Co jsi nevěděla, zopakuješ zítra.',
@@ -30552,7 +30594,7 @@ const FH_OL = (() => {
         + sec('3. UV a vidění', `<p>Foton UV (200–400 nm) převede elektron z HOMO (ψ₂) do LUMO (ψ₃*). Čím delší konjugace, tím menší rozdíl HOMO a LUMO a tím delší λmax: hexatrien 258 nm, oktatetraen 290 nm, β-karoten 455 nm.</p>
         <p>β-Karoten má tak dlouhou konjugaci, že absorbuje modré světlo a je oranžový. V těle z něj vzniká vitamin A a 11-cis-retinal. Ten s opsinem tvoří rhodopsin a světlo přepne jeho dvojnou vazbu z cis na trans, což spustí nervový signál.</p>
         <p class="aside">A = log(Φ₀/Φ), ε = A/(c·l).</p>`) },
-    { id: 't12a', topic: 't12', n: 1, min: 5, t: 'Aromaticita a elektrofilní substituce',
+    { id: 't12a', topic: 't12', mem: [0, 1, 2, 3, 4, 10, 11, 12], n: 1, min: 5, t: 'Aromaticita a elektrofilní substituce',
       goal: 'Po lekci rozhodneš podle Hückelova pravidla, jestli je kruh aromatický, a popíšeš mechanismus SEAr včetně halogenace, nitrace, sulfonace a Friedelových–Craftsových reakcí.',
       recall: 'Tipni si, proč benzen neodbarví bromovou vodu, i když má na papíře tři dvojné vazby.',
       tail: 'Vrať se k tipu ze začátku. Benzen si chrání aromatickou stabilitu, a tak substituuje místo aby adoval. Co jsi nevěděla, zopakuješ zítra.',
@@ -30566,7 +30608,7 @@ const FH_OL = (() => {
         ${tbl(['Reakce', 'Činidlo', 'Elektrofil'], [['bromace', 'Br₂, FeBr₃', 'polarizovaný Br₂'], ['jodace', 'I₂, CuCl₂', 'I⁺'], ['nitrace', 'HNO₃, H₂SO₄', 'NO₂⁺'], ['sulfonace (vratná)', 'oleum nebo konc. H₂SO₄', 'SO₃ / HSO₃⁺']])}`)
         + sec('3. Friedelovy–Craftsovy reakce', `<p><b>Alkylace</b> (RCl, AlCl₃) jde přes karbokation, a ten se může přesmyknout: z 1-chlorbutanu vznikne hlavně sek-butylbenzen. <b>Acylace</b> (RCOCl, AlCl₃) jde přes acyliový ion, který je stabilizovaný rezonancí a nepřesmykuje se.</p>
         <p class="ac-les-trap"><b>Pozor:</b> AlCl₃ je u alkylace katalyzátor, u acylace se ale váže na vzniklý keton.</p>`) },
-    { id: 't12b', topic: 't12', n: 2, min: 5, t: 'Vliv substituentů a nukleofilní substituce',
+    { id: 't12b', topic: 't12', mem: [5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Vliv substituentů a nukleofilní substituce',
       goal: 'Po lekci odhadneš, jestli substituent kruh aktivuje, nebo deaktivuje a kam pošle další skupinu, a víš, kdy jde na aromátu nukleofilní substituce.',
       recall: 'Vybav si z lekce 1, co je σ-komplex. Tipni si, jestli ho OH skupina na kruhu stabilizuje, nebo destabilizuje.',
       tail: 'Vrať se k tipu ze začátku. OH dodá do kruhu volný pár, σ-komplex stabilizuje a orientuje ortho a para. Co jsi nevěděla, zopakuješ zítra.',
@@ -30582,7 +30624,7 @@ const FH_OL = (() => {
         + sec('3. Nukleofilní aromatická substituce', `<p>Chlorbenzen s nukleofily běžně nereaguje: SN2 brání kruh a arylový kation je nestabilní. Jde to dvěma cestami:</p>
         ${tbl(['Mechanismus', 'Kdy'], [['adičně-eliminační (SNAr)', 'silný akceptor (NO₂) v <b>ortho nebo para</b> stabilizuje záporný náboj aduktu'], ['eliminačně-adiční přes benzyn', 'NaOH, 340 °C a vysoký tlak']])}
         <p class="ac-les-trap"><b>Pozor:</b> NO₂ v poloze meta SNAr nepomůže, záporný náboj se na její uhlík nedostane.</p>`) },
-    { id: 't13a', topic: 't13', n: 1, min: 5, t: 'Alkoholy a fenoly: názvy, kyselost a příprava',
+    { id: 't13a', topic: 't13', mem: [0, 1, 2, 3, 4, 5, 10, 11, 12], n: 1, min: 5, t: 'Alkoholy a fenoly: názvy, kyselost a příprava',
       goal: 'Po lekci pojmenuješ alkohol, vysvětlíš vysoké teploty varu, seřadíš alkoholy a fenoly podle kyselosti a víš, jak se alkoholy připravují redukcí a Grignardovou reakcí.',
       recall: 'Tipni si, proč vře propan-1-ol skoro o 100 °C výš než butan, i když mají skoro stejnou hmotnost.',
       tail: 'Vrať se k tipu ze začátku. Alkoholy drží pohromadě vodíkové vazby. Co jsi nevěděla, zopakuješ zítra.',
@@ -30594,7 +30636,7 @@ const FH_OL = (() => {
         <p>Kyselost zvýší vše, co stabilizuje záporný náboj aniontu: fluor indukcí, u fenolu <b>rezonance do kruhu</b>, u p-nitrofenolu navíc nitroskupina. Donory (CH₃, NH₂) v para kyselost fenolu snižují.</p>`)
         + sec('3. Příprava alkoholů', `${tbl(['Cesta', 'Výsledek'], [['hydratace alkenu, hydroborace', 'viz alkeny, hydroborace syn a anti-Markovnikov'], ['NaBH₄', 'aldehydy a ketony → alkoholy'], ['LiAlH₄', 'i karboxylové kyseliny a estery → primární alkoholy, C=C zůstane'], ['RMgX + HCHO', 'primární alkohol o uhlík delší'], ['RMgX + jiný aldehyd / keton', 'sekundární / terciární alkohol']])}
         <p class="ac-les-trap"><b>Pozor:</b> v Grignardově činidle je uhlík δ−, nukleofil a silná báze. Karboxylová kyselina ho proto hned zničí na alkan, místo aby se aduovala.</p>`) },
-    { id: 't13b', topic: 't13', n: 2, min: 5, t: 'Reakce alkoholů a fenolů',
+    { id: 't13b', topic: 't13', mem: [6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Reakce alkoholů a fenolů',
       goal: 'Po lekci víš, jak alkohol dehydratovat, převést na halogenid nebo tosylát (a co se děje s konfigurací), co dá oxidace a jak se vyrábí a používá fenol.',
       recall: 'Vybav si z organiky SN2 a SN1. Tipni si, která z nich poběží u terciárního alkoholu s HBr.',
       tail: 'Vrať se k tipu ze začátku. Terciární alkohol s HBr jde přes karbokation (SN1). Co jsi nevěděla, zopakuješ zítra.',
@@ -30607,7 +30649,7 @@ const FH_OL = (() => {
         + sec('3. Oxidace a fenoly', `<p>Primární alkohol se oxiduje na aldehyd (a dál na kyselinu), sekundární na keton. <b>Terciární se neoxiduje</b>, na uhlíku s OH nemá vodík. U oxidace chromem vznikne chromanový ester a C=O vytvoří eliminace E2.</p>
         <ul class="ac-ul"><li>Fenol se dnes vyrábí <b>kumenovým procesem</b> (vedlejší produkt aceton), dříve z uhlí a z chlorbenzenu s NaOH.</li><li>BHT a BHA jsou fenolové antioxidanty, zachytávají radikály.</li><li>p-Benzochinon a hydrochinon jsou redoxní pár, stejně fungují ubichinony (koenzym Q).</li></ul>
         <p class="ac-les-trap"><b>Pozor:</b> trans-diol dá epoxidace (MCPBA) a otevření vodou, cis-diol OsO₄.</p>`) },
-    { id: 't14a', topic: 't14', n: 1, min: 5, t: 'Ethery a epoxidy',
+    { id: 't14a', topic: 't14', mem: [0, 1, 2, 4, 10, 11, 12], n: 1, min: 5, t: 'Ethery a epoxidy',
       goal: 'Po lekci pojmenuješ ether, připravíš ho Williamsonovou syntézou bez eliminace a předpovíš, kde se ether nebo epoxid rozštěpí.',
       recall: 'Tipni si, jestli je lepší připravit terc-butyl(methyl)ether z methoxidu a terc-butylbromidu, nebo z terc-butoxidu a jodmethanu.',
       tail: 'Vrať se k tipu ze začátku. Terc-butoxid s jodmethanem, protože SN2 chce nebráněný halogenid. Co jsi nevěděla, zopakuješ zítra.',
@@ -30619,7 +30661,7 @@ const FH_OL = (() => {
         + sec('3. Štěpení etherů a epoxidů', `<p>Ethery jsou málo reaktivní (proto rozpouštědla), štěpí je až HBr a HI:</p>
         ${tbl(['Substrát', 'Kam jde X⁻'], [['primární a sekundární alkyly', 'SN2 na méně bráněný uhlík'], ['aryl-alkyl ether', 'vždy na alkyl, vznikne fenol (na aromát SN2 nejde)'], ['terciární, benzylový, allylový', 'SN1/E1 snáz než primární a sekundární, terc-butylether štěpí i CF₃COOH při 0 °C']])}
         <p><b>Epoxid</b> se otevírá snadno kvůli pnutí: v kyselém prostředí jde nukleofil na <b>terciární</b> uhlík (charakter SN1), mezi primárním a sekundárním ale vyhraje méně bráněný. Silný nukleofil bez kyseliny (OH⁻, RMgBr) jde vždy na <b>méně</b> bráněný uhlík (SN2).</p>`) },
-    { id: 't14b', topic: 't14', n: 2, min: 5, t: 'Thioly a sulfidy',
+    { id: 't14b', topic: 't14', mem: [5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Thioly a sulfidy',
       goal: 'Po lekci pojmenuješ sirné sloučeniny podle vaznosti síry, víš, jak se připraví thiol a jak se thiol, disulfid, sulfoxid a sulfon převádějí jeden na druhý.',
       recall: 'Vybav si z bílkovin, co drží pohromadě dva cysteiny. Tipni si, jestli je to oxidace, nebo redukce.',
       tail: 'Vrať se k tipu ze začátku. Disulfidový můstek vzniká oxidací dvou thiolů. Co jsi nevěděla, zopakuješ zítra.',
