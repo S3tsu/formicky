@@ -1198,6 +1198,59 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-du-n span{font-size:.75rem;color:var(--muted);text-align:center;max-width:110px}
 .lx-du-bad{margin:0;color:var(--bad);font-size:.9rem}
 @media (prefers-reduced-motion:reduce){.poured .lx-new *,.ac-tw.lx-on td.lx-open{animation:none!important}}
+.lx-w{display:flex;flex-direction:column;gap:10px;margin-top:6px;padding:12px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--accent-soft) 35%,var(--surface))}
+.lx-out{display:flex;flex-direction:column;gap:8px}
+.lx-sl{display:flex;flex-direction:column;gap:2px;font-size:.82rem;color:var(--muted)}
+.lx-sl input{width:100%;min-height:32px;accent-color:var(--accent)}
+.lx-chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.82rem;color:var(--muted)}
+.lx-big{margin:0;display:flex;flex-direction:column;gap:2px}
+.lx-big b{font:700 1.15rem/1.2 var(--f-display);color:var(--ink)}
+.lx-big span{font-size:.9rem;color:var(--muted)}
+.lx-big .lx-chem{font:600 1rem var(--f-chem);color:var(--ink)}
+.lx-warn{margin:0;color:var(--bad);font-weight:600;font-size:.9rem}
+.lx-okk{margin:0;color:var(--ok);font-weight:600}
+.lx-w svg text{font:12px var(--f-body);fill:var(--muted)}
+/* R/S */
+.lx-rs .lx-out{align-items:flex-start}
+.lx-rs-pic{width:220px;max-width:100%;align-self:center}
+.lx-rs-pic line{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.lx-rs-pic line.lx-dash{stroke-width:2}
+.lx-w .lx-rs-pic > text{font:700 17px var(--f-chem);fill:var(--ink)}
+.lx-wedge{fill:var(--ink)}
+.lx-rs-c{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.lx-w .lx-rs-pic .lx-rs-ct{font:700 13px var(--f-chem);fill:var(--ink)}
+.lx-rs-n circle{fill:var(--accent)} .lx-w .lx-rs-pic .lx-rs-n text{font:700 11px var(--f-body);fill:var(--accent-ink)}
+.lx-rs-arc{fill:none;stroke:var(--pink);stroke-width:3;stroke-dasharray:240;stroke-dashoffset:240;animation:lx-draw .9s ease-out forwards}
+@keyframes lx-draw{to{stroke-dashoffset:0}}
+.lx-rs-b{align-self:stretch}
+.lx-rs-b .btn{flex:1;font:700 1.3rem var(--f-display)}
+/* NMR */
+.lx-nmr-pic{width:100%;max-width:320px}
+.lx-pk{stroke:var(--pink);stroke-width:4;stroke-linecap:round;transition:y2 .25s}
+/* pI */
+.lx-scale{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:-6px}
+.lx-pi-pic{width:100%;max-width:340px}
+.lx-gel{fill:color-mix(in srgb,var(--accent-soft) 70%,var(--surface));stroke:var(--line)}
+.lx-el{fill:var(--surface);stroke:var(--ink);stroke-width:1.5} .lx-w svg .lx-elt{font:700 16px var(--f-body);fill:var(--ink)}
+.lx-start{stroke:var(--muted);stroke-dasharray:3 3}
+.lx-spot{fill:var(--muted);transition:cx .4s ease} .lx-spot.pos{fill:var(--accent)} .lx-spot.neg{fill:var(--pink)}
+/* indikátory a pH */
+.lx-ind-row{display:flex;gap:14px;align-items:center}
+.lw-tube{width:40px;height:86px;flex:none}
+.lx-ph-bar{position:relative;height:14px;border-radius:7px;background:linear-gradient(90deg,var(--line),var(--line))}
+.lx-ph-bar.uni{background:linear-gradient(90deg,#d02a1c 0%,#ee7b1a 21%,#f2cd1f 39%,#3fae5a 61%,#1c3ea0 96%)}
+.lx-ph-bar i{position:absolute;top:0;bottom:0;border-radius:7px;background:var(--pink);opacity:.45}
+.lx-ph-bar b{position:absolute;top:-4px;width:4px;height:22px;margin-left:-2px;border-radius:2px;background:var(--ink)}
+.lx-paper{width:30px;height:70px;border-radius:4px;border:1px solid var(--line);flex:none}
+/* Lambert–Beer */
+.lx-lb-pic{width:100%;max-width:340px}
+.lx-beam{fill:#f2cd1f}
+.lx-cuv{fill:var(--pink);stroke:var(--ink);stroke-width:1.5}
+/* polarimetr */
+.lx-row3{display:flex;gap:10px;flex-wrap:wrap}
+.lx-num{display:flex;flex-direction:column;gap:2px;font-size:.82rem;color:var(--muted)}
+.lx-num input{width:110px;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:600 1rem var(--f-body)}
+@media (prefers-reduced-motion:reduce){.lx-rs-arc{animation:none;stroke-dashoffset:0}.lx-spot,.lx-pk{transition:none}}
 /* režim (Studium, Pojmenuj…, v analytice Procvičování, Tabulka…) jako záložky, aby se lišil od filtrů v kapslích */
 .seg.mode{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0;gap:0;box-shadow:none;overflow-x:auto;scrollbar-width:none}
 .seg.mode::-webkit-scrollbar{display:none}
@@ -29726,6 +29779,147 @@ const FH_LES = (() => {
     const nx = td.closest('tbody').querySelectorAll('td.lx-cov'); tblOpen(td);
     const r = [...nx].find(x => x !== td && x.classList.contains('lx-cov')); if (r) r.focus();
   }, true);
+  /* --- interaktivní pomůcky do výkladu obou předmětů: každá vrací HTML i s počátečním stavem, změny překreslí jen výstup --- */
+  const W = {};
+  const cz = (x, d) => (+x).toFixed(d).replace('.', ',').replace(/^-/, '−');
+  const sup = n => String(n).replace(/[-\d]/g, c => ({ '-': '⁻' }[c] || '⁰¹²³⁴⁵⁶⁷⁸⁹'[c]));
+  /* zkumavka s libovolnou barvou; a = sytost 0–1 (0 = čirá) */
+  const tubeW = (c, a) => `<svg class="lw-tube" viewBox="0 0 48 104" aria-hidden="true"><path d="M9 30 V82 Q9 97 24 97 Q39 97 39 82 V30 Z" fill="var(--ac-water,#e6f1f6)"/><path d="M9 30 V82 Q9 97 24 97 Q39 97 39 82 V30 Z" fill="${c}" fill-opacity="${(+a).toFixed(2)}"/><path d="M6 5 H42 M9 5 V82 Q9 97 24 97 Q39 97 39 82 V5" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/><path d="M14 34 V80" stroke="#fff" stroke-opacity=".5" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+  const box = (k, q, inner) => `<div class="lx-w lx-${k}" data-lw="${k}"><p class="lx-q">${q}</p>${inner}</div>`;
+  const slider = (k, lbl, min, max, step, v) => `<label class="lx-sl">${lbl}<input type="range" min="${min}" max="${max}" step="${step}" value="${v}" data-lwi="${k}"></label>`;
+
+  /* R, nebo S: náhodný stereocentr se třemi skupinami různých prvků a vodíkem v klínku nebo čárkovaně */
+  const RSG = [['I', 53], ['Br', 35], ['Cl', 17], ['F', 9], ['OH', 8], ['NH₂', 7], ['CH₃', 6]];
+  function rsNew(w) {
+    const g = RSG.slice().sort(() => Math.random() - .5).slice(0, 3), ang = [0, 120, 240].sort(() => Math.random() - .5);
+    w.dataset.g = JSON.stringify(g.map((x, i) => [x[0], x[1], ang[i]])); w.dataset.h = Math.random() < .35 ? 'f' : 'b'; w.dataset.done = '';
+  }
+  function rsAns(w) {
+    const g = JSON.parse(w.dataset.g).sort((a, b) => b[1] - a[1]), cw = ((g[1][2] - g[0][2] + 360) % 360) === 120;
+    return { g, cw, rs: cw === (w.dataset.h === 'b') ? 'R' : 'S' };
+  }
+  function rsPic(w) {
+    const { g } = rsAns(w), done = w.dataset.done, P = (a, r) => [100 + r * Math.sin(a * Math.PI / 180), 100 - r * Math.cos(a * Math.PI / 180)];
+    const bonds = g.map(([t, , a], i) => { const [x, y] = P(a, 54), [lx, ly] = P(a, 72), [nx, ny] = P(a + 24, 74);
+      return `<line x1="100" y1="100" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/><text x="${lx.toFixed(1)}" y="${(ly + 5).toFixed(1)}" text-anchor="middle">${t}</text>${done ? `<g class="lx-rs-n"><circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="9"/><text x="${nx.toFixed(1)}" y="${(ny + 4).toFixed(1)}" text-anchor="middle">${i + 1}</text></g>` : ''}`; }).join('');
+    const h = w.dataset.h === 'f'
+      ? '<path d="M100 100 L93 152 L107 152 Z" class="lx-wedge"/>'
+      : [0, 1, 2, 3, 4, 5].map(k => `<line class="lx-dash" x1="${100 - 1 - k * 1.2}" y1="${108 + k * 8}" x2="${100 + 1 + k * 1.2}" y2="${108 + k * 8}"/>`).join('');
+    let arc = '';
+    if (done) { const a0 = g[0][2], sw = rsAns(w).cw ? 1 : 0, a2 = a0 + (sw ? 240 : -240), [x0, y0] = P(a0 + (sw ? 12 : -12), 36), [x2, y2] = P(a2 - (sw ? 12 : -12), 36);
+      arc = `<path class="lx-rs-arc" d="M${x0.toFixed(1)} ${y0.toFixed(1)} A36 36 0 1 ${sw} ${x2.toFixed(1)} ${y2.toFixed(1)}" marker-end="url(#lxArr)"/>`; }
+    return `<svg class="lx-rs-pic" viewBox="0 0 200 200" role="img" aria-label="Stereocentrum: ${g.map(x => x[0]).join(', ')} a vodík ${w.dataset.h === 'f' ? 'v klínku, míří k tobě' : 'čárkovaně, míří od tebe'}"><defs><marker id="lxArr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--pink)"/></marker></defs>
+      ${bonds}${h}<text x="100" y="172" text-anchor="middle">H</text><circle cx="100" cy="100" r="11" class="lx-rs-c"/><text x="100" y="105" text-anchor="middle" class="lx-rs-ct">C</text>${arc}</svg>`;
+  }
+  function rsOut(w) {
+    const n = +w.dataset.n || 0, ok = +w.dataset.ok || 0;
+    if (!w.dataset.done) return `${rsPic(w)}<div class="row lx-rs-b"><button type="button" class="btn" data-lwa="rsR">R</button><button type="button" class="btn" data-lwa="rsS">S</button></div>${n ? `<p class="lx-end">Zatím ${ok} z ${n} správně.</p>` : ''}`;
+    const { cw, rs } = rsAns(w), good = w.dataset.done === rs;
+    return `${rsPic(w)}<div class="fb ${good ? 'ok' : 'bad'}"><p><b>${good ? 'Správně, je to ' + rs + '.' : 'Tohle je ' + rs + '.'}</b> 1 → 2 → 3 jde ${cw ? 'po směru' : 'proti směru'} hodinových ručiček${w.dataset.h === 'f' ? `, ale vodík míří k tobě, takže výsledek obrátíš: ${cw ? 'R → S' : 'S → R'}.` : ' a vodík míří od tebe.'}</p></div>
+      <div class="row"><button type="button" class="btn primary" data-lwa="rsNext">Další molekula</button></div><p class="lx-end">Zatím ${ok} z ${n} správně.</p>`;
+  }
+  W.rs = () => { const w = { dataset: {} }; rsNew(w);
+    return `<div class="lx-w lx-rs" data-lw="rs" data-g='${w.dataset.g}' data-h="${w.dataset.h}"><p class="lx-q"><b>Urči R, nebo S:</b> seřaď skupiny podle protonového čísla a sleduj, kam míří vodík.</p><div class="lx-out">${rsOut(w)}</div></div>`; };
+
+  /* NMR: n sousedních vodíků → n + 1 čar, výšky podle Pascalova trojúhelníku */
+  const MULT = ['singlet', 'dublet', 'triplet', 'kvartet', 'kvintet', 'sextet', 'septet'];
+  const pascal = n => { let r = [1]; for (let i = 0; i < n; i++) r = r.map((v, k) => v + (r[k - 1] || 0)).concat(1); return r; };
+  function nmrOut(n) {
+    const p = pascal(n), mx = Math.max(...p), gap = 22, x0 = 150 - gap * n / 2;
+    return `<svg class="lx-nmr-pic" viewBox="0 0 300 120" role="img" aria-label="${MULT[n]}, ${n + 1} čar v poměru ${p.join(' : ')}"><path d="M10 104H290" class="lx-ax"/>${p.map((v, k) => `<line class="lx-pk" x1="${x0 + k * gap}" x2="${x0 + k * gap}" y1="104" y2="${(104 - 84 * v / mx).toFixed(1)}"/>`).join('')}</svg>
+      <p class="lx-big"><b>${MULT[n]}</b><span>${n} ${n === 1 ? 'soused' : n > 1 && n < 5 ? 'sousedé' : 'sousedů'} → ${n + 1} ${n + 1 === 1 ? 'čára' : n + 1 < 5 ? 'čáry' : 'čar'} v poměru ${p.join(' : ')}</span></p>`;
+  }
+  W.nmr = () => box('nmr', '<b>Rozštěp si signál:</b> kolik sousedních H má vodík, tolik plus jedna čar uvidíš.',
+    `${slider('nmr', 'Počet sousedních H', 0, 6, 1, 2)}<div class="lx-chips"><span>Ethyl-acetát:</span><button type="button" class="chip" data-lwa="nmrv" data-v="0">CH₃C=O</button><button type="button" class="chip" data-lwa="nmrv" data-v="3">OCH₂</button><button type="button" class="chip" data-lwa="nmrv" data-v="2">CH₃ ethylu</button></div><div class="lx-out" aria-live="polite">${nmrOut(2)}</div>`);
+
+  /* aminokyselina při pH pod, na a nad pI: náboj a směr pohybu při elektroforéze */
+  function piOut(d) {
+    const st = d < 0 ? ['kationt', 'H₃N⁺–CH(R)–COOH', 'k zápornému pólu', 'pH < pI'] : d > 0 ? ['aniont', 'H₂N–CH(R)–COO⁻', 'ke kladnému pólu', 'pH > pI'] : ['obojetný ion', 'H₃N⁺–CH(R)–COO⁻', 'nepohybuje se', 'pH = pI'];
+    const x = 150 + d * 30;
+    return `<svg class="lx-pi-pic" viewBox="0 0 300 70" role="img" aria-label="${st[3]}: ${st[0]}, ${st[2]}"><rect x="30" y="22" width="240" height="26" rx="6" class="lx-gel"/><circle cx="18" cy="35" r="13" class="lx-el"/><text x="18" y="40" text-anchor="middle" class="lx-elt">−</text><circle cx="282" cy="35" r="13" class="lx-el"/><text x="282" y="40" text-anchor="middle" class="lx-elt">+</text><line x1="150" y1="18" x2="150" y2="52" class="lx-start"/><circle cx="${x}" cy="35" r="8" class="lx-spot ${d < 0 ? 'pos' : d > 0 ? 'neg' : ''}"/></svg>
+      <p class="lx-big"><b>${st[3]}: ${st[0]}</b><span class="lx-chem">${st[1]}</span><span>V elektrickém poli putuje ${st[2]}.</span></p>`;
+  }
+  W.pi = () => box('pi', '<b>Posuň pH:</b> sleduj náboj aminokyseliny a kam putuje při elektroforéze.',
+    `${slider('pi', 'pH roztoku vzhledem k pI', -3, 3, 1, -2)}<div class="lx-scale"><span>pH pod pI</span><span>pI</span><span>pH nad pI</span></div><div class="lx-out" aria-live="polite">${piOut(-2)}</div>`);
+
+  /* acidobazické indikátory: přechody a barvy podle tabulky v lekci */
+  const IND = [['methyloranž', 3.1, 4.4, '#d02a1c', '#f6a03a', 'červená', 'žlutooranžová'], ['methylčerveň', 4.4, 6.2, '#d02a1c', '#f2cd1f', 'červená', 'žlutá'], ['lakmus', 5.0, 8.0, '#d02a1c', '#2f6fd6', 'červená', 'modrá'],
+    ['bromthymolová modř', 6.0, 7.6, '#f2cd1f', '#2f6fd6', 'žlutá', 'modrá'], ['fenolftalein', 8.2, 10.0, null, '#c2186b', 'bezbarvý', 'malinově fialový'], ['thymolftalein', 9.3, 10.5, null, '#2f6fd6', 'bezbarvý', 'modrý']];
+  const hx = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16)), mixc = (a, b, t) => '#' + hx(a).map((v, i) => Math.round(v + (hx(b)[i] - v) * t).toString(16).padStart(2, '0')).join('');
+  function indOut(i, ph) {
+    const [n, lo, hi, ca, cb, na, nb] = IND[i], t = Math.min(1, Math.max(0, (ph - lo) / (hi - lo)));
+    const c = ca ? mixc(ca, cb, t) : cb, a = ca ? .85 : .85 * t;
+    const st = ph < lo ? `kyselá forma: ${na}` : ph > hi ? `zásaditá forma: ${nb}` : `přechod ${cz(lo, 1)}–${cz(hi, 1)}, barva se mění`;
+    return `<div class="lx-ind-row">${tubeW(c, a)}<p class="lx-big"><b>pH ${cz(ph, 1)}</b><span>${n}: ${st}</span></p></div>
+      <div class="lx-ph-bar" aria-hidden="true"><i style="left:${lo / 14 * 100}%;width:${(hi - lo) / 14 * 100}%"></i><b style="left:${ph / 14 * 100}%"></b></div>`;
+  }
+  W.ind = () => box('ind', '<b>Kápni indikátor:</b> vyber indikátor a posouvej pH.',
+    `<div class="lx-chips">${IND.map((x, i) => `<button type="button" class="chip" data-lwa="indv" data-v="${i}" aria-pressed="${i === 4}">${x[0]}</button>`).join('')}</div>${slider('ind', 'pH roztoku', 0, 14, .1, 7)}<div class="lx-out" aria-live="polite" data-i="4">${indOut(4, 7)}</div>`);
+
+  /* Lambertův–Beerův zákon na modelové látce */
+  const EPS = 2000;
+  function lbOut(c, d) {
+    const A = EPS * d * c / 1000, T = Math.pow(10, -A);
+    return `<svg class="lx-lb-pic" viewBox="0 0 300 90" aria-hidden="true"><rect x="10" y="38" width="100" height="14" class="lx-beam"/><rect x="${210 - 0}" y="38" width="80" height="14" class="lx-beam" style="opacity:${Math.max(.04, T).toFixed(3)}"/>
+      <rect x="${160 - 25 * d}" y="14" width="${50 * d}" height="62" rx="4" class="lx-cuv" style="fill-opacity:${Math.min(.95, .1 + A * .3).toFixed(2)}"/><text x="60" y="30" text-anchor="middle">I₀</text><text x="250" y="30" text-anchor="middle">I</text></svg>
+      <p class="lx-big"><b>A = ${cz(A, 2)}</b><span>A = ε·d·c = ${EPS.toLocaleString('cs')} · ${d} · ${cz(c / 1000, 5)}</span><span>propustnost T = 10${sup('-')}ᴬ = ${T >= .01 ? cz(T * 100, T >= .1 ? 0 : 1) : cz(T * 100, 2)} %</span></p>
+      ${A > 2 ? '<p class="lx-warn">Absorbance je nad 2, vzorek zřeď.</p>' : ''}`;
+  }
+  W.lb = () => box('lb', '<b>Prosviť kyvetu:</b> měň koncentraci a tloušťku kyvety (modelová látka, ε = 2 000 l·mol⁻¹·cm⁻¹).',
+    `${slider('lbc', 'Koncentrace c (mmol/l)', 0, 1.5, .05, .5)}<div class="lx-chips"><span>Kyveta d:</span><button type="button" class="chip" data-lwa="lbd" data-v="1" aria-pressed="true">1 cm</button><button type="button" class="chip" data-lwa="lbd" data-v="2" aria-pressed="false">2 cm</button></div><div class="lx-out" aria-live="polite" data-d="1">${lbOut(.5, 1)}</div>`);
+
+  /* pH silné kyseliny, silné zásady a kyseliny octové podle vzorců z lekce; barva jako na univerzálním papírku */
+  const UNI = [[1, '#d02a1c'], [3, '#ee7b1a'], [5.5, '#f2cd1f'], [8.5, '#3fae5a'], [13.5, '#1c3ea0']];
+  const uni = ph => { for (let i = 1; i < UNI.length; i++) if (ph <= UNI[i][0]) return mixc(UNI[i - 1][1], UNI[i][1], Math.max(0, (ph - UNI[i - 1][0]) / (UNI[i][0] - UNI[i - 1][0]))); return UNI[UNI.length - 1][1]; };
+  const PHT = [['silná kyselina', 'pH = −log c'], ['silná zásada', 'pOH = −log c, pH = 14 − pOH'], ['kyselina octová (pKa 4,75)', 'pH = ½(pKa − log c)']];
+  function phOut(t, e) {
+    const c = Math.pow(10, e), lg = e, ph = t === 0 ? -lg : t === 1 ? 14 + lg : .5 * (4.75 - lg);
+    const cs = c >= 1 ? '1' : cz(c, Math.max(0, -Math.floor(e) + (e % 1 ? 1 : 0)));
+    const step = t === 0 ? `pH = −log ${cs} = ${cz(ph, 2)}` : t === 1 ? `pOH = −log ${cs} = ${cz(-lg, 2)}, pH = 14 − ${cz(-lg, 2)} = ${cz(ph, 2)}` : `pH = ½(4,75 − (${cz(lg, 2)})) = ${cz(ph, 2)}`;
+    return `<div class="lx-ind-row"><span class="lx-paper" style="background:${uni(ph)}" aria-hidden="true"></span><p class="lx-big"><b>pH ${cz(ph, 2)}</b><span>c = ${cs} mol/l · ${step}</span></p></div>
+      <div class="lx-ph-bar uni" aria-hidden="true"><b style="left:${Math.min(14, Math.max(0, ph)) / 14 * 100}%"></b></div>`;
+  }
+  W.ph = () => box('ph', '<b>Spočítej pH:</b> vyber roztok a koncentraci. Proužek má barvu univerzálního papírku.',
+    `<div class="lx-chips">${PHT.map((x, i) => `<button type="button" class="chip" data-lwa="pht" data-v="${i}" aria-pressed="${!i}">${x[0]}</button>`).join('')}</div>${slider('ph', 'Koncentrace c: 10⁻⁴ až 1 mol/l', -4, 0, .5, -2)}<div class="lx-out" aria-live="polite" data-t="0">${phOut(0, -2)}</div>`);
+
+  /* specifická otáčivost a určení cukru podle tabulky z lekce */
+  const SUG = [['D-glukosa', 52.5, 53.3], ['sacharosa', 66.3, 67.0], ['D-fruktosa', -93.5, -91.0]];
+  function rotOut(a, l, c) {
+    if (!(c > 0)) return '<p class="lx-warn">Zadej koncentraci větší než 0.</p>';
+    const s = 1000 * a / (l * c), hit = SUG.find(x => s >= x[1] - .3 && s <= x[2] + .3);
+    return `<p class="lx-big"><b>[α] = ${s > 0 ? '+' : ''}${cz(s, 1)}°</b><span>[α] = 1000 · ${cz(a, 2)} / (${l} dm · ${cz(c, 1)} g/l)</span></p>
+      <p class="${hit ? 'lx-okk' : 'lx-end'}">${hit ? `Odpovídá to: ${hit[0]} (${cz(hit[1], 1)} až ${cz(hit[2], 1)}°).` : 'Neodpovídá žádnému cukru z tabulky v lekci.'}</p>`;
+  }
+  W.rot = () => box('rot', '<b>Urči cukr:</b> zadej naměřený úhel, délku kyvety a koncentraci.',
+    `<div class="lx-row3"><label class="lx-num">úhel α (°)<input type="number" step="0.05" value="5.3" data-lwi="rota"></label><label class="lx-num">c (g/l)<input type="number" step="1" min="0" value="50" data-lwi="rotc"></label></div>
+     <div class="lx-chips"><span>Kyveta:</span><button type="button" class="chip" data-lwa="rotl" data-v="1" aria-pressed="false">10 cm = 1 dm</button><button type="button" class="chip" data-lwa="rotl" data-v="2" aria-pressed="true">20 cm = 2 dm</button></div><div class="lx-out" aria-live="polite" data-l="2">${rotOut(5.3, 2, 50)}</div>`);
+
+  function wUpd(w) {
+    const k = w.dataset.lw, o = w.querySelector('.lx-out'), v = s => { const i = w.querySelector(`[data-lwi="${s}"]`); return i ? +String(i.value).replace(',', '.') : 0; };
+    if (k === 'nmr') o.innerHTML = nmrOut(v('nmr'));
+    else if (k === 'pi') o.innerHTML = piOut(v('pi'));
+    else if (k === 'ind') o.innerHTML = indOut(+o.dataset.i, v('ind'));
+    else if (k === 'lb') o.innerHTML = lbOut(v('lbc'), +o.dataset.d);
+    else if (k === 'ph') o.innerHTML = phOut(+o.dataset.t, v('ph'));
+    else if (k === 'rot') o.innerHTML = rotOut(v('rota'), +o.dataset.l, v('rotc'));
+  }
+  document.addEventListener('input', e => { const i = e.target.closest && e.target.closest('[data-lwi]'); if (i) wUpd(i.closest('[data-lw]')); });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-lwa]'); if (!b) return;
+    const w = b.closest('[data-lw]'), a = b.dataset.lwa, o = w.querySelector('.lx-out'), v = b.dataset.v;
+    const press = () => w.querySelectorAll(`[data-lwa="${a}"]`).forEach(x => x.setAttribute('aria-pressed', x === b));
+    if (a === 'rsR' || a === 'rsS') {
+      w.dataset.done = a.slice(2); w.dataset.n = (+w.dataset.n || 0) + 1; if (rsAns(w).rs === w.dataset.done) w.dataset.ok = (+w.dataset.ok || 0) + 1;
+      o.innerHTML = rsOut(w); const nb = o.querySelector('[data-lwa="rsNext"]'); if (nb) nb.focus({ preventScroll: true });
+      if (typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim()); return;
+    }
+    if (a === 'rsNext') { rsNew(w); o.innerHTML = rsOut(w); const r = o.querySelector('[data-lwa="rsR"]'); if (r) r.focus({ preventScroll: true }); return; }
+    if (a === 'nmrv') { w.querySelector('[data-lwi="nmr"]').value = v; return wUpd(w); }
+    if (a === 'indv') { o.dataset.i = v; press(); return wUpd(w); }
+    if (a === 'lbd') { o.dataset.d = v; press(); return wUpd(w); }
+    if (a === 'pht') { o.dataset.t = v; press(); return wUpd(w); }
+    if (a === 'rotl') { o.dataset.l = v; press(); return wUpd(w); }
+  });
   /* záznam o dokončení: nejlepší výsledek a počet průchodů */
   const rec = (prev, n, ok, d) => ({ d, n, ok, best: Math.max((prev && prev.best) || 0, ok), k: ((prev && prev.k) || 0) + 1 });
   /* sloučení pokroku lekcí ze zálohy: vyhrává záznam s víc průchody, nejlepší výsledek se nikdy nesníží; ze zálohy se berou jen čísla */
@@ -29785,7 +29979,7 @@ const FH_LES = (() => {
     const G = {}; lessons.forEach(L => { (G[group(L)] = G[group(L)] || []).push(L); });
     Object.values(G).forEach(g => { const m = num(g[0]); if (!m) return; g.sort((a, b) => a.n - b.n).forEach((L, i) => { L.n = m[1] + (g.length > 1 ? '.' + 'abcdefghijklmnopqrstuvwxyz'[i] : ''); }); });
   }
-  return { list, read, end, rec, merge, reg, next, open, hub, number, ord };
+  return { list, read, end, rec, merge, reg, next, open, hub, number, ord, w: W };
 })();
 
 /* ===== Organická chemie: lekce nad otázkami z přednášek =====
@@ -29906,6 +30100,7 @@ const FH_OL = (() => {
         + sec('2. Vazba σ a π', `<p>Vazba <b>σ</b> vzniká čelním překryvem orbitalů podél osy mezi jádry. Vazba <b>π</b> vzniká bočním překryvem orbitalů p a je slabší, proto má C=C (611 kJ·mol⁻¹) méně než dvojnásobek C–C (376). Podle teorie MO patří orbital celé molekule: vazebný MO je součtem atomových orbitalů a má nižší energii.</p>`)
         + sec('3. Hybridizace a tvar molekuly', `${tbl(['', 'sp³', 'sp²', 'sp'], [['Příklad', 'methan, ethan', 'ethen', 'ethyn'], ['Tvar', 'tetraedr', 'trojúhelník v rovině, p kolmo', 'přímka, dva p kolmo'], ['Úhel', '109,5°', 'asi 120°', '180°'], ['Vazba C–C', 'jednoduchá σ (154 pm)', 'dvojná σ + π', 'trojná σ + 2π (120 pm, nejpevnější)']])}
         <p>Hybridizovat se dá i dusík a kyslík. V amoniaku je N sp³ s jedním volným párem, ve vodě je O sp³ se dvěma.</p>
+        ${FH_LES.ord({ q: 'molekuly podle vazebného úhlu.', top: 'největší úhel', bottom: 'nejmenší úhel', items: [['methan', '109,5°, žádný volný pár'], ['amoniak', 'jeden volný pár'], ['voda', '104,5°, dva volné páry']] })}
         <p class="ac-les-trap"><b>Pozor:</b> úhel H–O–H ve vodě je jen 104,5°, protože volné páry kyslíku se odpuzují a vazby stlačí. Pořadí úhlů: methan > amoniak > voda.</p>`) },
     { id: 't02a', topic: 't02', n: 1, min: 5, t: 'Polarita, rezonance, kyseliny a báze',
       goal: 'Po lekci odhadneš polaritu vazby, spočítáš formální náboj, poznáš rezonanční struktury a podle pKa předpovíš, kam půjde acidobazická reakce.',
@@ -29982,7 +30177,8 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Terciární karbokation je nejstabilnější a podle něj se řídí Markovnikovo pravidlo. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t06_q30', 't06_q31', 't06_q32', 't06_q33', 't06_q35', 't06_q39', 't06_q40', 't06_q41', 't06_q45', 't06_q49', 't06_q50', 't06_q53'],
       beda: 'Markovnikov: bohatý zbohatne. Vodík jde k uhlíku, který už vodíků má víc. Hydroborace je rebel a dělá to obráceně.',
-      body: () => sec('1. Adice HX a Markovnikovo pravidlo', `<p>HX se aduje přes <b>karbokation</b>, který je planární (sp², prázdný p orbital). Pořadí stability: terciární > sekundární > primární > methyl (hyperkonjugace a +I efekt). Vznikne přednostně stabilnější karbokation, a proto H jde na uhlík s méně alkyly a X na více substituovaný: <b>Markovnikovo pravidlo</b>.</p>
+      body: () => sec('1. Adice HX a Markovnikovo pravidlo', `${FH_LES.ord({ q: 'karbokationty podle stability.', top: 'nejstabilnější', bottom: 'nejméně stabilní', items: [['terciární', ''], ['sekundární', ''], ['primární', ''], ['methyl', '']] })}
+        <p>HX se aduje přes <b>karbokation</b>, který je planární (sp², prázdný p orbital). Pořadí stability: terciární > sekundární > primární > methyl (hyperkonjugace a +I efekt). Vznikne přednostně stabilnější karbokation, a proto H jde na uhlík s méně alkyly a X na více substituovaný: <b>Markovnikovo pravidlo</b>.</p>
         <p>Podle Hammondova postulátu se přechodový stav podobá karbokationtu, takže stabilnější karbokation vzniká rychleji. Méně stabilní karbokation se může <b>přesmyknout</b> (posun hydridu nebo methylu).</p>`)
         + sec('2. Halogeny a voda', `${tbl(['Reakce', 'Produkt', 'Stereochemie'], [['Br₂', '1,2-dibromid přes bromoniový ion', '<b>anti</b> (trans)'], ['Br₂ ve vodě', 'halohydrin (voda napadne bromoniový ion)', 'anti'], ['H₂O, H⁺', 'alkohol podle Markovnikova', 'hrozí přesmyky'], ['hydroxymerkurace', 'alkohol podle Markovnikova', 'bez přesmyků'], ['hydroborace (BH₃·THF, pak H₂O₂, OH⁻)', 'OH na <b>méně</b> substituovaný uhlík', '<b>syn</b>']])}`)
         + sec('3. Redukce, karbeny a oxidace', `${tbl(['Činidlo', 'Výsledek'], [['H₂, Pd/C nebo PtO₂', 'alkan, syn adice z povrchu katalyzátoru'], [':CCl₂, Simmons–Smith (CH₂I₂, Zn(Cu))', 'cyklopropan'], ['OsO₄, pak NaHSO₃', 'cis-1,2-diol (syn)'], ['HIO₄', 'rozštěpí 1,2-diol na karbonyly'], ['O₃, pak Zn', 'aldehydy a ketony'], ['KMnO₄, H₃O⁺', 'RCH= dá kyselinu, R₂C= keton']])}
@@ -29997,7 +30193,8 @@ const FH_OL = (() => {
         <p>V názvu koncovka <b>-yn</b>. Nejnižší lokanty dostanou násobné vazby dohromady, při shodě má přednost dvojná vazba: hept-1-en-6-yn.</p>`)
         + sec('2. Adice na trojnou vazbu', `${tbl(['Činidlo', 'Výsledek'], [['HBr', 'přes vinylový kation, podle Markovnikova'], ['H₂O, H₂SO₄, HgSO₄', 'enol → <b>keton</b> (koncový alkyn dá methylketon)'], ['hydroborace', 'koncový alkyn dá <b>aldehyd</b>'], ['H₂, Lindlarův katalyzátor', '<b>cis</b>-alken (syn)'], ['Li v kapalném NH₃', '<b>trans</b>-alken'], ['KMnO₄ nebo O₃', 'dvě karboxylové kyseliny']])}
         <p class="aside">Enol se hned přesmykne na keton (keto-enol tautomerie, rovnováha je u ketonu).</p>`)
-        + sec('3. Kyselost a acetylidy', `<p>pKa: alkan 60, alken 44, alkyn 25. Acetylidový anion nese náboj v orbitalu sp s 50 % s-charakteru, blízko jádra, a proto je stabilnější. NaNH₂ koncový alkyn deprotonuje, protože NH₃ (36) je slabší kyselina.</p>
+        + sec('3. Kyselost a acetylidy', `${FH_LES.ord({ q: 'uhlovodíky podle kyselosti.', top: 'nejkyselejší', bottom: 'nejméně kyselý', items: [['alkyn', 'pKa 25'], ['alken', 'pKa 44'], ['alkan', 'pKa 60']] })}
+        <p>pKa: alkan 60, alken 44, alkyn 25. Acetylidový anion nese náboj v orbitalu sp s 50 % s-charakteru, blízko jádra, a proto je stabilnější. NaNH₂ koncový alkyn deprotonuje, protože NH₃ (36) je slabší kyselina.</p>
         <p>Acetylid pak reaguje s primárním halogenidem mechanismem SN2 a <b>prodlouží řetězec</b>: R–C≡CH → 1. NaNH₂, 2. R′CH₂Br → R–C≡C–CH₂R′.</p>
         <p class="ac-les-trap"><b>Pozor:</b> hydroxid na deprotonaci alkynu nestačí, voda (15,74) je silnější kyselina než alkyn.</p>`) },
     { id: 't08a', topic: 't08', n: 1, min: 5, t: 'Chiralita a konfigurace R/S',
@@ -30010,9 +30207,11 @@ const FH_OL = (() => {
         <p>Enantiomery mají stejné fyzikální vlastnosti kromě směru otáčení polarizovaného světla: pravotočivý (+), levotočivý (−). Směs 50 : 50 je <b>racemát</b> a je opticky neaktivní.</p>
         <p class="aside">Specifická otáčivost [α] = α / (c · l), kyveta v dm a c v g·ml⁻¹.</p>`)
         + sec('2. Pravidla CIP', `<ol class="ac-les-steps"><li>priorita podle protonového čísla atomu přímo na stereocentru (O > N > C > H)</li><li>při shodě porovnej další sféru, rozhodne první rozdíl</li><li>násobná vazba = zdvojený atom (–CHO jako C s O, O, H)</li></ol>
+        ${FH_LES.ord({ q: 'substituenty kyseliny mléčné podle priority CIP.', top: 'priorita 1', bottom: 'priorita 4', items: [['OH', 'O, Z = 8'], ['COOH', 'C s (O, O, O)'], ['CH₃', 'C s (H, H, H)'], ['H', 'Z = 1']] })}
         <p>Příklad kyselina mléčná: OH > COOH > CH₃ > H.</p>`)
         + sec('3. R, nebo S', `<p>Natoč molekulu tak, aby skupina s prioritou 4 mířila <b>od tebe</b>. Když 1 → 2 → 3 jde po směru hodinových ručiček, je to <b>R</b>, proti směru <b>S</b>.</p>
-        <p class="ac-les-trap"><b>Pozor:</b> když skupina 4 míří k tobě (třeba vodorovné H ve Fischerově projekci), výsledek obrať. A R/S vůbec nesouvisí se znaménkem (+)/(−).</p>`) },
+        <p class="ac-les-trap"><b>Pozor:</b> když skupina 4 míří k tobě (třeba vodorovné H ve Fischerově projekci), výsledek obrať. A R/S vůbec nesouvisí se znaménkem (+)/(−).</p>
+        ${FH_LES.w.rs()}`) },
     { id: 't08b', topic: 't08', n: 2, min: 5, t: 'Diastereomery, meso a stereochemie reakcí',
       goal: 'Po lekci rozlišíš enantiomery, diastereomery a meso formu, spočítáš počet stereoizomerů a předpovíš stereochemii adice Br₂ a HBr.',
       recall: 'Vybav si z lekce 1, co je enantiomer. Tipni si, kolik stereoizomerů má kyselina vinná se dvěma stereocentry.',
@@ -30033,7 +30232,7 @@ const FH_OL = (() => {
       body: () => sec('1. Dvě cesty k témuž produktu', `<p>Při nukleofilní substituci nahradí nukleofil (Nu) odstupující skupinu (X) na sp³ uhlíku. Stejný produkt může vzniknout dvěma mechanismy. S = substituce, N = nukleofilní, číslice říká, kolik částic je v kroku, který určuje rychlost.</p>
         ${tbl(['', 'SN2', 'SN1'], [['Průběh', 'jeden krok: Nu útočí zezadu a X zároveň odchází', 'dva kroky: X odejde, vznikne karbokation, pak přijde Nu'], ['Rychlost', 'v = k [RX] [Nu]', 'v = k [RX]'], ['Stereochemie', 'vždy inverze (Waldenův obrat)', 'racemizace, často neúplná: odstupující aniont chvíli stíní jednu stranu']])}
         <p class="aside">Obrat geometrie ještě neznamená, že se R změní na S. Záleží na prioritě nového substituentu.</p>`)
-        + sec('2. Čtyři otázky, které rozhodnou', tbl(['', 'SN2', 'SN1'], [
+        + sec('2. Čtyři otázky, které rozhodnou', FH_LES.ord({ q: 'substráty podle rychlosti SN2.', top: 'nejrychleji', bottom: 'nejpomaleji', items: [['methyl', ''], ['primární', '1°'], ['sekundární', '2°'], ['terciární', '3°, nereaguje']] }) + FH_LES.ord({ q: 'odstupující skupiny podle toho, jak snadno odstoupí.', top: 'odstoupí nejsnáz', bottom: 'odstoupí nejhůř', items: [['TsO⁻', 'tosylát'], ['I⁻', ''], ['Br⁻', ''], ['Cl⁻', ''], ['F⁻', '']] }) + tbl(['', 'SN2', 'SN1'], [
           ['Substrát', 'CH₃ > 1° > 2° ≫ 3°. Rozhoduje sterická zábrana: terciární nereaguje vůbec, i neopentyl je skoro mrtvý.', '3° > 2° ≫ 1°. Rozhoduje stabilita karbokationtu, proto jdou i primární allylové a benzylové.'],
           ['Nukleofil', 'silný, obvykle aniont. Nukleofilita roste v protických rozpouštědlech dolů ve skupině: HS⁻ > HO⁻, I⁻ > Br⁻ > Cl⁻.', 'nemá zásadní úlohu, stačí slabý (H₂O, ROH). Přichází až po pomalém kroku.'],
           ['Odstupující skupina', 'čím stabilnější aniont, tím líp: TsO⁻ > I⁻ > Br⁻ > Cl⁻ ≫ F⁻', 'stejně. V kyselém prostředí odstoupí i protonovaná OH jako voda.'],
@@ -30078,6 +30277,7 @@ const FH_OL = (() => {
       q: ['t10_q2', 't10_q5', 't10_q10', 't10_q12', 't10_q14', 't10_q15', 't10_q16', 't10_q25', 't10_q31', 't10_q35', 't10_q36', 't10_q43'],
       beda: 'Chlor v MS kulhá 3 : 1, brom chodí rovně 1 : 1. A když z molekuly odletí 15, utekl methyl.',
       body: () => sec('1. Která metoda na co', `${tbl(['Metoda', 'Odpověď'], [['MS', 'velikost a složení molekuly (molekulová hmotnost, fragmenty)'], ['IČ', 'funkční skupiny (molekulové vibrace)'], ['UV', 'konjugovaný π systém'], ['NMR', 'uhlíková kostra a typy C a H']])}
+        ${FH_LES.ord({ q: 'oblasti záření podle energie.', top: 'nejvyšší energie', bottom: 'nejnižší energie', items: [['UV', ''], ['viditelné', '380–780 nm'], ['IČ', ''], ['mikrovlny', ''], ['rádiové vlny', 'používá je NMR']] })}
         <p>Energie záření roste s klesající vlnovou délkou: UV > viditelné (380–780 nm) > IČ > mikrovlny > rádiové vlny (NMR).</p>`)
         + sec('2. IČ spektrum', `<p>Molekula pohltí IČ záření, když se jeho frekvence shoduje s frekvencí vibrace. Spektrum je 4000–400 cm⁻¹ (vlnočet ν̃ = 1/λ).</p>
         ${tbl(['Oblast (cm⁻¹)', 'Vazby'], [['4000–2500', 'vazby k H: O–H, N–H, C–H'], ['2500–2000', 'trojné C≡C, C≡N'], ['1800–1550', 'dvojné C=O, C=C'], ['pod 1500', '<b>otisk prstu</b>, typický pro konkrétní látku']])}
@@ -30095,7 +30295,8 @@ const FH_OL = (() => {
         + sec('2. ¹³C NMR', `<p>¹³C je v přírodě jen 1,1 %, proto se měření sčítají. Každý typ uhlíku dá jeden signál, <b>ekvivalentní uhlíky jeden společný</b>.</p>
         ${tbl(['Látka', 'Signály'], [['hexan', '3 (symetrie)'], ['ethyl-acetát', '4'], ['toluen', '5'], ['acetofenon', '6, karbonyl nejvíc vlevo (198 ppm)']])}`)
         + sec('3. ¹H NMR', `<ul class="ac-ul"><li><b>Počet signálů</b> = počet typů ekvivalentních H.</li><li><b>Integrál</b> = relativní počet H daného typu.</li><li><b>Multiplicita</b>: n sousedních H → n + 1 čar (1 singlet, 2 dublet, 3 triplet, 4 kvartet).</li><li>Protony, které se navzájem štěpí, mají stejnou interakční konstantu J.</li></ul>
-        <p class="ac-les-trap"><b>Pozor:</b> v ethyl-acetátu je CH₃C=O singlet, protože soused C=O žádné H nemá. OCH₂ je kvartet a CH₃ ethylu triplet.</p>`) },
+        <p class="ac-les-trap"><b>Pozor:</b> v ethyl-acetátu je CH₃C=O singlet, protože soused C=O žádné H nemá. OCH₂ je kvartet a CH₃ ethylu triplet.</p>
+        ${FH_LES.w.nmr()}`) },
     { id: 't11a', topic: 't11', n: 1, min: 5, t: 'Konjugované dieny a UV',
       goal: 'Po lekci vysvětlíš, proč je konjugovaný dien stabilnější, předpovíš 1,2- a 1,4-adukt podle teploty a víš, jak konjugace posouvá absorpci v UV.',
       recall: 'Tipni si, který produkt vznikne rychleji a který je stabilnější, když se HBr aduje na buta-1,3-dien.',
@@ -30129,7 +30330,8 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. OH dodá do kruhu volný pár, σ-komplex stabilizuje a orientuje ortho a para. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t12_q25', 't12_q26', 't12_q27', 't12_q28', 't12_q29', 't12_q30', 't12_q31', 't12_q32', 't12_q33', 't12_q35', 't12_q37', 't12_q38'],
       beda: 'Dárci elektronů (OH, NH₂, alkyl) zvou hosty do ortho a para. Zloději elektronů (NO₂, C=O, CN) je pošlou do meta. Halogeny jsou podivíni: zpomalí, ale pošlou do ortho a para.',
-      body: () => sec('1. Aktivace a deaktivace', `<p>Rychlost nitrace: fenol 1000 > benzen 1 > chlorbenzen 0,033 > nitrobenzen 6 × 10⁻⁸. Rozhodují dva efekty:</p>
+      body: () => sec('1. Aktivace a deaktivace', `${FH_LES.ord({ q: 'látky podle rychlosti nitrace.', top: 'nejrychleji', bottom: 'nejpomaleji', items: [['fenol', '1000'], ['benzen', '1'], ['chlorbenzen', '0,033'], ['nitrobenzen', '6 × 10⁻⁸']] })}
+        <p>Rychlost nitrace: fenol 1000 > benzen 1 > chlorbenzen 0,033 > nitrobenzen 6 × 10⁻⁸. Rozhodují dva efekty:</p>
         <ul class="ac-ul"><li><b>indukční</b> přes vazby σ (halogen, O odčerpávají),</li><li><b>mezomerní</b> přes π systém: +M dodá volný pár (OH, OR, NH₂, Cl), −M odčerpá (C=O, CN, NO₂).</li></ul>
         <p>U OH převládne silný +M, a proto je to silný aktivátor.</p>`)
         + sec('2. Kam jde další skupina', `${tbl(['Skupina', 'Účinek', 'Orientace'], [['–OH, –OR, –NH₂', 'silně aktivuje', 'ortho, para'], ['alkyl (–CH₃)', 'aktivuje', 'ortho, para'], ['halogen', 'deaktivuje', '<b>ortho, para</b>'], ['–NO₂, –CN, –CHO, –COR, –COOH, –SO₃H', 'deaktivuje', 'meta']])}
@@ -30265,7 +30467,8 @@ const FH_OL = (() => {
       q: ['t19_q1', 't19_q2', 't19_q4', 't19_q7', 't19_q8', 't19_q9', 't19_q10', 't19_q12', 't19_q13', 't19_q15', 't19_q16', 't19_q17'],
       beda: 'Volný pár dusíku je jeho bazicita. Kdo ho rozdá do kruhu (anilin) nebo do C=O (amid), na proton už nemá.',
       body: () => sec('1. Typy a vlastnosti', `<p>Primární, sekundární a terciární amin se liší <b>počtem uhlíků na dusíku</b>, ne typem uhlíku: terc-butylamin je primární. Předpona amino- se píše, když je v molekule vyšší skupina (COOH, C=O). Aminy tvoří vodíkové vazby N–H···N, a proto vřou výš než alkany. Rychlá inverze dusíku brání oddělit enantiomery.</p>`)
-        + sec('2. Bazicita', `<p>Volný pár dusíku přijme proton. Bazicita klesá: <b>alkylamin > arylamin > amid</b>.</p>
+        + sec('2. Bazicita', `${FH_LES.ord({ q: 'látky podle bazicity.', top: 'nejbazičtější', bottom: 'nejméně bazický', items: [['alkylamin', ''], ['arylamin', 'například anilin'], ['amid', '']] })}
+        <p>Volný pár dusíku přijme proton. Bazicita klesá: <b>alkylamin > arylamin > amid</b>.</p>
         <ul class="ac-ul"><li>Anilin rozprostře volný pár rezonancí do kruhu (záporný náboj ortho a para), protonací by o stabilizaci přišel.</li><li>Amid má volný pár delokalizovaný do C=O, bazický prakticky není.</li></ul>`)
         + sec('3. Příprava aminů', `${tbl(['Metoda', 'Poznámka'], [['NH₃ + R–X', 'nevhodné, vznikne směs až po kvarterní sůl'], ['Gabrielova syntéza', 'ftalimid + KOH, SN2, čistý primární amin'], ['azid, pak redukce', 'nukleofil útočí na koncový dusík'], ['reduktivní aminace', 'keton + NH₃ → imin → H₂/Ni'], ['Hofmannovo, Curtiovo, Lossenovo odbourání', 'přes isokyanát, amin o <b>jeden uhlík kratší</b>'], ['LiAlH₄ na amid', 'uhlík zůstane']])}`) },
     { id: 't19b', topic: 't19', n: 2, min: 5, t: 'Reakce aminů, diazoniové soli a nitrosloučeniny',
@@ -30374,7 +30577,8 @@ const FH_OL = (() => {
         <p class="aside">GABA má aminoskupinu na C4 (γ), α-aminokyselinou není.</p>`)
         + sec('2. Obojetný ion a pI', `<p>Aminokyseliny existují jako <b>obojetné ionty</b> (NH₃⁺ a COO⁻): mají vysoké teploty tání, rozpouštějí se ve vodě, ne v organických rozpouštědlech, a jsou <b>amfoterní</b>.</p>
         <p><b>Izoelektrický bod</b> pI je pH, při kterém převládá neutrální obojetný ion a aminokyselina se v elektrickém poli nepohybuje.</p>
-        ${tbl(['pH roztoku', 'Náboj', 'Putuje k'], [['pH < pI', 'kation', 'zápornému pólu'], ['pH = pI', 'nulový', 'nikam'], ['pH > pI', 'anion', 'kladnému pólu']])}`)
+        ${tbl(['pH roztoku', 'Náboj', 'Putuje k'], [['pH < pI', 'kation', 'zápornému pólu'], ['pH = pI', 'nulový', 'nikam'], ['pH > pI', 'anion', 'kladnému pólu']])}
+        ${FH_LES.w.pi()}`)
         + sec('3. Syntézy', `${tbl(['Syntéza', 'Princip'], [['reduktivní aminace α-ketokyseliny', 'NH₃, NaBH₄ (kyselina pyrohroznová → alanin)'], ['acetamidomalonátová', 'alkylace (BrCH₂COOEt pro Asp), dusík chráněný jako acetamid, nakonec hydrolýza a dekarboxylace']])}
         <p class="ac-les-trap"><b>Pozor:</b> z achirálních výchozích látek a činidel vznikne vždy racemát (R,S).</p>`) },
     { id: 't25b', topic: 't25', n: 2, min: 5, t: 'Peptidy, bílkoviny a enzymy',
@@ -31984,40 +32188,43 @@ const CARD = {}; CARDS.forEach(cd => { CARD[cd.id] = cd; });
 const lesTubes = L => `<div class="ac-les-tubes">${L.map(([p, f]) => tubeSVG({ p, s: 2 }, f)).join('')}</div>`;
 /* --- pokus ve zkumavkách: tipni si, kde vznikne sraženina, a přilij činidlo; reakce bere z tabulky reakcí (AC_ION) --- */
 const LAB = {}; let labN = 0;
-function lesLab(ids, rgs) {
-  const id = 'aclab' + (++labN);
-  LAB[id] = { ids: ids.filter(i => ION[i]), rgs, tip: new Set(), rg: null, xs: false, det: null };
+/* mode 'p' = tip na sraženinu, 'z' = tip na jakoukoli viditelnou změnu (odbarvení, zmodrání u redoxních činidel aniontů) */
+function lesLab(ids, rgs, mode) {
+  const id = 'aclab' + (++labN), I = ids.filter(i => ION[i]);
+  LAB[id] = { ids: I, rgs, c: ION[I[0]].c, z: mode === 'z', tip: new Set(), rg: null, xs: false, det: null };
   return `<section class="card ac-sec lx-lab" id="${id}">${labHTML(id)}</section>`;
 }
 /* sraženina ano/ne; „jen z koncentrovanějších“ a „neúplně“ (s = 1) uzná oba tipy */
-const labPos = rx => (rx && rx.p && rx.s ? (rx.s === 1 ? 'maybe' : 'yes') : 'no');
+const labPos = (rx, z) => (z ? (rx ? (rx.weak || rx.s === 1 ? 'maybe' : 'yes') : 'no') : rx && rx.p && rx.s ? (rx.s === 1 || rx.weak ? 'maybe' : 'yes') : 'no');
 function labHTML(id) {
-  const B = LAB[id], rgNm = k => rg('k', k)[1];
+  const B = LAB[id], rgNm = k => rg(B.c, k)[1], K = KIND[B.c];
+  /* zkumavka, kde činidlo nereaguje, má barvu činidla (fialový KMnO₄, modrý jód se škrobem) */
+  const rgSol = B.rg && (B.ids.map(i => ION[i].r[B.rg]).find(r => r && r.sol0) || {}).sol0;
   const tubes = B.ids.map(i => {
-    const o = ION[i], rx = B.rg ? o.r[B.rg] : null, t = B.tip.has(i), pos = labPos(rx);
+    const o = ION[i], rx = B.rg ? o.r[B.rg] : null, t = B.tip.has(i), pos = labPos(rx, B.z);
     let pic = tubeSVG({ sol: o.sol });
     if (B.rg) {
-      const base = rx ? { sol: rx.sol !== undefined ? rx.sol : o.sol, p: rx.p, s: rx.s } : { sol: o.sol };
+      const base = rx ? { sol: rx.sol !== undefined ? rx.sol : o.sol, p: rx.p, s: rx.s } : { sol: rgSol || o.sol };
       pic = B.xs && rx && rx.x !== undefined ? tubeSVG({ sol: rx.x || '', p: rx.xp, s: rx.xp ? 1 : 0 })
         : rx && rx.p2 ? `<span class="lx-two">${tubeSVG(base)}${tubeSVG({ sol: base.sol, p: rx.p2, s: 2 })}</span>` : tubeSVG(base);
     }
     const hit = B.rg ? (pos === 'maybe' || (pos === 'yes') === t) : null;
-    const lbl = B.rg ? `${o.f}: ${rx ? rx.v : NONE}${t ? ', tipla jsi sraženinu' : ''}` : `${o.f}${t ? ', tipuješ sraženinu' : ''}`;
+    const w = B.z ? 'změnu' : 'sraženinu', lbl = B.rg ? `${o.f}: ${rx ? rx.v : NONE}${t ? ', tipla jsi ' + w : ''}` : `${o.f}${t ? ', tipuješ ' + w : ''}`;
     return `<button type="button" class="lx-tb${B.rg ? ' lx-new' : ''}${t ? ' tip' : ''}${hit === true ? ' hit' : hit === false ? ' miss' : ''}${B.det === i ? ' sel' : ''}" data-lxl="${B.rg ? 'det' : 'tip'}" data-v="${i}" aria-pressed="${B.rg ? B.det === i : t}" aria-label="${escA(lbl)}">${pic}<b>${o.f}</b>${B.rg && hit !== null ? `<i aria-hidden="true">${hit ? '✓' : '✗'}</i>` : ''}</button>`;
   }).join('');
   const hasX = B.rg && XS[B.rg] && B.ids.some(i => ION[i].r[B.rg] && ION[i].r[B.rg].x !== undefined);
   let foot;
-  if (!B.rg) foot = `<p class="lx-hint">${B.tip.size ? `Tipnuté zkumavky: ${B.tip.size}.` : 'Klepnutím označ zkumavky, ve kterých podle tebe vznikne sraženina.'} Pak přilij činidlo.</p>
+  if (!B.rg) foot = `<p class="lx-hint">${B.tip.size ? `Tipnuté zkumavky: ${B.tip.size}.` : `Klepnutím označ zkumavky, ve kterých podle tebe ${B.z ? 'uvidíš změnu (odbarvení nebo zmodrání)' : 'vznikne sraženina'}.`} Pak přilij činidlo.</p>
       <div class="row">${B.rgs.map(k => `<button type="button" class="btn primary" data-lxl="pour" data-v="${k}">Přilít ${rgNm(k)}</button>`).join('')}</div>`;
   else {
-    const ok = B.ids.filter(i => { const p = labPos(ION[i].r[B.rg]); return p === 'maybe' || (p === 'yes') === B.tip.has(i); }).length;
+    const ok = B.ids.filter(i => { const p = labPos(ION[i].r[B.rg], B.z); return p === 'maybe' || (p === 'yes') === B.tip.has(i); }).length;
     const d = B.det && ION[B.det], drx = d && d.r[B.rg];
     foot = `<div class="fb ${ok === B.ids.length ? 'ok' : 'bad'}"><p><b>Tip vyšel u ${ok} z ${B.ids.length} zkumavek.</b> Klepni na zkumavku a uvidíš, co v ní vzniklo.</p></div>
       ${d ? `<div class="lx-det"><b>${d.f} + ${rgNm(B.rg)}</b><p>${drx ? `${drx.f ? `<b>${drx.f}</b>: ` : ''}${escA(drx.v)}.${drx.n ? ' ' + drx.n : ''}` : NONE + '.'}</p></div>` : ''}
       <div class="row">${hasX && !B.xs ? `<button type="button" class="btn primary" data-lxl="xs">Přilít nadbytek ${/činidla$/.test(XS[B.rg]) ? 'činidla' : `(${XS[B.rg].replace(/^v nadbytku /, '')})`}</button>` : ''}<button type="button" class="btn" data-lxl="reset">Vylít a zkusit znovu</button></div>`;
   }
   return `<h3 class="fam-h">Zkus si to ve zkumavkách</h3>
-    <p class="lx-q">${B.rg ? `Přilila jsi ${rgNm(B.rg)}${B.xs ? ' v nadbytku' : ''}.` : `V každé zkumavce je roztok jednoho kationtu.`}</p>
+    <p class="lx-q">${B.rg ? `Přilila jsi ${rgNm(B.rg)}${B.xs ? ' v nadbytku' : ''}.` : `V každé zkumavce je roztok jednoho ${K[0].replace(/t$/, 'tu')}.`}</p>
     <div class="lx-rack">${tubes}</div>${foot}`;
 }
 document.addEventListener('click', e => {
@@ -32106,7 +32313,8 @@ const AC_LES = [
       <p class="aside">Stejně se rozpustí i AgCl z lekce 1. Proto ho amoniak odliší od Hg₂Cl₂, který zčerná.</p>`)
       + sec('3. NaOH, nebo NH₃?', `${tbl(['Kationt', 'Nadbytek NaOH', 'Nadbytek NH₃'], [['Zn²⁺', 'rozpustí se', 'rozpustí se'], ['Pb²⁺, Al³⁺, Sb³⁺, Sn²⁺', 'rozpustí se', 'zůstane'], ['Cr³⁺', 'rozpustí se na zelený roztok', 'zůstane'], ['Ag⁺, Cd²⁺, Cu²⁺, Ni²⁺, Co²⁺, Mn²⁺', 'zůstane', 'rozpustí se']])}
       <ul class="ac-ul"><li><b>Zn²⁺</b> je jediný, kdo zmizí v obou.</li><li>Amminkomplexy slouží k důkazu (modrá mědi) i k <b>oddělení</b>: Cu²⁺ zůstane v roztoku, Fe(OH)₃ odfiltruješ.</li></ul>
-      <p class="ac-les-trap"><b>Pozor, past:</b> Cd(OH)₂ a Mn(OH)₂ se v NaOH nerozpustí, i když jsou bílé jako amfoterní hydroxidy. Rozpustí je až amoniak.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> Cd(OH)₂ a Mn(OH)₂ se v NaOH nerozpustí, i když jsou bílé jako amfoterní hydroxidy. Rozpustí je až amoniak.</p>`)
+      + lesLab(['ag', 'cd', 'zn', 'cu', 'ni', 'co', 'mn', 'al', 'pb', 'fe3'], ['NH3']) },
   { id: 'k5', ch: 'ka', n: 5, min: 5, t: 'KI a octan sodný',
     goal: 'Po lekci víš, které kationty sráží jodid a které se v jeho nadbytku rozpustí, kdy jodid redukuje, a co prozradí zkouška hydrolýzy s octanem sodným.',
     recall: 'Vybav si, jakou barvu má AgI. Pak si tipni, proč by KI mohl s některými kationty dát hnědou barvu, i když hnědý jodid neexistuje.',
@@ -32122,7 +32330,8 @@ const AC_LES = [
       <p>Že je hnědá barva opravdu jód, ověříš pár kapkami <b>siřičitanu</b>: jód se zredukuje zpátky na jodid a směs se odbarví.</p>`)
       + sec('3. Octan sodný: zkouška hydrolýzy', `<p>Octan sodný je sůl slabé kyseliny a silné zásady, jeho roztok je proto mírně zásaditý. V silně zásaditém prostředí by hydrolyzovala většina kationtů (to už znáš z NaOH). Jen <b>Bi³⁺, Sb³⁺ a cín</b> hydrolyzují už tady a vyloučí se jako bílé zásadité soli. Někdy stačí kyselý vzorek jen zředit vodou.</p>
       <ul class="ac-ul"><li>Před přidáním octanu se do vzorku dá pevný NaCl a případná sraženina chloridů se odfiltruje.</li><li><b>Cr³⁺</b> dá přechodně šedozelenou sraženinu, která se rozpustí na modrofialový roztok acetátokomplexů.</li><li><b>Fe³⁺</b> dá slabě červený roztok acetátokomplexů, sraženinu ne.</li></ul>
-      <p class="ac-les-trap"><b>Pozor, past:</b> soli bismutu hydrolyzují tak snadno, že se v roztoku drží jen pod pH 2. Okyseluje se kyselinou se stejným aniontem.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> soli bismutu hydrolyzují tak snadno, že se v roztoku drží jen pod pH 2. Okyseluje se kyselinou se stejným aniontem.</p>`)
+      + lesLab(['ag', 'pb', 'hg2', 'bi', 'hg1', 'sb', 'cu', 'fe3', 'cr3'], ['KI', 'AcO']) },
   { id: 'k6', ch: 'ka', n: 6, min: 6, t: 'Co je ve vzorku? Kombinované úlohy',
     goal: 'Po lekci umíš spojit výsledky několika skupinových činidel a barvu vzorku a z nich odvodit, který kationt ve vzorku je.',
     recall: 'Zkus si z hlavy napsat všech osm skupinových činidel. Ke každému připiš aspoň jeden kationt, který s ním dá něco nápadného.',
@@ -32221,7 +32430,8 @@ const AC_LES = [
       <p class="aside">Boritan je sůl velmi slabé kyseliny, sraženina vznikne až po kapce zředěného NH₃.</p>`)
       + sec('3. AgNO₃: barva a kyselina dusičná', `${lesTubes([['bila', 'AgCl'], ['svzluta', 'AgBr'], ['zluta', 'AgI'], ['zluta', 'Ag₃PO₄'], ['cervenohneda', 'Ag₂CrO₄']])}
       ${tbl(['Sraženina', 'V HNO₃', 'V amoniaku'], [['AgCl, bílý', 'nerozpustí se', 'rozpustí se ve 2M NH₃'], ['AgBr, světle žlutý', 'nerozpustí se', 'až v 25% NH₃'], ['AgSCN, bílý', 'nerozpustí se', 'až v 25% NH₃'], ['AgI, žlutý', 'nerozpustí se', 'nerozpustí se ani v 25% NH₃'], ['ostatní: Ag₃PO₄ žlutý, Ag₂CrO₄ červenohnědý, Ag₂CO₃ světle žlutý, Ag₂SO₃ bílý', 'rozpustí se', '']])}
-      <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina z thiosíranu postupně tmavne až zčerná, rozkládá se na Ag₂S. Ag₂SO₄ se sráží jen z koncentrovaných roztoků.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina z thiosíranu postupně tmavne až zčerná, rozkládá se na Ag₂S. Ag₂SO₄ se sráží jen z koncentrovaných roztoků.</p>`)
+      + lesLab(['so4', 'cro4', 'so3', 'po4', 'co3', 'cl', 'br', 'i', 'no3'], ['BaCl2', 'AgNO3']) },
   { id: 'k13', ch: 'ka', n: 13, min: 5, t: 'Anionty: oxidují, nebo redukují?',
     goal: 'Po lekci víš, které anionty odbarví KMnO₄ a jód a které vyloučí jód z KI, a umíš z toho vyvodit, co spolu ve vzorku být nemůže.',
     recall: 'Vybav si z lekce 5 ke kationtům, jak se dá ověřit, že hnědá barva je jód. Tipni si, které anionty by jód mohly „sníst“.',
@@ -32234,7 +32444,8 @@ const AC_LES = [
       ${tbl(['Odbarví modrý jód se škrobem', 'Poznámka'], [['SO₃²⁻', 'roztok přitom zkysne'], ['S₂O₃²⁻', 'vznikne tetrathionan, roztok zůstane neutrální'], ['CN⁻', ''], ['SCN⁻', 'jen z koncentrovaných roztoků']])}`)
       + sec('3. KI se škrobem: hledáme oxidující anionty', `<div class="ac-les-tubes">${[['tmmodra', 'jód + škrob']].map(([sol, f]) => tubeSVG({ sol }, f)).join('')}</div>
       <p>V kyselém prostředí oxidující anionty vyloučí z jodidu jód a škrob zmodrá. Takhle se prozradí <b>CrO₄²⁻</b> (redukuje se na Cr³⁺) a <b>NO₂⁻</b> (redukuje se na NO).</p>
-      <p class="ac-les-trap"><b>Pozor, past:</b> redukující a oxidující ionty by spolu zreagovaly. Když vzorek obsahuje siřičitan (odbarví KMnO₄), chroman v něm být nemůže. A NO₃⁻ nereaguje se žádným skupinovým činidlem, ten se dokazuje jen selektivně.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> redukující a oxidující ionty by spolu zreagovaly. Když vzorek obsahuje siřičitan (odbarví KMnO₄), chroman v něm být nemůže. A NO₃⁻ nereaguje se žádným skupinovým činidlem, ten se dokazuje jen selektivně.</p>`)
+      + lesLab(['so3', 's2o3', 'cl', 'br', 'i', 'scn', 'no2', 'cro4', 'so4'], ['KMnO4', 'I2', 'KI'], 'z') },
   { id: 'k14', ch: 'ka', n: 14, min: 5, t: 'Selektivní důkazy: anionty síry, C, P, B a Cr',
     goal: 'Po lekci umíš selektivně dokázat síran, siřičitan, thiosíran, uhličitan, fosforečnan, boritan a chroman.',
     recall: 'Vybav si z lekce 13, čím se liší siřičitan a thiosíran při reakci s jódem. Tipni si, jak bys je odlišila ještě jinak.',
@@ -32329,13 +32540,15 @@ const AC_LES = [
     beda: 'Slabá kyselina je líná: disociuje jen trochu, proto se půlí. A kyveta 20 cm jsou 2 dm. Kdo dosadí 20, objeví cukr, který neexistuje.',
     body: () => sec('1. pH a výpočty', `<p><b>pH = −log a(H₃O⁺)</b>, ve zředěných roztocích stačí koncentrace. Iontový součin vody je <b>Kw = [H₃O⁺]·[OH⁻] = 10⁻¹⁴</b>, v čisté vodě je obojího 10⁻⁷ mol/l.</p>
       ${tbl(['Roztok', 'Výpočet'], [['silná kyselina', 'pH = −log c'], ['silná zásada', 'pOH = −log c, pH = 14 − pOH'], ['slabá kyselina (octová, pKa 4,75)', 'pH = ½(pKa − log c)'], ['10× víc H₃O⁺', 'pH o 1 níž']])}
-      <p class="ac-les-trap"><b>Pozor, past:</b> u slabé kyseliny se koncentrace H₃O⁺ nerovná analytické koncentraci. Z naměřeného pH kyseliny octové proto počítáš log c = pKa − 2·pH.</p>`)
+      <p class="ac-les-trap"><b>Pozor, past:</b> u slabé kyseliny se koncentrace H₃O⁺ nerovná analytické koncentraci. Z naměřeného pH kyseliny octové proto počítáš log c = pKa − 2·pH.</p>
+        ${FH_LES.w.ph()}`)
       + sec('2. Skleněná elektroda a kalibrace', `<p>Skleněná elektroda je <b>membránová iontově selektivní</b> elektroda. Uvnitř je pufr a vnitřní argentchloridová elektroda. Její potenciál závisí na pH lineárně (Nernst): E = K − 2,303·RT/F·pH, při 25 °C asi 59 mV na jednotku pH.</p>
       <p>Konstanta K se liší elektroda od elektrody i den ode dne, proto se pH metr <b>kalibruje</b> pufry:</p>
       <ol class="ac-les-steps"><li>opláchnout a osušit elektrodu</li><li>pufr pH 7: nastavit <b>OFFSET</b></li><li>opláchnout a osušit</li><li>pufr pH 4 (nebo 10): nastavit <b>SLOPE</b></li></ol>
       <p class="aside">Kalibrace má přesahovat rozsah pH vzorků. Kyselost nevodných roztoků popisuje Hammettova funkce.</p>`)
       + sec('3. Specifická otáčivost', `<p><b>[α] = 1000·α / (l·c)</b>, kde α je naměřený úhel, c koncentrace v g/l a l délka kyvety v <b>dm</b>. Podle tabulky specifických otáčivostí pak určíš cukr (třeba D-glukosa +52,5 až +53,3°, sacharosa +66,3 až +67,0°, D-fruktosa −91,0 až −93,5°).</p>
-      <p class="ac-les-trap"><b>Pozor, past:</b> kyveta 20 cm = 2 dm, 10 cm = 1 dm. Úhel α roste s koncentrací přímo úměrně.</p>`) },
+      <p class="ac-les-trap"><b>Pozor, past:</b> kyveta 20 cm = 2 dm, 10 cm = 1 dm. Úhel α roste s koncentrací přímo úměrně.</p>
+        ${FH_LES.w.rot()}`) },
   { id: 'u1', ch: 'uv', n: 1, min: 5, t: 'Absorbance a Lambertův–Beerův zákon',
     goal: 'Po lekci víš, co se děje při absorpci UV-VIS záření, jak souvisí absorbance s propustností a koncentrací a jak se správně měří.',
     recall: 'Tipni si, kolik procent světla projde vzorkem s absorbancí 1 a kolik s absorbancí 2.',
@@ -32345,7 +32558,8 @@ const AC_LES = [
     body: () => sec('1. Co molekula absorbuje', `<p>UV-VIS oblast je <b>190–900 nm</b>. Fotony tu mají energii 200–600 kJ/mol a vyvolají přechody vnějších elektronů. Skupiny, kde se to děje, jsou <b>chromofory</b>: C=C, C≡N, C=O, N=N, N=O, NO₂. Nasycená vazba C–H v UV-VIS neabsorbuje.</p>
       ${tbl(['Přechod', 'Energie'], [['σ → σ*', 'nejvíc'], ['n → σ*', ''], ['π → π*', ''], ['n → π*', 'nejméně']])}`)
       + sec('2. Absorbance a koncentrace', `<p><b>A = log(I₀/I) = −log T</b>, kde T = I/I₀ je propustnost. Lambertův–Beerův zákon spojuje absorbanci s koncentrací: <b>A = ε·d·c</b> (ε absorpční koeficient, d tloušťka kyvety, c koncentrace).</p>
-      ${tbl(['Propustnost', 'Absorbance'], [['100 %', '0'], ['10 %', '1'], ['1 %', '2']])}`)
+      ${tbl(['Propustnost', 'Absorbance'], [['100 %', '0'], ['10 %', '1'], ['1 %', '2']])}
+        ${FH_LES.w.lb()}`)
       + sec('3. Jak se měří', `<ul class="ac-ul"><li>Nejdřív se změří <b>blank</b> (slepý vzorek), aby se odečetla absorbance rozpouštědla a činidel.</li><li>Vhodná absorbance je <b>menší než 2</b>, koncentrace se upraví zkusmo ředěním.</li><li><b>Diodové pole (DAD)</b> změří celé spektrum najednou: mřížka rozloží světlo na řadu fotodiod.</li></ul>
       <p class="ac-les-trap"><b>Pozor, past:</b> v A = ε·d·c musí být koncentrace v mol/l. Ze standardu 20 mg/l udělej 0,020 g/l a vyděl molární hmotností.</p>`) },
   { id: 'u2', ch: 'uv', n: 2, min: 5, t: 'Spektra a acidobazické indikátory',
@@ -32356,7 +32570,8 @@ const AC_LES = [
     beda: 'Fenolftalein je malinový jen v zásadě, v kyselém je neviditelný jako duch. Methyloranž je v kyselém červená, kyselina ji prostě naštve.',
     body: () => sec('1. Spektrum jako otisk prstu', `<p>Neznámá karboxylová kyselina se v úloze určí <b>porovnáním spektra se standardy</b> (kyselina kávová, p-kumarová, skořicová, gallová a benzoová, 20 mg/l). Přesnou polohu maxim a minim ukážou nulové body <b>1. derivace</b> spektra.</p>`)
       + sec('2. Proč indikátor mění barvu', `<p>Se změnou pH se v molekule indikátoru přeuspořádají dvojné vazby (změní se konjugace). Absorpční maximum se <b>posune</b> a s ním i barva, kterou vidíš.</p>
-      ${tbl(['Indikátor', 'Přechod pH', 'Kyselá → zásaditá'], [['methyloranž', '3,1–4,4', 'červená → žlutooranžová'], ['methylčerveň', '4,4–6,2', 'červená → žlutá'], ['lakmus', '5,0–8,0', 'červená → modrá'], ['bromthymolová modř', '6,0–7,6', 'žlutá → modrá'], ['fenolftalein', '8,2–10,0', 'bezbarvý → malinově fialový'], ['thymolftalein', '9,3–10,5', 'bezbarvý → modrý']])}`)
+      ${tbl(['Indikátor', 'Přechod pH', 'Kyselá → zásaditá'], [['methyloranž', '3,1–4,4', 'červená → žlutooranžová'], ['methylčerveň', '4,4–6,2', 'červená → žlutá'], ['lakmus', '5,0–8,0', 'červená → modrá'], ['bromthymolová modř', '6,0–7,6', 'žlutá → modrá'], ['fenolftalein', '8,2–10,0', 'bezbarvý → malinově fialový'], ['thymolftalein', '9,3–10,5', 'bezbarvý → modrý']])}
+        ${FH_LES.w.ind()}`)
       + sec('3. Univerzální papírek', `<p>Univerzální indikátorový papírek jde od <b>červené</b> (kolem pH 1) přes oranžovou a žlutou (5–6) a zelenou (8–9) po <b>tmavě modrou</b> (13–14).</p>
       <p class="ac-les-trap"><b>Pozor, past:</b> thymolová modř má dva přechody, kolem pH 1,2–2,8 (červená → žlutá) a 8,0–9,6 (žlutá → modrá).</p>`) },
   { id: 'r1', ch: 'ir', n: 1, min: 5, t: 'IČ spektrometrie: oblasti a měření',
