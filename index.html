@@ -1227,6 +1227,11 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-rs-arc{fill:none;stroke:var(--pink);stroke-width:3;stroke-dasharray:240;stroke-dashoffset:240;animation:lx-draw .9s ease-out forwards}
 @keyframes lx-draw{to{stroke-dashoffset:0}}
 .lx-rs-b{align-self:stretch}
+.lx-rs3{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.lx-3d{display:flex;flex-direction:column;gap:6px;align-self:stretch}
+.lx-3v{position:relative;height:260px;border-radius:12px;border:1px solid var(--line);background:var(--surface);touch-action:none;overflow:hidden}
+.lx-3n{margin:0;font-size:.85rem;color:var(--muted)}
+.lx-3d .row{display:flex;gap:8px;flex-wrap:wrap}
 .lx-rs-b .btn{flex:1;font:700 1.3rem var(--f-display)}
 /* NMR */
 .lx-nmr-pic{width:100%;max-width:320px}
@@ -29825,7 +29830,44 @@ const FH_LES = (() => {
       <div class="row"><button type="button" class="btn primary" data-lwa="rsNext">Další molekula</button></div><p class="lx-end">Zatím ${ok} z ${n} správně.</p>`;
   }
   W.rs = () => { const w = { dataset: {} }; rsNew(w);
-    return `<div class="lx-w lx-rs" data-lw="rs" data-g='${w.dataset.g}' data-h="${w.dataset.h}"><p class="lx-q"><b>Urči R, nebo S:</b> seřaď skupiny podle protonového čísla a sleduj, kam míří vodík.</p><div class="lx-out">${rsOut(w)}</div></div>`; };
+    return `<div class="lx-w lx-rs" data-lw="rs" data-g='${w.dataset.g}' data-h="${w.dataset.h}"><p class="lx-q"><b>Urči R, nebo S:</b> seřaď skupiny podle protonového čísla a sleduj, kam míří vodík.</p><div class="lx-out">${rsOut(w)}</div>
+      <div class="lx-rs3"><button type="button" class="btn" data-lwa="rs3" aria-expanded="false">Ukázat ve 3D</button><div class="lx-3d" hidden><div class="lx-3v" role="img" aria-label="Prostorový model stereocentra"></div><p class="lx-3n">Otáčej tažením. Zkus si molekulu natočit tak, aby vodík mířil od tebe, a pak čti 1 → 2 → 3.</p><div class="row"><button type="button" class="btn" data-lwa="rs3v" data-v="pic">Jako na obrázku</button><button type="button" class="btn" data-lwa="rs3v" data-v="h">Vodík dozadu</button></div></div></div></div>`; };
+  /* R/S ve 3D: C v počátku, vodík na ose z (dozadu −z, dopředu +z), ostatní skupiny ve stejných úhlech jako na obrázku */
+  const RS3 = { 'I': ['I', 2.14], 'Br': ['Br', 1.94], 'Cl': ['Cl', 1.77], 'F': ['F', 1.35], 'OH': ['O', 1.43, 1], 'NH₂': ['N', 1.47, 2], 'CH₃': ['C', 1.53, 3] };
+  function rs3XYZ(w) {
+    const S = Math.sin(70.5 * Math.PI / 180), C = Math.cos(70.5 * Math.PI / 180), hz = w.dataset.h === 'f' ? 1 : -1;
+    const at = [['C', 0, 0, 0], ['H', 0, 0, 1.09 * hz]], lab = [];
+    const g = JSON.parse(w.dataset.g).sort((a, b) => b[1] - a[1]);
+    g.forEach(([t, , a], i) => {
+      const r = a * Math.PI / 180, d = [S * Math.sin(r), S * Math.cos(r), -hz * C], [el, len, nh] = RS3[t];
+      const m = d.map(v => v * len); at.push([el, ...m]); lab.push([t, i + 1, d.map(v => v * (len + (nh ? 1.2 : .9)))]);
+      if (!nh) return;
+      const e1 = Math.abs(d[2]) < .9 ? [d[1], -d[0], 0] : [0, d[2], -d[1]], n1 = Math.hypot(...e1), u = e1.map(v => v / n1);
+      const e2 = [d[1] * u[2] - d[2] * u[1], d[2] * u[0] - d[0] * u[2], d[0] * u[1] - d[1] * u[0]];
+      for (let k = 0; k < nh; k++) { const f = (k * 120 + 60) * Math.PI / 180, h = d.map((v, j) => C * v + S * (Math.cos(f) * u[j] + Math.sin(f) * e2[j])); at.push(['H', ...m.map((v, j) => v + h[j] * (el === 'C' ? 1.09 : 0.98))]); }
+    });
+    lab.push(['H', 4, [0, -1.15, 1.6 * hz]]);
+    return { xyz: at.length + '\nstereocentrum\n' + at.map(a => a[0] + ' ' + a.slice(1).map(v => v.toFixed(3)).join(' ')).join('\n'), lab };
+  }
+  function rs3Paint(w) {
+    const g = w._rs3; if (!g) return;
+    const v = g.v, cs = getComputedStyle(w), ink = cs.getPropertyValue('--ink').trim() || '#222', sf = cs.getPropertyValue('--surface').trim() || '#fff', ac = cs.getPropertyValue('--accent').trim() || '#0e7490';
+    const { xyz, lab } = rs3XYZ(w);
+    v.removeAllModels(); v.removeAllLabels(); v.addModel(xyz, 'xyz');
+    v.setStyle({}, { stick: { radius: 0.13, colorscheme: 'Jmol' }, sphere: { scale: 0.28, colorscheme: 'Jmol' } });
+    lab.forEach(([t, n, p]) => v.addLabel(w.dataset.done && n < 4 ? n + ' · ' + t : t, { position: { x: p[0], y: p[1], z: p[2] }, alignment: 'center', inFront: n < 4, fontSize: 20, fontColor: w.dataset.done && n < 4 ? '#fff' : ink, backgroundColor: w.dataset.done && n < 4 ? ac : sf, backgroundOpacity: .9, borderThickness: 0 }));
+    if (g.base) v.setView(g.base); else g.base = v.getView();
+    v.zoomTo(); v.zoom(1.3); v.setSlab(-50, 50); v.rotate(w.dataset.h === 'f' ? 22 : -22, 'x'); g.pic = v.getView(); v.render();
+  }
+  async function rs3Open(w, b) {
+    const box = w.querySelector('.lx-3d'), on = box.hidden;
+    box.hidden = !on; b.setAttribute('aria-expanded', on); b.textContent = on ? 'Skrýt 3D' : 'Ukázat ve 3D';
+    if (!on || w._rs3) return;
+    const el = box.querySelector('.lx-3v'); el.innerHTML = '<p class="m3d-msg">Načítám 3D model…</p>';
+    try { await window.FH_3DLIB(); } catch (e) { el.innerHTML = '<p class="m3d-msg">3D model se nepodařilo načíst. Zkontroluj připojení k internetu.</p>'; return; }
+    const bg = (getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#ffffff').trim();
+    el.innerHTML = ''; w._rs3 = { v: $3Dmol.createViewer(el, { backgroundColor: bg, antialias: true }) }; rs3Paint(w);
+  }
 
   /* NMR: n sousedních vodíků → n + 1 čar, výšky podle Pascalova trojúhelníku */
   const MULT = ['singlet', 'dublet', 'triplet', 'kvartet', 'kvintet', 'sextet', 'septet'];
@@ -29916,10 +29958,12 @@ const FH_LES = (() => {
     const press = () => w.querySelectorAll(`[data-lwa="${a}"]`).forEach(x => x.setAttribute('aria-pressed', x === b));
     if (a === 'rsR' || a === 'rsS') {
       w.dataset.done = a.slice(2); w.dataset.n = (+w.dataset.n || 0) + 1; if (rsAns(w).rs === w.dataset.done) w.dataset.ok = (+w.dataset.ok || 0) + 1;
-      o.innerHTML = rsOut(w); const nb = o.querySelector('[data-lwa="rsNext"]'); if (nb) nb.focus({ preventScroll: true });
+      o.innerHTML = rsOut(w); rs3Paint(w); const nb = o.querySelector('[data-lwa="rsNext"]'); if (nb) nb.focus({ preventScroll: true });
       if (typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim()); return;
     }
-    if (a === 'rsNext') { rsNew(w); o.innerHTML = rsOut(w); const r = o.querySelector('[data-lwa="rsR"]'); if (r) r.focus({ preventScroll: true }); return; }
+    if (a === 'rs3') return rs3Open(w, b);
+    if (a === 'rs3v') { const g = w._rs3; if (!g) return; g.v.setView(g.pic); if (v === 'h' && w.dataset.h === 'f') g.v.rotate(180, 'y', matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 900); g.v.render(); return; }
+    if (a === 'rsNext') { rsNew(w); o.innerHTML = rsOut(w); rs3Paint(w); const r = o.querySelector('[data-lwa="rsR"]'); if (r) r.focus({ preventScroll: true }); return; }
     if (a === 'nmrv') { w.querySelector('[data-lwi="nmr"]').value = v; return wUpd(w); }
     if (a === 'indv') { o.dataset.i = v; press(); return wUpd(w); }
     if (a === 'lbd') { o.dataset.d = v; press(); return wUpd(w); }
