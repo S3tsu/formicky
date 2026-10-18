@@ -29807,7 +29807,7 @@ const FH_LES = (() => {
     if (!o.items || !o.items.length) return '';
     const id = 'lxm' + (++memN);
     MEM[id] = Object.assign({ i: 0, open: false, p: o.pic ? o.pic() : '' }, o);
-    return `<section class="card lx-mem" id="${id}" aria-label="Memy na zapamatování">${memHTML(id)}</section>`;
+    return `<section class="card lx-mem" id="${id}" aria-label="Meme">${memHTML(id)}</section>`;
   }
   function memHTML(id) {
     const O = MEM[id], m = O.items[O.i], n = O.items.length, cov = t => `<button type="button" class="lx-mcov" data-lx="mshow">${t}</button>`;
@@ -29817,8 +29817,8 @@ const FH_LES = (() => {
       const side = k % 2 ? 'r' : 'l', hid = !O.open && m.length > 1 && k === m.length - 1;
       return `<div class="lx-bub ${side}${hid ? ' hid' : ''}"><b>${xe(w)}</b>${hid ? cov('Domysli pointu, pak klepni') : `<span>${xe(t)}</span>`}</div>`;
     }).join('')}</div>`;
-    return `<div class="lx-mem-h"><h3 class="fam-h">Mem na zapamatování</h3>${n > 1 ? `<span class="lx-cnt">${O.i + 1} z ${n}</span>` : ''}</div>${pic}
-      ${n > 1 ? `<div class="row"><button type="button" class="btn" data-lx="mnx">Další mem</button></div>` : ''}`;
+    return `<div class="lx-mem-h"><h3 class="fam-h">Meme</h3>${n > 1 ? `<span class="lx-cnt">${O.i + 1} z ${n}</span>` : ''}</div>${pic}
+      ${n > 1 ? `<div class="row"><button type="button" class="btn" data-lx="mnx">Další meme</button></div>` : ''}`;
   }
   function memAct(b, a) {
     const box = b.closest('.lx-mem'), O = MEM[box.id]; if (!O) return;
