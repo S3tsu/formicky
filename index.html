@@ -31676,12 +31676,15 @@ const col = k => k ? AC_COL[k] || k : null;
 let tid = 0;
 function tubeSVG(o, cap) {
   const id = 'act' + (++tid), sol = col(o.sol), p = col(o.p);
+  /* světlou (hlavně bílou) sraženinu zvýrazní tmavší obrys, jinak by na světlém roztoku nebyla vidět */
+  const lt = /^#[0-9a-f]{6}$/i.test(p || '') && [1, 3, 5].reduce((a, i, k) => a + parseInt(p.substr(i, 2), 16) * [.299, .587, .114][k], 0) > 200;
+  const ps = lt ? 'stroke="rgba(40,30,45,.55)" stroke-width=".8"' : 'stroke="rgba(0,0,0,.18)" stroke-width=".4"';
   const dots = [], rnd = i => { const v = Math.sin(i * 12.9898 + 78.233) * 43758.5453; return v - Math.floor(v); };
   if (p && o.s) {
     const n = o.s === 2 ? 34 : 16, top = o.s === 2 ? 52 : 40;
-    for (let i = 0; i < n; i++) { const x = 11.5 + rnd(i) * 25, y = top + rnd(i + 99) * (88 - top); dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.1 + rnd(i + 7) * 1.3).toFixed(1)}" fill="${p}" stroke="rgba(0,0,0,.18)" stroke-width=".4"/>`); }
+    for (let i = 0; i < n; i++) { const x = 11.5 + rnd(i) * 25, y = top + rnd(i + 99) * (88 - top); dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.1 + rnd(i + 7) * 1.3).toFixed(1)}" fill="${p}" ${ps}/>`); }
   }
-  const pile = p && o.s === 2 ? `<path d="M9 74 Q16 68 24 71 Q32 67 39 73 V82 Q39 97 24 97 Q9 97 9 82 Z" fill="${p}" stroke="rgba(0,0,0,.22)" stroke-width=".8"/>` : p && o.s ? `<rect x="0" y="40" width="48" height="60" fill="${p}" opacity=".28"/>` : '';
+  const pile = p && o.s === 2 ? `<path d="M9 74 Q16 68 24 71 Q32 67 39 73 V82 Q39 97 24 97 Q9 97 9 82 Z" fill="${p}" stroke="${lt ? 'rgba(40,30,45,.6)' : 'rgba(0,0,0,.22)'}" stroke-width="${lt ? 1.2 : .8}"/>` : p && o.s ? `<rect x="0" y="40" width="48" height="60" fill="${p}" opacity=".28"/>` : '';
   return `<figure class="ac-tube"><svg viewBox="0 0 48 104" aria-hidden="true"><defs><clipPath id="${id}"><path d="M9 6 V82 Q9 97 24 97 Q39 97 39 82 V6 Z"/></clipPath></defs>
     <g clip-path="url(#${id})"><rect x="0" y="30" width="48" height="80" fill="${sol || 'var(--ac-water)'}" opacity="${sol ? .78 : 1}"/>${dots.join('')}${pile}</g>
     <path d="M6 5 H42 M9 5 V82 Q9 97 24 97 Q39 97 39 82 V5" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>
