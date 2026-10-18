@@ -21907,12 +21907,15 @@ function registerTopic(T) {
       [['Fluorescence', 'S₁ → S₀, spin sedí, za nanosekundu jsem venku.'], ['Fosforescence', 'T₁ → S₀, mám to zakázané, tak svítím ještě po vypnutí světla.']],
       [['Dien (4π)', 'Termicky se točím konrotačně.'], ['Trien (6π)', 'Já disrotačně.'], ['hν', 'A já vám to oběma otočím.']],
       [['s-trans dien', 'Taky chci Dielse–Aldera.'], ['Cyklopentadien', 'Nejdřív se otoč do s-cis. Já v něm bydlím napořád.']],
-      [['Maleinanhydrid', 'Jsem chudý na elektrony, proto jsem nejoblíbenější dienofil.'], ['Ethen', 'Já bez akceptorní skupiny jen čekám v teple.']],
+      [['Maleinanhydrid', 'Dvě C=O ze mě tahají elektrony. Jsem klasický dienofil.'], ['Ethen', 'Já žádný akceptor nemám, tak mi to s dienem moc nejde.']],
       [['Endo produkt', 'Vznikl jsem první, sekundární orbitaly mi pomohly.'], ['Exo produkt', 'Jen počkej, až se to zahřeje. Stabilnější jsem já.']],
       [['Dva ethyleny', 'Zahřejte nás, uděláme cyklobutan.'], ['Woodward–Hoffmann', 'Termicky [2 + 2]? Zakázáno. Rozsviťte.']],
       [['Allyl(fenyl)ether', 'Po [3,3] jsem chvíli dienon.'], ['Tautomerie', 'A já ti vrátím aromaticitu: o-allylfenol.']],
-      [['Luminol', 'Peroxid, železo z krve a já svítím modře.'], ['N₂', 'A já z toho odcházím jako plyn.']],
-      [['Diazen', 'Dám ti oba vodíky ze stejné strany.'], ['Alkyn', 'Takže budu cis-alken.']]
+      [['Luminol', 'Peroxid a železo z krve mě rozeberou.'], ['N₂', 'Já z toho odcházím jako plyn.'], ['3-Aminoftalát', 'A já zbudu excitovaný a svítím modře.']],
+      [['Diazen', 'Dám ti oba vodíky ze stejné strany.'], ['Alkyn', 'Takže budu cis-alken.']],
+      [['Dielsova–Alderova reakce', 'Kolik mám párů?'], ['Já u testu', 'Dva!'], ['Woodward–Hoffmann', 'Tři. Dva z dienu a jeden z dienofilu.']],
+      [['Diethyl-maleinát (cis)', 'S butadienem dám cis-diester.'], ['Diethyl-fumarát (trans)', 'A já trans. Dielsova–Alderova reakce je stereospecifická.']],
+      [['[1,5]-posun H', 'Tři páry, suprafaciálně. U cyklopentadienu mi stačí 25 °C.'], ['[1,3]-posun H', 'Já bych musel antarafaciálně. Termicky mě neznají.']]
     ],
     mols: [
       /* ---- chemiluminiscence ---- */
@@ -22985,10 +22988,16 @@ function registerTopic(T) {
       [['Glukosa', 'Ve vodě se pořád otevírám a zavírám.'], ['Otevřená forma', 'Mě je tam 0,002 %, ale přes mě to celé jede.'], ['Polarimetr', 'A já vidím, jak se při tom mění optická otáčivost.']],
       [['Methyl-glukosid', 'Tollensovo činidlo? Nereaguju.'], ['Glukosa', 'Protože jsi zamkl anomerní OH. Acetal se sám neotevře.']],
       [['Fruktosa', 'Jsem keton, a přesto redukuju.'], ['NaOH', 'Protože tě přes endiol předělám na aldosu.']],
-      [['Br₂, H₂O', 'Oxiduju jen CHO. Aldonová kyselina.'], ['HNO₃', 'Já oba konce. Aldarová, AR jako „ARmáda na oba konce“.']],
+      [['Br₂, H₂O', 'Oxiduju jen CHO. Aldonová kyselina.'], ['HNO₃', 'Já CHO i koncové CH₂OH. Aldarová, COOH nahoře i dole.']],
       [['Kiliani–Fischer', 'Přidám uhlík nahoru. Ale nevím, kam dát OH, tak udělám oba.'], ['D-arabinosa', 'Takže z jedné budou dvě: glukosa a mannosa.']],
       [['Wohl', 'Uříznu C1 a s ním i stereocentrum C2.'], ['D-galaktosa', 'Zbytek si nechám, budu D-lyxosa.']],
-      [['Maltosa', 'Mám volný konec a redukuju.'], ['Sacharosa', 'Já mám oba anomerní uhlíky spojené. Nic neredukuju, nic nemutarotuju.']]
+      [['Maltosa', 'Mám volný konec a redukuju.'], ['Sacharosa', 'Já mám oba anomerní uhlíky spojené. Nic neredukuju, nic nemutarotuju.']],
+      [['L-glukosa', 'Stačí mi otočit poslední OH, ne?'], ['Fischer', 'Ne. Enantiomer má obrácená všechna centra.']],
+      [['Fischerova projekce', 'Otoč mě o 180° a jsem pořád já.'], ['Já u testu', 'A o 90°?'], ['Fischerova projekce', 'To nesmíš.']],
+      [['D-glukosa', 'S galaktosou jsme skoro dvojčata.'], ['D-galaktosa', 'Lišíme se jen na C4.']],
+      [['D-glukosa', 'NaBH₄, co ze mě bude?'], ['NaBH₄', 'D-glucitol, známý jako sorbit.']],
+      [['Celulosa', 'Mám β(1→4).'], ['Amylosa', 'Já α(1→4). Jinak jsme obě jen glukosa.'], ['Já u testu', 'Tak na řecká písmenka pozor.']],
+      [['Laktosa', 'Jsem galaktosa a glukosa, β(1→4).'], ['Tollens', 'Hemiacetal máš volný, takže redukuješ.']]
     ],
     mols: [
       // Fischerova projekce a D/L
@@ -23659,14 +23668,20 @@ function registerTopic(T) {
     memes: [
       [['Alanin v krystalu', 'NH₂ a COOH? Ne, já jsem NH₃⁺ a COO⁻. Proto taju až vysoko.'], ['Hexan', 'A proto se ve mně nerozpustíš.']],
       [['Aminokyselina při pH < pI', 'Mám plus, letím k minusu.'], ['Aminokyselina při pH > pI', 'Mám minus, letím k plusu.'], ['Aminokyselina při pH = pI', 'Já tu postojím.']],
-      [['L-Alanin', 'Ve Fischerovi mám NH₃⁺ vlevo. L jako levá.'], ['L-Cystein', 'Já taky, ale jsem (R). Síra přebila COOH.']],
+      [['L-Alanin', 'Ve Fischerovi mám NH₃⁺ vlevo. L jako levá, a jsem (S).'], ['L-Cystein', 'Já taky L, ale (R). Síra mi zvedla prioritu nad COOH.']],
       [['Prolin', 'Já mám dusík v kruhu. Sekundární aminokyselina.'], ['Ostatní', 'My máme NH₂ volně.']],
       [['Ala-Ser', 'Já mám volné NH₃⁺ na alaninu.'], ['Ser-Ala', 'A já na serinu. Nejsme stejní, čti zleva od N-konce.']],
       [['PITC', 'Chytím N-koncovou aminokyselinu.'], ['HCl', 'Utrhnu ji jako ATZ.'], ['H₃O⁺', 'A já z ní udělám PTH, ať se dá poznat.']],
       [['Trypsin', 'Stříhám za Lys a Arg.'], ['Chymotrypsin', 'Já za aromáty: Phe, Tyr, Trp.'], ['Karboxypeptidasa', 'Já jen ukusuju C-konec.']],
       [['Apoenzym', 'Bez kofaktoru nic nezmůžu.'], ['Kofaktor', 'Beze mě taky ne.'], ['Holoenzym', 'Spolu jsme já.']],
       [['Enzym', 'Snížím ti aktivační energii.'], ['Rovnováha', 'Ale se mnou nehneš.']],
-      [['NAD⁺', 'Dej mi hydrid na C4.'], ['Substrát', 'Tady máš, jsem teď oxidovaný.'], ['NADH', 'A já jsem redukovaná forma.']]
+      [['NAD⁺', 'Dej mi hydrid na C4.'], ['Substrát', 'Tady máš, jsem teď oxidovaný.'], ['NADH', 'A já jsem redukovaná forma.']],
+      [['GABA', 'Mám NH₂ i COOH, jsem α-aminokyselina!'], ['C4 (γ)', 'Kdepak, NH₂ máš u mě, ne na α-uhlíku.']],
+      [['Acetamidomalonát', 'Udělal jsem ti alanin.'], ['Já u testu', 'L, nebo D?'], ['Achirální činidla', 'Obojí. Z nás vznikne vždycky racemát.']],
+      [['Asp a Glu', 'My dvě jsme kyselé.'], ['Lys, Arg, His', 'My tři bazické.'], ['Zbylých 15', 'A my neutrální většina.']],
+      [['Peptidová vazba C–N', 'Otáčet se? Nemůžu.'], ['Volný pár dusíku', 'Jsem v rezonanci s C=O. Máš částečně dvojný charakter.']],
+      [['Pentapeptid', 'Kolik mám peptidových vazeb?'], ['Já u testu', 'Pět!'], ['Pentapeptid', 'Čtyři. n aminokyselin, n − 1 vazeb.']],
+      [['Ninhydrin', 'Dej mi α-aminokyselinu a udělám purpurovou.'], ['Aminokyselina', 'A já z toho odejdu jako aldehyd a CO₂.']]
     ],
     mols: [
       /* ---- struktura aminokyselin ---- */
@@ -24360,7 +24375,13 @@ function registerTopic(T) {
       [['Isopren', 'Hlava k patě, pata k hlavě.'], ['Myrcen', '2 jednotky, 10 uhlíků: monoterpen.'], ['β-Karoten', '8 jednotek, 40 uhlíků: tetraterpen.']],
       [['Estradiol', 'Můj kruh A je aromatický, mám fenolové OH.'], ['Testosteron', 'Já mám v kruhu A enon.']],
       [['Aldosteron', 'Hlídám Na⁺ a K⁺.'], ['Hydrokortison', 'Já glukosu a záněty.']],
-      [['Cyklohexan', 'Já se klidně překlopím.'], ['Steroid', 'Já ne. Spojené kruhy mi to nedovolí.']]
+      [['Cyklohexan', 'Já se klidně překlopím.'], ['Steroid', 'Já ne. Spojené kruhy mi to nedovolí.']],
+      [['Já u testu', 'Jaká funkční skupina dělá lipid lipidem?'], ['Lipidy', 'Žádná. Spojuje nás jen lipofilita.']],
+      [['Mastná kyselina s 17 uhlíky', 'Můžu taky do tuku?'], ['Přednáška', 'Běžné mastné kyseliny mají sudý počet uhlíků.']],
+      [['Fosfolipid', 'Jsem diester kyseliny fosforečné.'], ['Glycerol', 'Na jedné straně jsem já.'], ['Aminoalkohol', 'A na druhé já.']],
+      [['Terpen', 'Jsem čistý uhlovodík.'], ['Terpenoid', 'Já mám navíc kyslík.']],
+      [['Estradiol', 'Kde mám methyl na C10?'], ['Aromatický kruh A', 'Ten estrogenům chybí.']],
+      [['A-B trans-steroid', 'H na C5 a CH₃ na C10 míří na opačné strany.'], ['Kostra', 'Proto jsem plochá.']]
     ],
     mols: [
       /* ---- tuky, oleje, vosky ---- */
@@ -24881,7 +24902,10 @@ function registerTopic(T) {
       [['Purin (A, G)', 'Máme dva kruhy.'], ['Pyrimidin (C, T, U)', 'My jen jeden. Ale do páru vždycky jeden z nás a jeden z vás.']],
       [['Fosfát', 'Držím 5′ jednoho cukru a 3′ dalšího.'], ['Bílkovina', 'U mě tohle dělá amidová vazba.']],
       [['DNA', 'Přepiš mě.'], ['RNA', 'Hotovo, transkripce. Teď mě přelož.'], ['Ribosom', 'Translace. Tady máš bílkovinu.']],
-      [['Dvoušroubovnice', 'Šířka 2,0 nm, závit 3,4 nm.'], ['10 párů bází', 'A v jednom závitu jsme my.']]
+      [['Dvoušroubovnice', 'Šířka 2,0 nm, závit 3,4 nm.'], ['10 párů bází', 'A v jednom závitu jsme my.']],
+      [['Purin', 'Na cukr se vážu přes N9.'], ['Pyrimidin', 'A já přes N1.']],
+      [['C2 báze', 'Kdo z nás je C2?'], ['C2′ cukru', 'Já mám čárku, ať si nás nespleteš.']],
+      [['DNA', 'Mám 5′-konec a 3′-konec.'], ['Bílkovina', 'A já N-konec a C-konec.']]
     ],
     mols: [
       // ----- sacharidy (stereochemie → nodraw)
@@ -25305,15 +25329,18 @@ function registerTopic(T) {
     },
     memes: [
       [['Kyselina uhličitá', 'Mám dvě OH na jednom uhlíku.'], ['CO₂ + H₂O', 'Proto se hned rozpadneš na nás.']],
-      [['Kyselina chlormravenčí', 'Mám nahrazenou jednu OH, jsem derivát!'], ['Slajd 6', 'Stálé jsou jen ty s oběma OH nahrazenými. Ty se rozpadneš na CO₂ a HCl.']],
+      [['Kyselina chlormravenčí', 'Mám nahrazenou jednu OH, jsem derivát!'], ['CO₂ + HCl', 'Jenže stálé jsou až deriváty s oběma OH nahrazenými. Ty se rozpadneš na nás.']],
       [['Fosgen', 'Dva chlory, dvě šance. Nejdřív ethanol, pak klidně amoniak.'], ['Ethyl-chlorformiát', 'Já jsem ta půlka mezi tím.']],
       [['Močovina', 'Jsem diamid, a stejně bazičtější než amidy.'], ['Amin', 'Ale pořád ne tolik jako já.']],
       [['CH₃I', 'Alkyluju močovinu na kyslíku.'], ['Isomočovina', 'Proto mám v názvu iso-: C=NH a O–CH₃.'], ['CH₃NH₃⁺Cl⁻', 'Já beru dusík.']],
-      [['Amid', 'Hofmannovým odbouráváním z něj bude isokyanát.'], ['Acylazid', 'Mně se to říká Curtiovo.'], ['Hydroxamová kyselina', 'A mně Lossenovo. Všichni končíme u R–N=C=O.']],
+      [['Amid', 'Hofmannovým odbouráváním ze mě bude isokyanát.'], ['Acylazid', 'Mně se to říká Curtiovo.'], ['Hydroxamová kyselina', 'A mně Lossenovo. Všichni končíme u R–N=C=O.']],
       [['Isokyanát', 'Přidej vodu a dostaneš amin a CO₂.'], ['Další isokyanát', 'A ten amin pak spolknu: disubstituovaná močovina.']],
       [['Kyselina kyanatá', 'H–O–C≡N, vodík na kyslíku.'], ['Kyselina isokyanatá', 'H–N=C=O. Iso- = vodík na dusíku.']],
       [['Kyselina', 'S aminem se jen solím.'], ['DCC', 'Udělám z tebe O-acylisomočovinu. Amin zaútočí a já odejdu jako DCU.']],
-      [['Fenylisothiokyanát', 'Ukusuju peptidu aminokyseliny jednu po druhé.'], ['Edmanovo odbourávání', 'Tak se čte primární struktura.']]
+      [['Fenylisothiokyanát', 'Ukusuju peptidu aminokyseliny jednu po druhé.'], ['Edmanovo odbourávání', 'Tak se čte primární struktura.']],
+      [['Isokyanát', 'Přidej alkohol.'], ['Alkohol', 'A máš karbamát, neboli urethan.']],
+      [['Močovina', 'Dialkylmalonáte, uzavřeme kruh?'], ['EtONa', 'Dám vám zásadu. Bude z vás kyselina barbiturová.']],
+      [['Močovina', 'Hofmannovo odbourávání? Já nekončím u aminu.'], ['Hydrazin', 'Ale u mě.']]
     ],
 
     mols: [
@@ -30852,18 +30879,18 @@ const FH_OL = (() => {
         + sec('2. Syntézy', `${tbl(['Syntéza', 'Výsledek'], [['Hantzsch (ketoester, aldehyd, NH₃)', '1,4-dihydropyridin, oxidací pyridin'], ['Skraup (anilin + akrolein, oxidace)', 'chinolin'], ['Bischler–Napieralski (H₃PO₄, P₂O₅)', 'isochinolinový skelet']])}
         <p>Chinolin má dusík v poloze 1, isochinolin v poloze 2. Elektrofil u nich jde do <b>benzenového</b> kruhu, polohy 5 a 8.</p>`)
         + sec('3. V přírodě a v lécích', `<ul class="ac-ul"><li>Porfyrin ze čtyř pyrrolů nese v hemu Fe, v chlorofylu <b>Mg</b>, ve vitaminu B₁₂ Co.</li><li>Statiny (atorvastatin s pyrrolem z Paal–Knorrovy syntézy) inhibují HMG-CoA reduktasu.</li><li>Purin = pyrimidin + imidazol, v nukleosidech se cukr váže na N9.</li></ul>`) },
-    { id: 't23a', topic: 't23', n: 1, min: 5, t: 'Fotochemie a pericyklické reakce',
+    { id: 't23a', topic: 't23', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], n: 1, min: 5, t: 'Fotochemie a pericyklické reakce',
       goal: 'Po lekci rozlišíš fluorescenci a fosforescenci, víš, co je chemiluminiscence, a podle počtu elektronových párů předpovíš průběh elektrocyklické reakce, cykloadice a sigmatropního přesmyku.',
       recall: 'Vybav si z dienů, co je HOMO a LUMO buta-1,3-dienu.',
       tail: 'Vrať se k papíru ze začátku. HOMO je ψ₂, LUMO ψ₃*, a světlo mezi nimi přehodí elektron. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t23_q1', 't23_q2', 't23_q5', 't23_q7', 't23_q11', 't23_q17', 't23_q18', 't23_q19', 't23_q26', 't23_q29', 't23_q35', 't23_q41'],
-      beda: 'Sudý počet párů jde termicky konrotačně, lichý disrotačně. Světlo to celé obrátí, jako když převrátíš přesýpací hodiny.',
+      beda: 'U elektrocyklické reakce jde sudý počet párů termicky konrotačně, lichý disrotačně. Světlo to obrátí, jako když převrátíš přesýpací hodiny.',
       body: () => sec('1. Fotochemie a luminiscence', `${tbl(['Děj', 'Přechod', 'Poznámka'], [['fluorescence', 'S₁ → S₀, zářivý', 'stejná multiplicita, rychlá'], ['fosforescence', 'T₁ → S₀, zářivý', 'spinově zakázaný, trvá 10⁻³–10² s'], ['mezisystémová konverze', 'S₁ → T₁, nezářivý', 'mění multiplicitu']])}
         <p><b>Chemiluminiscence</b>: energii dodá reakce. Luminol se oxiduje na excitovaný 3-aminoftalát, který svítí, a železo z hemoglobinu oxidaci katalyzuje (stopy krve).</p>`)
         + sec('2. Pericyklické reakce', `<p>Probíhají <b>součinně přes cyklický přechodový stav</b> bez meziproduktů. Patří sem elektrocyklické reakce, cykloadice, sigmatropní přesmyky, cheletropní a enové reakce. Rozhoduje symetrie hraničních orbitalů (Woodward–Hoffmann, Fukui).</p>
         ${tbl(['Elektrocyklická reakce', 'Termicky', 'Fotochemicky'], [['dien (2 páry, 4π)', 'konrotačně', 'disrotačně'], ['trien (3 páry, 6π)', 'disrotačně', 'konrotačně']])}`)
         + sec('3. Cykloadice a přesmyky', `<ul class="ac-ul"><li><b>Dielsova–Alderova</b> reakce [4 + 2] (3 páry) jde termicky suprafaciálně. Dien musí být <b>s-cis</b>, pomáhá donor na dienu a akceptor na dienofilu, kineticky vzniká endo produkt.</li><li>Termická [2 + 2] cykloadice dvou alkenů neprobíhá (suprafaciální cesta je zakázaná).</li><li>Termický [1,5]-posun H jde suprafaciálně, [1,3]-posun H není znám.</li><li>Claisenův a Copeho přesmyk jsou [3,3]-sigmatropní.</li></ul>`) },
-    { id: 't24a', topic: 't24', n: 1, min: 5, t: 'Monosacharidy',
+    { id: 't24a', topic: 't24', mem: [0, 1, 2, 3, 10, 11, 12], n: 1, min: 5, t: 'Monosacharidy',
       goal: 'Po lekci zařadíš monosacharid, poznáš D a L ve Fischerově projekci, převedeš ho do Haworthovy projekce a vysvětlíš anomery a mutarotaci.',
       recall: 'Tipni si, podle čeho se pozná D-cukr ve Fischerově projekci.',
       tail: 'Vrať se k tipu ze začátku. D-cukr má OH na posledním stereocentru vpravo. Co jsi nevěděla, zopakuješ zítra.',
@@ -30875,7 +30902,7 @@ const FH_OL = (() => {
         + sec('3. Cyklické formy', `<p>Karbonyl a OH téže molekuly dají <b>intramolekulární hemiacetal</b>. Vzniká nové stereocentrum, <b>anomerní uhlík</b>, a dva anomery:</p>
         ${tbl(['Anomer', 'Anomerní OH v Haworthově projekci'], [['α', 'dole, trans k CH₂OH'], ['β', 'nahoře, cis k CH₂OH']])}
         <p>Ve vodě se anomery přes otevřenou formu pomalu přeměňují na rovnovážnou směs: <b>mutarotace</b>. D-Glukosa: β 62,6 %, α 37,3 %, otevřená forma 0,002 %.</p>`) },
-    { id: 't24b', topic: 't24', n: 2, min: 5, t: 'Reakce sacharidů a disacharidy',
+    { id: 't24b', topic: 't24', mem: [4, 5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Reakce sacharidů a disacharidy',
       goal: 'Po lekci víš, co je glykosid a redukující cukr, jak se aldosa redukuje, oxiduje, prodlouží a zkrátí, a rozlišíš běžné disacharidy a polysacharidy.',
       recall: 'Vybav si z lekce 1, co je hemiacetal. Tipni si, proč sacharosa nedá Tollensovu zkoušku, a maltosa ano.',
       tail: 'Vrať se k tipu ze začátku. Sacharosa má oba anomerní uhlíky ve vazbě a žádný volný hemiacetal. Co jsi nevěděla, zopakuješ zítra.',
@@ -30886,7 +30913,7 @@ const FH_OL = (() => {
         + sec('2. Reakce aldos', `${tbl(['Reakce', 'Produkt'], [['NaBH₄', 'alditol (D-glukosa → D-glucitol, sorbit)'], ['Br₂, H₂O', 'aldonová kyselina (COOH na C1)'], ['HNO₃', 'aldarová kyselina (COOH na obou koncích)'], ['Kiliani–Fischer (HCN)', 'o uhlík delší, dva C2 epimery'], ['Wohl', 'o uhlík kratší, C1 odejde jako HCN']])}`)
         + sec('3. Di- a polysacharidy', `${tbl(['Cukr', 'Složení a vazba', 'Redukuje'], [['maltosa', 'glukosa + glukosa, α(1→4)', 'ano'], ['cellobiosa', 'glukosa + glukosa, β(1→4)', 'ano'], ['laktosa', 'galaktosa + glukosa, β(1→4)', 'ano'], ['sacharosa', 'glukosa + fruktosa, (1→2)', '<b>ne</b>']])}
         <p>Celulosa má vazby β(1→4), amylosa α(1→4). Škrob je amylosa (lineární) a amylopektin (rozvětvený).</p>`) },
-    { id: 't25a', topic: 't25', n: 1, min: 5, t: 'Aminokyseliny',
+    { id: 't25a', topic: 't25', mem: [0, 1, 2, 3, 10, 11, 12], n: 1, min: 5, t: 'Aminokyseliny',
       goal: 'Po lekci určíš konfiguraci L-aminokyseliny, vysvětlíš obojetný ion a izoelektrický bod a předpovíš, kam aminokyselina putuje při elektroforéze.',
       recall: 'Tipni si, jakou absolutní konfiguraci (R, nebo S) mají L-aminokyseliny.',
       tail: 'Vrať se k tipu ze začátku. Skoro všechny L-aminokyseliny jsou S, výjimkou je L-cystein (R). Co jsi nevěděla, zopakuješ zítra.',
@@ -30901,7 +30928,7 @@ const FH_OL = (() => {
         ${FH_LES.w.pi()}`)
         + sec('3. Syntézy', `${tbl(['Syntéza', 'Princip'], [['reduktivní aminace α-ketokyseliny', 'NH₃, NaBH₄ (kyselina pyrohroznová → alanin)'], ['acetamidomalonátová', 'alkylace (BrCH₂COOEt pro Asp), dusík chráněný jako acetamid, nakonec hydrolýza a dekarboxylace']])}
         <p class="ac-les-trap"><b>Pozor:</b> z achirálních výchozích látek a činidel vznikne vždy racemát (R,S).</p>`) },
-    { id: 't25b', topic: 't25', n: 2, min: 5, t: 'Peptidy, bílkoviny a enzymy',
+    { id: 't25b', topic: 't25', mem: [4, 5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Peptidy, bílkoviny a enzymy',
       goal: 'Po lekci zapíšeš peptid od N-konce, popíšeš úrovně struktury bílkovin, víš, jak se určuje sekvence, a vysvětlíš, co dělá enzym a jeho kofaktor.',
       recall: 'Tipni si, proč se kolem peptidové vazby C–N volně neotáčí.',
       tail: 'Vrať se k tipu ze začátku. Volný pár dusíku je v rezonanci s C=O a vazba má částečně dvojný charakter. Co jsi nevěděla, zopakuješ zítra.',
@@ -30913,7 +30940,7 @@ const FH_OL = (() => {
         + sec('2. Analýza a sekvence', `<ul class="ac-ul"><li><b>Ninhydrin</b> dá s α-aminokyselinou purpurové barvivo, aldehyd a CO₂.</li><li><b>Edmanovo odbourávání</b> (PITC) odštěpí N-koncovou aminokyselinu, pozná se podle PTH derivátu. Zvládne asi 50 cyklů, delší řetězec se nejdřív rozštěpí.</li><li>Trypsin štěpí za Lys a Arg, chymotrypsin za Phe, Tyr a Trp. C-konec určí karboxypeptidasa.</li></ul>`)
         + sec('3. Enzymy', `<p>Enzym sníží aktivační energii, polohu rovnováhy nezmění: E + S ⇌ ES ⇌ EP ⇌ E + P. Ureasa má absolutní substrátovou specifitu. Biokatalyzátory jsou i ribozymy (RNA).</p>
         ${tbl(['Pojem', 'Význam'], [['holoenzym', 'apoenzym + kofaktor, jediná aktivní forma'], ['koenzym', 'organický kofaktor, třeba NAD⁺ (často z vitaminů)'], ['prostetická skupina', 'kofaktor pevně vázaný na bílkovinu'], ['stopové prvky (Zn, Fe, Cu, Mn, Se)', 'anorganické kofaktory']])}`) },
-    { id: 't26a', topic: 't26', n: 1, min: 5, t: 'Tuky, mýdla a fosfolipidy',
+    { id: 't26a', topic: 't26', mem: [0, 1, 2, 3, 10, 11, 12], n: 1, min: 5, t: 'Tuky, mýdla a fosfolipidy',
       goal: 'Po lekci víš, co spojuje lipidy, proč jsou oleje kapalné a tuky tuhé, jak funguje mýdlo a jak je stavěná buněčná membrána.',
       recall: 'Tipni si, proč je olivový olej při pokojové teplotě kapalný, a sádlo tuhé.',
       tail: 'Vrať se k tipu ze začátku. Cis dvojné vazby nenasycených kyselin zalomí řetězce a ty se neuspořádají. Co jsi nevěděla, zopakuješ zítra.',
@@ -30926,7 +30953,7 @@ const FH_OL = (() => {
         <p class="ac-les-trap"><b>Pozor:</b> v tvrdé vodě tvoří Ca²⁺ a Mg²⁺ s mýdlem nerozpustné soli. Syntetickému detergentu (sulfonát) to nevadí.</p>`)
         + sec('3. Fosfolipidy a membrána', `<p>Fosfolipidy jsou <b>diestery kyseliny fosforečné</b>: na jedné straně glycerol (nebo sfingosin), na druhé aminoalkohol. Ve fosfoacylglycerolu je na C1 nasycená a na C2 nenasycená kyselina.</p>
         <p>V membráně tvoří <b>lipidovou dvojvrstvu</b>: polární hlavy ven do vody, nepolární ocasy dovnitř. Sfingomyeliny stojí na sfingosinu.</p>`) },
-    { id: 't26b', topic: 't26', n: 2, min: 5, t: 'Eikosanoidy, terpeny a steroidy',
+    { id: 't26b', topic: 't26', mem: [4, 5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Eikosanoidy, terpeny a steroidy',
       goal: 'Po lekci víš, jak vznikají prostaglandiny a proč mají protizánětlivé léky nežádoucí účinky, odvodíš terpen z isoprenu a popíšeš steroidní skelet a hormony.',
       recall: 'Tipni si, z kolika uhlíků je isopren a kolik isoprenů má monoterpen.',
       tail: 'Vrať se k tipu ze začátku. Isopren má 5 uhlíků, monoterpen dvě jednotky, tedy 10. Co jsi nevěděla, zopakuješ zítra.',
@@ -30939,7 +30966,7 @@ const FH_OL = (() => {
         ${tbl(['Skupina', 'Jednotek', 'Uhlíků'], [['monoterpeny', '2', '10'], ['seskviterpeny', '3', '15'], ['diterpeny', '4', '20'], ['triterpeny (lanosterol)', '6', '30'], ['tetraterpeny (β-karoten)', '8', '40']])}`)
         + sec('3. Steroidy', `<p>Steroidní skelet: tři šestičlenné kruhy A, B, C a pětičlenný D, methyly na C10 a C13. Kondenzované kruhy se nemůžou překlopit. U A-B trans-steroidu jsou H na C5 a CH₃ na C10 na opačných stranách a kostra je plochá. OH cholesterolu na C3 je ekvatoriální.</p>
         <ul class="ac-ul"><li><b>Estrogeny</b> mají aromatický kruh A s fenolovým OH a chybí jim methyl na C10.</li><li>Progesteron je gestagen, aldosteron mineralokortikoid (Na⁺ a K⁺), hydrokortison glukokortikoid. Ethynylestradiol je syntetický estrogen v antikoncepci.</li></ul>`) },
-    { id: 't27a', topic: 't27', n: 1, min: 5, t: 'Nukleové kyseliny',
+    { id: 't27a', topic: 't27', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n: 1, min: 5, t: 'Nukleové kyseliny',
       goal: 'Po lekci rozlišíš nukleosid a nukleotid, DNA a RNA i purinové a pyrimidinové báze, popíšeš páteř řetězce a párování bází v dvoušroubovnici.',
       recall: 'Zkus si z hlavy napsat, které báze jsou v DNA a se kterou se páruje adenin.',
       tail: 'Vrať se k papíru ze začátku. DNA má A, G, C a T, adenin se páruje s thyminem dvěma vodíkovými vazbami. Co jsi nevěděla, zopakuješ zítra.',
@@ -30951,7 +30978,7 @@ const FH_OL = (() => {
         + sec('2. Řetězec', `<p>Páteř tvoří střídání <b>fosfátu a cukru</b>: fosfát esterově spojí 3′ jednoho a 5′ dalšího cukru. Báze visí na C1′ jako postranní řetězce u bílkovin. Řetězec má 5′-konec a 3′-konec.</p>`)
         + sec('3. Dvoušroubovnice a přenos informace', `<p>Watsonův–Crickův model: dvě vlákna drží u sebe <b>vodíkové vazby</b> komplementárních bází, A–T (2 vazby) a G–C (3). Šířka 2,0 nm, závit 3,4 nm na 10 párů bází. Žlábky umožňují interkalaci.</p>
         <p>DNA → (replikace) DNA, DNA → (transkripce) RNA → (translace v ribosomech) bílkovina.</p>`) },
-    { id: 't29a', topic: 't29', n: 1, min: 5, t: 'Deriváty kyseliny uhličité',
+    { id: 't29a', topic: 't29', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], n: 1, min: 5, t: 'Deriváty kyseliny uhličité',
       goal: 'Po lekci víš, proč jsou stálé jen deriváty s oběma nahrazenými OH, popíšeš chemii fosgenu, močoviny a isokyanátů a znáš kondenzační činidlo DCC.',
       recall: 'Tipni si, proč kyselina uhličitá v čistém stavu neexistuje.',
       tail: 'Vrať se k tipu ze začátku. Dvě OH na jednom uhlíku samovolně odštěpí vodu. Co jsi nevěděla, zopakuješ zítra.',
@@ -31448,14 +31475,64 @@ const AC_BEDA = {
 };
 /* Memy na konci kola: [horní text, spodní text, kapitola] */
 const AC_MEMES = [
-  ['Když přidáš NH₃ k Cu²⁺', 'a ono to zmodrá jak Šmoula', 'ka'], ['Já: přidám jen kapku NaOH', 'Pb, Al, Zn: rozpustíme se v nadbytku, ať to víš', 'ka'],
+  ['Když přidáš NH₃ k Cu²⁺', 'a ono to zmodrá jak Šmoula', 'ka'], ['Já: přilévám NaOH dál', 'Pb, Al, Zn: jaká sraženina? Žádná tu nebyla', 'ka'],
   ['Fe³⁺ a sulfan', 'čekala jsi sulfid, máš síru', 'ka'], ['Sodík v plameni', 'když jsi chtěla vidět draslík', 'ka'],
   ['Dusičnan se skupinovými činidly', 'nic, ticho, žádná reakce', 'ka'], ['Ag⁺ + Cl⁻', 'bílá jako tvoje stránka v protokolu před deadlinem', 'ka'],
   ['Lucasovo činidlo a primární alkohol', 'ještě pořád čekám na zákal', 'org'], ['Tollens', 'aldehyd si udělal selfie na stěně zkumavky', 'org'],
-  ['Isonitrilová reakce', 'tu si zapamatuješ nosem, ne hlavou', 'org'], ['Třída I', 'nerozpustím se ani v kyselině sírové, jsem inert', 'org'],
+  ['Isonitrilová reakce', 'tu si zapamatuješ nosem, ne hlavou', 'org'], ['Třída I', 'ani koncentrovaná kyselina sírová se mnou nehne, jsem inert', 'org'],
   ['Kyveta 20 cm', 'a ty jsi do vzorce dosadila 20', 'fyz'], ['Nečistota v krystalu', 'teplota tání: tak to půjdu o kus níž', 'fyz'],
   ['Absorbance 2', 'propustí jen 1 % světla, jako sluneční brýle na zkoušce', 'uv'], ['Fenolftalein v kyselém', 'bezbarvý jako moje motivace v pondělí', 'uv'],
-  ['Pás 1715 cm⁻¹', 'karbonyl, nejhlasitější člen kapely', 'ir'], ['O–H s vodíkovými můstky', 'široký jak úsměv po zápočtu', 'ir']
+  ['Pás 1715 cm⁻¹', 'karbonyl, nejhlasitější člen kapely', 'ir'], ['O–H s vodíkovými můstky', 'široký jak úsměv po zápočtu', 'ir'],
+  ['HCl nic nesrazila', 'Ag⁺ a Hg₂²⁺ pryč, Pb²⁺ se jen schovává v roztoku', 'ka'],
+  ['BaSO₄ < SrSO₄ < CaSO₄', 'vápník se rozpouští nejvíc, tak ho chytíš až kyselinou šťavelovou', 'ka'],
+  ['MnS', 'jediný v tělové, ať mě v černé partě poznáš', 'ka'],
+  ['Al³⁺ a Cr³⁺ s NH₄HS', 'sulfid? Kdepak, my dáme hydroxid', 'ka'],
+  ['Mn²⁺, Fe²⁺ a Co²⁺ s NaOH', 'sraženina na vzduchu tmavne nebo rezaví', 'ka'],
+  ['Cd(OH)₂, Bi(OH)₃, Mg(OH)₂', 'jsme bílé, ale amfoterní ne. V nadbytku NaOH zůstaneme', 'ka'],
+  ['Zn²⁺', 'jediný, kdo zmizí v nadbytku NaOH i NH₃', 'ka'],
+  ['Cd(OH)₂ a Mn(OH)₂', 'NaOH nás nerozpustí, amoniak ano', 'ka'],
+  ['Cu²⁺ + KI', 'bílý CuI, ale jód ho přebarví na hnědo', 'ka'],
+  ['Octan sodný', 'hydrolyzují jen Bi³⁺, Sb³⁺ a cín, ostatní nechá v klidu', 'ka'],
+  ['Negativní reakce', 'nudná? Škrtá podezřelé líp než pozitivní', 'ka'],
+  ['Žádné skupinové činidlo nic nesrazilo', 'vzorek prázdný? NH₄⁺, Li⁺, Na⁺, K⁺ a Mg²⁺ se smějí', 'ka'],
+  ['NH₄⁺', 'dokazuju se první, jinak ti pokazím další důkazy', 'ka'],
+  ['Na₃[Co(NO₂)₆]', 's K⁺ žlutá sraženina, sodík mi nevadí', 'ka'],
+  ['Chelaton III', 'zamaskuju rušivé kovy, ať je důkaz Ag⁺ specifický', 'ka'],
+  ['NaNO₂ a AgNO₃', 'černá skvrna jen pro Hg₂²⁺, Hg²⁺ ať jde jinam', 'ka'],
+  ['Kupron, vínan a páry NH₃', 'zelená skvrna a měď je usvědčená', 'ka'],
+  ['Žluté zbarvení s thiomočovinou', 'Bi³⁺, Sb³⁺ i Ni²⁺: hádej, kdo z nás to byl', 'ka'],
+  ['Cr³⁺', 'dokážeš mě, až když mě s NaOH a H₂O₂ převlékneš na chroman', 'ka'],
+  ['Al³⁺ s morinem pod UV lampou', 'svítím zeleně jako v klubu', 'ka'],
+  ['Co²⁺ s NH₄SCN', 'modrá v amylalkoholu, dokud Fe³⁺ nezačne krvácet. Proto NaF', 'ka'],
+  ['Fe²⁺, Co²⁺, Cu²⁺ s Čugajevem', 'taky se zbarvíme, ale amoniak nás ze skvrny vymyje', 'ka'],
+  ['Vzorek aniontů je fialový', 'MnO₄⁻ se prozradil dřív, než jsi vzala činidlo', 'ka'],
+  ['BaCl₂ v kyselém vzorku', 'sraž v neutrálním, kyselinu přidej až na sraženinu', 'ka'],
+  ['Zkouška s jódem', 'má smysl, až když vzorek odbarví KMnO₄', 'ka'],
+  ['Siřičitan a chroman v jedné zkumavce', 'to by nepřežil ani jeden', 'ka'],
+  ['SO₃²⁻ a S₂O₃²⁻ s jódem', 'odbarvíme oba, ale zkysne to jen po siřičitanu', 'ka'],
+  ['Hydrogenuhličitan a HgCl₂', 'jen bílý zákal, červenohnědou dělá uhličitan', 'ka'],
+  ['Devardova reakce zmodrala papírek', 'dusičnan? Dusitan? NH₄⁺? Samo o sobě nic nedokazuje', 'ka'],
+  ['Dusitan před důkazem dusičnanu', 'močovina mě vykázala z místnosti', 'ka'],
+  ['Negativní Beilstein', 'halogen tu není. Pozitivní? Může to být i enol nebo močovina', 'org'],
+  ['Nitrobenzen a natronové vápno', 'dusík mám, ale papírek nezmodrá', 'org'],
+  ['Zkoušíš rozpustnost a zahříváš', 'tak znova a tentokrát bez zahřívání', 'org'],
+  ['Diarylether', 'jsem kyslíkatý, a přesto v třídě I', 'org'],
+  ['Keton', 'vlastní důkaz nemám, poznáš mě podle toho, co nereaguje', 'org'],
+  ['Fenol bez volné ortho a para polohy', 'diazotovaná kyselina sulfanilová? Azobarvivo nebude', 'org'],
+  ['Terciární amin s HNO₂', 'nic. Na mě platí Dragendorff', 'org'],
+  ['Ferroxový test zčervenal', 'ether? Možná. Specifický nejsem, reagují všechny kyslíkaté', 'org'],
+  ['Index lomu měřený při 25 °C', 'o kus níž než při 20 °C, proto termostat', 'fyz'],
+  ['Polarimetr', 'nastav stejnoměrně šedé pole, ne nejsvětlejší', 'fyz'],
+  ['pH metr', 'pufr pH 7 je OFFSET, pH 4 nebo 10 je SLOPE', 'fyz'],
+  ['Kyselina octová', 'pH = ½(pKa − log c), ne −log c', 'fyz'],
+  ['Koncentrace v mg/l', 'a ty jsi ji dosadila do A = ε·d·c. Mol/l, prosím', 'uv'],
+  ['C–H v UV-VIS', 'neabsorbuju, nejsem chromofor', 'uv'],
+  ['Indikátor změnil barvu', 'jen jsem si přeskládal dvojné vazby', 'uv'],
+  ['Thymolová modř', 'mám dva přechody, tak se nediv', 'uv'],
+  ['Vibrace bez změny dipólového momentu', 'IČ záření mě nevidí', 'ir'],
+  ['Měření pozadí', 'vodní pára a CO₂ ze vzduchu se taky chtějí vyfotit', 'ir'],
+  ['Terciární amin v IČ', 'pás N–H? Nemám vodík, nemám pás', 'ir'],
+  ['Nitroskupina', 'dva silné pásy, 1550 a 1370. Jedno ucho nestačí', 'ir']
 ];
 
 /* --- 3. Organická analýza: [id, skupina, činidlo / postup, co uvidíš, co to dokazuje, poznámka, pomůcka] --- */
@@ -32565,7 +32642,7 @@ document.addEventListener('click', e => {
   if (a === 'pour' || a === 'xs') fhSay(box.querySelector('.fb').textContent.trim());
 });
 const AC_LES = [
-  { id: 'k1', ch: 'ka', n: 1, min: 5, t: 'První dvě síta: HCl a H₂SO₄',
+  { id: 'k1', ch: 'ka', mem: [5, 16, 17], n: 1, min: 5, t: 'První dvě síta: HCl a H₂SO₄',
     goal: 'Po lekci umíš z jednoho pozorování (sraženina ano, nebo ne) říct, které kationty ve vzorku být můžou a které ne. Zatím pro HCl a H₂SO₄.',
     recall: 'Zkus si z hlavy vybavit, jaká skupinová činidla znáš. Klidně si je napiš na papír, na konci se k nim vrátíš.',
     q: ['t:k_neg', 't:k_l1poz', 'g:k:HCl', 't:k_l1agnh3', 't:k_l1hgnh3', 't:k_l1pbhot', 't:k_l1hclneg', 'g:k:H2SO4', 't:k_l1baso4', 't:k_l1caso4', 't:k_l1pbso4', 't:k_l1scen'],
@@ -32583,12 +32660,12 @@ const AC_LES = [
       <ul class="ac-ul"><li><b>Ca²⁺</b> proto spolehlivěji dokážeš kyselinou šťavelovou (bílý šťavelan vápenatý).</li><li><b>PbSO₄</b> po přidání NH₄HS zčerná, vznikne PbS. Ostatní sírany zůstanou bílé.</li><li><b>Pb²⁺ je v obou sítech:</b> co uteče přes HCl, chytí H₂SO₄.</li></ul>
       <p class="aside">Skripta u H₂SO₄ v závorce zmiňují i Hg₂²⁺ a Ag⁺. Ty ale dokážeš už s HCl, a tak je v kvízech k H₂SO₄ nepočítáme.</p>`)
       + lesLab(['ag', 'hg1', 'pb', 'ba', 'sr', 'ca', 'cu', 'fe3'], ['HCl', 'H2SO4']) },
-  { id: 'k2', ch: 'ka', n: 2, min: 5, t: 'Sulfidy: H₂S a NH₄HS',
+  { id: 'k2', ch: 'ka', mem: [2, 18, 19], n: 2, min: 5, t: 'Sulfidy: H₂S a NH₄HS',
     goal: 'Po lekci víš, které kationty sráží sulfan z kyselého prostředí, které až hydrogensulfid amonný, a poznáš je podle barvy sraženiny.',
     recall: 'Vybav si z lekce 1, které kationty sráží HCl a které H₂SO₄. Pak si zkus tipnout, jakou barvu má většina sulfidů.',
     tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s barvami sraženin z lekce. Co jsi nevěděla z hlavy, zopakuješ zítra.',
     q: ['g:k:H2S', 't:k_l2acid', 'i:cd:H2S', 'i:sb:H2S', 'i:fe3:H2S', 'g:k:NH4HS', 't:k_l2hydr', 'i:mn:NH4HS', 't:k_l2sb', 't:k_l2coni', 't:k_l2scen', 't:k_odkur'],
-    beda: 'Sulfidy jsou parta v černém. Kdo přijde v barvě, hned se prozradí: CdS ve žluté, Sb₂S₃ v oranžové, MnS v tělové a ZnS v bílé.',
+    beda: 'Sulfidy jsou parta v černém. Kdo přijde v barvě, hned se prozradí: CdS ve žluté, Sb₂S₃ v oranžové, Bi₂S₃ a SnS v hnědé, MnS v tělové a ZnS v bílé.',
     body: () => sec('1. H₂S: sulfidy z kyselého prostředí', `${lesTubes([['cerna', 'CuS, PbS…'], ['zluta', 'CdS'], ['oranzova', 'Sb₂S₃'], ['hneda', 'Bi₂S₃, SnS']])}
       <p>Vzorek nejdřív okyselíš kapkou 3% HCl a pak přidáš nasycený roztok sulfanu. Sraží se <b>Ag⁺, Pb²⁺, Hg₂²⁺, Hg²⁺, Cu²⁺, Cd²⁺, Bi³⁺, Sb³⁺</b> a cín. Zn²⁺ jen neúplně (bílý ZnS).</p>
       <p>Většina sulfidů je <b>černá</b>. Výjimky si zapamatuj: CdS žlutý, Sb₂S₃ oranžový, Bi₂S₃ a SnS hnědé.</p>
@@ -32600,7 +32677,7 @@ const AC_LES = [
       + sec('3. Proč dvě síta se sulfidy', `<p>H₂S je slabá kyselina. V kyselém prostředí je sulfidových iontů tak málo, že se vysráží jen nejméně rozpustné sulfidy. V amoniakálním prostředí jich je víc, a srazí se i ty rozpustnější. Odtud dvě skupiny ze staré Böttgerovy soustavy: sulfidy z kyselého a z amoniakálního prostředí.</p>
       <p>Protože NH₄HS sráží všechny těžké kovy, používá se s (NH₄)₂CO₃ i k jejich <b>odstranění</b> před důkazem Li⁺, Na⁺, K⁺ a Mg²⁺.</p>`)
       + lesLab(['cu', 'cd', 'sb', 'bi', 'fe3', 'mn', 'zn', 'ni'], ['H2S', 'NH4HS']) },
-  { id: 'k3', ch: 'ka', n: 3, min: 5, t: 'NaOH a amfoterní hydroxidy',
+  { id: 'k3', ch: 'ka', mem: [1, 20, 21], n: 3, min: 5, t: 'NaOH a amfoterní hydroxidy',
     goal: 'Po lekci víš, které kationty NaOH sráží a jakou barvu mají sraženiny, které z nich na vzduchu mění barvu a které se v nadbytku NaOH zase rozpustí.',
     recall: 'Vybav si z lekce 2, které kationty nesráží ani NH₄HS. Pak si tipni, které z nich by mohl srazit hydroxid.',
     tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s lekcí. Šestku amfoterních si zkus napsat z hlavy ještě jednou. Co jsi nevěděla, zopakuješ zítra.',
@@ -32618,7 +32695,7 @@ const AC_LES = [
       <ul class="ac-ul"><li>Vzniklé roztoky jsou <b>bezbarvé</b>, jen chromitan je <b>zelený</b>.</li><li>Využiješ to k <b>oddělení</b>: amfoterní kationty zůstanou v roztoku, ostatní hydroxidy odfiltruješ. Třeba Al³⁺ od Fe³⁺.</li></ul>
       <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina ještě neznamená amfoterní. Cd(OH)₂, Bi(OH)₃ a Mg(OH)₂ jsou taky bílé, ale v nadbytku NaOH zůstanou.</p>`)
       + lesLab(['pb', 'al', 'zn', 'cr3', 'cd', 'cu', 'fe2', 'mn', 'ni', 'ba'], ['NaOH']) },
-  { id: 'k4', ch: 'ka', n: 4, min: 5, t: 'NH₃ a amminkomplexy',
+  { id: 'k4', ch: 'ka', mem: [0, 22, 23], n: 4, min: 5, t: 'NH₃ a amminkomplexy',
     goal: 'Po lekci víš, které kationty amoniak sráží jako hydroxidy, které se v nadbytku rozpustí na amminkomplexy a jakou barvu ty komplexy mají. A poznáš, kdy se chová jinak než NaOH.',
     recall: 'Vybav si z lekce 3 amfoterní šestku, tedy hydroxidy, které se rozpustí v nadbytku NaOH. Tipni si, jestli se rozpustí i v nadbytku amoniaku.',
     tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s tabulkou NaOH proti NH₃. Sedm kationtů s amminkomplexem si zkus vyjmenovat z hlavy. Co jsi nevěděla, zopakuješ zítra.',
@@ -32637,12 +32714,12 @@ const AC_LES = [
       <ul class="ac-ul"><li><b>Zn²⁺</b> je jediný, kdo zmizí v obou.</li><li>Amminkomplexy slouží k důkazu (modrá mědi) i k <b>oddělení</b>: Cu²⁺ zůstane v roztoku, Fe(OH)₃ odfiltruješ.</li></ul>
       <p class="ac-les-trap"><b>Pozor, past:</b> Cd(OH)₂ a Mn(OH)₂ se v NaOH nerozpustí, i když jsou bílé jako amfoterní hydroxidy. Rozpustí je až amoniak.</p>`)
       + lesLab(['ag', 'cd', 'zn', 'cu', 'ni', 'co', 'mn', 'al', 'pb', 'fe3'], ['NH3']) },
-  { id: 'k5', ch: 'ka', n: 5, min: 5, t: 'KI a octan sodný',
+  { id: 'k5', ch: 'ka', mem: [24, 25], n: 5, min: 5, t: 'KI a octan sodný',
     goal: 'Po lekci víš, které kationty sráží jodid a které se v jeho nadbytku rozpustí, kdy jodid redukuje, a co prozradí zkouška hydrolýzy s octanem sodným.',
     recall: 'Vybav si, jakou barvu má AgI. Pak si tipni, proč by KI mohl s některými kationty dát hnědou barvu, i když hnědý jodid neexistuje.',
     tail: 'Vrať se ke svému tipu ze začátku. Hnědá barva byla jód. Co jsi nevěděla z hlavy, zopakuješ zítra.',
     q: ['g:k:KI', 'i:ag:KI', 'i:pb:KI', 'i:hg2:KI', 'i:bi:KI', 'x:k:KI', 'i:cu:KI', 't:k_l5i2', 'g:k:AcO', 't:k_octan', 'i:cr3:AcO', 't:k_l5scen'],
-    beda: 'Jodid je tichý zloděj: Cu²⁺ a Fe³⁺ potají sebere elektron a jako důkaz po sobě nechá hnědý jód. Siřičitan je policajt, jód zmizí a roztok se odbarví.',
+    beda: 'Jodid je tichý dárce: Cu²⁺ a Fe³⁺ potají podstrčí elektron a sám se změní na hnědý jód. Siřičitan je policajt, jód zmizí a roztok se odbarví.',
     body: () => sec('1. KI: barevné jodidy', `${lesTubes([['zluta', 'AgI'], ['zluta', 'PbI₂'], ['cervena', 'HgI₂'], ['tmhneda', 'BiI₃'], ['hneda', 'CuI + I₂']])}
       <p>0,1M KI sráží řadu kationtů jako barevné jodidy. Část z nich se v nadbytku (1M KI) rozpustí na jodokomplexy.</p>
       ${tbl(['Kationt', 'Sraženina', 'V nadbytku KI'], [['Ag⁺', 'žlutý AgI', 'zůstane'], ['Sb³⁺', 'žlutooranžový SbI₃, jen z koncentrovanějších roztoků', 'zůstane'], ['Pb²⁺', 'žlutý PbI₂', 'bezbarvý roztok'], ['Hg²⁺', 'červený HgI₂', 'bezbarvý roztok'], ['Bi³⁺', 'černohnědý BiI₃', '<b>oranžový</b> [BiI₄]⁻'], ['Hg₂²⁺', 'žlutozelený Hg₂I₂', 'žlutý roztok, vyloučí se černá Hg⁰']])}
@@ -32654,7 +32731,7 @@ const AC_LES = [
       <ul class="ac-ul"><li>Před přidáním octanu se do vzorku dá pevný NaCl a případná sraženina chloridů se odfiltruje.</li><li><b>Cr³⁺</b> dá přechodně šedozelenou sraženinu, která se rozpustí na modrofialový roztok acetátokomplexů.</li><li><b>Fe³⁺</b> dá slabě červený roztok acetátokomplexů, sraženinu ne.</li></ul>
       <p class="ac-les-trap"><b>Pozor, past:</b> soli bismutu hydrolyzují tak snadno, že se v roztoku drží jen pod pH 2. Okyseluje se kyselinou se stejným aniontem.</p>`)
       + lesLab(['ag', 'pb', 'hg2', 'bi', 'hg1', 'sb', 'cu', 'fe3', 'cr3'], ['KI', 'AcO']) },
-  { id: 'k6', ch: 'ka', n: 6, min: 6, t: 'Co je ve vzorku? Kombinované úlohy',
+  { id: 'k6', ch: 'ka', mem: [26, 27], n: 6, min: 6, t: 'Co je ve vzorku? Kombinované úlohy',
     goal: 'Po lekci umíš spojit výsledky několika skupinových činidel a barvu vzorku a z nich odvodit, který kationt ve vzorku je.',
     recall: 'Zkus si z hlavy napsat všech osm skupinových činidel. Ke každému připiš aspoň jeden kationt, který s ním dá něco nápadného.',
     tail: 'Vrať se k seznamu činidel ze začátku a doplň, co ti chybělo. U chybných úloh si projdi, které pozorování jsi přehlédla. Zopakuješ je zítra.',
@@ -32669,7 +32746,7 @@ const AC_LES = [
         ['NaOH', 'skoro všechny kovy kromě alkalických a Ba²⁺, Sr²⁺', 'v nadbytku zmizí Pb, Al, Zn, Sb, Sn, Cr'], ['NH₃', 'hydroxidy jako NaOH', 'v nadbytku zmizí Ag, Cd, Zn, Cu, Ni, Co, Mn'],
         ['KI', 'Ag⁺, Cu²⁺, Sb³⁺, Pb²⁺, Bi³⁺, Hg', 'jód z Cu²⁺ a Fe³⁺, oranžový [BiI₄]⁻'], ['octan', 'Bi³⁺, Sb³⁺, cín (hydrolýza), Hg₂²⁺', 'Cr³⁺ modrofialový, Fe³⁺ červený roztok']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> když žádné skupinové činidlo nic nesrazí, ještě to neznamená, že ve vzorku nic není. Zbývají NH₄⁺, Li⁺, Na⁺, K⁺ a Mg²⁺ (ten jen se zásadou), na ty je další lekce.</p>`) },
-  { id: 'k7', ch: 'ka', n: 7, min: 6, t: 'NH₄⁺, alkalické kovy a plamen',
+  { id: 'k7', ch: 'ka', mem: [3, 28, 29], n: 7, min: 6, t: 'NH₄⁺, alkalické kovy a plamen',
     goal: 'Po lekci víš, jak dokázat NH₄⁺, Li⁺, Na⁺, K⁺, Mg²⁺ a kovy alkalických zemin: plamenem, plynným amoniakem a několika selektivními činidly.',
     recall: 'Vybav si, které kationty nesráží žádné skupinové činidlo. Tipni si, jak bys je od sebe odlišila.',
     tail: 'Vrať se ke svému tipu ze začátku. Barvy plamene si zkus napsat z hlavy ještě jednou. Co jsi nevěděla, zopakuješ zítra.',
@@ -32686,7 +32763,7 @@ const AC_LES = [
         ['Mg²⁺', 'magneson a NaOH', 'chrpově modrý „lak“ na sraženině'], ['Mg²⁺', 'NH₄Cl, Na₂HPO₄ a po kapkách NH₃', 'bílá krystalická MgNH₄PO₄, urychlí ji tření tyčinkou'],
         ['Ba²⁺', 'K₂CrO₄ v kyselině octové', 'žlutý BaCrO₄, Ca²⁺ neruší'], ['Ba²⁺', 'rhodizonan sodný, pak 3% HCl', 'hnědá skvrna zčervená'], ['Ca²⁺', 'kyselina šťavelová', 'bílý krystalický šťavelan, Ba²⁺ neruší']])}
       <ul class="ac-ul"><li>Důkazy K⁺ i Mg²⁺ ruší <b>NH₄⁺</b>, před důkazem K⁺ se odstraní odkouřením s HCl.</li><li>Těžké kovy se předem odstraní: pro Li⁺, Na⁺, K⁺ a Mg²⁺ pomocí NH₄HS a (NH₄)₂CO₃ a odkouřením, pro Ca²⁺ a Ba²⁺ stačí sulfid amonný a neutralizace kyselinou octovou.</li></ul>`) },
-  { id: 'k8', ch: 'ka', n: 8, min: 5, t: 'Selektivní důkazy: Ag⁺, Pb²⁺ a rtuť',
+  { id: 'k8', ch: 'ka', mem: [30, 31], n: 8, min: 5, t: 'Selektivní důkazy: Ag⁺, Pb²⁺ a rtuť',
     goal: 'Po lekci umíš selektivně dokázat stříbro, olovo a obě podoby rtuti a víš, které reakce Hg₂²⁺ a Hg²⁺ od sebe odliší.',
     recall: 'Vybav si z lekce 1, jak odlišíš AgCl, Hg₂Cl₂ a PbCl₂. Zkus si tipnout, proč to na důkaz ještě nestačí.',
     tail: 'Vrať se k tipu ze začátku. Selektivní reakce potvrdí to, co skupinová jen naznačila. Co jsi nevěděla z hlavy, zopakuješ zítra.',
@@ -32697,7 +32774,7 @@ const AC_LES = [
       ${tbl(['Činidlo', 'Co uvidíš'], [['H₂SO₄ na papíře, promýt vodou, pak (NH₄)₂S', 'bílý PbSO₄ zčerná na PbS'], ['KI, zahřát a nechat vychladnout', 'žlutý PbI₂ se teplem rozpustí a ochlazením vypadnou žluté šupinky („zlatý déšť“)'], ['K₂CrO₄', 'žlutý PbCrO₄, rozpustný v HNO₃ i NaOH']])}`)
       + sec('3. Hg₂²⁺ a Hg²⁺', `${tbl(['Činidlo', 'Co uvidíš', 'Dokáže'], [['NaNO₂ a AgNO₃ na papíře', 'černá skvrna Hg⁰', '<b>jen Hg₂²⁺</b>'], ['KI, Na₂SO₃, CuSO₄ a HCl na papíře', 'oranžově červená skvrna', '<b>jen Hg²⁺</b>'], ['odmaštěný alobal', 'šedobílý povlak', 'obě'], ['SnCl₂ a anilin na papíře', 'tmavá skvrna Hg⁰', 'obě, Sb³⁺ neruší'], ['difenylkarbazid', 'modrofialové zbarvení', 'obě']])}
       <p class="aside">Rtuťné soli navíc v zásaditém prostředí dismutují na Hg²⁺ a černou Hg⁰. Proto Hg₂Cl₂ s amoniakem zčerná.</p>`) },
-  { id: 'k9', ch: 'ka', n: 9, min: 5, t: 'Selektivní důkazy: Cu²⁺, Cd²⁺, Bi³⁺ a Sb³⁺',
+  { id: 'k9', ch: 'ka', mem: [32, 33], n: 9, min: 5, t: 'Selektivní důkazy: Cu²⁺, Cd²⁺, Bi³⁺ a Sb³⁺',
     goal: 'Po lekci umíš selektivně dokázat měď, kadmium, bismut a antimon a víš, kde si můžou splést výsledek.',
     recall: 'Vybav si z lekce 2 barvy CdS a Sb₂S₃ a z lekce 4 barvu měďnatého amminkomplexu. Tipni si, které z nich se hodí i jako selektivní důkaz.',
     tail: 'Vrať se k tipu ze začátku. Žlutý CdS a oranžový Sb₂S₃ jsou opravdu důkazy, jen v trochu jiném provedení. Co jsi nevěděla, zopakuješ zítra.',
@@ -32709,7 +32786,7 @@ const AC_LES = [
       <p>Soli obou kationtů jsou bezbarvé a snadno hydrolyzují na bílé oxidosoli. V roztoku je udrží okyselení pod pH 2.</p>
       ${tbl(['Kationt', 'Činidlo', 'Co uvidíš'], [['Bi³⁺', 'krystalek thiomočoviny pokápnutý vzorkem', 'žluté zbarvení'], ['Bi³⁺', 'bismutiol na papíře', 'jasně červená sraženina'], ['Sb³⁺', 'thiomočovina', 'žluté zbarvení, slabší než u Bi³⁺'], ['Sb³⁺', 'sulfid amonný, filtrát okyselit HCl', 'oranžový Sb₂S₃ (ve filtrátu byl thioantimonitan)'], ['Sb³⁺', 'Na₂S₂O₃ a Na₂CO₃, opatrně zahřát', 'červená antimonová rumělka']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> žluté zbarvení s thiomočovinou dá Bi³⁺, slaběji Sb³⁺ a podle skript i Ni²⁺. Samo o sobě nestačí.</p>`) },
-  { id: 'k10', ch: 'ka', n: 10, min: 5, t: 'Selektivní důkazy: Fe³⁺, Al³⁺, Cr³⁺ a Zn²⁺',
+  { id: 'k10', ch: 'ka', mem: [34, 35], n: 10, min: 5, t: 'Selektivní důkazy: Fe³⁺, Al³⁺, Cr³⁺ a Zn²⁺',
     goal: 'Po lekci umíš selektivně dokázat železo, hliník, chrom a zinek a víš, proč se chrom před důkazem oxiduje.',
     recall: 'Vybav si z lekce 3, které z těchto čtyř kationtů tvoří amfoterní hydroxid. Tipni si, jak by se toho dalo využít při důkazech.',
     tail: 'Vrať se k tipu ze začátku. Žlutý filtrát po oxidaci chromu obsahuje právě amfoterní Al³⁺ a Zn²⁺. Co jsi nevěděla z hlavy, zopakuješ zítra.',
@@ -32723,7 +32800,7 @@ const AC_LES = [
       <p class="aside">Ve stejném filtrátu zůstaly amfoterní Al³⁺ a Zn²⁺, takže poslouží i k jejich důkazu.</p>`)
       + sec('3. Zn²⁺', `${tbl(['Činidlo', 'Co uvidíš'], [['3% HCl a K₄[Fe(CN)₆]', 'bílý Zn₂[Fe(CN)₆]'], ['NH₄HS', 'bílý ZnS, rozpustný v minerálních kyselinách']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> stopy železa zabarví bílou sraženinu s hexakyanoželeznatanem do modra (berlínská modř). Modrá tady ještě neznamená, že zinek chybí.</p>`) },
-  { id: 'k11', ch: 'ka', n: 11, min: 5, t: 'Selektivní důkazy: Co²⁺, Ni²⁺ a Mn²⁺',
+  { id: 'k11', ch: 'ka', mem: [36, 37], n: 11, min: 5, t: 'Selektivní důkazy: Co²⁺, Ni²⁺ a Mn²⁺',
     goal: 'Po lekci umíš selektivně dokázat kobalt, nikl a mangan a víš, co ruší a jak to obejít.',
     recall: 'Vybav si z lekce 2, které dva sulfidy stárnutím polymerují. Pak si tipni, jakou barvu má kobalt nasucho.',
     tail: 'Vrať se k tipu ze začátku. Nasucho je kobalt modrý, ve vodě růžový. Tím je plán lekcí ke kationtům kompletní. Co jsi nevěděla, zopakuješ zítra.',
@@ -32739,7 +32816,7 @@ const AC_LES = [
       <p class="aside">Fe²⁺, Co²⁺ a Cu²⁺ dají s Čugajevovým činidlem taky barevné komplexy, ty jsou ale rozpustné a zředěný amoniak je ze skvrny vymyje.</p>`)
       + sec('3. Mn²⁺', `${tbl(['Činidlo', 'Co uvidíš'], [['0,1M NaOH na papíře', 'skvrna postupně tmavne (oxidace vzduchem)'], ['15% HNO₃, K₂S₂O₈ a kapka AgNO₃, lehce povařit', 'fialový manganistan, <b>specifický</b> důkaz']])}
       <p>U druhé reakce Ag⁺ oxidaci katalyzuje.</p>`) },
-  { id: 'k12', ch: 'ka', n: 12, min: 5, t: 'Anionty: první kroky, BaCl₂ a AgNO₃',
+  { id: 'k12', ch: 'ka', mem: [38, 39], n: 12, min: 5, t: 'Anionty: první kroky, BaCl₂ a AgNO₃',
     goal: 'Po lekci víš, co prozradí pH a barva vzorku aniontů, jak se zbavit rušivých kationtů a jak číst sraženiny s BaCl₂ a AgNO₃ podle toho, v čem se rozpustí.',
     recall: 'Vybav si z lekcí ke kationtům, jakou barvu mají AgCl, AgBr a AgI a co s nimi udělá amoniak.',
     tail: 'Vrať se k halogenidům stříbra ze začátku a doplň, ve kterém amoniaku se který rozpustí. Co jsi nevěděla z hlavy, zopakuješ zítra.',
@@ -32754,12 +32831,12 @@ const AC_LES = [
       ${tbl(['Sraženina', 'V HNO₃', 'V amoniaku'], [['AgCl, bílý', 'nerozpustí se', 'rozpustí se ve 2M NH₃'], ['AgBr, světle žlutý', 'nerozpustí se', 'až v 25% NH₃'], ['AgSCN, bílý', 'nerozpustí se', 'až v 25% NH₃'], ['AgI, žlutý', 'nerozpustí se', 'nerozpustí se ani v 25% NH₃'], ['ostatní: Ag₃PO₄ žlutý, Ag₂CrO₄ červenohnědý, Ag₂CO₃ světle žlutý, Ag₂SO₃ bílý', 'rozpustí se', '']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> bílá sraženina z thiosíranu postupně tmavne až zčerná, rozkládá se na Ag₂S. Ag₂SO₄ se sráží jen z koncentrovaných roztoků.</p>`)
       + lesLab(['so4', 'cro4', 'so3', 'po4', 'co3', 'cl', 'br', 'i', 'no3'], ['BaCl2', 'AgNO3']) },
-  { id: 'k13', ch: 'ka', n: 13, min: 5, t: 'Anionty: oxidují, nebo redukují?',
+  { id: 'k13', ch: 'ka', mem: [4, 40, 41], n: 13, min: 5, t: 'Anionty: oxidují, nebo redukují?',
     goal: 'Po lekci víš, které anionty odbarví KMnO₄ a jód a které vyloučí jód z KI, a umíš z toho vyvodit, co spolu ve vzorku být nemůže.',
     recall: 'Vybav si z lekce 5 ke kationtům, jak se dá ověřit, že hnědá barva je jód. Tipni si, které anionty by jód mohly „sníst“.',
     tail: 'Vrať se k tipu ze začátku. Jód sní siřičitan, thiosíran, kyanid a z koncentrovaných roztoků i thiokyanatan. Co jsi nevěděla, zopakuješ zítra.',
     q: ['t:a_redox', 'g:a:KMnO4', 't:a_kmno4', 'i:cl:KMnO4', 't:a_i2', 'g:a:I2', 'i:scn:I2', 'g:a:KI', 't:a_ki', 't:a_ag', 'n:a', 't:a_l13scen'],
-    beda: 'Redukující a oxidující anionty se nesnesou ve stejné zkumavce. Kdo odbarví manganistan, ten už vedle sebe chroman ani dusitan mít nemůže.',
+    beda: 'Redukující a oxidující anionty se nesnesou ve stejné zkumavce. Když vzorek obsahuje siřičitan, chroman v něm být nemůže, zreagovali by spolu.',
     body: () => sec('1. KMnO₄: hledáme redukující anionty', `<div class="ac-les-tubes">${[['fialova', 'KMnO₄'], ['', 'odbarveno']].map(([sol, f]) => tubeSVG({ sol }, f)).join('')}</div>
       <p>Manganistan v kyselém prostředí je silné oxidační činidlo. Fialový roztok <b>odbarví</b> SO₃²⁻, S₂O₃²⁻, Br⁻, I⁻, SCN⁻, NO₂⁻ a také S²⁻ a CN⁻. Cl⁻ jen z koncentrovaných roztoků.</p>`)
       + sec('2. Jód: mírnější zkouška', `<p>Jód se škrobem je jen mírné oxidační činidlo. Zkouška se dělá v neutrálním vzorku se zrnkem NaHCO₃ a má smysl, až když vzorek <b>odbarvil KMnO₄</b>.</p>
@@ -32768,7 +32845,7 @@ const AC_LES = [
       <p>V kyselém prostředí oxidující anionty vyloučí z jodidu jód a škrob zmodrá. Takhle se prozradí <b>CrO₄²⁻</b> (redukuje se na Cr³⁺) a <b>NO₂⁻</b> (redukuje se na NO).</p>
       <p class="ac-les-trap"><b>Pozor, past:</b> redukující a oxidující ionty by spolu zreagovaly. Když vzorek obsahuje siřičitan (odbarví KMnO₄), chroman v něm být nemůže. A NO₃⁻ nereaguje se žádným skupinovým činidlem, ten se dokazuje jen selektivně.</p>`)
       + lesLab(['so3', 's2o3', 'cl', 'br', 'i', 'scn', 'no2', 'cro4', 'so4'], ['KMnO4', 'I2', 'KI'], 'z') },
-  { id: 'k14', ch: 'ka', n: 14, min: 5, t: 'Selektivní důkazy: anionty síry, C, P, B a Cr',
+  { id: 'k14', ch: 'ka', mem: [42, 43], n: 14, min: 5, t: 'Selektivní důkazy: anionty síry, C, P, B a Cr',
     goal: 'Po lekci umíš selektivně dokázat síran, siřičitan, thiosíran, uhličitan, fosforečnan, boritan a chroman.',
     recall: 'Vybav si z lekce 13, čím se liší siřičitan a thiosíran při reakci s jódem. Tipni si, jak bys je odlišila ještě jinak.',
     tail: 'Vrať se k tipu ze začátku. Thiosíran prozradí i síra po okyselení a jod-azidová reakce. Co jsi nevěděla, zopakuješ zítra.',
@@ -32780,7 +32857,7 @@ const AC_LES = [
       + sec('3. Chroman', `${lesTubes([['zluta', 'CrO₄²⁻'], ['oranzova', 'Cr₂O₇²⁻'], ['modra', 'amylalkohol']])}
       ${tbl(['Činidlo', 'Co uvidíš'], [['okyselení', 'žlutý roztok zoranžoví (dichroman)'], ['H₂O₂, H₂SO₄ a amylalkohol', 'modrá alkoholová vrstva, <b>specifický</b> důkaz'], ['HCl a difenylkarbazid', 'fialově červené zbarvení']])}
       <p class="aside">Stejné dvě reakce už znáš z důkazu Cr³⁺, tam se chrom nejdřív zoxidoval právě na chroman.</p>`) },
-  { id: 'k15', ch: 'ka', n: 15, min: 5, t: 'Selektivní důkazy: halogenidy, SCN⁻, NO₂⁻ a NO₃⁻',
+  { id: 'k15', ch: 'ka', mem: [44, 45], n: 15, min: 5, t: 'Selektivní důkazy: halogenidy, SCN⁻, NO₂⁻ a NO₃⁻',
     goal: 'Po lekci umíš selektivně dokázat chlorid, bromid, jodid, thiokyanatan, dusitan a dusičnan a víš, co si při tom navzájem překáží.',
     recall: 'Vybav si z lekce 12, jak se v amoniaku chovají AgCl, AgBr a AgI. Tipni si, jak bys odlišila bromid od jodidu bez stříbra.',
     tail: 'Vrať se k tipu ze začátku. Bromid a jodid odliší barva chloroformové vrstvy s chloraminem. Tím jsou anionty hotové. Co jsi nevěděla, zopakuješ zítra.',
@@ -32792,7 +32869,7 @@ const AC_LES = [
       + sec('3. Dusičnan: nejdřív pryč s dusitanem', `<p>Dusičnan se skupinovými činidly nereaguje. Dokazuje se jen selektivně a dusitany, které reagují podobně, se musí předem odstranit <b>močovinou</b> a kapkou H₂SO₄ (dokud vzorek vylučuje jód z KI, ještě tam jsou).</p>
       ${tbl(['Činidlo', 'Co uvidíš'], [['odparek s fenolsulfonovou kyselinou, zředit a zalkalizovat NH₃', 'intenzivně žlutý roztok'], ['redukce Zn v kyselině octové na dusitan, pak diazotace a kopulace', 'červené azobarvivo'], ['práškový Al a 2M NaOH, zahřát, vlhký papírek nad směsí (Devardova reakce)', 'papírek zezelenomodrá (NH₃)']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> Devardova reakce dá amoniak i z dusitanů a amonných solí. Kladný výsledek sám o sobě dusičnan nedokazuje.</p>`) },
-  { id: 'o1', ch: 'org', n: 1, min: 5, t: 'Důkazy prvků',
+  { id: 'o1', ch: 'org', mem: [46, 47], n: 1, min: 5, t: 'Důkazy prvků',
     goal: 'Po lekci víš, jak se organická látka mineralizuje a jak v ní dokážeš uhlík, vodík, dusík, síru, halogeny a kyslík.',
     recall: 'Vybav si z kationtů, jak vypadá berlínská modř a co dá Cl⁻ s AgNO₃. Tipni si, k čemu by se to mohlo hodit u organické látky.',
     tail: 'Vrať se k tipu ze začátku. Dusík se prozradí berlínskou modří a chlor stříbrnou solí, jen se nejdřív musí převést na ionty. Co jsi nevěděla, zopakuješ zítra.',
@@ -32806,7 +32883,7 @@ const AC_LES = [
       <p class="aside">Síra dá s FeSO₄ nejdřív černou sraženinu sulfidů železa. V HCl se rozpustí, takže důkaz dusíku neruší, jen sníží jeho citlivost.</p>`)
       + sec('3. Rychlé zkoušky', `${tbl(['Zkouška', 'Kladný výsledek', 'Na co dát pozor'], [['jódová: krystalek jódu a kapka kapalného vzorku', 'hnědý (žlutý) roztok = kyslíkatá látka, fialový = bez kyslíku', 'nejde, když látka obsahuje N, S nebo I'], ['natronové vápno, nad tím vlhký pH papírek', 'papírek zelenomodrý, Nessler zhnědne = dusík', 'azo-, nitro- a nitrososloučeniny nereagují'], ['Beilsteinova: vzorek na měděném drátku do plamene', 'zelený až zelenomodrý plamen = halogen', 'pozitivní jsou i enoly, oximy, močovina a thiomočovina']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> negativní Beilsteinova zkouška halogeny vylučuje, pozitivní je ale jen orientační. U natronového vápna je to naopak: negativní výsledek dusík nevylučuje.</p>`) },
-  { id: 'o2', ch: 'org', n: 2, min: 5, t: 'Třídy rozpustnosti',
+  { id: 'o2', ch: 'org', mem: [9, 48, 49], n: 2, min: 5, t: 'Třídy rozpustnosti',
     goal: 'Po lekci umíš podle rozpustnosti ve vodě, etheru, NaOH, NaHCO₃, HCl a koncentrované H₂SO₄ zařadit látku do třídy S1 až I a víš, co ta třída o látce prozradí.',
     recall: 'Tipni si, proč by se fenol měl rozpustit v NaOH a anilin v HCl. Napiš si to na papír.',
     tail: 'Vrať se k tipu ze začátku. Fenol je slabá kyselina a tvoří fenolát, anilin je zásada a tvoří sůl. Co jsi nevěděla, zopakuješ zítra.',
@@ -32819,7 +32896,7 @@ const AC_LES = [
       + sec('3. Koncentrovaná H₂SO₄ a třída N', `<p>Zkouška s kyselinou sírovou se dělá jen u látek bez N a S (ty jdou rovnou do M). U bromu a jódu se nedělá, připadá v úvahu N i I. V třídě N reagují látky různě:</p>
       <ul class="ac-ul"><li>primární a sekundární alkoholy se <b>esterifikují</b>, terciární <b>dehydratují</b>,</li><li>nenasycené uhlovodíky kyselinu <b>adují</b> na násobnou vazbu,</li><li>ethery, aldehydy, ketony, estery, anhydridy a laktony se chovají jako zásady a tvoří <b>oxoniové soli</b>.</li></ul>
       <p class="ac-les-trap"><b>Pozor, past:</b> diarylethery jsou kyslíkaté, a přesto patří do I. A kyslíkaté látky od alkenů v třídě N odliší hlavně důkaz kyslíku.</p>`) },
-  { id: 'o3', ch: 'org', n: 3, min: 5, t: 'Funkční skupiny: halogeny, alkoholy, fenoly a karbonyly',
+  { id: 'o3', ch: 'org', mem: [6, 7, 50, 51], n: 3, min: 5, t: 'Funkční skupiny: halogeny, alkoholy, fenoly a karbonyly',
     goal: 'Po lekci umíš rozlišit reaktivitu halogenu, typ alkoholu, fenol a aldehyd od ketonu.',
     recall: 'Vybav si z organiky, který alkohol tvoří nejstabilnější karbokation. Tipni si, který z nich bude s Lucasovým činidlem nejrychlejší.',
     tail: 'Vrať se k tipu ze začátku. Terciární alkohol se s Lucasem zakalí hned, protože jde přes stabilní karbokation. Co jsi nevěděla, zopakuješ zítra.',
@@ -32831,7 +32908,7 @@ const AC_LES = [
       + sec('3. Aldehyd, nebo keton?', `${lesTubes([['fialova', 'DNPH'], ['sedocerna', 'Tollens'], ['modrofialova', 'Schiff']])}
       ${tbl(['Činidlo', 'Aldehyd', 'Keton'], [['2,4-DNPH a NaOH na papíře', 'fialové zbarvení', 'fialové zbarvení'], ['Tollensovo činidlo, mírně zahřát', '<b>stříbrné zrcadlo</b>', 'nic'], ['Schiffovo činidlo, pH asi 3', '<b>modrofialové</b>', 'nic']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> keton nemá vlastní pozitivní důkaz. Dokazuje se nepřímo: DNPH ukáže karbonyl, Tollens a Schiff vyloučí aldehyd. S Tollensovým činidlem navíc reagují i polyfenoly, aminofenoly a redukující cukry.</p>`) },
-  { id: 'o4', ch: 'org', n: 4, min: 5, t: 'Funkční skupiny: kyseliny, estery, ethery a dusík',
+  { id: 'o4', ch: 'org', mem: [8, 52, 53], n: 4, min: 5, t: 'Funkční skupiny: kyseliny, estery, ethery a dusík',
     goal: 'Po lekci umíš dokázat karboxylové kyseliny a jejich deriváty, odhalit kyslíkatou látku a roztřídit aminy, amidy a nitrosloučeniny.',
     recall: 'Vybav si z organiky, co vznikne z primárního aromatického aminu s kyselinou dusitou za chladu. Napiš si to na papír.',
     tail: 'Vrať se k papíru ze začátku. Diazoniová sůl s 2-naftolem dá oranžové až červené azobarvivo. Tím je cvičení 3 hotové. Co jsi nevěděla, zopakuješ zítra.',
@@ -32842,7 +32919,7 @@ const AC_LES = [
       <p class="aside">Dragendorffovo činidlo je ten oranžový [BiI₄]⁻ z důkazu Bi³⁺ s nadbytkem KI.</p>`)
       + sec('3. Nitroso- a nitrosloučeniny', `${tbl(['Skupina', 'Činidlo', 'Co uvidíš'], [['nitrososloučenina', 'fenol a konc. H₂SO₄, zahřát, pak NaOH (Liebermann)', 'červená, po alkalizaci zelená až modrofialová'], ['aromatická nitrosloučenina', 'redukce Zn v HCl, pak důkazy aminů', 'vznikne primární aromatický amin a ten dá azobarvivo']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> nitrosloučeniny nedají kladný výsledek s natronovým vápnem, takže dusík v nich musíš hledat jinak. Nitroskupinu nejdřív zredukuj na amin.</p>`) },
-  { id: 'f1', ch: 'fyz', n: 1, min: 5, t: 'Teplota tání, index lomu a polarimetr',
+  { id: 'f1', ch: 'fyz', mem: [11, 54, 55], n: 1, min: 5, t: 'Teplota tání, index lomu a polarimetr',
     goal: 'Po lekci víš, jak správně změřit teplotu tání a index lomu, co o látce prozradí a jak se odečítá kruhový polarimetr.',
     recall: 'Tipni si, jestli nečistota teplotu tání zvýší, nebo sníží. A co když nečistota sama taje výš než látka?',
     tail: 'Vrať se k tipu ze začátku. Nečistota teplotu tání vždy sníží, i když sama taje výš. Co jsi nevěděla, zopakuješ zítra.',
@@ -32854,12 +32931,12 @@ const AC_LES = [
       <ul class="ac-ul"><li>S rostoucí teplotou index lomu kapalin <b>klesá</b>, o 0,0003–0,0008 na 1 °C. Měří se proto v termostatu (±0,2 °C).</li><li><b>Abbého refraktometr</b> je založený na mezním úhlu úplného odrazu, měří 1,300–1,700 s přesností ±0,0001, i za denního světla.</li><li>Pohyblivý hranol a okulár mají Pulfrichův a Abbého refraktometr, pevné ponorný a ruční.</li></ul>`)
       + sec('3. Kruhový polarimetr', `<p>Opticky aktivní látky stáčejí rovinu polarizovaného světla. <b>Pravotočivá</b> (+) ji stáčí ve směru hodinových ručiček, když se díváš proti světlu, levotočivá (−) opačně.</p>
       <ul class="ac-ul"><li>Zdrojem je sodíková výbojka (589,3 nm). Oko líp srovná jas dvou ploch, proto se analyzátor nastavuje na <b>stejnoměrně šedé</b> zorné pole (polostínová metoda).</li><li>Stupnice má dílky po 1°, nonius po <b>0,05°</b>. Odečítá se na obou stranách a průměruje.</li></ul>`) },
-  { id: 'f2', ch: 'fyz', n: 2, min: 6, t: 'pH, pH metr a výpočty',
+  { id: 'f2', ch: 'fyz', mem: [10, 56, 57], n: 2, min: 6, t: 'pH, pH metr a výpočty',
     goal: 'Po lekci umíš spočítat pH silné i slabé kyseliny, víš, jak funguje a jak se kalibruje skleněná elektroda, a spočítáš specifickou otáčivost cukru.',
     recall: 'Zkus si z hlavy napsat definici pH a hodnotu iontového součinu vody.',
     tail: 'Vrať se k papíru ze začátku a zkontroluj definici pH a Kw. U slabé kyseliny se dělí dvěma. Co jsi nevěděla, zopakuješ zítra.',
     q: ['t:f_ph', 't:f_kw', 'c:phsil', 'c:phzas', 'c:phoct', 'c:phkrat', 't:f_elektr', 't:f_nernst', 't:f_kalib', 't:f_kalk', 't:f_kyveta', 'c:polcukr'],
-    beda: 'Slabá kyselina je líná: disociuje jen trochu, proto se půlí. A kyveta 20 cm jsou 2 dm. Kdo dosadí 20, objeví cukr, který neexistuje.',
+    beda: 'Slabá kyselina je líná, disociuje jen trochu. Proto pH = ½(pKa − log c). A kyveta 20 cm jsou 2 dm. Kdo dosadí 20, objeví cukr, který neexistuje.',
     body: () => sec('1. pH a výpočty', `<p><b>pH = −log a(H₃O⁺)</b>, ve zředěných roztocích stačí koncentrace. Iontový součin vody je <b>Kw = [H₃O⁺]·[OH⁻] = 10⁻¹⁴</b>, v čisté vodě je obojího 10⁻⁷ mol/l.</p>
       ${tbl(['Roztok', 'Výpočet'], [['silná kyselina', 'pH = −log c'], ['silná zásada', 'pOH = −log c, pH = 14 − pOH'], ['slabá kyselina (octová, pKa 4,75)', 'pH = ½(pKa − log c)'], ['10× víc H₃O⁺', 'pH o 1 níž']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> u slabé kyseliny se koncentrace H₃O⁺ nerovná analytické koncentraci. Z naměřeného pH kyseliny octové proto počítáš log c = pKa − 2·pH.</p>
@@ -32871,7 +32948,7 @@ const AC_LES = [
       + sec('3. Specifická otáčivost', `<p><b>[α] = 1000·α / (l·c)</b>, kde α je naměřený úhel, c koncentrace v g/l a l délka kyvety v <b>dm</b>. Podle tabulky specifických otáčivostí pak určíš cukr (třeba D-glukosa +52,5 až +53,3°, sacharosa +66,3 až +67,0°, D-fruktosa −91,0 až −93,5°).</p>
       <p class="ac-les-trap"><b>Pozor, past:</b> kyveta 20 cm = 2 dm, 10 cm = 1 dm. Úhel α roste s koncentrací přímo úměrně.</p>
         ${FH_LES.w.rot()}`) },
-  { id: 'u1', ch: 'uv', n: 1, min: 5, t: 'Absorbance a Lambertův–Beerův zákon',
+  { id: 'u1', ch: 'uv', mem: [12, 58, 59], n: 1, min: 5, t: 'Absorbance a Lambertův–Beerův zákon',
     goal: 'Po lekci víš, co se děje při absorpci UV-VIS záření, jak souvisí absorbance s propustností a koncentrací a jak se správně měří.',
     recall: 'Tipni si, kolik procent světla projde vzorkem s absorbancí 1 a kolik s absorbancí 2.',
     tail: 'Vrať se k tipu ze začátku. Absorbance 1 propustí 10 %, absorbance 2 jen 1 %. Co jsi nevěděla, zopakuješ zítra.',
@@ -32884,7 +32961,7 @@ const AC_LES = [
         ${FH_LES.w.lb()}`)
       + sec('3. Jak se měří', `<ul class="ac-ul"><li>Nejdřív se změří <b>blank</b> (slepý vzorek), aby se odečetla absorbance rozpouštědla a činidel.</li><li>Vhodná absorbance je <b>menší než 2</b>, koncentrace se upraví zkusmo ředěním.</li><li><b>Diodové pole (DAD)</b> změří celé spektrum najednou: mřížka rozloží světlo na řadu fotodiod.</li></ul>
       <p class="ac-les-trap"><b>Pozor, past:</b> v A = ε·d·c musí být koncentrace v mol/l. Ze standardu 20 mg/l udělej 0,020 g/l a vyděl molární hmotností.</p>`) },
-  { id: 'u2', ch: 'uv', n: 2, min: 5, t: 'Spektra a acidobazické indikátory',
+  { id: 'u2', ch: 'uv', mem: [13, 60, 61], n: 2, min: 5, t: 'Spektra a acidobazické indikátory',
     goal: 'Po lekci víš, jak se z absorpčního spektra určí neznámá látka, proč indikátor mění barvu a v jakém rozmezí pH přecházejí ty nejběžnější.',
     recall: 'Vybav si, jakou barvu má fenolftalein v kyselém a v zásaditém roztoku.',
     tail: 'Vrať se k fenolftaleinu ze začátku: v kyselém bezbarvý, nad pH 10 malinově fialový. Co jsi nevěděla, zopakuješ zítra.',
@@ -32896,7 +32973,7 @@ const AC_LES = [
         ${FH_LES.w.ind()}`)
       + sec('3. Univerzální papírek', `<p>Univerzální indikátorový papírek jde od <b>červené</b> (kolem pH 1) přes oranžovou a žlutou (5–6) a zelenou (8–9) po <b>tmavě modrou</b> (13–14).</p>
       <p class="ac-les-trap"><b>Pozor, past:</b> thymolová modř má dva přechody, kolem pH 1,2–2,8 (červená → žlutá) a 8,0–9,6 (žlutá → modrá).</p>`) },
-  { id: 'r1', ch: 'ir', n: 1, min: 5, t: 'IČ spektrometrie: oblasti a měření',
+  { id: 'r1', ch: 'ir', mem: [62, 63], n: 1, min: 5, t: 'IČ spektrometrie: oblasti a měření',
     goal: 'Po lekci víš, co se děje při absorpci IČ záření, jak funguje FT-IR spektrometr a jak se připravují vzorky.',
     recall: 'Tipni si, jestli má větší energii foton s vlnočtem 4000 cm⁻¹, nebo 400 cm⁻¹.',
     tail: 'Vrať se k tipu ze začátku. Energie s vlnočtem roste, takže 4000 cm⁻¹. Co jsi nevěděla, zopakuješ zítra.',
@@ -32908,7 +32985,7 @@ const AC_LES = [
       + sec('2. FT-IR spektrometr', `<ul class="ac-ul"><li>Srdcem je <b>interferometr</b>: dělič paprsků, pevné a pohyblivé zrcadlo, polohu zrcadla hlídá He-Ne laser. Nejvyšší signál je, když jsou obě zrcadla stejně daleko od děliče.</li><li>Zdroj: žhavený karbid křemíku (nebo vlákno NiCr). Starší disperzní přístroje měly hranol nebo mřížku.</li><li>Optika z KBr a NaCl je hygroskopická, přístroj je proto stále pod napětím.</li><li>Před vzorkem se měří <b>pozadí</b>: ukáže vodní páru a CO₂ ze vzduchu.</li></ul>`)
       + sec('3. Příprava vzorku', `${tbl(['Technika', 'Jak'], [['KBr tableta (transmise)', '0,1–0,2 mg vzorku rozetřít se 400–500 mg suchého KBr a slisovat'], ['kapaliny (transmise)', 'v kyvetě, rozpouštědlo s málo pásy: CCl₄, chloroform, sirouhlík'], ['ATR (reflexe)', 'vzorek se přitlačí na krystal (ZnSe, Ge, Si, diamant), záření pronikne asi 1 µm']])}
       <p class="ac-les-trap"><b>Pozor, past:</b> ATR ukáže jen přitlačenou plochu a zvýrazní pásy při nízkých vlnočtech. Transmise ukáže průměr vzorku. A vodu do KBr kyvety nikdy.</p>`) },
-  { id: 'r2', ch: 'ir', n: 2, min: 6, t: 'Čtení IČ spektra',
+  { id: 'r2', ch: 'ir', mem: [14, 15, 64, 65], n: 2, min: 6, t: 'Čtení IČ spektra',
     goal: 'Po lekci umíš v IČ spektru najít C–H, trojné vazby, karbonyl, O–H, N–H a nitroskupinu a podle toho odhadnout typ látky.',
     recall: 'Vybav si z lekce 1 rozsah střední IČ oblasti. Pak si tipni, kde ve spektru bude karbonyl.',
     tail: 'Vrať se k tipu ze začátku. Karbonyl je kolem 1700 cm⁻¹, ester nejvýš a amid nejníž. Tím je Analytika hotová. Co jsi nevěděla, zopakuješ zítra.',
