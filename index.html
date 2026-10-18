@@ -1084,7 +1084,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .fact .who.pzw{width:200px;left:24px;top:-118px}
 @media (max-width:520px){.fact .who.pzw{width:170px;left:50%;margin-left:-85px;top:-100px}}
 .ac-meme{margin:0;position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#3a3550,#1d1a28);padding:12px 12px 14px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
-.ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;text-transform:uppercase;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
+.ac-meme .mt,.ac-meme .mb{font:900 clamp(1.05rem,4.6vw,1.45rem)/1.15 Impact,'Anton','Arial Black',sans-serif;color:#fff;letter-spacing:.02em;-webkit-text-stroke:1.2px #000;paint-order:stroke fill;text-shadow:0 2px 0 #000}
 .ac-meme-pic{width:min(220px,70%);line-height:0;--ink:#f4f1f7;--muted:#a8a0b8;--surface:#2a2638;--accent-soft:#4a3f66}
 #acMode{flex-wrap:nowrap}
 #acMode button{flex:0 0 auto}
@@ -1134,6 +1134,22 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-mine{padding:10px 12px;border-radius:12px;border-left:4px solid var(--accent);background:var(--accent-soft)}
 .lx-mine p{margin:4px 0 0;font-style:italic}
 .lx-q{margin:0}
+/* memy k lekci: komiksové bubliny (organika) a obrázkový mem s Pazíkem (analytika), pointa zakrytá */
+.lx-mem{display:flex;flex-direction:column;gap:10px}
+.lx-mem-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.lx-mem-h .fam-h{margin:0}
+.lx-chat{display:flex;flex-direction:column;gap:8px}
+.lx-bub{position:relative;max-width:min(88%,420px);padding:8px 12px 9px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:2px;animation:lx-pop .35s ease-out}
+.lx-bub b{font:700 .85rem/1.2 var(--f-display);color:var(--accent)}
+.lx-bub span{font-size:.95rem;line-height:1.4}
+.lx-bub.l{align-self:flex-start;border-bottom-left-radius:4px}
+.lx-bub.r{align-self:flex-end;border-bottom-right-radius:4px;background:color-mix(in srgb,var(--pink) 9%,var(--surface));border-color:color-mix(in srgb,var(--pink) 40%,var(--line))}
+.lx-bub.r b{color:var(--pink)}
+.lx-mcov{min-height:44px;margin-top:2px;padding:6px 12px;border-radius:10px;border:1.5px dashed var(--accent);background:repeating-linear-gradient(-45deg,var(--accent-soft) 0 7px,transparent 7px 14px);color:var(--ink);font:600 .88rem/1.25 var(--f-body);cursor:pointer;text-align:left}
+.lx-mcov:hover{border-style:solid}
+.lx-tm{max-width:420px;width:100%;align-self:center}
+.lx-tm .lx-mcov{border-color:#fff;color:#fff;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.14) 0 7px,transparent 7px 14px);text-align:center}
+.lx-tm .mb{animation:lx-pop .35s ease-out}
 .lx-ord,.lx-nw,.lx-du{display:flex;flex-direction:column;gap:8px;margin-top:6px;padding:12px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--accent-soft) 35%,var(--surface))}
 .lx-end{margin:0;font-size:.78rem;color:var(--muted)}
 /* zkumavky */
@@ -29784,12 +29800,42 @@ const FH_LES = (() => {
     if (f) f.focus({ preventScroll: true });
     if (a === 'ocheck' && typeof fhSay === 'function') fhSay(nb.querySelector('.fb').textContent.trim());
   }
+  /* Memy k lekci: o = { items, kind, pic }. kind 'chat' = [[mluvčí, text], …] jako komiks, zakrytá je poslední replika (pointa);
+     kind 'top' = [horní, spodní] jako obrázkový mem s maskotem, zakrytý je spodní text. Pointu si čtenářka nejdřív zkusí domyslet. */
+  const MEM = {}; let memN = 0;
+  function mem(o) {
+    if (!o.items || !o.items.length) return '';
+    const id = 'lxm' + (++memN);
+    MEM[id] = Object.assign({ i: 0, open: false, p: o.pic ? o.pic() : '' }, o);
+    return `<section class="card lx-mem" id="${id}" aria-label="Memy na zapamatování">${memHTML(id)}</section>`;
+  }
+  function memHTML(id) {
+    const O = MEM[id], m = O.items[O.i], n = O.items.length, cov = t => `<button type="button" class="lx-mcov" data-lx="mshow">${t}</button>`;
+    let pic;
+    if (O.kind === 'top') pic = `<figure class="ac-meme lx-tm"><span class="mt">${xe(m[0])}</span>${O.p ? `<div class="ac-meme-pic" aria-hidden="true">${O.p}</div>` : ''}${O.open ? `<span class="mb">${xe(m[1])}</span>` : cov('Domysli pointu, pak klepni')}</figure>`;
+    else pic = `<div class="lx-chat">${m.map(([w, t], k) => {
+      const side = k % 2 ? 'r' : 'l', hid = !O.open && m.length > 1 && k === m.length - 1;
+      return `<div class="lx-bub ${side}${hid ? ' hid' : ''}"><b>${xe(w)}</b>${hid ? cov('Domysli pointu, pak klepni') : `<span>${xe(t)}</span>`}</div>`;
+    }).join('')}</div>`;
+    return `<div class="lx-mem-h"><h3 class="fam-h">Mem na zapamatování</h3>${n > 1 ? `<span class="lx-cnt">${O.i + 1} z ${n}</span>` : ''}</div>${pic}
+      ${n > 1 ? `<div class="row"><button type="button" class="btn" data-lx="mnx">Další mem</button></div>` : ''}`;
+  }
+  function memAct(b, a) {
+    const box = b.closest('.lx-mem'), O = MEM[box.id]; if (!O) return;
+    if (a === 'mshow') O.open = true;
+    else { O.i = (O.i + 1) % O.items.length; O.open = false; O.p = O.pic ? O.pic() : ''; }
+    box.innerHTML = memHTML(box.id);
+    const f = box.querySelector(a === 'mshow' ? '[data-lx="mnx"]' : '.lx-mcov') || box.querySelector('[data-lx="mnx"]');
+    if (f) f.focus({ preventScroll: true });
+    if (a === 'mshow' && typeof fhSay === 'function') { const m = O.items[O.i]; fhSay(O.kind === 'top' ? m[1] : m[m.length - 1].join(': ')); }
+  }
   document.addEventListener('click', e => {
     const td = e.target.closest('.ac-tw.lx-on td.lx-cov'); if (td) return tblOpen(td);
     const b = e.target.closest('[data-lx]'); if (!b) return;
     const a = b.dataset.lx;
     if (a === 'hide') return tblToggle(b);
     if (/^o/.test(a)) return ordAct(b, a);
+    if (/^m/.test(a)) return memAct(b, a);
   });
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -30037,7 +30083,7 @@ const FH_LES = (() => {
     const G = {}; lessons.forEach(L => { (G[group(L)] = G[group(L)] || []).push(L); });
     Object.values(G).forEach(g => { const m = num(g[0]); if (!m) return; g.sort((a, b) => a.n - b.n).forEach((L, i) => { L.n = m[1] + (g.length > 1 ? '.' + 'abcdefghijklmnopqrstuvwxyz'[i] : ''); }); });
   }
-  return { list, read, end, rec, merge, reg, next, open, hub, number, ord, w: W };
+  return { list, read, end, rec, merge, reg, next, open, hub, number, ord, mem, w: W };
 })();
 
 /* ===== Organická chemie: lekce nad otázkami z přednášek =====
@@ -30812,6 +30858,8 @@ const FH_OL = (() => {
         <p>Vzniká Hofmannovým (z amidu), Curtiovým (z acylazidu) a Lossenovým odbouráváním (z hydroxamové kyseliny). Fenylisothiokyanát je činidlo Edmanova odbourávání.</p>
         <p><b>DCC</b> je kondenzační činidlo: aktivuje karboxylovou kyselinu na O-acylisomočovinu a změní se na dicyklohexylmočovinu.</p>`) }
   ];
+  /* memy k lekci: L.mem = indexy v MEMES[téma], bez něj všechny memy tématu */
+  const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem ? L.mem.map(i => M[i]) : M).filter(Boolean); };
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
   FH_LES.number(LES, L => L.topic, L => ((TOPIC_BY[L.topic] || {}).label || '').match(/^(\d+)\./));
@@ -30849,7 +30897,7 @@ const FH_OL = (() => {
     const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
     const L = BY[O.open], fk = fhFocusKey(b, ATT);
     if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
-    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` });
+    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` + FH_LES.mem({ items: lesMemes(L), kind: 'chat' }) });
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
       b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
@@ -32781,7 +32829,9 @@ function lesList() {
   return FH_LES.list({ att: 'data-ac', lessons: AC_LES.filter(L => L.ch === ST.ch), prog: ST.les, soon: AC_LES_SOON,
     sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.', empty: '<p>K tomuhle cvičení zatím lekce není.</p>' });
 }
-function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) }); }
+/* memy k lekci: L.mem = indexy v AC_MEMES, bez něj memy kapitoly */
+const lesMemes = L => (L.mem ? L.mem.map(i => AC_MEMES[i]) : AC_MEMES.filter(m => m[2] === L.ch)).filter(Boolean);
+function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + FH_LES.mem({ items: lesMemes(L), kind: 'top', pic: () => AC_MASCOT.svg }) }); }
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
   Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false; Q.weak = false;
