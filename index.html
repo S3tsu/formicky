@@ -1150,6 +1150,34 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-tm{max-width:420px;width:100%;align-self:center}
 .lx-tm .lx-mcov{border-color:#fff;color:#fff;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.14) 0 7px,transparent 7px 14px);text-align:center}
 .lx-tm .mb{animation:lx-pop .35s ease-out}
+/* obrázky k memům (MEME_ART) */
+.lx-art{margin:0;align-self:center;width:100%;max-width:440px;line-height:0;animation:lx-pop .35s ease-out}
+.lx-art-top{display:flex;align-items:flex-end;justify-content:center;gap:4px;width:100%}
+.lx-art-top .lx-art{width:auto;flex:1 1 auto;max-width:260px}
+.lx-art-top .lx-pz{flex:0 0 26%;max-width:96px}
+.mart{width:100%;height:auto;overflow:visible}
+.mart text{fill:var(--ink);font:700 14px/1 var(--f-body)}
+.mart .cap{font-size:12px;font-weight:600;fill:var(--muted)}
+.mart .pkt,.mart .cap.pkt{fill:var(--pink)}.mart .acct,.mart .cap.acct{fill:var(--accent)}
+.mart .ln{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.mart .ln.pk{stroke:var(--pink)}.mart .ln.acc{stroke:var(--accent)}
+.mart .halo{stroke:var(--surface);stroke-width:8;stroke-linecap:round}
+.mart .clash{fill:none;stroke:var(--pink);stroke-width:2;stroke-dasharray:5 4}
+.mart .canopy{fill:color-mix(in srgb,var(--accent) 16%,transparent);stroke:var(--accent);stroke-width:2;stroke-dasharray:4 3}
+.mart .dot{fill:var(--accent)}
+.mart .ghost{fill:none;stroke:var(--muted);stroke-width:2;stroke-dasharray:4 3}
+.mart .sieve{fill:color-mix(in srgb,var(--ink) 8%,transparent);stroke:var(--ink);stroke-width:2.6}
+.mart .holes{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-dasharray:1 7;stroke-linecap:round}
+.mart .liq{fill:color-mix(in srgb,var(--accent) 30%,transparent)}
+.mart .liq2{fill:none;stroke:var(--accent);stroke-width:2}
+.mart .pb{fill:#f3e3a0;stroke:var(--ink);stroke-width:2}
+.mart .mem{fill:color-mix(in srgb,var(--accent) 22%,var(--surface));stroke:var(--ink);stroke-width:2}
+.mart .mem.star{fill:color-mix(in srgb,var(--pink) 30%,var(--surface))}
+.mart .eye{fill:var(--ink)}
+.mart .pb~.eye{fill:#2b2433}.mart .pbt{fill:#2b2433;font-size:12px}
+.mart .v{font-size:12px}
+.mart .mic{fill:var(--ink)}
+.mart .wave{fill:none;stroke:var(--pink);stroke-width:2.2;stroke-linecap:round}
 .lx-ord,.lx-nw,.lx-du{display:flex;flex-direction:column;gap:8px;margin-top:6px;padding:12px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--accent-soft) 35%,var(--surface))}
 .lx-end{margin:0;font-size:.78rem;color:var(--muted)}
 /* zkumavky */
@@ -29834,6 +29862,59 @@ function fhRefocus(fk, root, box) {
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(upd); }, { passive: true });
   addEventListener('resize', upd);
 })();
+/* ===== Obrázky k memům: klíč 'téma:index' (organika, MEMES) nebo 'ac:index' (AC_MEMES); ukážou se až s odkrytou pointou =====
+   Kreslí se barvami stránky (--ink, --accent, --pink, --surface), takže fungují ve světlém i tmavém režimu i v tmavém rámečku memu Analytiky. */
+const MEME_ART = (() => {
+  const box = (vb, lab, body) => `<svg class="mart" viewBox="${vb}" role="img" aria-label="${lab}">${body}</svg>`;
+  const arrow = (x1, y1, x2, y2, c = '') => `<path class="ln${c}" d="M${x1} ${y1}L${x2} ${y2}"/><path class="ln${c}" d="M${x2 - 8} ${y2 - 6}L${x2} ${y2}L${x2 - 8} ${y2 + 6}"/>`;
+  return {
+    /* 4. přednáška: methyl axiálně (1,3-diaxiální interakce s H na C3 a C5) proti methylu ekvatoriálně */
+    't04:3': () => box('0 0 340 185', 'Dvě židličky methylcyklohexanu. Vlevo axiální methyl, kterému překážejí axiální vodíky na C3 a C5, 2 × 3,8 kJ na mol. Vpravo ekvatoriální methyl bez tlačenice.',
+      `<path class="clash" d="M42.2 45.3Q73.7 37.3 109.1 62.3"/><path class="clash" d="M42.2 45.3Q77.5 24.8 116.7 32.8"/><path class="ln" d="M116.7 79.9L66.9 106.6"/><path class="ln" d="M66.9 106.6L38.2 92.4"/><path class="ln" d="M137.8 123.6L116.7 79.9"/><path class="halo" d="M109.1 109.4L109.1 80.3"/><path class="ln pk" d="M109.1 109.4L109.1 80.3"/><path class="halo" d="M116.7 79.9L116.7 50.8"/><path class="ln pk" d="M116.7 79.9L116.7 50.8"/><path class="halo" d="M38.2 92.4L59.3 136.1"/><path class="ln" d="M38.2 92.4L59.3 136.1"/><path class="halo" d="M109.1 109.4L137.8 123.6"/><path class="ln" d="M109.1 109.4L137.8 123.6"/><path class="halo" d="M59.3 136.1L109.1 109.4"/><path class="ln" d="M59.3 136.1L109.1 109.4"/><text class="pkt" x="109.1" y="76.3" text-anchor="middle">H</text><text class="pkt" x="116.7" y="46.8" text-anchor="middle">H</text><path class="ln acc" d="M38.2 92.4L38.2 63.3"/><text class="acct" x="38.2" y="58.3" text-anchor="middle">CH₃</text><text class="cap pkt" x="88" y="170" text-anchor="middle">axiálně: 2 × 3,8 kJ·mol⁻¹</text>
+      <path class="ln" d="M290.7 79.9L240.9 106.6"/><path class="ln" d="M240.9 106.6L212.2 92.4"/><path class="ln" d="M311.8 123.6L290.7 79.9"/><path class="halo" d="M283.1 109.4L283.1 80.3"/><path class="ln" d="M283.1 109.4L283.1 80.3"/><path class="halo" d="M290.7 79.9L290.7 50.8"/><path class="ln" d="M290.7 79.9L290.7 50.8"/><path class="halo" d="M212.2 92.4L233.3 136.1"/><path class="ln" d="M212.2 92.4L233.3 136.1"/><path class="halo" d="M283.1 109.4L311.8 123.6"/><path class="ln" d="M283.1 109.4L311.8 123.6"/><path class="halo" d="M233.3 136.1L283.1 109.4"/><path class="ln" d="M233.3 136.1L283.1 109.4"/><text class="" x="283.1" y="76.3" text-anchor="middle">H</text><text class="" x="290.7" y="46.8" text-anchor="middle">H</text><path class="ln" d="M212.2 92.4L212.2 63.3"/><text class="" x="212.2" y="59.3" text-anchor="middle">H</text><path class="ln acc" d="M212.2 92.4L179.3 102.3"/><text class="acct" x="176" y="109" text-anchor="end">CH₃</text><text class="cap acct" x="252" y="170" text-anchor="middle">ekvatoriálně: pohoda</text>`),
+    /* 9. přednáška: SN2, nukleofil zezadu, substituenty se překlopí jako deštník */
+    't09:2': () => box('0 0 340 160', 'SN2: nukleofil útočí na uhlík ze strany odvrácené od bromu, brom odchází a tři substituenty se překlopí na druhou stranu jako deštník ve větru.',
+      `<path class="canopy" d="M92 40Q70 75 92 110"/><path class="ln" d="M120 75L92 40M120 75L80 75M120 75L92 110"/>
+      <circle class="dot" cx="92" cy="40" r="5"/><circle class="dot" cx="80" cy="75" r="5"/><circle class="dot" cx="92" cy="110" r="5"/>
+      <text x="120" y="66" text-anchor="middle">C</text><path class="ln" d="M126 75L150 75"/><text class="pkt" x="164" y="80" text-anchor="middle">Br</text>
+      <text class="acct" x="22" y="40" text-anchor="middle">Nu⁻</text><path class="ln acc" d="M28 46Q52 96 112 82"/><path class="ln acc" d="M101 86L112 82L104 74"/>
+      <text class="cap" x="40" y="140" text-anchor="middle">zezadu</text>
+      ${arrow(186, 75, 214, 75)}
+      <text class="acct" x="236" y="80" text-anchor="middle">Nu</text><path class="ln" d="M248 75L268 75"/><text x="276" y="66" text-anchor="middle">C</text>
+      <path class="canopy" d="M304 40Q326 75 304 110"/><path class="ln" d="M276 75L304 40M276 75L316 75M276 75L304 110"/>
+      <circle class="dot" cx="304" cy="40" r="5"/><circle class="dot" cx="316" cy="75" r="5"/><circle class="dot" cx="304" cy="110" r="5"/>
+      <text class="cap pkt" x="200" y="100" text-anchor="middle">Br⁻ odejde</text><text class="cap" x="290" y="140" text-anchor="middle">deštník naruby</text>`),
+    /* 6. přednáška: adice Br₂, bromoniový ion blokuje jednu stranu, Br⁻ jde z druhé, výsledek trans */
+    't06:5': () => box('0 0 340 185', 'Adice bromu na alken. Bromoniový ion zakrývá jednu stranu dvojné vazby, bromidový anion proto přichází z opačné strany a oba bromy skončí na opačných stranách: anti adice, trans produkt.',
+      `<path class="ln" d="M70 95L140 95"/><path class="ln pk" d="M70 95L105 48L140 95"/><text class="pkt" x="105" y="40" text-anchor="middle">Br⁺</text>
+      <text x="62" y="100" text-anchor="end">C</text><text x="148" y="100">C</text>
+      <text class="cap pkt" x="105" y="18" text-anchor="middle">tahle strana je obsazená</text>
+      <text class="acct" x="150" y="160" text-anchor="middle">Br⁻</text><path class="ln acc" d="M144 146Q134 124 134 104"/><path class="ln acc" d="M128 111L134 102L140 111"/>
+      <text class="cap acct" x="150" y="180" text-anchor="middle">přijdu z druhé strany</text>
+      ${arrow(200, 95, 228, 95)}
+      <path class="ln" d="M256 95L312 95"/><text x="250" y="100" text-anchor="end">C</text><text x="318" y="100">C</text>
+      <path class="ln pk" d="M262 90L262 58"/><text class="pkt" x="262" y="52" text-anchor="middle">Br</text>
+      <path class="ln acc" d="M306 100L306 132"/><text class="acct" x="306" y="148" text-anchor="middle">Br</text>
+      <text class="cap" x="284" y="22" text-anchor="middle">trans</text>`),
+    /* Analytika, 1. lekce: HCl nic nesrazila, takže Ag⁺ a Hg₂²⁺ ve vzorku nejsou, Pb²⁺ může zůstat v roztoku */
+    'ac:16': () => box('0 0 230 200', 'Síto s nápisem HCl je prázdné. Stříbro a rtuť nad ním jsou přeškrtnuté, protože ve vzorku nejsou. Olovnatý kation vykukuje z roztoku v kádince pod sítem.',
+      `<circle class="ghost" cx="62" cy="26" r="17"/><text x="62" y="31" text-anchor="middle">Ag⁺</text><path class="ln pk" d="M44 8L80 44"/>
+      <circle class="ghost" cx="152" cy="27" r="25"/><text x="152" y="32" text-anchor="middle">Hg₂²⁺</text><path class="ln pk" d="M130 5L174 49"/>
+      <path class="ln" d="M40 62H190"/><path class="sieve" d="M48 62Q115 128 182 62"/><path class="holes" d="M70 84Q115 112 160 84"/>
+      <path class="ln" d="M190 62L214 56"/><text x="115" y="80" text-anchor="middle">HCl</text><text class="cap" x="115" y="58" text-anchor="middle">prázdné</text>
+      <path class="ln" d="M70 124V188H160V124"/><path class="liq" d="M72 150H158V186H72Z"/>
+      <circle class="pb" cx="115" cy="154" r="21"/><circle class="eye" cx="108" cy="146" r="2.6"/><circle class="eye" cx="122" cy="146" r="2.6"/>
+      <text class="pbt" x="115" y="166" text-anchor="middle">Pb²⁺</text><path class="liq2" d="M72 152Q93 146 115 152T158 152"/>`),
+    /* Analytika, IČ: karbonyly jako kapela, výška = vlnočet C=O, keton u 1715 drží mikrofon */
+    'ac:14': () => box('0 0 300 200', 'Pět karbonylů jako kapela seřazená podle vlnočtu pásu C=O: ester 1735, aldehyd 1725, keton 1715 s mikrofonem, kyselina 1710 a amid 1650.',
+      [['ester', 1735], ['aldehyd', 1725], ['keton', 1715], ['kyselina', 1710], ['amid', 1650]].map(([n, v], i) => {
+        const h = 40 + (v - 1640) * 1.15, x = 14 + i * 57, y = 160 - h;
+        return `<rect class="mem${i === 2 ? ' star' : ''}" x="${x}" y="${y}" width="44" height="${h}" rx="14"/>
+          <circle class="eye" cx="${x + 15}" cy="${y + 16}" r="2.6"/><circle class="eye" cx="${x + 29}" cy="${y + 16}" r="2.6"/><path class="ln" d="M${x + 16} ${y + 26}q6 ${i === 2 ? 8 : 4} 12 0"/>
+          <text class="v" x="${x + 22}" y="${y + 44}" text-anchor="middle">${v}</text><text class="cap" x="${x + 22}" y="178" text-anchor="middle">${n}</text>`;
+      }).join('') + '<path class="ln acc" d="M148 66L160 48"/><circle class="mic" cx="162" cy="44" r="6"/><path class="wave" d="M174 36q6 8 0 16M182 30q10 14 0 28"/>')
+  };
+})();
 /* ===== Lekce: společný modul pro Analytickou i Organickou chemii =====
    Seznam lekcí, výklad a konec lekce. Kvíz si každý předmět běží po svém (jeho karty, jeho opakování),
    tlačítka nesou atribut předmětu (data-ac / data-ol) s hodnotami lopen, lquiz, lback. */
@@ -29941,17 +30022,19 @@ const FH_LES = (() => {
   function mem(o) {
     if (!o.items || !o.items.length) return '';
     const id = 'lxm' + (++memN);
-    MEM[id] = Object.assign({ i: 0, open: false, p: o.pic ? o.pic() : '' }, o);
+    MEM[id] = Object.assign({ i: 0, open: false, p: o.pic ? o.pic() : '', art: [] }, o);
     return `<section class="card lx-mem" id="${id}" aria-label="Meme">${memHTML(id)}</section>`;
   }
   function memHTML(id) {
     const O = MEM[id], m = O.items[O.i], n = O.items.length, cov = t => `<button type="button" class="lx-mcov" data-lx="mshow">${t}</button>`;
+    /* obrázek k memu (MEME_ART) se ukáže až s pointou */
+    const af = O.open && typeof MEME_ART !== 'undefined' && MEME_ART[O.art[O.i]], art = af ? af() : '';
     let pic;
-    if (O.kind === 'top') pic = `<figure class="ac-meme lx-tm"><span class="mt">${xe(m[0])}</span>${O.p ? `<div class="ac-meme-pic" aria-hidden="true">${O.p}</div>` : ''}${O.open ? `<span class="mb">${xe(m[1])}</span>` : cov('Domysli pointu, pak klepni')}</figure>`;
+    if (O.kind === 'top') pic = `<figure class="ac-meme lx-tm"><span class="mt">${xe(m[0])}</span>${art ? `<div class="lx-art-top"><div class="ac-meme-pic lx-art">${art}</div>${O.p ? `<div class="ac-meme-pic lx-pz" aria-hidden="true">${O.p}</div>` : ''}</div>` : O.p ? `<div class="ac-meme-pic" aria-hidden="true">${O.p}</div>` : ''}${O.open ? `<span class="mb">${xe(m[1])}</span>` : cov('Domysli pointu, pak klepni')}</figure>`;
     else pic = `<div class="lx-chat">${m.map(([w, t], k) => {
       const side = k % 2 ? 'r' : 'l', hid = !O.open && m.length > 1 && k === m.length - 1;
       return `<div class="lx-bub ${side}${hid ? ' hid' : ''}"><b>${xe(w)}</b>${hid ? cov('Domysli pointu, pak klepni') : `<span>${xe(t)}</span>`}</div>`;
-    }).join('')}</div>`;
+    }).join('')}</div>${art ? `<figure class="lx-art">${art}</figure>` : ''}`;
     return `<div class="lx-mem-h"><h3 class="fam-h">Meme</h3>${n > 1 ? `<span class="lx-cnt">${O.i + 1} z ${n}</span>` : ''}</div>${pic}
       ${n > 1 ? `<div class="row"><button type="button" class="btn" data-lx="mnx">Další meme</button></div>` : ''}`;
   }
@@ -30994,7 +31077,7 @@ const FH_OL = (() => {
         <p><b>DCC</b> je kondenzační činidlo: aktivuje karboxylovou kyselinu na O-acylisomočovinu a změní se na dicyklohexylmočovinu.</p>`) }
   ];
   /* memy k lekci: L.mem = indexy v MEMES[téma], bez něj všechny memy tématu */
-  const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem ? L.mem.map(i => M[i]) : M).filter(Boolean); };
+  const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem || M.map((_, i) => i)).filter(i => M[i]).map(i => [M[i], L.topic + ':' + i]); };
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
   FH_LES.number(LES, L => L.topic, L => ((TOPIC_BY[L.topic] || {}).label || '').match(/^(\d+)\./));
@@ -31032,7 +31115,7 @@ const FH_OL = (() => {
     const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
     const L = BY[O.open], fk = fhFocusKey(b, ATT);
     if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
-    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` + FH_LES.mem({ items: lesMemes(L), kind: 'chat' }) });
+    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<p class="ac-btip"><b>Béďa radí:</b> ${esc(L.beda)}</p>` + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' }) });
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
       b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
@@ -33015,8 +33098,8 @@ function lesList() {
     sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.', empty: '<p>K tomuhle cvičení zatím lekce není.</p>' });
 }
 /* memy k lekci: L.mem = indexy v AC_MEMES, bez něj memy kapitoly */
-const lesMemes = L => (L.mem ? L.mem.map(i => AC_MEMES[i]) : AC_MEMES.filter(m => m[2] === L.ch)).filter(Boolean);
-function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + FH_LES.mem({ items: lesMemes(L), kind: 'top', pic: () => AC_MASCOT.svg }) }); }
+const lesMemes = L => (L.mem || AC_MEMES.map((m, i) => m[2] === L.ch ? i : -1).filter(i => i >= 0)).filter(i => AC_MEMES[i]).map(i => [AC_MEMES[i], 'ac:' + i]);
+function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg }) }); }
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
   Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false; Q.weak = false;
