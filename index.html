@@ -29429,7 +29429,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610180940';
+const FH_VER = '202610181754';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
