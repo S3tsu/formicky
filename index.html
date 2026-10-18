@@ -1182,6 +1182,11 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-nw-v{stroke:var(--accent);stroke-dasharray:3 3} .lx-nw-dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
 .lx-nw-ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .lx-nw-3d{display:flex;flex-direction:column;gap:6px}
+.lx-ch{display:flex;flex-direction:column;gap:8px;margin-top:6px;padding:12px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--accent-soft) 35%,var(--surface))}
+.lx-ch .row{display:flex;gap:8px;flex-wrap:wrap}
+.lx-ch-st{margin:0;display:flex;flex-direction:column;min-height:2.8em}
+.lx-ch-st b{font:700 1.08rem/1.2 var(--f-display)} .lx-ch-st span{color:var(--muted);font-size:.9rem}
+.lx-ch.lx-low .lx-ch-st span{color:var(--ok);font-weight:600}
 .lx-nw-3v{position:relative;height:240px;border-radius:12px;border:1px solid var(--line);background:var(--surface);touch-action:none;overflow:hidden}
 .lx-nw-3n{margin:0;font-size:.8rem;color:var(--muted)}
 .lx-nw-3d .row{display:flex;gap:8px;flex-wrap:wrap}
@@ -1231,6 +1236,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-3d{display:flex;flex-direction:column;gap:6px;align-self:stretch}
 .lx-3v{position:relative;height:260px;border-radius:12px;border:1px solid var(--line);background:var(--surface);touch-action:none;overflow:hidden}
 .lx-3n{margin:0;font-size:.85rem;color:var(--muted)}
+.lx-3l{margin:0;display:flex;flex-wrap:wrap;gap:4px 14px;font:600 .95rem var(--f-chem)}
+.lx-3l span{display:inline-flex;align-items:center;gap:6px}
+.lx-3l i{width:14px;height:14px;border-radius:50%;border:1px solid var(--line)}
 .lx-3d .row{display:flex;gap:8px;flex-wrap:wrap}
 .lx-rs-b .btn{flex:1;font:700 1.3rem var(--f-display)}
 /* NMR */
@@ -29831,8 +29839,9 @@ const FH_LES = (() => {
   }
   W.rs = () => { const w = { dataset: {} }; rsNew(w);
     return `<div class="lx-w lx-rs" data-lw="rs" data-g='${w.dataset.g}' data-h="${w.dataset.h}"><p class="lx-q"><b>Urči R, nebo S:</b> seřaď skupiny podle protonového čísla a sleduj, kam míří vodík.</p><div class="lx-out">${rsOut(w)}</div>
-      <div class="lx-rs3"><button type="button" class="btn" data-lwa="rs3" aria-expanded="false">Ukázat ve 3D</button><div class="lx-3d" hidden><div class="lx-3v" role="img" aria-label="Prostorový model stereocentra"></div><p class="lx-3n">Otáčej tažením. Zkus si molekulu natočit tak, aby vodík mířil od tebe, a pak čti 1 → 2 → 3.</p><div class="row"><button type="button" class="btn" data-lwa="rs3v" data-v="pic">Jako na obrázku</button><button type="button" class="btn" data-lwa="rs3v" data-v="h">Vodík dozadu</button></div></div></div></div>`; };
+      <div class="lx-rs3"><button type="button" class="btn" data-lwa="rs3" aria-expanded="false">Ukázat ve 3D</button><div class="lx-3d" hidden><div class="lx-3v" role="img" aria-label="Prostorový model stereocentra"></div><p class="lx-3l"></p><p class="lx-3n">Otáčej tažením. Zkus si molekulu natočit tak, aby vodík mířil od tebe, a pak čti 1 → 2 → 3.</p><div class="row"><button type="button" class="btn" data-lwa="rs3v" data-v="pic">Jako na obrázku</button><button type="button" class="btn" data-lwa="rs3v" data-v="h">Vodík dozadu</button></div></div></div></div>`; };
   /* R/S ve 3D: C v počátku, vodík na ose z (dozadu −z, dopředu +z), ostatní skupiny ve stejných úhlech jako na obrázku */
+  const RS3C = { 'I': '#940094', 'Br': '#a62929', 'Cl': '#1ff01f', 'F': '#90e050', 'OH': '#ff0d0d', 'NH₂': '#3050f8', 'CH₃': '#909090' };   // barvy Jmol jako v modelu
   const RS3 = { 'I': ['I', 2.14], 'Br': ['Br', 1.94], 'Cl': ['Cl', 1.77], 'F': ['F', 1.35], 'OH': ['O', 1.43, 1], 'NH₂': ['N', 1.47, 2], 'CH₃': ['C', 1.53, 3] };
   function rs3XYZ(w) {
     const S = Math.sin(70.5 * Math.PI / 180), C = Math.cos(70.5 * Math.PI / 180), hz = w.dataset.h === 'f' ? 1 : -1;
@@ -29851,11 +29860,10 @@ const FH_LES = (() => {
   }
   function rs3Paint(w) {
     const g = w._rs3; if (!g) return;
-    const v = g.v, cs = getComputedStyle(w), ink = cs.getPropertyValue('--ink').trim() || '#222', sf = cs.getPropertyValue('--surface').trim() || '#fff', ac = cs.getPropertyValue('--accent').trim() || '#0e7490';
-    const { xyz, lab } = rs3XYZ(w);
-    v.removeAllModels(); v.removeAllLabels(); v.addModel(xyz, 'xyz');
+    const v = g.v, { xyz, lab } = rs3XYZ(w);
+    v.removeAllModels(); v.addModel(xyz, 'xyz');
     v.setStyle({}, { stick: { radius: 0.13, colorscheme: 'Jmol' }, sphere: { scale: 0.28, colorscheme: 'Jmol' } });
-    lab.forEach(([t, n, p]) => v.addLabel(w.dataset.done && n < 4 ? n + ' · ' + t : t, { position: { x: p[0], y: p[1], z: p[2] }, alignment: 'center', inFront: n < 4, fontSize: 20, fontColor: w.dataset.done && n < 4 ? '#fff' : ink, backgroundColor: w.dataset.done && n < 4 ? ac : sf, backgroundOpacity: .9, borderThickness: 0 }));
+    w.querySelector('.lx-3l').innerHTML = lab.slice(0, 3).sort((x, y) => w.dataset.done ? 0 : x[0].localeCompare(y[0], 'cs')).map(([t, n]) => `<span><i style="background:${RS3C[t]}"></i>${w.dataset.done ? n + '. ' : ''}${t}</span>`).join('') + '<span><i style="background:#e8e8e8"></i>H</span>';
     if (g.base) v.setView(g.base); else g.base = v.getView();
     v.zoomTo(); v.zoom(1.3); v.setSlab(-50, 50); v.rotate(w.dataset.h === 'f' ? 22 : -22, 'x'); g.pic = v.getView(); v.render();
   }
@@ -30105,6 +30113,73 @@ const FH_OL = (() => {
     const bg = (getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#ffffff').trim();
     el.innerHTML = ''; w._nw3 = { v: $3Dmol.createViewer(el, { backgroundColor: bg, antialias: true }) }; nw3Paint(w);
   }
+  /* methylcyklohexan ve 3D: židlička, překlopení mění axiální methyl na ekvatoriální a zpět */
+  function chair() {
+    return `<div class="lx-ch" data-lxw="ch" data-k="0"><p class="lx-q"><b>Překlop židličku:</b> methylcyklohexan ve 3D. Sleduj, kam míří methyl a se kterými vodíky se potkává.</p>
+      <div class="row"><button type="button" class="btn" data-lxw="ch3d" aria-expanded="false">Ukázat ve 3D</button></div>
+      <div class="lx-nw-3d" hidden><div class="lx-nw-3v" role="img" aria-label="Prostorový model methylcyklohexanu v židličkové konformaci"></div>
+      <p class="lx-ch-st" aria-live="polite"></p><p class="lx-nw-3n">Otáčej tažením. Barevná kulička je uhlík methylu, růžové jsou axiální vodíky na C3 a C5.</p>
+      <div class="row"><button type="button" class="btn primary" data-lxw="chflip">Překlopit židličku</button></div></div></div>`;
+  }
+  const chGeo = (k, ax0) => {
+    /* k = 0 výchozí židlička, k = 1 překlopená; ax0: methyl na C1 výchozí axiálně */
+    const R = 1.446, at = [], bd = [], hl = [], nrm = v => { const n = Math.hypot(...v); return v.map(x => x / n); }, lerp = (a, b) => a.map((v, j) => v + (b[j] - v) * k);
+    const ring = [0, 1, 2, 3, 4, 5].map(i => { const t = i * Math.PI / 3, z = .25 * (i % 2 ? -1 : 1); return { t, z, p: [R * Math.cos(t), R * Math.sin(t), z * (1 - 2 * k)] }; });
+    const ax = (r, flip) => [0, 0, Math.sign(r.z) * (flip ? -1 : 1)], eq = (r, flip) => nrm([Math.cos(r.t) * .94, Math.sin(r.t) * .94, -.33 * Math.sign(r.z) * (flip ? -1 : 1)]);
+    ring.forEach(r => at.push(['C', ...r.p])); ring.forEach((r, i) => bd.push([i, (i + 1) % 6]));
+    const sub = (i, d0, d1) => nrm(lerp(d0, d1));
+    /* methyl na C1 (index 0): axiální ve výchozí židličce → po překlopení ekvatoriální */
+    const r0 = ring[0], dm = ax0 ? sub(0, ax(r0), eq(r0, 1)) : sub(0, eq(r0), ax(r0, 1)), m = r0.p.map((v, j) => v + dm[j] * 1.53);
+    at.push(['C', ...m]); bd.push([0, 6]);
+    const e1 = Math.abs(dm[2]) < .9 ? nrm([dm[1], -dm[0], 0]) : nrm([0, dm[2], -dm[1]]), e2 = [dm[1] * e1[2] - dm[2] * e1[1], dm[2] * e1[0] - dm[0] * e1[2], dm[0] * e1[1] - dm[1] * e1[0]];
+    const S = Math.sin(70.5 * Math.PI / 180), C = Math.cos(70.5 * Math.PI / 180);
+    [0, 120, 240].forEach(f => { const g = f * Math.PI / 180, d = dm.map((v, j) => C * v + S * (Math.cos(g) * e1[j] + Math.sin(g) * e2[j])); at.push(['H', ...m.map((v, j) => v + d[j] * 1.09)]); bd.push([6, at.length - 1]); });
+    ring.forEach((r, i) => {
+      const hs = i ? [[ax(r), eq(r, 1)], [eq(r), ax(r, 1)]] : [ax0 ? [eq(r), ax(r, 1)] : [ax(r), eq(r, 1)]];
+      hs.forEach(([d0, d1], n) => { const d = nrm(lerp(d0, d1)); at.push(['H', ...r.p.map((v, j) => v + d[j] * 1.09)]); bd.push([i, at.length - 1]);
+        /* axiální vodíky na C3 a C5 na stejné straně jako axiální methyl */
+        if ((i === 2 || i === 4) && n === 0 && i) hl.push(at.length - 1); });
+    });
+    let mb = '\n  FormickyHub\n\n' + String(at.length).padStart(3) + String(bd.length).padStart(3) + '  0  0  0  0  0  0  0  0999 V2000\n';
+    /* učebnicový pohled: kruh vodorovně, axiální vazby svisle, díváme se mírně shora a z boku */
+    const cf = Math.cos(-.45), sf = Math.sin(-.45), ce = Math.cos(.3), se = Math.sin(.3);
+    const view = ([x, y, z]) => { const x1 = x * cf - y * sf, y1 = x * sf + y * cf; return [x1, y1 * se + z * ce, -y1 * ce + z * se]; };
+    at.forEach(a => { mb += view(a.slice(1)).map(v => v.toFixed(4).padStart(10)).join('') + ' ' + a[0].padEnd(3) + ' 0  0  0  0  0  0  0  0  0  0  0  0\n'; });
+    bd.forEach(b => { mb += String(b[0] + 1).padStart(3) + String(b[1] + 1).padStart(3) + '  1  0\n'; });
+    return { mb: mb + 'M  END\n', hl };
+  };
+  function chPaint(w, k) {
+    const g = w._ch; if (!g) return;
+    const v = g.v, cs = getComputedStyle(w), ac = cs.getPropertyValue('--accent').trim() || '#0e7490', pk = cs.getPropertyValue('--pink').trim() || '#d93a72';
+    const { mb, hl } = chGeo(k, true), axNow = k < .5;
+    v.removeAllModels(); v.removeAllLabels(); v.addModel(mb, 'sdf');
+    v.setStyle({}, { stick: { radius: 0.12, colorscheme: 'Jmol' }, sphere: { scale: 0.26, colorscheme: 'Jmol' } });
+    v.setStyle({ index: 6 }, { stick: { radius: 0.12, color: ac }, sphere: { scale: 0.36, color: ac } });
+    if (axNow) v.setStyle({ index: hl }, { stick: { radius: 0.12, colorscheme: 'Jmol' }, sphere: { scale: 0.34, color: pk } });
+    if (!g.view) { v.zoomTo(); v.zoom(1.5); v.setSlab(-50, 50); g.view = v.getView(); }
+    v.render();
+    if (k === 0 || k === 1) {
+      w.classList.toggle('lx-low', !axNow);
+      w.querySelector('.lx-ch-st').innerHTML = axNow ? '<b>Methyl axiálně</b><span>Dvě 1,3-diaxiální interakce s vodíky na C3 a C5, o 7,6 kJ·mol⁻¹ výš.</span>' : '<b>Methyl ekvatoriálně</b><span>Míří ven z kruhu, nikomu nepřekáží. Tahle židlička převažuje.</span>';
+    }
+  }
+  async function chOpen(w, b) {
+    const box = w.querySelector('.lx-nw-3d'), on = box.hidden;
+    box.hidden = !on; b.setAttribute('aria-expanded', on); b.textContent = on ? 'Skrýt 3D' : 'Ukázat ve 3D';
+    if (!on || w._ch) return;
+    const el = box.querySelector('.lx-nw-3v'); el.innerHTML = '<p class="m3d-msg">Načítám 3D model…</p>';
+    try { await window.FH_3DLIB(); } catch (e) { el.innerHTML = '<p class="m3d-msg">3D model se nepodařilo načíst. Zkontroluj připojení k internetu.</p>'; return; }
+    const bg = (getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#ffffff').trim();
+    el.innerHTML = ''; w._ch = { v: $3Dmol.createViewer(el, { backgroundColor: bg, antialias: true }) }; chPaint(w, 0);
+  }
+  function chFlip(w, b) {
+    const g = w._ch; if (!g || g.f) return;
+    const k0 = +w.dataset.k, k1 = 1 - k0, fin = () => { g.f = 0; w.dataset.k = k1; chPaint(w, k1); b.disabled = false; };
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return fin();
+    const s0 = performance.now(); b.disabled = true;
+    const step = now => { const t = Math.min(1, (now - s0) / 1800), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; chPaint(w, k0 + (k1 - k0) * e); if (t < 1) g.f = requestAnimationFrame(step); else fin(); };
+    g.f = requestAnimationFrame(step);
+  }
   /* stupeň nenasycenosti krok za krokem, stejný postup jako ve výkladu */
   const DU = [['C', 'uhlík', 1, 40, 7], ['H', 'vodík', 0, 82, 8], ['X', 'halogen', 0, 10, 0], ['N', 'dusík', 0, 10, 0], ['O', 'kyslík', 0, 10, 1]];
   const DUEX = [['C₇H₈O', [7, 8, 0, 0, 1]], ['C₆H₆', [6, 6, 0, 0, 0]], ['C₄H₉Br', [4, 9, 1, 0, 0]], ['C₅H₅N', [5, 5, 0, 1, 0]]];
@@ -30143,6 +30218,8 @@ const FH_OL = (() => {
       nwAnim = { b, f: requestAnimationFrame(step) }; return;
     }
     if (a === 'nw3d') return nw3Open(b.closest('.lx-nw'), b);
+    if (a === 'ch3d') return chOpen(b.closest('.lx-ch'), b);
+    if (a === 'chflip') return chFlip(b.closest('.lx-ch'), b);
     if (a === 'nwv') { const g = b.closest('.lx-nw')._nw3; if (g && g.view) { g.v.setView(g.view[b.dataset.v]); g.v.render(); } return; }
     if (a === 'dum' || a === 'dup') { const w = b.closest('.lx-du'), i = w.querySelector(`[data-lxw="dui"][data-k="${b.dataset.k}"]`); i.value = +i.value + (a === 'dup' ? 1 : -1); return duSet(w); }
     if (a === 'duex') { const w = b.closest('.lx-du'), ex = DUEX[+b.dataset.v][1]; w.querySelectorAll('[data-lxw="dui"]').forEach((i, k) => { i.value = ex[k]; }); return duSet(w); }
@@ -30228,6 +30305,7 @@ const FH_OL = (() => {
         ${newman()}`)
         + sec('2. Pnutí v kruzích', `<p>Baeyer předpokládal planární kruhy, a to je chyba. Pnutí má tři složky: <b>úhlové</b> (odchylka od 109,5°), <b>torzní</b> (zákryty) a <b>sterické</b> (atomy příliš blízko). Cyklopropan má úhel o 49° menší a největší pnutí, cyklobutan menší úhlové, ale větší torzní, cyklopentan se zkroutí do „obálky“ a cyklohexan je bez pnutí. Měří se ze spalného tepla.</p>`)
         + sec('3. Židlička cyklohexanu', `<ul class="ac-ul"><li><b>Židlička</b> je nejstabilnější, všechny vazby jsou střídavé. Vanička je o 29,0, zkřížená vanička o 23,0 kJ·mol⁻¹ výš.</li><li>Axiální vazby jsou rovnoběžné s osou, ekvatoriální míří ven. Při <b>překlopení</b> (bariéra 45 kJ·mol⁻¹) se axiální mění na ekvatoriální, cis/trans se nemění.</li><li>Axiální methyl má dvě <b>1,3-diaxiální</b> interakce s vodíky na C3 a C5, 2 × 3,8 = 7,6 kJ·mol⁻¹. Proto převažuje ekvatoriální. Každá taková interakce odpovídá synklinální interakci jako v butanu, slajdy pro cyklohexan ji ale počítají za 3,8 místo 4,0 kJ·mol⁻¹.</li></ul>
+        ${chair()}
         ${FH_LES.ord({ q: 'konformace cyklohexanu podle energie.', top: 'nejvyšší energie', bottom: 'nejnižší energie', items: [['vanička', 'o 29,0 kJ·mol⁻¹ výš než židlička'], ['zkřížená vanička', 'o 23,0 kJ·mol⁻¹ výš než židlička'], ['židlička', 'nejstabilnější, bez pnutí']] })}
         <p class="ac-les-trap"><b>Pozor:</b> oba substituenty ekvatoriálně jdou u 1,2-trans, <b>1,3-cis</b> a 1,4-trans. U 1,3 je to cis, ne trans.</p>`) },
     { id: 't05a', topic: 't05', n: 1, min: 5, t: 'Typy reakcí a mechanismy',
