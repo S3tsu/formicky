@@ -1181,6 +1181,10 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-ax{stroke:var(--line);fill:none} .lx-curve{fill:none;stroke:var(--pink);stroke-width:2.5}
 .lx-nw-v{stroke:var(--accent);stroke-dasharray:3 3} .lx-nw-dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
 .lx-nw-ctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.lx-nw-3d{display:flex;flex-direction:column;gap:6px}
+.lx-nw-3v{position:relative;height:240px;border-radius:12px;border:1px solid var(--line);background:var(--surface);touch-action:none;overflow:hidden}
+.lx-nw-3n{margin:0;font-size:.8rem;color:var(--muted)}
+.lx-nw-3d .row{display:flex;gap:8px;flex-wrap:wrap}
 .lx-nw-lbl{display:flex;flex-direction:column;gap:2px;flex:1;min-width:180px;font-size:.82rem;color:var(--muted)}
 .lx-nw-lbl input{width:100%;min-height:32px;accent-color:var(--accent)}
 /* stupeň nenasycenosti */
@@ -29331,6 +29335,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     s.onload = () => (window.$3Dmol ? ok() : bad()); s.onerror = () => { libP = null; bad(); };
     document.head.appendChild(s);
   }));
+  window.FH_3DLIB = loadLib;   // načtení knihovny sdílí i 3D butan v lekci
   const molBlock = data => {
     const [at, bd] = data.split('|'), A = at.split(';').map(x => x.split(' ')), B = bd ? bd.split(';').map(x => x.split(' ').map(Number)) : [];
     const pad = (v, n) => String(v).padStart(n), chg = [];
@@ -30002,7 +30007,8 @@ const FH_OL = (() => {
       <div class="lx-nw-in"><svg class="lx-nw-pic" viewBox="0 0 220 220" role="img" aria-label="Newmanova projekce butanu podél vazby C2–C3"><g class="lx-nw-back"></g><circle cx="110" cy="110" r="46" class="lx-nw-c"/><g class="lx-nw-front"></g></svg>
       <div class="lx-nw-side"><p class="lx-nw-name" aria-live="polite"></p><p class="lx-nw-ang"></p>
       <svg class="lx-nw-plot" viewBox="0 0 300 128" aria-hidden="true"><path d="M24 104H296M24 16V104" class="lx-ax"/>${NW.concat([[240], [300], [360]]).map(([t]) => `<text x="${nwX(t)}" y="120" text-anchor="${t === 360 ? 'end' : 'middle'}">${t}°</text>`).join('')}<text x="20" y="20" text-anchor="end">E</text><path d="${NWPATH}" class="lx-curve"/><line class="lx-nw-v" y1="16" y2="104"/><circle class="lx-nw-dot" r="5"/></svg></div></div>
-      <div class="lx-nw-ctl"><label class="lx-nw-lbl">Úhel CH₃–CH₃ <input type="range" min="0" max="360" step="5" value="180" data-lxw="nwr"></label><button type="button" class="btn" data-lxw="nwplay">Přehrát otočku</button></div></div>`;
+      <div class="lx-nw-ctl"><label class="lx-nw-lbl">Úhel CH₃–CH₃ <input type="range" min="0" max="360" step="5" value="180" data-lxw="nwr"></label><button type="button" class="btn" data-lxw="nwplay">Přehrát otočku</button><button type="button" class="btn" data-lxw="nw3d" aria-expanded="false">Ukázat ve 3D</button></div>
+      <div class="lx-nw-3d" hidden><div class="lx-nw-3v" role="img" aria-label="Prostorový model butanu, otáčí se spolu s Newmanovou projekcí"></div><p class="lx-nw-3n">Model otáčíš tažením, úhel mezi methyly posuvníkem nebo v Newmanově projekci. Barevné kuličky jsou uhlíky methylů.</p><div class="row"><button type="button" class="btn" data-lxw="nwv" data-v="nw">Pohled podél vazby C2–C3</button><button type="button" class="btn" data-lxw="nwv" data-v="side">Pohled ze strany</button></div></div></div>`;
   }
   function nwSet(w, t) {
     t = ((Math.round(t) % 360) + 360) % 360; const nm = nwName(t); if (nm) t = t > 180 ? 360 - nm[0] : nm[0];
@@ -30017,7 +30023,42 @@ const FH_OL = (() => {
     w.querySelector('.lx-nw-ang').textContent = `Úhel mezi methyly ${t > 180 ? 360 - t : t}°`;
     w.classList.toggle('lx-low', !!nm && nm[0] === 180);
     const r = w.querySelector('[data-lxw="nwr"]'); r.value = t; r.setAttribute('aria-valuetext', `${t}°${nm ? ', ' + nm[1] + ', ' + nm[2] : ''}`);
-    w.dataset.t = t;
+    w.dataset.t = t; nw3Paint(w);
+  }
+  /* butan ve 3D (3Dmol, načte se až po klepnutí): C2 vpředu v počátku, C3 za ním na ose z, kamera se na začátku dívá podél vazby jako Newman */
+  const nwXYZ = t => {
+    const S = Math.sin(70.5 * Math.PI / 180), Cc = Math.cos(70.5 * Math.PI / 180), at = [['C', 0, 0, 0], ['C', 0, 0, -1.54]];
+    const add = (el, p, d, r) => { const q = [p[0] + d[0] * r, p[1] + d[1] * r, p[2] + d[2] * r]; at.push([el, ...q]); return q; };
+    const dir = (a, z) => { const r = a * Math.PI / 180; return [S * Math.sin(r), S * Math.cos(r), z * Cc]; };
+    [[0, 0, 1], [1, t, -1]].forEach(([k, t0, z]) => [0, 120, 240].forEach((a, i) => {
+      const p = [0, 0, k ? -1.54 : 0], d = dir(a + t0, z);
+      if (i) return add('H', p, d, 1.09);
+      const m = add('C', p, d, 1.54), e1 = Math.abs(d[2]) < .9 ? [d[1], -d[0], 0] : [0, d[2], -d[1]], n1 = Math.hypot(...e1), u = e1.map(v => v / n1);
+      const e2 = [d[1] * u[2] - d[2] * u[1], d[2] * u[0] - d[0] * u[2], d[0] * u[1] - d[1] * u[0]];
+      [0, 120, 240].forEach(f => { const g = (f + a + t0) * Math.PI / 180; add('H', m, d.map((v, j) => Cc * v + S * (Math.cos(g) * u[j] + Math.sin(g) * e2[j])), 1.09); });
+    }));
+    return at.length + '\nbutan\n' + at.map(a => a[0] + ' ' + a.slice(1).map(v => v.toFixed(3)).join(' ')).join('\n');
+  };
+  const nw3Paint = w => {
+    const g = w._nw3; if (!g || g.f) return;
+    g.f = requestAnimationFrame(() => {
+      g.f = 0; const v = g.v, cs = getComputedStyle(w);
+      v.removeAllModels(); v.addModel(nwXYZ(+w.dataset.t || 0), 'xyz');
+      v.setStyle({}, { stick: { radius: 0.12, colorscheme: 'Jmol' }, sphere: { scale: 0.26, colorscheme: 'Jmol' } });
+      v.setStyle({ index: 2 }, { stick: { radius: 0.12, color: cs.getPropertyValue('--accent').trim() || '#0e7490' }, sphere: { scale: 0.34, color: cs.getPropertyValue('--accent').trim() || '#0e7490' } });
+      v.setStyle({ index: 8 }, { stick: { radius: 0.12, color: cs.getPropertyValue('--pink').trim() || '#d93a72' }, sphere: { scale: 0.34, color: cs.getPropertyValue('--pink').trim() || '#d93a72' } });
+      if (!g.view) { v.zoomTo(); v.center({ index: [0, 1] }); v.zoom(1.7); g.view = { nw: v.getView() }; v.rotate(70, 'y'); v.rotate(-20, 'x'); g.view.side = v.getView(); }
+      v.render();
+    });
+  };
+  async function nw3Open(w, b) {
+    const box = w.querySelector('.lx-nw-3d'), on = box.hidden;
+    box.hidden = !on; b.setAttribute('aria-expanded', on); b.textContent = on ? 'Skrýt 3D' : 'Ukázat ve 3D';
+    if (!on || w._nw3) return;
+    const el = box.querySelector('.lx-nw-3v'); el.innerHTML = '<p class="m3d-msg">Načítám 3D model…</p>';
+    try { await window.FH_3DLIB(); } catch (e) { el.innerHTML = '<p class="m3d-msg">3D model se nepodařilo načíst. Zkontroluj připojení k internetu.</p>'; return; }
+    const bg = (getComputedStyle(document.documentElement).getPropertyValue('--surface') || '#ffffff').trim();
+    el.innerHTML = ''; w._nw3 = { v: $3Dmol.createViewer(el, { backgroundColor: bg, antialias: true }) }; nw3Paint(w);
   }
   /* stupeň nenasycenosti krok za krokem, stejný postup jako ve výkladu */
   const DU = [['C', 'uhlík', 1, 40, 7], ['H', 'vodík', 0, 82, 8], ['X', 'halogen', 0, 10, 0], ['N', 'dusík', 0, 10, 0], ['O', 'kyslík', 0, 10, 1]];
@@ -30056,6 +30097,8 @@ const FH_OL = (() => {
       const step = now => { const k = Math.min(1, (now - s0) / 7000); w.dataset.t = (t0 + 360 * k) % 360; nwSet(w, (t0 + 360 * k) % 360); if (k < 1) nwAnim.f = requestAnimationFrame(step); else nwStop(); };
       nwAnim = { b, f: requestAnimationFrame(step) }; return;
     }
+    if (a === 'nw3d') return nw3Open(b.closest('.lx-nw'), b);
+    if (a === 'nwv') { const g = b.closest('.lx-nw')._nw3; if (g && g.view) { g.v.setView(g.view[b.dataset.v]); g.v.render(); } return; }
     if (a === 'dum' || a === 'dup') { const w = b.closest('.lx-du'), i = w.querySelector(`[data-lxw="dui"][data-k="${b.dataset.k}"]`); i.value = +i.value + (a === 'dup' ? 1 : -1); return duSet(w); }
     if (a === 'duex') { const w = b.closest('.lx-du'), ex = DUEX[+b.dataset.v][1]; w.querySelectorAll('[data-lxw="dui"]').forEach((i, k) => { i.value = ex[k]; }); return duSet(w); }
   });
