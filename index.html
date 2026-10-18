@@ -1088,7 +1088,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 @keyframes pzled{0%,66%{opacity:.25}67%,100%{opacity:1}}
 .pz .beam{fill:#7fe0d6;opacity:.22;transform-box:fill-box;animation:pzbeam 1.75s ease-in-out infinite}
 @keyframes pzbeam{0%,100%{opacity:.14}50%{opacity:.42}}
-.pz .tilt{transform-origin:150px 140px;animation:pztilt 3.5s ease-in-out infinite alternate}
+.pz .tilt{transform-origin:100px 154px;animation:pztilt 3.5s ease-in-out infinite alternate}
 @keyframes pztilt{from{transform:rotate(-5deg)}to{transform:rotate(4deg)}}
 .pz .tiltp{transform-origin:150px 92px;animation:pztilt 3.5s ease-in-out infinite alternate}
 @media (prefers-reduced-motion:reduce){.pz *{animation:none!important}}
@@ -28026,16 +28026,16 @@ const scanner = (x, y) => `
   <path class="wavep" d="M${x + 7} ${y + 15} q3 -7 6 0 t6 0 t6 0 t4 -2"/>
   <line class="sweep" x1="${x + 7}" y1="${y + 7}" x2="${x + 7}" y2="${y + 21}"/>
   <circle class="led l1" cx="${x + 9}" cy="${y + 31}" r="2.6"/><circle class="led l2" cx="${x + 18}" cy="${y + 31}" r="2.6"/><circle class="led l3" cx="${x + 27}" cy="${y + 31}" r="2.6"/>`;
-/* G: skenuje skenerem okolí, pomalu jím natáčí sem a tam, z víčka jde paprsek */
+/* G: drží skener oběma rukama před sebou displejem dopředu, pomalu jím natáčí sem a tam, z víčka jde paprsek */
 function G() {
   return svg('0 0 200 200', `
     ${legs()}${body()}
     ${head({ look: 4 })}
     <g class="tilt">
-      <path class="beam" d="M160 98 L200 34 L200 84 Z"/>
-      ${scanner(134, 120)}
-      ${limb('M66 120 Q84 158 134 150')}${claws(134, 150, -10, 3, 9)}
-      ${limb('M134 116 Q140 128 168 138')}${claws(170, 140, 60, 3, 9)}
+      <path class="beam" d="M123 112 L200 58 L200 112 Z"/>
+      ${limb('M64 118 Q50 172 84 180')}${limb('M136 118 Q150 172 116 180')}
+      ${scanner(82, 134)}
+      ${claws(86, 180, -80, 3, 9)}${claws(114, 180, -100, 3, 9)}
     </g>
   `, 'Lenochod Pazík skenuje okolí ručním skenerem s displejem a blikajícími diodami');
 }
