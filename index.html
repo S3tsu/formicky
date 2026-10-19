@@ -1437,7 +1437,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
         <li><b>Okruhy</b> (rozbalovací řádek) zúží procvičování jen na vybrané kapitoly tématu.</li>
       </ul></details>
 
-    <details class="g-item"><summary>Režimy: Lekce, Studium, Pojmenuj, Nakresli, Test, Přehled</summary>
+    <details class="g-item"><summary>Režimy: Lekce, Studium, Pojmenuj, Nakresli, Test, Přehled, Memes</summary>
       <ul>
         <li><b>Lekce:</b> krátký výklad k části přednášky, asi na 5 až 6 minut, s kvízem na konci. Lekce jsou ke všem přednáškám. Otázky z kvízu se ti pak vracejí ve Studiu.</li>
         <li><b>Studium:</b> vybíráš ze čtyř možností A–D. U názvosloví jde přepnout směr „Vzorec → název“ nebo „Název → vzorec“.</li>
@@ -1445,6 +1445,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
         <li><b>Nakresli:</b> vzorec kreslíš do plochy. „Nápověda“ poradí další krok, „Ukázat řešení“ ukáže vzor a pak se ohodnotíš sama (hodí se, když kreslíš na papír).</li>
         <li><b>Test:</b> nastavíš počet otázek, čas a typy otázek. Vyhodnotí se až po odevzdání, pak jde zopakovat jen chybné.</li>
         <li><b>Přehled:</b> všechny látky a reakce tématu na jednom místě, s vyhledáváním.</li>
+        <li><b>Memes:</b> u témat, kde mají lekce místo memů pomůcky na zapamatování, najdeš všechny memy k tématu v poslední záložce.</li>
         <li>Co odpovíš správně napoprvé, započítá se do „Zvládnuto“. Chybná karta se za chvíli vrátí. „Začít znovu“ vynuluje jen aktuální výběr.</li>
       </ul></details>
 
@@ -1607,6 +1608,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       <button type="button" data-mode="draw">Nakresli</button>
       <button type="button" data-mode="test">Test</button>
       <button type="button" data-mode="browse">Přehled</button>
+      <button type="button" data-omem="1" hidden>Memes</button>
     </div>
   </div>
 
@@ -26442,7 +26444,8 @@ function renderControls() {
   renderSrc();
   document.querySelectorAll('#setSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.set === S.set));
   const olOn = typeof FH_OL !== 'undefined' && FH_OL.on();
-  document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', olOn ? !!b.dataset.oles : b.dataset.mode === S.mode));
+  const omOn = olOn && FH_OL.memOn();
+  document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', olOn ? !!(omOn ? b.dataset.omem : b.dataset.oles) : b.dataset.mode === S.mode));
   $('#setNote').hidden = S.set !== 'extra';
   const inSet = inTopic.filter(g => S.set === 'all' || g.set === S.set);
   $('#famChips').innerHTML = `<button type="button" class="chip" data-fam="*" aria-pressed="${!S.fams}">Všechny</button>` +
@@ -31348,6 +31351,14 @@ const FH_OL = (() => {
     bedaPose(c, i == null ? Math.floor(Math.random() * BEDA_POSES.length) : i);   // pokaždé jiná póza (67, ruce, lupa, kafe, kapsle)
     return c.outerHTML;
   };
+  /* záložka Memes: u témat, kde lekce mají místo memů pomůcky (L.aid), jsou všechny memy tématu tady */
+  const memTopic = () => !S.mixOn && LES.some(L => L.topic === S.topic && L.aid) && (MEMES[S.topic] || []).length > 0;
+  const memTab = () => { const b = document.querySelector('#modeSeg [data-omem]'); if (b) b.hidden = !memTopic(); };
+  function memesHTML() {
+    const M = MEMES[S.topic] || [], T = TOPIC_BY[S.topic] || {};
+    return `<div class="card"><span class="eyebrow">Memes</span><h2 class="q-name ac-long">Memes k tématu ${esc(T.label || '')}</h2><p class="ac-sub">Pointu si nejdřív zkus domyslet, pak klepni. Tlačítkem „Další meme“ projdeš všech ${M.length}.</p></div>`
+      + FH_LES.mem({ items: M, art: M.map((_, i) => S.topic + ':' + i), kind: 'chat' });
+  }
   const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem || M.map((_, i) => i)).filter(i => M[i]).map(i => [M[i], L.topic + ':' + i]); };
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
@@ -31385,7 +31396,8 @@ const FH_OL = (() => {
   function render() {
     const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
     const L = BY[O.open], fk = fhFocusKey(b, ATT);
-    if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
+    if (O.step === 'memes') b.innerHTML = memesHTML();
+    else if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
     else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + (L.aid ? L.aid() : FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' })) });
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
@@ -31399,7 +31411,7 @@ const FH_OL = (() => {
   function show(on) {
     O.on = on; box().hidden = !on; $('#view').hidden = on;
     if (on) ['#progBox', '#srcBox', '#kindBox'].forEach(s => { const e = $(s); if (e) e.hidden = true; });
-    document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', on ? !!b.dataset.oles : b.dataset.mode === S.mode));
+    document.querySelectorAll('#modeSeg button').forEach(b => b.setAttribute('aria-pressed', on ? !!(O.step === 'memes' ? b.dataset.omem : b.dataset.oles) : b.dataset.mode === S.mode));
   }
   function start(id) {
     const L = BY[id]; if (!L) return;
@@ -31418,6 +31430,7 @@ const FH_OL = (() => {
   }
   $('#modeSeg').addEventListener('click', e => {
     if (e.target.closest('[data-oles]')) { O.step = 'list'; show(true); render(); return; }
+    if (e.target.closest('[data-omem]')) { O.step = 'memes'; show(true); render(); return; }
     if (O.on && e.target.closest('[data-mode]')) show(false);   // pak běží obvyklé přepnutí režimu
   }, true);
   box().addEventListener('click', e => {
@@ -31442,7 +31455,8 @@ const FH_OL = (() => {
   return {
     on: () => O.on,
     /* volá renderView: při změně tématu obnoví seznam, jinak jen drží lekci navrchu */
-    sync() { if (!O.on) return; show(true); const t = S.mixOn ? 'mix' : S.topic; if (t !== O.topic) { O.step = 'list'; render(); } },
+    sync() { memTab(); if (!O.on) return; const t = S.mixOn ? 'mix' : S.topic; if (t !== O.topic) { O.step = O.step === 'memes' && memTopic() ? 'memes' : 'list'; render(); } show(true); },
+    memOn: () => O.on && O.step === 'memes',
     prog: () => OP, merge: v => { FH_LES.merge(OP, v); store.set('fg-les', OP); },
     lessons: () => LES,
     /* otevře výklad lekce z rozcestníku nebo z panelu Dnes */
