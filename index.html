@@ -30980,8 +30980,9 @@ const FH_OL = (() => {
         + sec('2. Estery', `${tbl(['Reakce', 'Výsledek'], [['Fischerova esterifikace (H⁺)', 'rovnováha, štěpí se C–OH kyseliny a O–H alkoholu'], ['zmýdelnění (NaOH)', '<b>nevratné</b>, karboxylát s alkoholem nereaguje'], ['Baeyer–Villiger (MCPBA)', 'z ketonu ester, O jde k víc substituovanému uhlíku'], ['LiAlH₄', 'primární alkohol'], ['DIBAH, toluen', 'aldehyd'], ['2 RMgX', 'terciární alkohol']])}`)
         + sec('3. Organokovová činidla a amidy', `${tbl(['Acylchlorid +', 'Produkt'], [['R′MgX (nadbytek)', 'terciární alkohol, keton se izolovat nedá'], ['R′₂CuLi (Gilman)', 'keton']])}
         <p>Amid je nejstálejší derivát, hydrolyzuje se až za tepla v kyselině nebo zásadě. <b>LiAlH₄ redukuje amid na amin</b>, C=O se změní na CH₂.</p>
-        <p class="aside">Názvy: ethyl-ethanoát (ethyl-acetát), ethanoylchlorid, N-methylpropanamid. Laktam je cyklický amid, lakton cyklický ester.</p>`)
-        + sec('4. Pomůcky na zapamatování', `${FH_LES.ord({ q: 'deriváty podle reaktivity.', top: 'nejreaktivnější', bottom: 'nejstálejší', items: [['acylchlorid', 'odstupuje Cl⁻'], ['anhydrid', 'odstupuje RCOO⁻'], ['ester', 'odstupuje RO⁻'], ['amid', 'odstupuje NH₂⁻']] })}
+        <p class="aside">Názvy: ethyl-ethanoát (ethyl-acetát), ethanoylchlorid, N-methylpropanamid. Laktam je cyklický amid, lakton cyklický ester.</p>`),
+      /* pomůcky místo bloku Meme (Setsu 2026-10-19: použitelnější a přehlednější) */
+      aid: () => sec('Pomůcky na zapamatování', `${FH_LES.ord({ q: 'deriváty podle reaktivity.', top: 'nejreaktivnější', bottom: 'nejstálejší', items: [['acylchlorid', 'odstupuje Cl⁻'], ['anhydrid', 'odstupuje RCOO⁻'], ['ester', 'odstupuje RO⁻'], ['amid', 'odstupuje NH₂⁻']] })}
         ${FH_LES.w.fds()}
         ${FH_LES.w.fdh()}
         ${FH_LES.ord({ q: 'kroky Fischerovy esterifikace.', top: 'první krok', bottom: 'poslední krok', items: [['protonace kyslíku C=O', 'P'], ['adice alkoholu na karbonylový uhlík', 'A'], ['deprotonace kyslíku z alkoholu', 'D'], ['protonace OH na ⁺OH₂', 'P'], ['eliminace vody, obnoví se C=O', 'E'], ['deprotonace, vznikne ester', 'D']] })}
@@ -31251,7 +31252,7 @@ const FH_OL = (() => {
     const b = box(); O.topic = S.mixOn ? 'mix' : S.topic;
     const L = BY[O.open], fk = fhFocusKey(b, ATT);
     if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
-    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' }) });
+    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + (L.aid ? L.aid() : FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' })) });
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
       b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
