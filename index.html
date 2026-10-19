@@ -1344,6 +1344,15 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-3d .row{display:flex;gap:8px;flex-wrap:wrap}
 .lx-rs-b .btn{flex:1;font:700 1.3rem var(--f-display)}
 /* NMR */
+/* rozbalovací „Jak se to učit“ v lekci */
+.lx-jak summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px}
+.lx-jak summary::-webkit-details-marker{display:none}
+.lx-jak summary .fam-h{margin:0}
+.lx-jak summary::after{content:'';width:10px;height:10px;flex:none;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
+.lx-jak[open] summary::after{transform:rotate(-135deg)}
+.lx-jak-b{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.lx-jak-b .eyebrow{margin:8px 0 0}
+@media (prefers-reduced-motion:reduce){.lx-jak summary::after{transition:none}}
 /* zkratka, dvojice, kartičky */
 .lx-acr-g{display:flex;flex-wrap:wrap;gap:8px}
 .lx-acr-t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:64px;min-height:72px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;flex:1 1 64px}
@@ -27131,7 +27140,6 @@ function renderBrowse() {
       <input type="search" id="search" placeholder="Hledat podle názvu" aria-label="Hledat podle názvu">
       <label class="switch"><input type="checkbox" id="hideNames"${S.hide ? ' checked' : ''}> Skrýt názvy</label>
       <label class="switch"><input type="checkbox" id="showTips"${S.tips ? ' checked' : ''}> Jak si je zapamatovat</label>
-      <label class="switch"><input type="checkbox" id="showMemes"${S.memes ? ' checked' : ''}> Memes</label>
       <button type="button" class="btn sm" id="sheetBtn">Tahák k tisku</button>
     </div><div id="gridBox"></div>`;
   fillGrid();
@@ -27144,7 +27152,6 @@ function fillGrid() {
   const hit = g => !q || (g.acc ? g.acc.some(a => a.includes(q)) : norm(g.name).includes(q));
   const rxs = REACTIONS.filter(r => r.topic === S.topic && (S.set === 'all' || r.set === S.set) && (!S.fams || S.fams.includes(r.fam)) && (!q || norm(r.title).includes(q)));
   let html = '';
-  if (S.memes && !q && MEMES[S.topic].length) html += `<section class="memes"><h2 class="fam-h">Memes na zapamatování</h2><div class="memegrid">${MEMES[S.topic].map(memeHTML).join('')}</div></section>`;
   if (S.tips && !q) {
     html += `<section class="rules how"><h2 class="fam-h">Jak se to učit</h2><ul>${METHOD_BY[S.topic].map(m => `<li>${esc(m)}</li>`).join('')}</ul>
       ${GLOSS_BY[S.topic].length ? `<h3 class="eyebrow">Pojmy a zkratky</h3><dl class="gloss">${GLOSS_BY[S.topic].map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('')}</dl>` : ''}</section>`;
@@ -32370,6 +32377,17 @@ const FH_OL = (() => {
   const memTopic = () => !S.mixOn && LES.some(L => L.topic === S.topic && L.aid) && (MEMES[S.topic] || []).length > 0;
   const memTab = () => { const b = document.querySelector('#modeSeg [data-omem]'); if (b) b.hidden = !memTopic(); };
   const memesHTML = () => { const M = MEMES[S.topic] || []; return FH_LES.mem({ items: M, art: M.map((_, i) => S.topic + ':' + i), kind: 'chat' }); };
+  /* „Jak se to učit“ a pravidla okruhů z Přehledu (Jak si je zapamatovat) jako rozbalovací karta v lekci; co už lekce říká stejnými slovy, se vynechá */
+  function jakHTML(L, have) {
+    const txt = String(have).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), nov = t => !txt.includes(String(t).replace(/\s+/g, ' ').trim());
+    const ul = a => `<ul class="ac-ul">${a.map(t => `<li>${esc(t)}</li>`).join('')}</ul>`;
+    const fams = []; L.q.forEach(k => { const g = BYID[k]; if (g && g.fam && RULES[g.fam] && !fams.some(f => f[0] === g.fam)) fams.push([g.fam, famName(g)]); });
+    const met = (METHOD_BY[L.topic] || []).filter(nov), gl = GLOSS_BY[L.topic] || [];
+    let h = met.length ? `<p class="eyebrow">Jak se to učit</p>${ul(met)}` : '';
+    fams.forEach(([k, n]) => { const r = RULES[k].filter(nov); if (r.length) h += `<p class="eyebrow">${esc(n)}</p>${ul(r)}`; });
+    if (gl.length) h += `<p class="eyebrow">Pojmy a zkratky</p><dl class="gloss">${gl.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join('')}</dl>`;
+    return h ? `<details class="card lx-jak"><summary><h3 class="fam-h">Jak se to učit a co si zapamatovat</h3></summary><div class="lx-jak-b">${h}</div></details>` : '';
+  }
   const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem || M.map((_, i) => i)).filter(i => M[i]).map(i => [M[i], L.topic + ':' + i]); };
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
@@ -32409,7 +32427,8 @@ const FH_OL = (() => {
     const L = BY[O.open], fk = fhFocusKey(b, ATT);
     if (O.step === 'memes') b.innerHTML = memesHTML();
     else if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
-    else if (O.step === 'read' && L) b.innerHTML = FH_LES.read({ att: ATT, L, body: L.body(), beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + (L.aid ? L.aid() : FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' })) });
+    else if (O.step === 'read' && L) { const body = L.body(), aid = L.aid ? L.aid() : '';
+      b.innerHTML = FH_LES.read({ att: ATT, L, body, beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + (aid || FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' })) + jakHTML(L, body + aid) }); }
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
       b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
