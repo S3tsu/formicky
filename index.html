@@ -1301,6 +1301,26 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-3d .row{display:flex;gap:8px;flex-wrap:wrap}
 .lx-rs-b .btn{flex:1;font:700 1.3rem var(--f-display)}
 /* NMR */
+/* zkratka, dvojice, kartičky */
+.lx-acr-g{display:flex;flex-wrap:wrap;gap:8px}
+.lx-acr-t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:64px;min-height:72px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;flex:1 1 64px}
+.lx-acr-t b{font:800 1.6rem/1 var(--f-display);color:var(--accent)}
+.lx-acr-t span{display:none;font-size:.85rem;line-height:1.25;text-align:center}
+.lx-acr-t.open{background:var(--accent-soft);border-color:var(--accent)} .lx-acr-t.open b{font-size:1.15rem} .lx-acr-t.open span{display:block}
+.lx-pr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lx-pr-c{display:flex;flex-direction:column;gap:6px}
+.lx-pr-i{min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-align:left;font-size:.9rem;line-height:1.25}
+.lx-pr-i.sel{border-color:var(--accent);background:var(--accent-soft)}
+.lx-pr-i.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface));color:var(--ink)}
+.lx-pr-i.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--surface));animation:lx-shake .3s}
+@keyframes lx-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.lx-card{display:flex;flex-direction:column;gap:10px;align-items:flex-start;width:100%;min-height:120px;padding:16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-align:left}
+.lx-card-a{font:700 1.05rem/1.3 var(--f-display)}
+.lx-card-h{font-size:.85rem;color:var(--muted)}
+.lx-card-b{padding-top:10px;border-top:1px dashed var(--line);width:100%;line-height:1.4}
+.lx-card.f{background:color-mix(in srgb,var(--pink) 8%,var(--surface))}
+.lx-cards .row{align-items:center;gap:12px}
+@media (prefers-reduced-motion:reduce){.lx-pr-i.bad{animation:none}}
 /* schody reaktivity derivátů */
 .lx-fd-pic{width:100%;max-width:360px;align-self:center}
 .lx-fd-st rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
@@ -30323,6 +30343,46 @@ const FH_LES = (() => {
     const f = o.querySelector(a === 'qzp' ? '[data-lwa="qzn"]' : '[data-lwa="qzp"]'); if (f) f.focus({ preventScroll: true });
     if (a === 'qzp' && typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim());
   }
+  /* Zkratka: o = { head, items: [[písmeno, význam], …], note? }; dlaždice s písmeny se klepnutím otočí na význam */
+  W.acr = o => box('acr', o.head, `<div class="lx-acr-g">${o.items.map(([l, t], i) => `<button type="button" class="lx-acr-t" data-lwa="acr" data-v="${i}" aria-expanded="false"><b>${l}</b><span>${t}</span></button>`).join('')}</div>
+      <div class="row"><button type="button" class="btn" data-lwa="acrall">Otočit všechny</button></div>${o.note ? `<p class="lx-end">${o.note}</p>` : ''}<div class="lx-out" hidden></div>`);
+  /* Spoj dvojice: o = { head, pairs: [[vlevo, vpravo], …] }; vpravo zamíchané, klepni nalevo a pak napravo */
+  const PR = {}; let prN = 0;
+  W.pair = o => { const id = 'lxp' + (++prN); PR[id] = Object.assign({ r: mix(o.pairs.length), sel: null, done: [], bad: null, n: 0 }, o);
+    return `<div class="lx-w lx-pair" data-lw="pair" id="${id}"><p class="lx-q">${o.head}</p><div class="lx-out" aria-live="polite">${prOut(id)}</div></div>`; };
+  function prOut(id) {
+    const P = PR[id], all = P.done.length === P.pairs.length;
+    const L = P.pairs.map(([l], i) => `<button type="button" class="lx-pr-i${P.done.includes(i) ? ' ok' : P.sel === i ? ' sel' : ''}" data-lwa="prl" data-v="${i}"${P.done.includes(i) ? ' disabled' : ''} aria-pressed="${P.sel === i}">${l}</button>`).join('');
+    const R = P.r.map(i => `<button type="button" class="lx-pr-i${P.done.includes(i) ? ' ok' : P.bad === i ? ' bad' : ''}" data-lwa="prr" data-v="${i}"${P.done.includes(i) ? ' disabled' : ''}>${P.pairs[i][1]}</button>`).join('');
+    return `<div class="lx-pr"><div class="lx-pr-c">${L}</div><div class="lx-pr-c">${R}</div></div>
+      ${all ? `<div class="fb ok"><p><b>Všechny dvojice spojené${P.n > P.pairs.length ? `, ${P.n - P.pairs.length}× vedle` : ' napoprvé'}.</b></p></div><div class="row"><button type="button" class="btn" data-lwa="pragain">Zkusit znovu</button></div>`
+        : `<p class="lx-end">${P.sel === null ? 'Klepni na položku vlevo, pak na její dvojici vpravo.' : 'Teď vyber dvojici vpravo.'}</p>`}`;
+  }
+  function prAct(w, a, v) {
+    const P = PR[w.id], o = w.querySelector('.lx-out'); if (!P) return;
+    P.bad = null;
+    if (a === 'prl') P.sel = +v;
+    else if (a === 'prr') { if (P.sel === null) return; P.n++; if (+v === P.sel) { P.done.push(P.sel); P.sel = null; } else P.bad = +v; }
+    else { P.r = mix(P.pairs.length); P.sel = null; P.done = []; P.n = 0; }
+    o.innerHTML = prOut(w.id);
+    if (a === 'prr' && typeof fhSay === 'function') fhSay(P.bad === null ? 'Správně.' : 'Tohle k sobě nepatří.');
+    const f = o.querySelector(a === 'prl' ? '[data-lwa="prr"]:not([disabled])' : '[data-lwa="prl"]:not([disabled])') || o.querySelector('[data-lwa="pragain"]'); if (f) f.focus({ preventScroll: true });
+  }
+  /* Kartičky: o = { head, items: [[líc, rub], …] }; líc je otázka, rub pomůcka; klepnutím se otočí */
+  const CD = {}; let cdN = 0;
+  W.cards = o => { const id = 'lxc' + (++cdN); CD[id] = Object.assign({ s: mix(o.items.length), k: 0, f: false }, o);
+    return `<div class="lx-w lx-cards" data-lw="cards" id="${id}"><p class="lx-q">${o.head}</p><div class="lx-out" aria-live="polite">${cdOut(id)}</div></div>`; };
+  function cdOut(id) {
+    const C = CD[id], [a, b] = C.items[C.s[C.k]];
+    return `<button type="button" class="lx-card${C.f ? ' f' : ''}" data-lwa="cdf" aria-expanded="${C.f}"><span class="lx-card-a">${a}</span>${C.f ? `<span class="lx-card-b">${b}</span>` : '<span class="lx-card-h">Vybav si to, pak klepni</span>'}</button>
+      <div class="row"><button type="button" class="btn" data-lwa="cdn">Další kartička</button><span class="lx-cnt">${C.k + 1} z ${C.items.length}</span></div>`;
+  }
+  function cdAct(w, a) {
+    const C = CD[w.id], o = w.querySelector('.lx-out'); if (!C) return;
+    if (a === 'cdf') C.f = !C.f; else { C.k++; if (C.k >= C.items.length) { C.s = mix(C.items.length); C.k = 0; } C.f = false; }
+    o.innerHTML = cdOut(w.id); const f = o.querySelector(a === 'cdf' ? '[data-lwa="cdn"]' : '[data-lwa="cdf"]'); if (f) f.focus({ preventScroll: true });
+    if (a === 'cdf' && C.f && typeof fhSay === 'function') fhSay(o.querySelector('.lx-card-b').textContent);
+  }
   /* Nenasyta, nebo brzda: LiAlH₄ a Grignard jdou dvakrát až na alkohol, DIBAH a Gilman se zastaví po prvním kroku, amid s LiAlH₄ dá amin */
   W.fdh = () => W.quiz({ head: '<b>Nenasyta, nebo brzda?</b> LiAlH₄ a Grignard se na derivát vrhnou dvakrát a skončí u alkoholu. Brzdu mají jen DIBAH (ester → aldehyd) a Gilman (acylchlorid → keton). Co vznikne?',
     opts: ['primární alkohol', 'terciární alkohol', 'aldehyd', 'keton', 'amin'], items: [
@@ -30363,6 +30423,10 @@ const FH_LES = (() => {
     if (a === 'rotl') { o.dataset.l = v; press(); return wUpd(w); }
     if (a === 'fdsa' || a === 'fdsb') { o.dataset[a.slice(3)] = v; press(); o.innerHTML = fdsOut(+o.dataset.a, +o.dataset.b); if (typeof fhSay === 'function') fhSay(o.querySelector('p').textContent.trim()); return; }
     if (a === 'qzp' || a === 'qzn') return qzAct(w, a, v);
+    if (a === 'prl' || a === 'prr' || a === 'pragain') return prAct(w, a, v);
+    if (a === 'cdf' || a === 'cdn') return cdAct(w, a);
+    if (a === 'acr') { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); if (b.classList.contains('open') && typeof fhSay === 'function') fhSay(b.textContent); return; }
+    if (a === 'acrall') { const t = w.querySelectorAll('.lx-acr-t'), on = [...t].some(x => !x.classList.contains('open')); t.forEach(x => { x.classList.toggle('open', on); x.setAttribute('aria-expanded', on); }); b.textContent = on ? 'Otočit zpátky' : 'Otočit všechny'; return; }
   });
   /* záznam o dokončení: nejlepší výsledek a počet průchodů */
   const rec = (prev, n, ok, d) => ({ d, n, ok, best: Math.max((prev && prev.best) || 0, ok), k: ((prev && prev.k) || 0) + 1 });
