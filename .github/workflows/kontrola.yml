@@ -1,0 +1,27 @@
+# Automatická kontrola webu po každém pushi: stránka se otevře v Chromiu a kontrola selže,
+# když je v konzoli chyba, nenačte se téma, nesedí číslo verze nebo se rozbije úvod.
+# Nasazení se tím nemění: GitHub Pages dál staví z main. Výsledek je křížek nebo fajfka u commitu.
+name: Kontrola webu
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  kontrola:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Instalace Playwright a Chromia
+        working-directory: .github/kontrola
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.0
+          npx playwright install --with-deps chromium
+      - name: Kontrola
+        run: |
+          python3 -m http.server 8765 >/dev/null 2>&1 &
+          sleep 1
+          node .github/kontrola/smoke.mjs

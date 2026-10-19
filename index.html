@@ -1,4 +1,4 @@
-<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://s3tsu.goatcounter.com; connect-src 'self' https://s3tsu.goatcounter.com https://docs.google.com; worker-src 'self' blob:; manifest-src 'self'; form-action 'self' https://docs.google.com; base-uri 'self'; object-src 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png?v=2"><meta property="og:image:alt" content="Baňka s růžovým roztokem vedle nápisu FormičkyHub"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://s3tsu.github.io/formicky/og.png?v=2"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://s3tsu.goatcounter.com; connect-src 'self' https://s3tsu.goatcounter.com https://docs.google.com; worker-src 'self' blob:; manifest-src 'self'; form-action 'self' https://docs.google.com; base-uri 'self'; object-src 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png?v=2"><meta property="og:image:alt" content="Baňka s růžovým roztokem vedle nápisu FormičkyHub"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://s3tsu.github.io/formicky/og.png?v=2"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>FormičkyHub</title>
 <script>addEventListener("load",function(){var b=document.getElementById("boot");b&&b.remove()});
 /* Nouzová obrazovka: když skript spadne a nezobrazí se úvod ani žádný předmět, uživatelka neuvidí prázdnou stránku,
@@ -18,9 +18,22 @@ addEventListener("load",function(){setTimeout(function(){
   document.body.prepend(d);
 },1500)});
 try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="preload" href="fonts/plex-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+/* Písma jsou přímo na webu (fonts/, licence OFL), ne z Googlu: nikdo třetí nevidí návštěvu a fungují i offline. */
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/bricolage-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/bricolage-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/bricolage-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/bricolage-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plex-greek.woff2) format('woff2');unicode-range:U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plex-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plex-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plex-greek.woff2) format('woff2');unicode-range:U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plex-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plex-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plex-greek.woff2) format('woff2');unicode-range:U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plex-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plex-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 /* Rozvržení: jeden úzký pracovní sloupec. Nahoře přepínače sady a režimu, pod nimi jedna karta s otázkou;
    kreslicí plocha je tečkovaný papír z laboratorního sešitu, vzorce se sází jako v přehledu (tučný Arial, barvy prvků). */
 :root{
@@ -72,7 +85,7 @@ button{cursor:pointer}
 .seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;max-width:100%}
 .seg button{flex:1 1 auto;border:0;background:none;color:var(--muted);font-weight:500;font-size:.94rem;padding:8px 14px;border-radius:999px;white-space:nowrap}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-.seg button .n{opacity:.65;font-variant-numeric:tabular-nums;margin-left:4px;font-size:.85em}
+.seg button .n{font-weight:500;font-variant-numeric:tabular-nums;margin-left:4px;font-size:.85em}
 .seg.small button{padding:5px 12px;font-size:.86rem}
 .setnote{margin:0;color:var(--muted);font-size:.9rem;max-width:66ch}
 
@@ -194,6 +207,8 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .switch input{width:18px;height:18px;accent-color:var(--accent)}
 .fam-h{font:600 1.05rem/1.2 var(--f-display);margin:14px 0 8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+/* Přehled má stovky vzorců: prohlížeč kreslí jen ty, které jsou zrovna vidět (rychlejší přepnutí na telefonu) */
+#gridBox .cellw,#gridBox .rx{content-visibility:auto;contain-intrinsic-size:auto 150px}
 .cell{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 8px 9px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;min-width:0;min-height:128px;text-align:center}
 .cell .pic{flex:1 1 auto;display:grid;place-items:center;max-width:100%;overflow:hidden}
 .cell .nm{font-size:.86rem;font-weight:500;line-height:1.25;overflow-wrap:anywhere}
@@ -426,6 +441,9 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .les-row-t{display:flex;flex-direction:column;gap:2px;min-width:0}
 .les-row-t b{font:700 1.05rem/1.25 var(--f-display)}
 .les-row-t span{color:var(--muted);font-size:.86rem;line-height:1.35}
+/* ve výběru Vše štítek předmětu nad názvem, ať číslování 1, 1.a, 2… nepůsobí jako chyba */
+.les-tag{align-self:flex-start;font-style:normal;font-size:.74rem;font-weight:600;line-height:1;padding:3px 7px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.les-tag-o{background:rgba(210,58,112,.16)}
 .les-row-s{font-size:.82rem;white-space:nowrap}
 .les-row-go{color:var(--accent)}
 .fh-rescue{max-width:560px;margin:12vh auto 0;margin-inline:max(16px,calc(50% - 280px))}.fh-rescue h1{margin:0;font-size:1.4rem}.fh-rescue p{margin:0}.fh-rescue-row{display:flex;flex-wrap:wrap;gap:8px}
@@ -654,7 +672,7 @@ body.sheet-file .sheet{position:static}
 .hn-piece:hover .cl,.hn-piece:focus-visible .cl{animation-duration:1.4s}
 .hn-piece:hover .cr,.hn-piece:focus-visible .cr{animation-duration:1.4s}
 .hn-piece:hover,.hn-piece:focus-visible{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-@media (prefers-reduced-motion:reduce){.hn-piece .cl,.hn-piece .cr,.hn-ico .cr{animation:none}}
+@media (prefers-reduced-motion:reduce){.hn-piece .cl,.hn-piece .cr,.hn-ico .cl,.hn-ico .cr{animation:none}}
 
 /* lékárna */
 .lk-game{border-color:var(--pink);background:linear-gradient(135deg,var(--surface) 60%,var(--foam))}
@@ -1396,6 +1414,8 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .seg.mode{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0;gap:0;box-shadow:none;overflow-x:auto;scrollbar-width:none}
 .seg.mode::-webkit-scrollbar{display:none}
 .seg.mode.more{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 40px),transparent)}
+.seg.mode.less{-webkit-mask-image:linear-gradient(90deg,transparent,#000 40px);mask-image:linear-gradient(90deg,transparent,#000 40px)}
+.seg.mode.less.more{-webkit-mask-image:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(90deg,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
 .seg.mode button{border-radius:0;padding:10px 12px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px;min-height:44px}
 .seg.mode button[aria-pressed="true"]{background:none;color:var(--ink);border-bottom-color:var(--accent)}
 .seg.mode button:hover{color:var(--ink)}
@@ -1411,8 +1431,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 </style>
 </head><body>
 <div class="boot" id="boot" role="status"><b>Formičky<span>hub</span></b><i aria-hidden="true"></i><span>Načítám látky a otázky…</span></div>
+<noscript><style>#boot{display:none}</style><p style="max-width:560px;margin:15vh auto;padding:0 16px;font:1.1rem/1.5 system-ui,sans-serif">Formičky potřebují zapnutý JavaScript. Zapni ho v nastavení prohlížeče a načti stránku znovu.</p></noscript>
 
-<section class="hub" id="hub" hidden>
+<main class="hub" id="hub" hidden>
   <header class="hub-head">
     <h1 class="sr">FormičkyHub</h1>
     <button type="button" class="thm thm-hub" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button>
@@ -1542,7 +1563,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 
     <details class="g-item"><summary>Denní cíl a série</summary>
       <ul>
-        <li>Nahoře ve Cvičení je ukazatel <b>Dnes 12/20</b>: kolik odpovědí máš dnes za sebou z denního cíle. Počítá se každá odpověď ve všech režimech i v testu.</li>
+        <li>Nahoře v Organické chemii je ukazatel <b>Dnes 12/20</b>: kolik odpovědí máš dnes za sebou z denního cíle. Počítá se každá odpověď ve všech režimech i v testu.</li>
         <li><b>Série</b> jsou dny v řadě se splněným cílem. Když cíl splníš, Béďa se zaraduje.</li>
         <li>Na úvodní stránce v „Tvoje učení“ je kalendář posledních 12 týdnů a nastavení cíle (10, 20, 30, 50 odpovědí, nebo vypnuto).</li>
       </ul></details>
@@ -1563,7 +1584,14 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       <ul>
         <li>Na webu <b>s3tsu.github.io/formicky</b> jdou Formičky přidat na plochu jako aplikace (na úvodní stránce v „Nastavení a pomoc“ → „Aplikace a připomínky“). Pak fungují i bez internetu a nové verze se stáhnou samy.</li>
         <li><b>⚑ Nahlásit chybu</b> je po odpovědi u každé otázky. Stačí vybrat, co je špatně, otázka i možnosti se pošlou samy. Bez internetu se hlášení odešle později.</li>
-        <li>Web počítá jen anonymní návštěvy (bez cookies a bez jmen), aby bylo vidět, co se používá.</li>
+      </ul></details>
+
+    <details class="g-item"><summary>Soukromí: co se odkud posílá</summary>
+      <ul>
+        <li><b>Pokrok a nastavení</b> zůstávají jen v tvém prohlížeči a nikam se neposílají. Ven je dostaneš jen kódem zálohy, který si posíláš sama.</li>
+        <li><b>Statistiky</b> počítá GoatCounter: anonymní návštěvy bez cookies a bez jmen. Zjistí, kterou část webu jsi otevřela, odkud přišel odkaz, velikost obrazovky a pár událostí (třeba instalaci aplikace nebo odeslané hlášení). IP adresu neukládá.</li>
+        <li><b>Hlášení chyby</b> jde přes formulář Google. Pošle se otázka a to, co je na obrazovce (včetně tvé odpovědi), typ chyby, tvůj popis, podpis, pokud ho vyplníš, verze webu a velikost okna. Google při odeslání vidí tvou IP adresu, jako každý web, na který se připojíš.</li>
+        <li><b>Písma a 3D modely</b> se načítají přímo z Formiček, ne z cizích serverů.</li>
       </ul></details>
 
     <details class="g-item"><summary>Kde se ukládá pokrok a jak ho zálohovat</summary>
@@ -1575,7 +1603,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       </ul></details>
     <div class="row g-end"><a class="btn primary" href="#organicka">Organická chemie</a><a class="btn primary" href="#analyticka">Analytická chemie</a><a class="btn" href="#">Zpět na úvod</a></div>
   </section>
-</section>
+</main>
 
 <div class="app" id="appAC" hidden>
   <div class="backrow"><a class="back" id="acBack" href="#">← FormičkyHub</a><div class="daybox" id="acDayBox" hidden></div><span class="br-r"><a class="back help" href="#navod">Jak to funguje?</a><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
@@ -1608,9 +1636,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 <div class="app" id="appOC" hidden>
   <div class="backrow"><a class="back" href="#">← FormičkyHub</a><div class="daybox" id="dayBox" hidden></div><span class="br-r"><a class="back help" href="#navod">Jak to funguje?</a><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
   <header class="top">
-    <h1>Cvičení</h1>
+    <h1>Organická chemie</h1>
     <button type="button" class="logo" id="logo" title="Další logo" aria-label="Formičky, další logo"></button>
-    <p>Organická chemie podle přednášek. Vyber si téma, pak vybírej z možností, piš názvy, kresli vzorce nebo si dej test nanečisto.</p>
+    <p>Podle přednášek. Vyber si téma, pak vybírej z možností, piš názvy, kresli vzorce nebo si dej test nanečisto.</p>
   </header>
 
   <button type="button" class="ctlsum" id="ctlSum" aria-expanded="true" aria-controls="ctl"><span class="cs-t" id="ctlSumT"></span><span class="cs-e" id="ctlSumE">Změnit</span></button>
@@ -14987,7 +15015,7 @@ function registerTopic(T) {
     rules: {
       ty: ['Karbonylové sloučeniny mají C=O (acylovou skupinu). Aldehyd R–CHO, keton R–CO–R′.',
         'U aldehydů a ketonů nemůže –H ani –R odstoupit, proto dělají nukleofilní adici. Kyseliny a deriváty (–OH, –OR′, –Cl, –NH₂, –OCOR′) mají odstupující skupinu a dělají substituci.',
-        'Aldehydy: sufix -al, uhlík CHO je vždy C1 (2-ethyl-4-methylpentanal). CHO na kruhu: -karbaldehyd (cyklohexankarbaldehyd, naftalen-2-karbaldehyd).',
+        'Aldehydy: sufix -al, uhlík CHO je vždy C1 (2-ethyl-4-methylpentanal). CHO na kruhu: ‑karbaldehyd (cyklohexankarbaldehyd, naftalen-2-karbaldehyd).',
         'Ketony: sufix -on, C=O dostane nejnižší lokant (hexan-3-on, hex-4-en-2-on, hexan-2,4-dion).',
         'Triviální názvy: formaldehyd, acetaldehyd, propionaldehyd, butyraldehyd, valeraldehyd, akrolein, aceton, acetofenon, benzofenon.',
         'Acylové skupiny: formyl HCO–, acetyl CH₃CO–, benzoyl C₆H₅CO–. Když má přednost ester, keton je předpona oxo- (methyl-3-oxohexanoát).'],
@@ -15094,8 +15122,8 @@ function registerTopic(T) {
       ['base', 'ty', 'pentanal', M.pentanal, { par: 'valeraldehyd', tip: 'Pět uhlíků, triviálně podle kyseliny valerové.' }],
       ['base', 'ty', 'akrolein', M.akrolein, { par: 'prop-2-enal', alts: ['propenal', 'akrylaldehyd'], tip: 'Nejjednodušší α,β-nenasycený aldehyd. Dvojná vazba od C2, protože CHO je C1.' }],
       ['base', 'ty', '2-ethyl-4-methylpentanal', M.etMePentanal, { tip: 'Hlavní řetězec musí obsahovat CHO (C1). Ethyl je na C2, methyl na C4.' }],
-      ['base', 'ty', 'cyklohexankarbaldehyd', M.chCHO, { alts: ['formylcyklohexan'], tip: 'Když je CHO na kruhu, uhlík CHO se nečísluje do kruhu: sufix -karbaldehyd.' }],
-      ['base', 'ty', 'naftalen-2-karbaldehyd', M.naftCHO, { alts: ['2-naftaldehyd', '2-formylnaftalen'], tip: 'CHO v poloze 2 (β) naftalenu, sufix -karbaldehyd.' }],
+      ['base', 'ty', 'cyklohexankarbaldehyd', M.chCHO, { alts: ['formylcyklohexan'], tip: 'Když je CHO na kruhu, uhlík CHO se nečísluje do kruhu: sufix ‑karbaldehyd.' }],
+      ['base', 'ty', 'naftalen-2-karbaldehyd', M.naftCHO, { alts: ['2-naftaldehyd', '2-formylnaftalen'], tip: 'CHO v poloze 2 (β) naftalenu, sufix ‑karbaldehyd.' }],
       ['base', 'ty', 'hexan-3-on', M.hexan3on, { alts: ['ethyl(propyl)keton', 'ethylpropylketon'], tip: 'Sufix -on, C=O dostane co nejnižší číslo: 3, ne 4.' }],
       ['base', 'ty', 'hex-4-en-2-on', M.hexenon, { tip: 'Číslování určuje C=O (C2), dvojná vazba pak vyjde od C4.' }],
       ['base', 'ty', 'hexan-2,4-dion', M.hexandion, { tip: 'Dvě C=O: přípona -dion a dva lokanty.' }],
@@ -15838,7 +15866,7 @@ function registerTopic(T) {
     q: [
       // ----- ty
       ['base', 'ty', 'Adice, ne substituce', 'Proč aldehydy a ketony nedělají nukleofilní acylovou substituci jako estery nebo acylchloridy?', ['–H a –R nemohou být odstupující skupinou', 'nemají polarizovanou vazbu C=O', 'karbonylový uhlík u nich není elektrofilní', 'jejich C=O je konjugovaná se skupinou OH'], 'Na slajdu: substituenty –R′ a –H nemohou odstoupit, –OH, –OR′, –Cl, –NH₂ a –OCOR′ ano. Aldehydy a ketony proto dělají adici.', 'q1'],
-      ['base', 'ty', 'CHO na kruhu', 'Jak se jmenuje aldehyd, v němž je skupina CHO navázaná na cyklohexan?', ['cyklohexankarbaldehyd', 'cyklohexanal', 'cyklohexanon', 'cyklohexankarbonitril'], 'Uhlík CHO není součástí kruhu, proto sufix -karbaldehyd. Cyklohexanon je keton, karbonitril má místo CHO skupinu C≡N.', 'q2'],
+      ['base', 'ty', 'CHO na kruhu', 'Jak se jmenuje aldehyd, v němž je skupina CHO navázaná na cyklohexan?', ['cyklohexankarbaldehyd', 'cyklohexanal', 'cyklohexanon', 'cyklohexankarbonitril'], 'Uhlík CHO není součástí kruhu, proto sufix ‑karbaldehyd. Cyklohexanon je keton, karbonitril má místo CHO skupinu C≡N.', 'q2'],
       ['base', 'ty', 'Číslování ketonu', 'Proč se CH₃COCH₂CH=CHCH₃ jmenuje hex-4-en-2-on, a ne hex-2-en-5-on?', ['hlavní skupina C=O musí dostat nejnižší lokant', 'dvojná vazba má přednost a dostane nejnižší lokant', 'řetězec se čísluje vždy zleva, jak je vzorec psaný', 'lokanty se volí podle abecedního pořadí přípon'], 'Sufix -on je hlavní skupina, proto C=O dostane číslo 2. Dvojná vazba pak vyjde od C4.', 'q3'],
       ['base', 'ty', 'Acylové skupiny', 'Jak se jmenuje skupina C₆H₅CO–?', ['benzoyl', 'benzyl', 'fenyl', 'formyl'], 'Benzoyl je acyl kyseliny benzoové. Benzyl je C₆H₅CH₂–, formyl HCO–, acetyl CH₃CO–.', 'q4'],
       ['base', 'ty', 'Předpona oxo-', 'Kdy se ketonová skupina v názvu vyjádří předponou oxo-?', ['když má přednost vyšší skupina, např. ester', 'vždy, když je C=O součástí kruhu', 'když je v molekule zároveň dvojná vazba C=C', 'když jsou v molekule dvě ketonové skupiny'], 'Methyl-3-oxohexanoát: ester je hlavní skupina (sufix -oát), keton je předpona 3-oxo-.', 'q5'],
@@ -17719,7 +17747,7 @@ function registerTopic(T) {
         'Nitrosloučenina má vazbu C–NO₂. Isopropylnitrát (C–O–NO₂) je ester kyseliny dusičné, nitrosloučenina to není.',
         'α-vodíky nitroalkanů jsou kyselé: nitroforma ⇌ aci-nitroforma. Nitroalkany proto reagují podobně jako karbonylové sloučeniny: Henryho reakce (nitroaldolizace) a kondenzace.',
         'Příprava: nitroalkany nitrací alkanů nebo z halogenalkanu a dusitanu (R–Cl + NaNO₂), aromatické nitrací (SEAr).',
-        'Redukce ArNO₂ → ArNO → ArNHOH → ArNH₂. Podle podmínek: Fe nebo Sn/HCl, H₂/Pd → anilin; Zn/NH₄Cl → fenylhydroxylamin; Zn/NaOH, EtOH → azobenzen; Zn (nadbytek)/NaOH → hydrazobenzen; glukóza/NaOH → azoxybenzen.',
+        'Redukce ArNO₂ → ArNO → ArNHOH → ArNH₂. Podle podmínek: Fe nebo Sn/HCl, H₂/Pd → anilin; Zn/NH₄Cl → fenylhydroxylamin; Zn/NaOH, EtOH → azobenzen; Zn (nadbytek)/NaOH → hydrazobenzen; glukosa/NaOH → azoxybenzen.',
         'Primární a sekundární C-nitrososloučeniny se snadno isomerizují na oximy.'],
       ox: ['Oxim: keton nebo aldehyd + hydroxylamin (H₂NOH) − H₂O → C=N–OH.',
         'Beckmannův přesmyk: oxim + H₂SO₄ → amid. Cyklohexanon-oxim → ε-kaprolaktam (kruh se rozšíří o dusík).',
@@ -17889,7 +17917,7 @@ function registerTopic(T) {
       ['base', 'ni', '1-fenyl-2-nitroprop-1-en', M.p2np, { par: '(2-nitroprop-1-en-1-yl)benzen', alts: ['1-fenyl-2-nitropropen', '2-nitro-1-fenylprop-1-en', 'fenyl-2-nitropropen'], tip: 'Kondenzace benzaldehydu s nitroethanem (CH₃COONH₄, zahřátí).' }],
       ['base', 'ni', 'nitrosobenzen', M.nitrosobenzen, { tip: 'První stupeň redukce nitrobenzenu (Ar–N=O).' }],
       ['base', 'ni', 'fenylhydroxylamin', M.fenylhydroxylamin, { par: 'N-fenylhydroxylamin', tip: 'Ar–NH–OH. Nitrobenzen + Zn/NH₄Cl (přes nitrosobenzen).' }],
-      ['base', 'ni', 'azoxybenzen', M.azoxybenzen, { tip: 'Ar–N⁺(O⁻)=N–Ar. Nitrobenzen + Zn/AcOH, Ac₂O, nebo glukóza/NaOH, nebo As₂O₃, NaOH.' }],
+      ['base', 'ni', 'azoxybenzen', M.azoxybenzen, { tip: 'Ar–N⁺(O⁻)=N–Ar. Nitrobenzen + Zn/AcOH, Ac₂O, nebo glukosa/NaOH, nebo As₂O₃, NaOH.' }],
       ['base', 'ni', 'azobenzen', M.azobenzen, { alts: ['difenyldiazen'], tip: 'Ar–N=N–Ar. Nitrobenzen + Zn/NaOH v EtOH.' }],
       ['base', 'ni', 'hydrazobenzen', M.hydrazobenzen, { par: '1,2-difenylhydrazin', alts: ['N,N′-difenylhydrazin'], tip: 'Ar–NH–NH–Ar. Nitrobenzen + nadbytek Zn/NaOH, H₂O.' }],
       // ---------- base: ox ----------
@@ -18369,7 +18397,7 @@ function registerTopic(T) {
           { via: 'Δ, −H₂O', to: [PN('1-fenyl-2-nitroprop-1-en'), PT('H₂O')], t: 'Za tepla se hned odštěpí voda. Vznikne C=C konjugovaná s kruhem i s NO₂.' }
         ] },
       { id: 'a55', set: 'base', fam: 'ni', title: 'Nitrobenzen → anilin', from: [PN('nitrobenzen')], reag: 'Fe nebo Sn, HCl', to: [PN('anilin')],
-        wrong: [[PN('azobenzen')], [PN('fenylhydroxylamin')], [PN('hydrazobenzen')]], wrongReag: ['Zn/NH₄Cl', 'Zn/NaOH, EtOH', 'glukóza/NaOH'],
+        wrong: [[PN('azobenzen')], [PN('fenylhydroxylamin')], [PN('hydrazobenzen')]], wrongReag: ['Zn/NH₄Cl', 'Zn/NaOH, EtOH', 'glukosa/NaOH'],
         why: 'Kov v kyselině redukuje nitroskupinu úplně: přes nitroso a hydroxylamin až na NH₂. Stejně H₂, Pd/C.',
         steps: [
           { via: 'Fe, HCl\n(2 e⁻, 2 H⁺, −H₂O)', to: [PN('nitrosobenzen')], t: 'Kov dodá dva elektrony, kyselina protony. Nitroskupina ztratí kyslík jako vodu: nitrosobenzen.' },
@@ -18383,16 +18411,16 @@ function registerTopic(T) {
           { via: 'Zn/NH₄Cl\n(2 e⁻, 2 H⁺, −H₂O)', to: [PN('nitrosobenzen')], t: 'Zinek redukuje nitroskupinu nejdřív na nitrosobenzen.' },
           { via: '2 e⁻, 2 H⁺', to: [PN('fenylhydroxylamin')], t: 'Další redukce dá Ar–NHOH. V neutrálním prostředí (NH₄Cl) je zinek moc slabý na další krok, redukce se zastaví.' }
         ] },
-      { id: 'a57', set: 'base', fam: 'ni', title: 'Nitrobenzen → azoxybenzen', from: [PN('nitrobenzen')], reag: 'glukóza/NaOH', to: [PN('azoxybenzen')],
+      { id: 'a57', set: 'base', fam: 'ni', title: 'Nitrobenzen → azoxybenzen', from: [PN('nitrobenzen')], reag: 'glukosa/NaOH', to: [PN('azoxybenzen')],
         wrong: [[PN('hydrazobenzen')], [PN('anilin')], [PN('nitrosobenzen')]], wrongReag: ['Fe, HCl', 'Zn (nadbytek)/NaOH, H₂O', 'H₂, Pd/C'],
         why: 'Slabé redukční činidlo v bazickém prostředí: nitroso a hydroxylamin spolu kondenzují na Ar–N(O)=N–Ar.',
         steps: [
-          { via: 'glukóza/NaOH\n(2 e⁻, 2 H⁺, −H₂O)', to: [PN('nitrosobenzen')], t: 'Slabé redukční činidlo zredukuje část nitrobenzenu na nitrosobenzen.' },
+          { via: 'glukosa/NaOH\n(2 e⁻, 2 H⁺, −H₂O)', to: [PN('nitrosobenzen')], t: 'Slabé redukční činidlo zredukuje část nitrobenzenu na nitrosobenzen.' },
           { via: '2 e⁻, 2 H⁺', to: [PN('fenylhydroxylamin'), PN('nitrosobenzen')], t: 'Část nitrosobenzenu se redukuje dál na fenylhydroxylamin. Obě látky jsou vedle sebe v roztoku.' },
           { via: 'kondenzace, −H₂O', to: [PN('azoxybenzen'), PT('H₂O')], t: 'Dusík fenylhydroxylaminu napadne N=O nitrosobenzenu a odejde voda. Vznikne azoxybenzen Ar–N⁺(O⁻)=N–Ar.' }
         ] },
       { id: 'a58', set: 'base', fam: 'ni', title: 'Nitrobenzen → azobenzen', from: [PN('nitrobenzen')], reag: 'Zn/NaOH, EtOH', to: [PN('azobenzen')],
-        wrong: [[PN('anilin')], [PN('fenylhydroxylamin')], [PN('azoxybenzen')]], wrongReag: ['Fe, HCl', 'Zn/NH₄Cl', 'glukóza/NaOH'],
+        wrong: [[PN('anilin')], [PN('fenylhydroxylamin')], [PN('azoxybenzen')]], wrongReag: ['Fe, HCl', 'Zn/NH₄Cl', 'glukosa/NaOH'],
         why: 'Zinek v alkalickém ethanolu redukuje přes azoxy až na azo stupeň Ar–N=N–Ar.',
         steps: [
           { via: 'Zn/NaOH\n(redukce)', to: [PN('nitrosobenzen'), PN('fenylhydroxylamin')], t: 'Zinek redukuje nitrobenzen na nitrosobenzen a dál na fenylhydroxylamin.' },
@@ -18400,7 +18428,7 @@ function registerTopic(T) {
           { via: 'Zn, EtOH\n(2 e⁻, 2 H⁺, −H₂O)', to: [PN('azobenzen'), PT('H₂O')], t: 'Zinek odstraní kyslík z azoxyskupiny. Vznikne azobenzen Ar–N=N–Ar.' }
         ] },
       { id: 'a59', set: 'base', fam: 'ni', title: 'Nitrobenzen → hydrazobenzen', from: [PN('nitrobenzen')], reag: 'Zn (nadbytek)/NaOH, H₂O', to: [PN('hydrazobenzen')],
-        wrong: [[PN('azobenzen')], [PN('azoxybenzen')], [PN('fenylhydroxylamin')]], wrongReag: ['Zn/NH₄Cl', 'glukóza/NaOH', 'Zn/NaOH, EtOH'],
+        wrong: [[PN('azobenzen')], [PN('azoxybenzen')], [PN('fenylhydroxylamin')]], wrongReag: ['Zn/NH₄Cl', 'glukosa/NaOH', 'Zn/NaOH, EtOH'],
         why: 'Nadbytek zinku v bazickém prostředí redukuje ještě dál než na azobenzen: Ar–NH–NH–Ar.',
         steps: [
           { via: 'Zn/NaOH\n(redukce)', to: [PN('nitrosobenzen'), PN('fenylhydroxylamin')], t: 'Zinek redukuje nitrobenzen na nitrosobenzen a dál na fenylhydroxylamin.' },
@@ -26128,7 +26156,7 @@ window.addEventListener('popstate', e => {
 });
 /* ===== Vykreslení vzorců ===== */
 const $ = (s, el) => (el || document).querySelector(s);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const EL_CLASS = { O: 'e-O', N: 'e-N', S: 'e-S', X: 'e-X', F: 'e-X', Cl: 'e-X', Br: 'e-X', P: 'e-P', Z: 'e-Z', B: 'e-M', Li: 'e-M', Mg: 'e-M', Cu: 'e-M', Zn: 'e-M', Na: 'e-M', I: 'e-X', K: 'e-M', Pd: 'e-M', Sn: 'e-M', Si: 'e-M', Al: 'e-M', Ni: 'e-M', Rh: 'e-M', Cd: 'e-M', Hg: 'e-M' };
 const CHAR_W = { M: .83, W: .94, I: .28, L: .61, Z: .61, S: .67, P: .67, X: .67, '(': .33, ')': .33, i: .28, l: .28 };
 function textW(s, fs) {
@@ -28409,7 +28437,7 @@ function renderToday() {
     ${started ? '' : '<p class="td-help">Nevíš, jak začít? <a href="#navod">Přečti si krátký návod</a>.</p>'}
     ${bkRemind(done + Object.keys(SR).length)}
     ${LOAD_ERR.length ? `<p class="td-err" role="status">Část látek a otázek se nenačetla (${esc([...new Set(LOAD_ERR.map(x => (TOPIC_BY[x.topic] || {}).label || x.label || x.topic))].join(', '))}). Ostatní funguje normálně.</p>` : ''}
-    <details class="tp" id="tpBox"${store.get('fg-tpopen', false) ? ' open' : ''}><summary>Témata a tvůj pokrok<small>zvládnuto ${done} z ${all}</small></summary>
+    <details class="tp" id="tpBox"${store.get('fg-tpopen', false) ? ' open' : ''}><summary>Témata a tvůj pokrok<small>zvládnuto ${done} z ${all} karet</small></summary>
       <ol>${TOPICS.map(x => { const r = T[x.id]; return `<li><button type="button" data-td="t" data-t="${x.id}"><span class="tnum" aria-hidden="true">${(x.label.match(/^(\d+)\./) || [, '★'])[1]}</span><span class="tl">${esc(x.label.replace(/^\d+\.\s*/, ''))}</span>
         <span class="tn">${r.done}/${r.all}</span><span class="tb"><i style="width:${r.all ? 100 * r.done / r.all : 0}%"></i></span>${r.due ? `<span class="due">${r.due} k opakování</span>` : ''}</button></li>`; }).join('')}</ol>
     </details>`;
@@ -28441,7 +28469,11 @@ const b64u = {
 };
 async function zip(bytes, dir) {
   const st = new Blob([bytes]).stream().pipeThrough(dir ? new CompressionStream('deflate-raw') : new DecompressionStream('deflate-raw'));
-  return new Uint8Array(await new Response(st).arrayBuffer());
+  if (dir) return new Uint8Array(await new Response(st).arrayBuffer());
+  // rozbalení po kouskách s limitem: podvržený krátký kód by jinak mohl nafouknout paměť a zamrazit kartu
+  const rd = st.getReader(), parts = []; let n = 0;
+  for (;;) { const { done, value } = await rd.read(); if (done) break; n += value.length; if (n > 8e6) { rd.cancel(); throw new Error('form'); } parts.push(value); }
+  const out = new Uint8Array(n); let o = 0; parts.forEach(p => { out.set(p, o); o += p.length; }); return out;
 }
 async function makeBackup() {
   const data = { v: 1, t: Date.now(), p: store.get('fg-progress', {}), r: store.get('fg-srs', {}), d: store.get('fg-daily', {}), h: store.get('fg-herna', {}), a: store.get('fg-ac', {}), l: store.get('fg-les', {}) };
@@ -28451,6 +28483,7 @@ async function makeBackup() {
 }
 async function readBackup(code) {
   const c = String(code || '').replace(/\s+/g, '');
+  if (c.length > 2e6) throw new Error('form');   // skutečný kód má desítky kB
   const m = c.match(/^FH([01])-([A-Za-z0-9_-]+)$/); if (!m) throw new Error('form');
   let bytes = b64u.dec(m[2]);
   if (m[1] === '1') { if (typeof DecompressionStream !== 'function') throw new Error('old'); bytes = await zip(bytes, false); }
@@ -29603,6 +29636,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     });
     if (typeof M3D_IDS !== 'undefined') M3D_IDS.forEach(id => { if (!BYID[id]) warn('3D model bez látky', id, ''); });
     LOAD_ERR.forEach(x => warn('nenačteno', x.topic, x.msg));
+    window.FH_KONTROLA = W;   // čte automatická kontrola na GitHubu (.github/kontrola)
     const head = `Kontrola dat: ${qs.length} otázek, ${W.length} varování`;
     if (W.length) { console.groupCollapsed(head); console.table(W); console.groupEnd(); } else console.info(head);
   }
@@ -29686,7 +29720,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
     const bt = $('#boot'); if (bt) bt.remove();
     const h = (location.hash || '').replace('#', ''), app = APP.has(h), ac = /^analyticka/.test(h);
     $('#hub').hidden = app || ac; $('#appOC').hidden = !app; $('#appAC').hidden = !ac;
-    document.title = app ? 'Cvičení · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : 'FormičkyHub';
+    document.title = app ? 'Organická chemie · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : 'FormičkyHub';
     if (ac && window.FH_AC) FH_AC.show();
     if (app) { try { refresh(); deep(h); } catch (e) { /* vykreslí se při další akci */ } }
     $('#hub').classList.toggle('guide', h === 'navod');
@@ -29697,7 +29731,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 })();
 /* ===== 3D model látky v okně přes stránku (3Dmol.js se načte až při prvním otevření) ===== */
 (function () {
-  const LIB = 'https://cdn.jsdelivr.net/npm/3dmol@2.4.2/build/3Dmol-min.js';
+  const LIB = 'lib/3Dmol-2.4.2-min.js';   // kopie knihovny přímo na webu (licence BSD v lib/), ne z CDN
   let libP = null, viewer = null, cur = null, style = 'ball';
   const loadLib = () => libP || (libP = new Promise((ok, bad) => {
     if (window.$3Dmol) return ok();
@@ -29948,7 +29982,7 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
     box.innerHTML = `<form class="m3d-card rep-card" role="dialog" aria-modal="true" aria-labelledby="repT" id="repForm">
       <div class="m3d-head"><h2 id="repT">${gen ? 'Připomínka nebo nápad' : 'Nahlásit chybu'}</h2><button type="button" class="m3d-x" data-rep="close" aria-label="Zavřít">×</button></div>
       <div class="rep-body">
-        ${gen ? '' : `<p class="aside">K otázce: <b>${esc(ctx.title)}</b>. Otázka i možnosti se pošlou automaticky.</p>
+        ${gen ? '' : `<p class="aside">K otázce: <b>${esc(ctx.title)}</b>. Otázka, možnosti i tvoje odpověď se pošlou automaticky.</p>
         <fieldset class="rep-types"><legend>Co je špatně?</legend>${TYPES.map((t, i) => `<label><input type="radio" name="rt" value="${esc(t)}"${i ? '' : ' checked'}> ${esc(t)}</label>`).join('')}</fieldset>`}
         <label class="rep-l">${gen ? 'Co bys chtěla vylepšit nebo co nefunguje?' : 'Popis (nepovinné, ale hodně pomůže)'}<textarea id="repTxt" rows="4" maxlength="1500" placeholder="${gen ? 'Napiš cokoli…' : 'Např. správně je C, protože…'}"></textarea></label>
         <label class="rep-l">Podpis (nepovinné)<input id="repName" type="text" maxlength="40" value="${esc(store.get(NK, ''))}" placeholder="aby se ti dalo odpovědět"></label>
@@ -30592,7 +30626,7 @@ const FH_LES = (() => {
     for (let i = 0; by.some(g => g[i]); i++) by.forEach(g => { if (g[i]) rr.push(g[i]); });
     const short = (rr.length ? rr : sel).slice(0, 4), list = OPEN || sel.length <= 5 ? sel : short;
     const rows = list.map(L => { const p = L.s.prog()[L.id]; return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
-      <span class="les-row-t"><b>Lekce ${L.n}: ${L.t}</b><span>${L.s.short} · ${L.where}</span></span>
+      <span class="les-row-t">${f === '*' ? `<i class="les-tag les-tag-${L.s.k}">${L.s.short}</i>` : ''}<b>Lekce ${L.n}: ${L.t}</b><span>${f === '*' ? '' : L.s.short + ' · '}${L.where}</span></span>
       <span class="les-row-s">${p ? `<span class="ac-les-done">Hotovo ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</span>
       <svg class="les-row-go" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>`; }).join('');
     const more = sel.length > 5 ? `<button type="button" class="link les-more" data-lhm="1" aria-expanded="${OPEN}">${OPEN ? 'Ukázat méně' : `Ukázat všechny lekce (${sel.length})`}</button>` : '';
@@ -33597,7 +33631,7 @@ if (!CHN[ST.ch]) ST.ch = 'ka';
 if (!ST.tv) { if (!ST.types.includes('teo')) ST.types = ST.types.concat('teo'); ST.tv = 1; }
 const save = () => store0.set('fg-ac', ST);
 const $a = s => document.querySelector(s);
-const escA = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const escA = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const day = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 864e5); };
 const mix = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const ION = {}; AC_ION.forEach(x => { ION[x.id] = x; });
@@ -34382,10 +34416,10 @@ const LEAD = { ka: 'Kvalitativní analýza podle skript ke cvičení 1 a 2: jak 
   org: 'Cvičení 3: důkazy prvků, třídy rozpustnosti a důkazy funkčních skupin organických látek.', fyz: 'Cvičení 4: teplota tání, index lomu, pH a polarimetrie, včetně výpočtů.',
   uv: 'Cvičení 5: absorbance, Lambertův–Beerův zákon, spektrofotometry a acidobazické indikátory.', ir: 'Cvičení 6: IČ oblasti, FT-IR spektrometr, techniky měření a tabulka vibrací.' };
 /* záložky režimů v jedné řadě: když se nevejdou, posouvají se do strany, vybraná je vždy vidět a slábnoucí okraj ukáže, že jsou další */
-function modeFade(el) { el.classList.toggle('more', el.scrollLeft + el.clientWidth < el.scrollWidth - 2); }
+function modeFade(el) { el.classList.toggle('more', el.scrollLeft + el.clientWidth < el.scrollWidth - 2); el.classList.toggle('less', el.scrollLeft > 2); }   // slábnoucí okraj vpravo i vlevo
 function modeTabs(el) {
   const b = el && el.querySelector('[aria-pressed="true"]'); if (!el || !el.offsetParent) return;
-  if (b) { const r = b.getBoundingClientRect(), c = el.getBoundingClientRect(); if (r.left < c.left) el.scrollLeft -= c.left - r.left + 8; else if (r.right > c.right - 40) el.scrollLeft += r.right - c.right + 40; }
+  if (b) { const r = b.getBoundingClientRect(), c = el.getBoundingClientRect(); if (r.left < c.left + 40) el.scrollLeft -= c.left - r.left + 40; else if (r.right > c.right - 40) el.scrollLeft += r.right - c.right + 40; }
   modeFade(el);
 }
 document.addEventListener('scroll', e => { const t = e.target; if (t && t.classList && t.classList.contains('mode')) modeFade(t); }, true);

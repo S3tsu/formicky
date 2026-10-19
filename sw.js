@@ -1,17 +1,20 @@
 /* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu nebo při pomalé síti (3 s) z mezipaměti. */
 const VER = '202610191125';
-const CORE = 'fh-core-' + VER, RT = 'fh-rt-v2';   // v2: písma a 3Dmol se načítají s CORS, staré neprůhledné odpovědi z v1 se nepoužijí
-const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg'];
+const CORE = 'fh-core-' + VER, RT = 'fh-rt-v2';
+// písma jsou na webu (fonts/), ukládají se hned, ať fungují i offline; knihovna 3D (lib/) a m3d.json až při prvním otevření 3D
+const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg',
+  'fonts/plex-latin.woff2', 'fonts/plex-latin-ext.woff2', 'fonts/plex-greek.woff2', 'fonts/bricolage-latin.woff2', 'fonts/bricolage-latin-ext.woff2'];
 self.addEventListener('install', e => {
   // cache: 'reload' obejde mezipaměť prohlížeče, ať se pod novou verzí neuloží stará stránka
   e.waitUntil(caches.open(CORE).then(c => c.addAll(PRE.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('fh-') && k !== CORE && k !== RT).map(k => caches.delete(k))))
-    .then(() => caches.open(RT)).then(c => c.keys().then(rs => Promise.all(rs.filter(r => /\/m3d\.json$/.test(new URL(r.url).pathname) && new URL(r.url).search !== '?v=' + VER).map(r => c.delete(r)))))
+    // z runtime mezipaměti pryč: m3d.json starší verze, dřívější písma z Googlu a 3Dmol z CDN, starší kopie knihovny
+    .then(() => caches.open(RT)).then(c => c.keys().then(rs => Promise.all(rs.filter(r => { const u = new URL(r.url); return u.origin !== location.origin || (/\/m3d\.json$/.test(u.pathname) && u.search !== '?v=' + VER) || (/\/lib\//.test(u.pathname) && !u.pathname.endsWith(LIB)); }).map(r => c.delete(r)))))
     .then(() => self.clients.claim()));
 });
-const RT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net'];
+const LIB = '/lib/3Dmol-2.4.2-min.js';
 self.addEventListener('fetch', e => {
   const r = e.request;
   if (r.method !== 'GET') return;
@@ -22,7 +25,11 @@ self.addEventListener('fetch', e => {
     // Kopie se dělá hned, dokud tělo odpovědi nikdo nečetl; ukládá se jen stránka (HTML), ne chyba ani obrázek.
     let saved;
     const net = fetch(r, { cache: 'no-cache' }).then(res => {
-      if (res.ok && /text\/html/.test(res.headers.get('content-type') || '')) { const copy = res.clone(); saved = caches.open(CORE).then(c => c.put('./', copy)); }
+      // Ukládá se jen opravdová stránka Formiček (obsahuje FH_VER, bez přesměrování), ne třeba přihlašovací stránka Wi-Fi na koleji.
+      if (res.ok && !res.redirected && /text\/html/.test(res.headers.get('content-type') || '')) {
+        const copy = res.clone();
+        saved = copy.text().then(t => /const FH_VER = '\d{12}'/.test(t) ? caches.open(CORE).then(c => c.put('./', new Response(t, { headers: { 'content-type': 'text/html; charset=utf-8' } }))) : null);
+      }
       return res;
     });
     e.waitUntil(net.then(() => saved, () => {}));
@@ -34,12 +41,12 @@ self.addEventListener('fetch', e => {
     })());
     return;
   }
-  const lazy = u.origin === location.origin && u.pathname.endsWith('/m3d.json');
+  const lazy = u.origin === location.origin && (u.pathname.endsWith('/m3d.json') || u.pathname.endsWith(LIB));
   if (u.origin === location.origin && !lazy) {
     e.respondWith(caches.match(r).then(m => m || fetch(r)));
     return;
   }
-  if (lazy || RT_HOSTS.includes(u.hostname)) {
+  if (lazy) {
     e.respondWith(caches.open(RT).then(async c => {
       const m = await c.match(r);
       const net = fetch(r).then(res => { if (res.ok) c.put(r, res.clone()); return res; }).catch(() => m);   // jen úspěšné odpovědi, ať se neuloží a pak neopakuje chyba

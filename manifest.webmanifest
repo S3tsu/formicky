@@ -3,6 +3,7 @@
   "short_name": "Formičky",
   "description": "Procvičování organické a analytické chemie pro farmaceuty podle přednášek",
   "lang": "cs",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
