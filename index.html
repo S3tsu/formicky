@@ -1364,9 +1364,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .jpic .b{stroke:var(--ink);stroke-width:2;fill:none}
 .jpic .d{stroke-dasharray:3 3}
 .jpic .w,.jpic .dot{fill:var(--ink)}
-.jpic .s circle{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.jpic .s circle{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
 .jpic .s text{font-size:12px}
-.jpic .lobe{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.2}
+.jpic .lobe{fill:var(--surface);stroke:var(--accent);stroke-width:1.2}
 .jpic .ar{stroke:var(--pink);stroke-width:1.8;fill:none}
 .jpic marker path{fill:var(--pink)}
 .lx-jak-m figcaption{font-size:.8rem}
@@ -26773,6 +26773,49 @@ const LTR = ['A', 'B', 'C', 'D'];
 function partsHTML(parts, sc) {
   return parts.map(p => p.t ? `<span class="ptxt">${esc(p.t).replace(/\n/g, '<br>')}</span>` : molSVG(p.m ? dmol(p.m) : BYID[p.id || norm(p.g)], sc || 26)).join('<span class="plus">+</span>');
 }
+/* schémata k pravidlům (karta Jak se to učit v lekci, Přehled s Jak si je zapamatovat): kreslí přesně to, co říká pravidlo vedle (klíč = rodina otázek) */
+const JPIC = (() => {
+  const s = (x, y, l) => `<g class="s"><circle cx="${x}" cy="${y}" r="9"/><text x="${x}" y="${y + 4.5}" text-anchor="middle">${l}</text></g>`;
+  const ln = (x1, y1, x2, y2, c) => `<line class="b${c ? ' ' + c : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  const wd = (x1, y1, x2, y2) => { const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = -dy / L * 4, ny = dx / L * 4; return `<polygon class="w" points="${x1},${y1} ${x2 + nx},${y2 + ny} ${x2 - nx},${y2 - ny}"/>`; };
+  const t = (x, y, v, c, a) => `<text x="${x}" y="${y}"${c ? ` class="${c}"` : ''}${a ? ` text-anchor="${a}"` : ''}>${v}</text>`;
+  let n = 0;
+  const svg = (id0, w, h, label, body, id = id0 + '-' + (++n)) => `<svg class="jpic" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}"><defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>${body.replace(/MK/g, `url(#${id})`)}</svg>`;
+  const ar = d => `<path class="ar" d="${d}" marker-end="MK"/>`;
+  const sn2 = () => svg('jpa-sn2', 390, 150, 'SN2: nukleofil útočí zezadu, přechodový stav s pěti vazbami, produkt má obrácenou konfiguraci jako deštník ve větru',
+    /* 1 */ t(6, 75, 'Nu⁻') + ar('M30 60 Q48 42 66 62') + ln(84, 70, 108, 70) + t(110, 75, 'Br') + t(76, 75, 'C') +
+    ln(78, 62, 66, 42) + s(61, 33, 'a') + wd(76, 78, 62, 98) + s(57, 106, 'b') + ln(73, 74, 54, 82, 'd') + s(45, 86, 'c') +
+    t(65, 140, '1. útok zezadu', 'cap', 'middle') +
+    /* 2 */ `<g transform="translate(135 0)">` + t(0, 75, 'Nu') + ln(22, 70, 50, 70, 'd') + t(53, 75, 'C') + ln(68, 70, 94, 70, 'd') + t(96, 75, 'Br') +
+    ln(58, 62, 58, 44) + s(58, 34, 'a') + wd(56, 79, 44, 100) + s(40, 108, 'b') + ln(61, 79, 74, 100, 'd') + s(78, 108, 'c') +
+    t(118, 40, '‡') + t(60, 140, '2. přechodový stav', 'cap', 'middle') + `</g>` +
+    /* 3 */ `<g transform="translate(265 0)">` + t(0, 75, 'Nu') + ln(22, 70, 38, 70) + t(40, 75, 'C') +
+    ln(50, 62, 62, 42) + s(67, 33, 'a') + wd(52, 78, 66, 98) + s(71, 106, 'b') + ln(55, 74, 74, 82, 'd') + s(83, 86, 'c') + t(92, 60, 'Br⁻') +
+    t(60, 140, '3. inverze', 'cap', 'middle') + `</g>`);
+  const sn1 = () => svg('jpa-sn1', 390, 205, 'SN1: nejdřív odejde bromid, vznikne plochý karbokation, nukleofil přijde shora i zdola, vznikne směs obou konfigurací',
+    /* 1 */ `<g transform="translate(0 20)">` + t(46, 85, 'C') + ln(56, 80, 84, 80) + t(86, 85, 'Br') + ar('M70 72 Q84 54 96 68') +
+    ln(48, 72, 36, 52) + s(31, 43, 'a') + wd(46, 88, 32, 108) + s(27, 116, 'b') + ln(43, 84, 24, 92, 'd') + s(15, 96, 'c') + `</g>` +
+    t(62, 196, '1. odejde Br⁻', 'cap', 'middle') +
+    /* 2 */ `<g transform="translate(135 20)">` + `<ellipse class="lobe" cx="60" cy="48" rx="10" ry="20"/><ellipse class="lobe" cx="60" cy="112" rx="10" ry="20"/>` +
+    t(60, 85, 'C⁺', '', 'middle') + ln(46, 80, 22, 80) + s(13, 80, 'a') + wd(72, 86, 88, 98) + s(96, 102, 'b') + ln(74, 74, 92, 64, 'd') + s(100, 60, 'c') +
+    t(10, 6, 'Nu⁻') + ar('M34 4 Q52 4 57 30') + t(10, 162, 'Nu⁻') + ar('M34 156 Q52 156 57 130') + `</g>` +
+    t(195, 196, '2. plochý C⁺, útok z obou stran', 'cap', 'middle') +
+    /* 3 */ `<g transform="translate(275 0)">` +
+    t(40, 20, 'Nu', '', 'middle') + ln(40, 26, 40, 42) + t(40, 56, 'C', '', 'middle') + ln(32, 52, 14, 56) + s(7, 58, 'a') + wd(46, 56, 62, 64) + s(70, 66, 'b') + ln(44, 50, 64, 44, 'd') + s(72, 42, 'c') +
+    t(40, 120, 'C', '', 'middle') + ln(32, 116, 14, 112) + s(7, 110, 'a') + wd(46, 116, 60, 104) + s(67, 97, 'b') + ln(46, 122, 62, 134, 'd') + s(69, 141, 'c') + ln(40, 124, 40, 140) + t(40, 156, 'Nu', '', 'middle') +
+    `</g>` + t(330, 196, '3. směs obou', 'cap', 'middle'));
+  const e2 = () => {
+    const cx = 80, cy = 78, R = 30, pt = (a, r) => [cx + r * Math.cos(a * Math.PI / 180), cy - r * Math.sin(a * Math.PI / 180)];
+    let b = `<circle class="b" cx="${cx}" cy="${cy}" r="${R}"/>`;
+    [[-90, 'Br', 'x'], [30, '', ''], [150, '', '']].forEach(([a, l, c]) => { const [x1, y1] = pt(a, R), [x2, y2] = pt(a, R + 22); b += ln(x1, y1, x2, y2); if (l) b += t(x2, y2 + (a < 0 ? 14 : -4), l, c, 'middle'); });
+    [[90, 'H'], [210, ''], [330, '']].forEach(([a, l]) => { const [x2, y2] = pt(a, R + 18); b += ln(cx, cy, x2, y2); if (l) b += t(x2, y2 - 5, l, 'x', 'middle'); });
+    b += `<circle class="dot" cx="${cx}" cy="${cy}" r="2.5"/>` + t(150, 26, 'B⁻') + ar('M148 22 Q118 10 90 16') +
+      t(cx, 168, 'pohled podél vazby C–C', 'cap', 'middle') +
+      t(170, 70, 'H a Br naproti sobě,') + t(170, 88, '180°: antiperiplanární') + t(170, 116, 'Báze vezme H, Br⁻ odejde,', 'cap') + t(170, 132, 'mezi uhlíky vznikne C=C.', 'cap');
+    return svg('jpa-e2', 390, 180, 'E2 v Newmanově projekci: vodík na předním uhlíku nahoře, brom na zadním uhlíku dole, svírají 180 stupňů; báze odtrhne vodík', b);
+  };
+  return { t09sn2: sn2, t09sn1: sn1, t09e2: e2 };
+})();
 function schemeHTML(sc, veil) {
   const side = parts => !parts ? '<div class="side"><span class="qbox">?</span></div>'
     : `<div class="side"><span class="real">${partsHTML(parts)}</span>${veil ? '<span class="qbox hid">?</span>' : ''}</div>`;
@@ -27180,7 +27223,7 @@ function fillGrid() {
     const sheet = !q && (SHEETS[S.topic] || []).includes(k) && S.set !== 'extra' && (!S.fams || S.fams.includes(k));
     if (!items.length && !rr.length && !sheet) return;
     html += `<h2 class="fam-h">${n}</h2>`;
-    if ((S.tips || sheet) && !q && RULES[k]) html += `<div class="rules"><span class="eyebrow">${sheet ? 'Co si zapamatovat' : 'Jak si je zapamatovat'}</span><ul>${RULES[k].map(r => `<li>${esc(r)}</li>`).join('')}</ul></div>`;
+    if ((S.tips || sheet) && !q && RULES[k]) html += `<div class="rules"><span class="eyebrow">${sheet ? 'Co si zapamatovat' : 'Jak si je zapamatovat'}</span><ul>${RULES[k].map(r => `<li>${esc(r)}</li>`).join('')}</ul>${S.tips && JPIC[k] ? JPIC[k]() : ''}</div>`;
     const tabs = sheet && (TOPIC_BY[S.topic].tables || {})[k];
     if (tabs) html += tabs.map(t => `<div class="tablewrap"><table class="pka"><caption>${esc(t.title)}</caption><thead><tr>${t.cols.map((c, i) => `<th scope="col"${i === t.num ? ' class="num"' : ''}>${esc(c)}</th>`).join('')}</tr></thead><tbody>` +
       t.rows.map(r => `<tr>${r.map((c, i) => `<td${i === t.f ? ' class="f"' : i === t.num ? ' class="num"' : ''}>${esc(c)}</td>`).join('')}</tr>`).join('') + '</tbody></table></div>').join('');
@@ -32417,48 +32460,6 @@ const FH_OL = (() => {
   const memTab = () => { const b = document.querySelector('#modeSeg [data-omem]'); if (b) b.hidden = !memTopic(); };
   const memesHTML = () => { const M = MEMES[S.topic] || []; return FH_LES.mem({ items: M, art: M.map((_, i) => S.topic + ':' + i), kind: 'chat' }); };
   /* „Jak se to učit“ a pravidla okruhů z Přehledu (Jak si je zapamatovat) jako rozbalovací karta v lekci; co už lekce říká stejnými slovy, se vynechá */
-  /* schémata ke kartě Jak se to učit: kreslí přesně to, co říká pravidlo vedle (klíč = rodina otázek) */
-  const JPIC = (() => {
-    const s = (x, y, l) => `<g class="s"><circle cx="${x}" cy="${y}" r="9"/><text x="${x}" y="${y + 4.5}" text-anchor="middle">${l}</text></g>`;
-    const ln = (x1, y1, x2, y2, c) => `<line class="b${c ? ' ' + c : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
-    const wd = (x1, y1, x2, y2) => { const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = -dy / L * 4, ny = dx / L * 4; return `<polygon class="w" points="${x1},${y1} ${x2 + nx},${y2 + ny} ${x2 - nx},${y2 - ny}"/>`; };
-    const t = (x, y, v, c, a) => `<text x="${x}" y="${y}"${c ? ` class="${c}"` : ''}${a ? ` text-anchor="${a}"` : ''}>${v}</text>`;
-    const svg = (id, w, h, label, body) => `<svg class="jpic" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}"><defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>${body.replace(/MK/g, `url(#${id})`)}</svg>`;
-    const ar = d => `<path class="ar" d="${d}" marker-end="MK"/>`;
-    const sn2 = () => svg('jpa-sn2', 390, 150, 'SN2: nukleofil útočí zezadu, přechodový stav s pěti vazbami, produkt má obrácenou konfiguraci jako deštník ve větru',
-      /* 1 */ t(6, 75, 'Nu⁻') + ar('M30 60 Q48 42 66 62') + ln(84, 70, 108, 70) + t(110, 75, 'Br') + t(76, 75, 'C') +
-      ln(78, 62, 66, 42) + s(61, 33, 'a') + wd(76, 78, 62, 98) + s(57, 106, 'b') + ln(73, 74, 54, 82, 'd') + s(45, 86, 'c') +
-      t(65, 140, '1. útok zezadu', 'cap', 'middle') +
-      /* 2 */ `<g transform="translate(135 0)">` + t(0, 75, 'Nu') + ln(22, 70, 50, 70, 'd') + t(53, 75, 'C') + ln(68, 70, 94, 70, 'd') + t(96, 75, 'Br') +
-      ln(58, 62, 58, 44) + s(58, 34, 'a') + wd(56, 79, 44, 100) + s(40, 108, 'b') + ln(61, 79, 74, 100, 'd') + s(78, 108, 'c') +
-      t(118, 40, '‡') + t(60, 140, '2. přechodový stav', 'cap', 'middle') + `</g>` +
-      /* 3 */ `<g transform="translate(265 0)">` + t(0, 75, 'Nu') + ln(22, 70, 38, 70) + t(40, 75, 'C') +
-      ln(50, 62, 62, 42) + s(67, 33, 'a') + wd(52, 78, 66, 98) + s(71, 106, 'b') + ln(55, 74, 74, 82, 'd') + s(83, 86, 'c') + t(92, 60, 'Br⁻') +
-      t(60, 140, '3. inverze', 'cap', 'middle') + `</g>`);
-    const sn1 = () => svg('jpa-sn1', 390, 205, 'SN1: nejdřív odejde bromid, vznikne plochý karbokation, nukleofil přijde shora i zdola, vznikne směs obou konfigurací',
-      /* 1 */ `<g transform="translate(0 20)">` + t(46, 85, 'C') + ln(56, 80, 84, 80) + t(86, 85, 'Br') + ar('M70 72 Q84 54 96 68') +
-      ln(48, 72, 36, 52) + s(31, 43, 'a') + wd(46, 88, 32, 108) + s(27, 116, 'b') + ln(43, 84, 24, 92, 'd') + s(15, 96, 'c') + `</g>` +
-      t(62, 196, '1. odejde Br⁻', 'cap', 'middle') +
-      /* 2 */ `<g transform="translate(135 20)">` + `<ellipse class="lobe" cx="60" cy="48" rx="10" ry="20"/><ellipse class="lobe" cx="60" cy="112" rx="10" ry="20"/>` +
-      t(60, 85, 'C⁺', '', 'middle') + ln(46, 80, 22, 80) + s(13, 80, 'a') + wd(72, 86, 88, 98) + s(96, 102, 'b') + ln(74, 74, 92, 64, 'd') + s(100, 60, 'c') +
-      t(10, 6, 'Nu⁻') + ar('M34 4 Q52 4 57 30') + t(10, 162, 'Nu⁻') + ar('M34 156 Q52 156 57 130') + `</g>` +
-      t(195, 196, '2. plochý C⁺, útok z obou stran', 'cap', 'middle') +
-      /* 3 */ `<g transform="translate(275 0)">` +
-      t(40, 20, 'Nu', '', 'middle') + ln(40, 26, 40, 42) + t(40, 56, 'C', '', 'middle') + ln(32, 52, 14, 56) + s(7, 58, 'a') + wd(46, 56, 62, 64) + s(70, 66, 'b') + ln(44, 50, 64, 44, 'd') + s(72, 42, 'c') +
-      t(40, 120, 'C', '', 'middle') + ln(32, 116, 14, 112) + s(7, 110, 'a') + wd(46, 116, 60, 104) + s(67, 97, 'b') + ln(46, 122, 62, 134, 'd') + s(69, 141, 'c') + ln(40, 124, 40, 140) + t(40, 156, 'Nu', '', 'middle') +
-      `</g>` + t(330, 196, '3. směs obou', 'cap', 'middle'));
-    const e2 = () => {
-      const cx = 80, cy = 78, R = 30, pt = (a, r) => [cx + r * Math.cos(a * Math.PI / 180), cy - r * Math.sin(a * Math.PI / 180)];
-      let b = `<circle class="b" cx="${cx}" cy="${cy}" r="${R}"/>`;
-      [[-90, 'Br', 'x'], [30, '', ''], [150, '', '']].forEach(([a, l, c]) => { const [x1, y1] = pt(a, R), [x2, y2] = pt(a, R + 22); b += ln(x1, y1, x2, y2); if (l) b += t(x2, y2 + (a < 0 ? 14 : -4), l, c, 'middle'); });
-      [[90, 'H'], [210, ''], [330, '']].forEach(([a, l]) => { const [x2, y2] = pt(a, R + 18); b += ln(cx, cy, x2, y2); if (l) b += t(x2, y2 - 5, l, 'x', 'middle'); });
-      b += `<circle class="dot" cx="${cx}" cy="${cy}" r="2.5"/>` + t(150, 26, 'B⁻') + ar('M148 22 Q118 10 90 16') +
-        t(cx, 168, 'pohled podél vazby C–C', 'cap', 'middle') +
-        t(170, 70, 'H a Br naproti sobě,') + t(170, 88, '180°: antiperiplanární') + t(170, 116, 'Báze vezme H, Br⁻ odejde,', 'cap') + t(170, 132, 'mezi uhlíky vznikne C=C.', 'cap');
-      return svg('jpa-e2', 390, 180, 'E2 v Newmanově projekci: vodík na předním uhlíku nahoře, brom na zadním uhlíku dole, svírají 180 stupňů; báze odtrhne vodík', b);
-    };
-    return { t09sn2: sn2, t09sn1: sn1, t09e2: e2 };
-  })();
   function jakHTML(L, have) {
     const txt = String(have).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), nov = t => !txt.includes(String(t).replace(/\s+/g, ' ').trim());
     const ul = a => `<ul class="ac-ul">${a.map(t => `<li>${esc(t)}</li>`).join('')}</ul>`;
