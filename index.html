@@ -34590,7 +34590,14 @@ function lesList() {
 }
 /* memy k lekci: L.mem = indexy v AC_MEMES, bez něj memy kapitoly */
 const lesMemes = L => (L.mem || AC_MEMES.map((m, i) => m[2] === L.ch ? i : -1).filter(i => i >= 0)).filter(i => AC_MEMES[i]).map(i => [AC_MEMES[i], 'ac:' + i]);
-function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg }), run: FH_LES.run('a') }); }
+/* blok Pomůcky na zapamatování (L.aid) je v lekci místo memu; memy cvičení jsou pak všechny v záložce Memes */
+const kap = a => `<ul class="ac-ul">${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
+const pom = h => sec('Pomůcky na zapamatování', h);
+function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + (L.aid ? L.aid() : FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg })), run: FH_LES.run('a') }); }
+function memesView() {
+  const M = AC_MEMES.map((m, i) => [m, 'ac:' + i]).filter(([m]) => m[2] === ST.ch);
+  return FH_LES.mem({ items: M.map(x => x[0]), art: M.map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg }) || '<p>K tomuhle cvičení memy nejsou.</p>';
+}
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
   Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false; Q.weak = false;
@@ -34621,9 +34628,9 @@ function lesView() {
 }
 
 /* --- vykreslení a ovládání --- */
-const MODEN = { les: 'Lekce', quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Rozpustnost', spek: 'Čti spektrum', neorg: 'Neznámá látka', por: 'Seřaď postup', tani: 'Bodotávek' };
-const CHM = { ka: ['les', 'quiz', 'table', 'ions', 'game', 'por'], org: ['les', 'quiz', 'sheet', 'rozp', 'neorg', 'por'], fyz: ['les', 'quiz', 'sheet', 'tani', 'por'], uv: ['les', 'quiz', 'sheet', 'por'], ir: ['les', 'quiz', 'sheet', 'spek', 'por'] };
-const HASH = { les: 'analyticka-lekce', quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum', neorg: 'analyticka-latka', por: 'analyticka-postup', tani: 'analyticka-bodotavek' };
+const MODEN = { les: 'Lekce', quiz: 'Procvičování', table: 'Tabulka', ions: 'Ionty', game: 'Neznámý vzorek', sheet: 'Tahák', rozp: 'Rozpustnost', spek: 'Čti spektrum', neorg: 'Neznámá látka', por: 'Seřaď postup', tani: 'Bodotávek', memes: 'Memes' };
+const CHM = { ka: ['les', 'quiz', 'table', 'ions', 'game', 'por', 'memes'], org: ['les', 'quiz', 'sheet', 'rozp', 'neorg', 'por', 'memes'], fyz: ['les', 'quiz', 'sheet', 'tani', 'por', 'memes'], uv: ['les', 'quiz', 'sheet', 'por', 'memes'], ir: ['les', 'quiz', 'sheet', 'spek', 'por', 'memes'] };
+const HASH = { les: 'analyticka-lekce', quiz: 'analyticka', table: 'analyticka-tabulka', ions: 'analyticka-ionty', game: 'analyticka-vzorek', sheet: 'analyticka-tahak', rozp: 'analyticka-rozpustnost', spek: 'analyticka-spektrum', neorg: 'analyticka-latka', por: 'analyticka-postup', tani: 'analyticka-bodotavek', memes: 'analyticka-memes' };
 const MODECH = { table: 'ka', ions: 'ka', game: 'ka', rozp: 'org', spek: 'ir', neorg: 'org', tani: 'fyz' };
 const LEAD = { ka: 'Kvalitativní analýza podle skript ke cvičení 1 a 2: jak kationty a anionty reagují se skupinovými činidly a jak je dokážeš selektivně.',
   org: 'Cvičení 3: důkazy prvků, třídy rozpustnosti a důkazy funkčních skupin organických látek.', fyz: 'Cvičení 4: teplota tání, index lomu, pH a polarimetrie, včetně výpočtů.',
@@ -34655,7 +34662,7 @@ function render() {
   const nd = dueCount(ST.ch), nw = weakCards(ST.ch).length, kw = n => n === 1 ? 'kartu' : n < 5 ? 'karty' : 'karet', atStart = ST.mode === 'quiz' && (!Q.cur || (Q.i === 0 && !Q.done));
   $a('#acDue').innerHTML = atStart ? (nd ? `<button type="button" class="link" data-ac="due">Zopakovat ${nd} ${kw(nd)} na dnešek</button>` : '')
     + (nw && !Q.weak ? `<button type="button" class="link" data-ac="weak">Slabá místa: ${nw} ${nw === 1 ? 'karta' : nw < 5 ? 'karty' : 'karet'}, kde chybuješ</button>` : '') : '';
-  const V = { les: lesView, table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView };
+  const V = { les: lesView, table: tableView, ions: ionsView, game: gameView, sheet: sheetView, rozp: rozpView, spek: specView, neorg: neorgView, por: porView, tani: taniView, memes: memesView };
   box.innerHTML = (V[ST.mode] || quizView)();
   acAnnounce(box, nLog);
   fhRefocus(fk, $a('#appAC'), box);
