@@ -1365,6 +1365,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-jak[open] summary::after{transform:rotate(-135deg)}
 .lx-jak-b{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 .lx-jak-b .eyebrow{margin:8px 0 0}
+.ac-jak-pic{margin:4px 0 2px;overflow-x:auto}
 .lx-jak-rx{font-size:.85rem;border-top:1px solid var(--line);padding-top:6px}
 .lx-jak-rx .scheme{zoom:.75;margin:4px 0 0}
 .jpic{display:block;width:100%;max-width:440px;height:auto;margin:6px auto 2px;border-top:1px solid var(--line);padding-top:6px}
@@ -35182,7 +35183,29 @@ const lesMemes = L => (L.mem || AC_MEMES.map((m, i) => m[2] === L.ch ? i : -1).f
 /* blok Pomůcky na zapamatování (L.aid) je v lekci místo memu; memy cvičení jsou pak všechny v záložce Memes */
 const kap = a => `<ul class="ac-ul">${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
 const pom = h => sec('Pomůcky na zapamatování', h);
-function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + (L.aid ? L.aid() : FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg })), run: FH_LES.run('a') }); }
+/* karta „Jak se to učit a co si zapamatovat“: jak se učit cvičení (AC_JAK_M), co si z lekce zapamatovat s obrázkem (AC_JAK_L) a pojmy cvičení (AC_JAK_G); co už lekce říká stejnými slovy, se vynechá */
+const AC_JAK_M = {
+/*JAK_M*/
+};
+const AC_JAK_G = {
+/*JAK_G*/
+};
+const AC_JAK_L = {
+/*JAK_L*/
+};
+function acJak(L, have) {
+  const txt = String(have).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), nov = t => !txt.includes(String(t).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+  const ul = a => `<ul class="ac-ul">${a.map(t => `<li>${t}</li>`).join('')}</ul>`, J = AC_JAK_L[L.id] || {};
+  const met = (AC_JAK_M[L.ch] || []).filter(nov), r = (J.r || []).filter(nov), gl = AC_JAK_G[L.ch] || [];
+  let h = met.length ? `<p class="eyebrow">Jak se to učit</p>${ul(met)}` : '';
+  if (r.length || J.pic) h += `<p class="eyebrow">Co si z lekce zapamatovat</p>${r.length ? ul(r) : ''}${J.pic ? `<div class="ac-jak-pic">${J.pic()}</div>` : ''}`;
+  if (gl.length) h += `<p class="eyebrow">Pojmy a zkratky</p><dl class="gloss">${gl.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>`;
+  return h ? `<details class="card lx-jak"><summary><h3 class="fam-h">Jak se to učit a co si zapamatovat</h3></summary><div class="lx-jak-b">${h}</div></details>` : '';
+}
+function lesRead(L) {
+  const body = L.body(), aid = L.aid ? L.aid() : FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg });
+  return FH_LES.read({ att: 'data-ac', L, body, beda: acTipBox(L.beda) + aid + acJak(L, body + aid), run: FH_LES.run('a') });
+}
 function memesView() {
   const M = AC_MEMES.map((m, i) => [m, 'ac:' + i]).filter(([m]) => m[2] === ST.ch);
   return FH_LES.mem({ items: M.map(x => x[0]), art: M.map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg }) || '<p>K tomuhle cvičení memy nejsou.</p>';
