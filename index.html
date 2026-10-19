@@ -1,6 +1,23 @@
 <!doctype html><html lang="cs"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://s3tsu.goatcounter.com; connect-src 'self' https://s3tsu.goatcounter.com https://docs.google.com; worker-src 'self' blob:; manifest-src 'self'; form-action 'self' https://docs.google.com; base-uri 'self'; object-src 'none'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="FormičkyHub: procvičování organické a analytické chemie pro farmaceuty podle přednášek"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#d93a72"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Formičky"><meta property="og:type" content="website"><meta property="og:site_name" content="FormičkyHub"><meta property="og:title" content="FormičkyHub"><meta property="og:description" content="Procvičování organické a analytické chemie pro farmaceuty: studium, testy, kreslení vzorců a Herna s výzvami."><meta property="og:url" content="https://s3tsu.github.io/formicky/"><meta property="og:image" content="https://s3tsu.github.io/formicky/og.png?v=2"><meta property="og:image:alt" content="Baňka s růžovým roztokem vedle nápisu FormičkyHub"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="cs_CZ"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://s3tsu.github.io/formicky/og.png?v=2"><style>:root{color-scheme:light dark}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
 <title>FormičkyHub</title>
-<script>addEventListener("load",function(){var b=document.getElementById("boot");b&&b.remove()});try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
+<script>addEventListener("load",function(){var b=document.getElementById("boot");b&&b.remove()});
+/* Nouzová obrazovka: když skript spadne a nezobrazí se úvod ani žádný předmět, uživatelka neuvidí prázdnou stránku,
+   ale co dělat dál. Pokrok v úložišti zůstává, dá se stáhnout jako soubor. */
+window.fhBootErr=[];addEventListener("error",function(e){fhBootErr.push(String(e.message||"chyba"))});
+addEventListener("load",function(){setTimeout(function(){
+  var shown=["hub","appOC","appAC"].some(function(id){var x=document.getElementById(id);return x&&!x.hidden});
+  if(shown||!fhBootErr.length||document.getElementById("fhRescue"))return;
+  var d=document.createElement("div");d.className="card fh-rescue";d.id="fhRescue";d.setAttribute("role","alert");
+  d.innerHTML='<h1>Formičky se nenačetly</h1><p>Tvůj pokrok je pořád uložený v tomhle prohlížeči. Zkus nejdřív stránku načíst znovu. Když to nepomůže, oprav nastavení: smaže se jen nastavení zobrazení, pokrok a opakování zůstanou.</p><p class="fh-rescue-row"><button type="button" class="btn primary" data-r="reload">Načíst znovu</button><button type="button" class="btn" data-r="fix">Opravit nastavení</button><button type="button" class="btn" data-r="dl">Stáhnout data</button></p><p class="aside">Stažený soubor pošli tomu, kdo web spravuje, ať se chyba dá opravit. Chyba: <span></span></p>';
+  d.querySelector(".aside span").textContent=fhBootErr[0].slice(0,160);
+  d.addEventListener("click",function(e){var r=e.target.closest("[data-r]");if(!r)return;r=r.dataset.r;
+    if(r==="dl"){var o={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^f[gh]-/.test(k))o[k]=localStorage.getItem(k)}}catch(x){}
+      var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:"application/json"}));a.download="formicky-data-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();return}
+    if(r==="fix")try{["fg-settings","fg-hn-ui","fg-ctlopen","fg-tpopen","fg-leshub","fg-websec"].forEach(function(k){localStorage.removeItem(k)})}catch(x){}
+    location.reload()});
+  document.body.prepend(d);
+},1500)});
+try{var t=localStorage.getItem("fg-theme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" crossorigin href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -411,6 +428,7 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .les-row-t span{color:var(--muted);font-size:.86rem;line-height:1.35}
 .les-row-s{font-size:.82rem;white-space:nowrap}
 .les-row-go{color:var(--accent)}
+.fh-rescue{max-width:560px;margin:12vh auto 0;margin-inline:max(16px,calc(50% - 280px))}.fh-rescue h1{margin:0;font-size:1.4rem}.fh-rescue p{margin:0}.fh-rescue-row{display:flex;flex-wrap:wrap;gap:8px}
 .stale-bar{position:sticky;top:0;z-index:60;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--foam);color:var(--ink);border-bottom:1px solid var(--line);font-size:.92rem}
 @media (max-width:520px){.les-row{grid-template-columns:1fr 16px;row-gap:6px}.les-row-s{grid-row:2;grid-column:1;justify-self:start}.les-row-go{grid-row:1/3;grid-column:2}}
 .back{align-self:flex-start;color:var(--accent);font-weight:600;text-decoration:none;font-size:.95rem;padding:4px 0}
@@ -879,6 +897,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .hub.guide .hub-head p{display:none}
 .hub.guide #navodH{font:700 1.7rem/1.15 var(--f-display);margin:4px 0 6px}
 .td-help{font-size:.9rem;color:var(--muted);margin:0}
+.td-bk{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:12px;background:var(--foam);border:1px solid var(--line);font-size:.9rem}.td-bk p{margin:0}.td-bk .row{display:flex;flex-wrap:wrap;gap:8px}
 .td-help a{color:var(--accent);font-weight:600;display:inline-block;padding:10px 0}
 .g-end .btn{text-decoration:none}
 /* ===== Analytická chemie ===== */
@@ -26077,16 +26096,36 @@ function modalOn(box, label) {
   const off = [...document.body.children].filter(el => el !== box && !el.inert && !/^(SCRIPT|STYLE|LINK)$/.test(el.tagName));
   off.forEach(el => { el.inert = true; });
   const ret = document.activeElement;   // když se tlačítko mezitím překreslí, najde se znovu podle id nebo data-hn
-  MODALS.push({ box, off, ret, sel: ret && ret.id ? '#' + ret.id : ret && ret.dataset && ret.dataset.hn ? `[data-hn="${ret.dataset.hn}"]` : '' });
+  MODALS.push({ box, off, ret, sel: ret && ret.id ? '#' + ret.id : ret && ret.dataset && ret.dataset.hn ? `[data-hn="${ret.dataset.hn}"]` : '', h: MODALS.length + 1 });
+  try { history.pushState({ fhm: MODALS.length }, ''); } catch (e) { /* bez historie zavírá jen křížek a Esc */ }
 }
 function modalOff(box, keepFocus) {
   const i = MODALS.findIndex(m => m.box === box); if (i < 0) return;
   const m = MODALS.splice(i, 1)[0];
   m.off.forEach(el => { el.inert = false; });
+  // zavřené křížkem nebo Esc: odebrat i záznam v historii, ať další Zpět nevede „nikam“. Po přechodu na jinou adresu (stav už není náš) se historie nechá být.
+  if (!modalPop && history.state && history.state.fhm === m.h) { modalSkip++; history.back(); }
   if (keepFocus) return;
   const t = m.ret && m.ret.isConnected ? m.ret : m.sel && document.querySelector(m.sel);
   if (t && t.focus) t.focus();
 }
+/* Systémové Zpět (gesto na Androidu, tlačítko v prohlížeči) zavře horní okno místo opuštění stránky. Každé okno si při otevření
+   přidá záznam do historie; Zpět ho odebere a okno zavře stejně jako Esc, takže se uloží všechno jako při zavření křížkem. */
+let modalPop = false, modalSkip = 0;
+try { if (history.state && history.state.fhm) history.replaceState(null, ''); } catch (e) { /* nic */ }   // po znovunačtení žádné okno otevřené není
+window.addEventListener('popstate', e => {
+  if (modalSkip) { modalSkip--; return; }
+  const d = (e.state && e.state.fhm) || 0;
+  if (d && !MODALS.length) { modalSkip++; history.back(); return; }   // záznam okna, které se mezitím zavřelo odchodem jinam: přeskočit
+  modalPop = true;
+  try {
+    for (let n = 0; n < 5 && MODALS.length && MODALS[MODALS.length - 1].h > d; n++) {
+      const top = MODALS[MODALS.length - 1];
+      top.box.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      if (MODALS[MODALS.length - 1] === top) break;   // okno se Esc zavřít nedalo
+    }
+  } finally { modalPop = false; }
+});
 /* ===== Vykreslení vzorců ===== */
 const $ = (s, el) => (el || document).querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -26227,12 +26266,34 @@ function molSVG(g, S) {
 /* témata seřadit podle čísla přednášky (Funkční skupiny první) */
 TOPICS.sort((a, b) => (parseInt(a.label, 10) || 0) - (parseInt(b.label, 10) || 0));
 /* ===== Stav ===== */
-const store = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* bez úložiště to jede dál */ } }
+/* Uložená data můžou být poškozená (starší verze, ruční zásah, rozšíření prohlížeče). Hodnota jiného typu, než web čeká,
+   se nahradí výchozí, ať stránka nezůstane prázdná a pokrok v ostatních klíčích zůstane. */
+const fhType = v => v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v;
+const fhShape = (d, v) => {        // objekt z úložiště: klíč, který má výchozí hodnotu, musí mít stejný typ
+  const o = Object.assign({}, d);
+  if (fhType(v) !== 'object') return o;
+  Object.keys(v).forEach(k => { if (k in Object.prototype) return; const t = fhType(d[k]); if (!(k in d) || t === 'null' || t === fhType(v[k])) o[k] = v[k]; });
+  return o;
 };
-const S = Object.assign({ topic: 'fg', set: 'base', mode: 'study', dir: 'n', fams: null, hide: false, tips: false }, store.get('fg-settings', {}));
-const prog = Object.assign({ name: {}, draw: {}, study_n: {}, study_s: {} }, store.get('fg-progress', {}));
+const fhRecs = o => { Object.keys(o).forEach(k => { if (fhType(o[k]) !== 'object') delete o[k]; }); return o; };   // mapa záznamů: jen objekty
+const store = {
+  get(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v === null ? d : d == null || fhType(v) === fhType(d) ? v : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { fhSaveFail(); } }   // bez úložiště to jede dál, jen o tom uživatelka ví
+};
+/* Když se zápis nepovede (plné nebo zakázané úložiště), ukáže se jednou lišta, ať uživatelka ví, že se pokrok neukládá. */
+function fhSaveFail() {
+  if (fhSaveFail.shown || !document.body) return; fhSaveFail.shown = true;
+  document.body.insertAdjacentHTML('afterbegin', '<div class="stale-bar" id="saveBar" role="alert"><span>Prohlížeč teď neukládá tvůj pokrok (úložiště je plné nebo zakázané). Udělej si zálohu, ať o pokrok nepřijdeš.</span><button type="button" class="btn primary sm" data-bk-go>Vytvořit kód zálohy</button></div>');
+}
+/* Pokrok je jen v úložišti prohlížeče, které prohlížeč může při úklidu smazat (Safari po týdnu bez návštěvy, když web není na ploše).
+   Po první odpovědi v sezení požádáme o trvalé úložiště; kde ho prohlížeč nedá, pomůže připomínka zálohy v panelu Dnes. */
+function fhPersist() {
+  if (fhPersist.done) return; fhPersist.done = true;
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {}); } catch (e) { /* starší prohlížeč */ }
+}
+const S = fhShape({ topic: 'fg', set: 'base', mode: 'study', dir: 'n', fams: null, hide: false, tips: false }, store.get('fg-settings', {}));
+if (S.fams != null && !Array.isArray(S.fams)) S.fams = null;
+const prog = fhRecs(fhShape({ name: {}, draw: {}, study_n: {}, study_s: {} }, store.get('fg-progress', {})));
 const pk = () => (S.mixOn ? 'mix_' : S.topic === 'fg' ? '' : S.topic + '_') + (S.mode === 'study' ? 'study_' + S.dir : S.mode);
 const P = () => (prog[pk()] = prog[pk()] || {});
 const hash = (location.hash || '').replace('#', '');
@@ -26255,6 +26316,7 @@ if (!S.mixT) S.mixOn = false;
 
 /* ===== Opakování v rozestupech: ukládá se jen v tomhle prohlížeči, nezávisle na „Zvládnuto“ ===== */
 const SR = store.get('fg-srs', {});
+Object.keys(SR).forEach(id => { const r = SR[id]; if (fhType(r) !== 'object' || !isFinite(+r.d) || r.d === null) delete SR[id]; });   // poškozený záznam opakování se zahodí, ostatní zůstanou
 const saveSR = () => store.set('fg-srs', SR);
 const today = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 864e5); };
 const SR_INT = [0, 1, 2, 4, 8, 16, 32];              // za kolik dní se karta vrátí podle přihrádky
@@ -28225,10 +28287,12 @@ document.addEventListener('keydown', e => {
 renderControls();
 refresh();
 /* ===== Denní cíl a série (jen v tomhle prohlížeči) ===== */
-const DAILY = Object.assign({ goal: 20, c: {} }, store.get('fg-daily', {}));
+const DAILY = fhShape({ goal: 20, c: {} }, store.get('fg-daily', {}));
 const saveDaily = () => store.set('fg-daily', DAILY);
 const GOALS = [0, 10, 20, 30, 50];
+if (!GOALS.includes(DAILY.goal)) DAILY.goal = 20;
 function dailyTick() {
+  fhPersist();
   const t = today(), before = DAILY.c[t] || 0;
   DAILY.c[t] = before + 1;
   Object.keys(DAILY.c).forEach(d => { if (+d < t - 400) delete DAILY.c[d]; });
@@ -28312,6 +28376,14 @@ function topicStats() {
   });
   return T;
 }
+/* Připomínka zálohy: kdo už má kus pokroku a zálohu nedělala aspoň 14 dní (nebo nikdy), uvidí v Dnes řádek s tlačítkem. „Připomenout za týden“ ji odloží. */
+const BK = fhShape({ t: 0, z: 0 }, store.get('fg-bk', {}));
+function bkRemind(n) {
+  const now = Date.now(), dd = Math.floor((now - BK.t) / 864e5);
+  if (n < 20 || now < BK.z || (BK.t && dd < 14)) return '';
+  return `<div class="td-bk" role="status"><p>Pokrok máš jen v tomhle prohlížeči a prohlížeč ho může při úklidu smazat. ${BK.t ? `Zálohu sis naposledy udělala před ${dd} dny.` : 'Zálohu sis zatím neudělala.'}</p>
+    <div class="row"><button type="button" class="btn sm" data-bk-go>Vytvořit kód zálohy</button><button type="button" class="btn sm" data-bk-later>Připomenout za týden</button></div></div>`;
+}
 function renderToday() {
   const box = $('#today'); if (!box) return;
   const T = topicStats(), ids = TOPICS.map(x => x.id);
@@ -28335,6 +28407,7 @@ function renderToday() {
       ${window.FH_AC && FH_AC.due() ? `<button type="button" class="btn" data-td="ac">Analytická chemie<small>${FH_AC.due()} ${karet(FH_AC.due())} k opakování</small></button>` : ''}
     </div>
     ${started ? '' : '<p class="td-help">Nevíš, jak začít? <a href="#navod">Přečti si krátký návod</a>.</p>'}
+    ${bkRemind(done + Object.keys(SR).length)}
     ${LOAD_ERR.length ? `<p class="td-err" role="status">Část látek a otázek se nenačetla (${esc([...new Set(LOAD_ERR.map(x => (TOPIC_BY[x.topic] || {}).label || x.label || x.topic))].join(', '))}). Ostatní funguje normálně.</p>` : ''}
     <details class="tp" id="tpBox"${store.get('fg-tpopen', false) ? ' open' : ''}><summary>Témata a tvůj pokrok<small>zvládnuto ${done} z ${all}</small></summary>
       <ol>${TOPICS.map(x => { const r = T[x.id]; return `<li><button type="button" data-td="t" data-t="${x.id}"><span class="tnum" aria-hidden="true">${(x.label.match(/^(\d+)\./) || [, '★'])[1]}</span><span class="tl">${esc(x.label.replace(/^\d+\.\s*/, ''))}</span>
@@ -28355,6 +28428,12 @@ document.addEventListener('click', e => {
   if (a === 't') goStudy({ topic: b.dataset.t, src: 'all' });
 });
 document.addEventListener('toggle', e => { if (e.target.id === 'tpBox') store.set('fg-tpopen', e.target.open); }, true);
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-bk-later]')) { BK.z = Date.now() + 7 * 864e5; store.set('fg-bk', BK); renderToday(); return; }
+  if (!e.target.closest('[data-bk-go]')) return;
+  const go = () => { const sec = $('#bkSec'); if (!sec) return; sec.open = true; sec.scrollIntoView({ block: 'start' }); const m = $('#bkMake'); if (m) m.click(); };
+  if ($('#hub').hidden) { location.hash = ''; setTimeout(go, 300); } else go();
+});
 /* ===== Záloha pokroku kódem ===== */
 const b64u = {
   enc: bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
@@ -28439,7 +28518,7 @@ function renderBackup(msg, code) {
 document.addEventListener('click', async e => {
   const b = e.target.closest('#bkMake,#bkOpen,#bkCopy,#bkLoad'); if (!b) return;
   if (b.id === 'bkOpen') { renderBackup('open'); const t = $('#bkIn'); if (t) t.focus(); return; }
-  if (b.id === 'bkMake') { renderBackup('', await makeBackup()); const c = $('#bkCode'); if (c) { c.focus(); c.select(); } return; }   // fokus na kód, ať se nemusí hledat
+  if (b.id === 'bkMake') { BK.t = Date.now(); store.set('fg-bk', BK); renderBackup('', await makeBackup()); if (!$('#hub').hidden) renderToday(); const c = $('#bkCode'); if (c) { c.focus(); c.select(); } return; }   // fokus na kód, ať se nemusí hledat
   if (b.id === 'bkCopy') {
     const t = $('#bkCode'); let ok = false;
     try { await navigator.clipboard.writeText(t.value); ok = true; } catch (er) { t.select(); try { ok = document.execCommand('copy'); } catch (er2) { ok = false; } }
@@ -28611,7 +28690,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) { re
 window.addEventListener('hashchange', () => { renderStats(); renderDay(); renderToday(); $('#appOC').classList.toggle('returning', Object.keys(SR).length > 0); const sh = $('#sheet'); if (sh && !sh.hidden) { sh.hidden = true; modalOff(sh, true); document.body.classList.remove('sheet-open'); } });
 /* ===== Herna: Lékárna, Neznámá látka, Syntézní puzzle, Seřaď to, Album kartiček, výzvy ===== */
 (function () {
-  const GS = Object.assign({ on: 0, best: {} }, store.get('fg-herna', {}));
+  const GS = fhShape({ on: 0, best: {}, coins: 0, own: {}, lr: {} }, store.get('fg-herna', {}));
   let CH = null;   // právě hraná výzva
   let CH0 = null;  // vlastní nastavení her před přijetím výzvy, po výzvě se vrátí
   const chOff = () => { CH = null; if (CH0) { NL.topic = CH0.nt; NL.n = CH0.nn; L.topics = CH0.lt; L.n = CH0.ln; CH0 = null; } };
@@ -29752,8 +29831,8 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
   /* --- offline režim a nové verze --- */
   /* Nainstalovaná aplikace na iPhonu a iPadu se po návratu z pozadí nenačte znovu a stažení dolů v ní nefunguje,
      takže by zůstala u staré verze, dokud ji člověk úplně nezavře. Proto se při otevření, po návratu do aplikace
-     a každých 30 minut zeptá na číslo verze v sw.js. Novější verzi po návratu rovnou načte (běžící test ne),
-     jinak ukáže lištu. Každou verzi načte sama jen jednou, ať se stránka nezacyklí, když server ještě dává starou. */
+     a každých 30 minut zeptá na číslo verze v sw.js. Novější verzi po návratu rovnou načte jen na úvodu bez otevřeného okna
+     (rozehraná hra, lekce, nákres ani test se tak neztratí), jinak ukáže lištu a načte ji sama po návratu na úvod. Každou verzi načte sama jen jednou, ať se stránka nezacyklí, když server ještě dává starou. */
   let swReg = null;
   if ('serviceWorker' in navigator) window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').then(r => { swReg = r; }).catch(() => {});
@@ -29779,15 +29858,17 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
     location.reload();
   }
   const verBar = () => { if (!$('#verBar')) document.body.insertAdjacentHTML('afterbegin', '<div class="stale-bar" id="verBar" role="status"><span>Je tu nová verze Formiček.</span><button type="button" class="btn primary sm" id="verGo">Načíst novou verzi</button></div>'); };
+  const verIdle = () => !$('#hub').hidden && !MODALS.length && TT.phase !== 'run';
   async function checkVer(auto) {
     if (updating || Date.now() - lastCheck < 5000) return;
     lastCheck = Date.now();
     const v = await newerVer(); if (!v) return;
     let tried = null; try { tried = sessionStorage.getItem('fh-ver-auto'); } catch (e) { /* nic */ }
-    if (auto && tried !== v && TT.phase !== 'run') { try { sessionStorage.setItem('fh-ver-auto', v); } catch (e) { /* nic */ } loadNew(); }
+    if (auto && tried !== v && verIdle()) { try { sessionStorage.setItem('fh-ver-auto', v); } catch (e) { /* nic */ } loadNew(); }
     else verBar();
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden) checkVer(true); });
+  window.addEventListener('hashchange', () => { if ($('#verBar')) setTimeout(() => { lastCheck = 0; checkVer(true); }, 300); });   // čekající verze se načte po návratu na úvod
   window.addEventListener('pageshow', e => { if (e.persisted) checkVer(true); });
   setInterval(() => { if (!document.hidden) checkVer(false); }, 30 * 60000);
   document.addEventListener('click', async e => {
@@ -33507,9 +33588,10 @@ function taniView() {
 }
 
 /* ===== Analytická chemie: procvičování, tabulka, přehled iontů a hra Neznámý vzorek ===== */
-const store0 = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+const store0 = { get(k, d) { return store.get(k, d); },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* bez úložiště to jede dál */ } } };
-const ST = Object.assign({ r: {}, best: {}, cls: 'k', mode: 'quiz', types: ['obs', 'ion', 'grp', 'sel'], hide: false, ch: 'ka' }, store0.get('fg-ac', {}));
+const ST = fhShape({ r: {}, best: {}, cls: 'k', mode: 'quiz', types: ['obs', 'ion', 'grp', 'sel'], hide: false, ch: 'ka' }, store0.get('fg-ac', {}));
+fhRecs(ST.r); if (ST.les != null && fhType(ST.les) !== 'object') delete ST.les;
 if (!CHN[ST.ch]) ST.ch = 'ka';
 /* teorie ke kationtům a aniontům přibyla v říjnu 2026: jednou ji zapneme i těm, kdo si druhy otázek už nastavily */
 if (!ST.tv) { if (!ST.types.includes('teo')) ST.types = ST.types.concat('teo'); ST.tv = 1; }
