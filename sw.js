@@ -1,5 +1,5 @@
 /* FormičkyHub – offline režim. Stránka: nejdřív síť (vždy nejnovější verze), bez signálu nebo při pomalé síti (3 s) z mezipaměti. */
-const VER = '202610191306';
+const VER = '202610191338';
 const CORE = 'fh-core-' + VER, RT = 'fh-rt-v2';
 // písma jsou na webu (fonts/), ukládají se hned, ať fungují i offline; knihovna 3D (lib/) a m3d.json až při prvním otevření 3D
 const PRE = ['./', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png', 'icon-32.png', 'favicon.svg',
