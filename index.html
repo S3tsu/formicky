@@ -1153,6 +1153,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ac-les-item h3{margin:0;font-size:1.15rem;line-height:1.3}
 .ac-les-meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:.85rem;color:var(--muted)}
 .ac-les-done{font-weight:600;color:var(--ok)}
+.les-run{font-weight:600;color:var(--accent)}
+.les-run-card{border-left:4px solid var(--accent)}
+.les-run-card p{margin-top:0}
 .ac-les-soon{margin:0;padding-left:20px;color:var(--muted)}
 .ac-les-recall{border-left:4px solid var(--accent);background:var(--accent-soft)}
 .ac-les-recall p{margin:0}
@@ -29851,7 +29854,7 @@ const WEB = {
 };
 const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610191305';
+const FH_VER = '202610191306';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
@@ -30151,24 +30154,26 @@ const MEME_ART = (() => {
    tlačítka nesou atribut předmětu (data-ac / data-ol) s hodnotami lopen, lquiz, lback. */
 const FH_LES = (() => {
   const btn = (att, a, v, cls, txt, sr) => `<button type="button" class="${cls}" ${att}="${a}"${v ? ` data-v="${v}"` : ''}${sr ? ` aria-label="${txt}${String(sr).replace(/"/g, '&quot;')}"` : ''}>${txt}</button>`;
-  /* o = { att, lessons, prog, soon, sub, empty } */
+  /* o = { att, lessons, prog, soon, sub, empty, run } */
   function list(o) {
-    const P = o.prog || {};
+    const P = o.prog || {}, R = o.run;
     return `<div class="card"><span class="eyebrow">Lekce</span><h2 class="q-name ac-long">Krátký výklad, pak kvíz</h2><p class="ac-sub">${o.sub}</p></div>
-    ${o.lessons.length ? o.lessons.map(L => { const p = P[L.id]; return `<article class="card ac-les-item"><span class="eyebrow">Lekce ${L.n}</span><h3>${L.t}</h3>
-      <div class="ac-les-meta"><span>asi ${L.min} minut · ${L.q.length} otázek</span>${p ? `<span class="ac-les-done">Hotovo, nejlépe ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</div>
-      <div class="row">${btn(o.att, 'lopen', L.id, 'btn primary', p ? 'Projít znovu' : 'Začít lekci', `: lekce ${L.n}, ${L.t}`)}${p ? btn(o.att, 'lquiz', L.id, 'btn', 'Jen kvíz', `: lekce ${L.n}, ${L.t}`) : ''}</div></article>`; }).join('') : `<div class="card">${o.empty}</div>`}
+    ${o.lessons.length ? o.lessons.map(L => { const p = P[L.id], r = R && R.id === L.id ? R : null; return `<article class="card ac-les-item"><span class="eyebrow">Lekce ${L.n}</span><h3>${L.t}</h3>
+      <div class="ac-les-meta"><span>asi ${L.min} minut · ${L.q.length} otázek</span>${r ? `<span class="les-run">Rozpracováno, ${r.i} z ${r.n}</span>` : ''}${p ? `<span class="ac-les-done">Hotovo, nejlépe ${+p.best || 0} z ${+p.n || 0}</span>` : r ? '' : '<span class="ac-new">nová</span>'}</div>
+      <div class="row">${r ? btn(o.att, 'lcont', L.id, 'btn primary', 'Pokračovat v kvízu', `: lekce ${L.n}, ${L.t}, otázka ${r.i + 1} z ${r.n}`) : ''}${btn(o.att, 'lopen', L.id, r ? 'btn' : 'btn primary', p || r ? 'Projít znovu' : 'Začít lekci', `: lekce ${L.n}, ${L.t}`)}${p && !r ? btn(o.att, 'lquiz', L.id, 'btn', 'Jen kvíz', `: lekce ${L.n}, ${L.t}`) : ''}</div></article>`; }).join('') : `<div class="card">${o.empty}</div>`}
     ${o.soon && o.soon.length ? `<div class="card"><span class="eyebrow">Připravujeme</span><ol class="ac-les-soon" start="${o.lessons.length + 1}">${o.soon.map(t => `<li>${t}</li>`).join('')}</ol></div>` : ''}`;
   }
-  /* o = { att, L, body, beda } */
+  /* o = { att, L, body, beda, run } */
   function read(o) {
-    const L = o.L;
+    const L = o.L, r = o.run && o.run.id === L.id ? o.run : null;
+    const go = r ? btn(o.att, 'lcont', L.id, 'btn primary', `Pokračovat v kvízu (otázka ${r.i + 1} z ${r.n})`) + btn(o.att, 'lquiz', L.id, 'btn', 'Kvíz od začátku') : btn(o.att, 'lquiz', L.id, 'btn primary', `Spustit kvíz (${L.q.length} otázek)`);
     return `<div class="row">${btn(o.att, 'lback', '', 'link ac-les-back', '← Všechny lekce')}</div>
+    ${r ? `<div class="card les-run-card"><p><b>Kvíz máš rozpracovaný:</b> ${r.i} z ${r.n} otázek hotovo, ${r.ok} správně.</p><div class="row">${btn(o.att, 'lcont', L.id, 'btn primary', 'Pokračovat v kvízu')}</div></div>` : ''}
     <div class="card"><span class="eyebrow">Lekce ${L.n} · asi ${L.min} minut</span><h2 class="q-name ac-long">${L.t}</h2><p class="ac-sub">${L.goal}</p></div>
     <div class="card ac-les-recall"><p><b>Než začneš:</b> ${L.recall}</p>
       <textarea class="lx-note" data-lxn="${L.id}" rows="2" aria-label="Tvoje odpověď z hlavy" placeholder="Můžeš si to napsat sem, na konci lekce se ti to ukáže.">${xe(note(L.id))}</textarea></div>
     ${tables(o.body)}${o.beda || ''}
-    <div class="card"><p>Teď si to vyzkoušej. Nejdřív odpovídej z hlavy, teprve potom se vracej k výkladu.</p><div class="row">${btn(o.att, 'lquiz', L.id, 'btn primary', `Spustit kvíz (${L.q.length} otázek)`)}</div></div>`;
+    <div class="card"><p>Teď si to vyzkoušej. Nejdřív odpovídej z hlavy, teprve potom se vracej k výkladu.</p><div class="row">${go}</div></div>`;
   }
   /* o = { att, L, ok, n, missed, tail, note } */
   function end(o) {
@@ -30617,6 +30622,23 @@ const FH_LES = (() => {
     });
     return into;
   }
+  /* rozpracovaný kvíz lekce: po každé odpovědi se zapíše, kde jsi skončila, ať zavření aplikace, restart telefonu ani nová verze nic nezahodí;
+     jeden na předmět (k = 'o', 'a'), smaže se po dokončení, po 30 dnech neplatí */
+  const RUNK = 'fg-lrun';
+  const runAll = () => { try { const v = JSON.parse(localStorage.getItem(RUNK)); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch (e) { return {}; } };
+  const safe = t => String(t).replace(/<(?!\/?(?:sub|sup|b|i|small|br)>)/g, '&lt;');   // seznam chyb se vkládá jako HTML, z úložiště jen pár značek
+  function run(k, id) {
+    const r = runAll()[k];
+    if (!r || typeof r !== 'object' || typeof r.id !== 'string' || (id && r.id !== id)) return null;
+    const i = num(r.i), n = num(r.n), ok = num(r.ok);
+    if (!i || i >= n || ok > i || !(Date.now() - num(r.t) < 30 * 864e5)) return null;
+    return { id: r.id, i, n, ok, m: Array.isArray(r.m) ? r.m.slice(0, n).map(safe) : [] };
+  }
+  function runSet(k, v) {
+    const A = runAll(); if (v) A[k] = Object.assign({ t: Date.now() }, v); else delete A[k];
+    try { localStorage.setItem(RUNK, JSON.stringify(A)); } catch (e) { /* plné úložiště: kvíz vydrží jen do zavření */ }
+    try { hub(); } catch (e) { /* rozcestník ještě není */ }
+  }
   /* předměty s lekcemi: { k, name, short, lessons() → [{ id, n, t, min, qn, where }], prog(), open(id) } */
   const SUBJ = [];
   const reg = s => { SUBJ.push(s); try { hub(); } catch (e) { /* rozcestník ještě není */ } };
@@ -30640,12 +30662,14 @@ const FH_LES = (() => {
     /* lekce jako seznam řádků: s přibývajícími lekcemi zůstane přehledný i na počítači */
     /* sbaleně jen nejbližší nedokončené lekce, střídavě z každého předmětu (nejvýš 4); celý seznam po rozbalení, ať úvod s přibývajícími lekcemi neroste */
     const sel = A.filter(L => f === '*' || L.s.k === f), todo = sel.filter(L => !L.s.prog()[L.id]);
-    const by = SUBJ.map(x => todo.filter(L => L.s === x)), rr = [];
-    for (let i = 0; by.some(g => g[i]); i++) by.forEach(g => { if (g[i]) rr.push(g[i]); });
+    const RN = {}; SUBJ.forEach(x => { RN[x.k] = run(x.k); });
+    const runOf = L => RN[L.s.k] && RN[L.s.k].id === L.id ? RN[L.s.k] : null;
+    const by = SUBJ.map(x => todo.filter(L => L.s === x)), rr = sel.filter(runOf);   // rozpracované lekce první
+    for (let i = 0; by.some(g => g[i]); i++) by.forEach(g => { if (g[i] && !rr.includes(g[i])) rr.push(g[i]); });
     const short = (rr.length ? rr : sel).slice(0, 4), list = OPEN || sel.length <= 5 ? sel : short;
-    const rows = list.map(L => { const p = L.s.prog()[L.id]; return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
+    const rows = list.map(L => { const p = L.s.prog()[L.id], r = runOf(L); return `<li><button type="button" class="les-row" data-lh="${L.s.k}" data-v="${L.id}">
       <span class="les-row-t">${f === '*' ? `<i class="les-tag les-tag-${L.s.k}">${L.s.short}</i>` : ''}<b>Lekce ${L.n}: ${L.t}</b><span>${f === '*' ? '' : L.s.short + ' · '}${L.where}</span></span>
-      <span class="les-row-s">${p ? `<span class="ac-les-done">Hotovo ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</span>
+      <span class="les-row-s">${r ? `<span class="les-run">Rozpracováno ${r.i} z ${r.n}</span>` : p ? `<span class="ac-les-done">Hotovo ${+p.best || 0} z ${+p.n || 0}</span>` : '<span class="ac-new">nová</span>'}</span>
       <svg class="les-row-go" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>`; }).join('');
     const more = sel.length > 5 ? `<button type="button" class="link les-more" data-lhm="1" aria-expanded="${OPEN}">${OPEN ? 'Ukázat méně' : `Ukázat všechny lekce (${sel.length})`}</button>` : '';
     document.getElementById('lesHubG').innerHTML = seg + `<ul class="les-list">${rows}</ul>` + more;
@@ -30663,7 +30687,7 @@ const FH_LES = (() => {
     const G = {}; lessons.forEach(L => { (G[group(L)] = G[group(L)] || []).push(L); });
     Object.values(G).forEach(g => { const m = num(g[0]); if (!m) return; g.sort((a, b) => a.n - b.n).forEach((L, i) => { L.n = m[1] + (g.length > 1 ? '.' + 'abcdefghijklmnopqrstuvwxyz'[i] : ''); }); });
   }
-  return { list, read, end, rec, merge, reg, next, open, hub, number, ord, mem, w: W };
+  return { list, read, end, rec, merge, run, runSet, reg, next, open, hub, number, ord, mem, w: W };
 })();
 
 /* ===== Organická chemie: lekce nad otázkami z přednášek =====
@@ -32415,7 +32439,7 @@ const FH_OL = (() => {
       <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}<div class="fbwrap">${fb}</div></div>`;
   }
   /* lekce se zapíše hned po poslední odpovědi, ne až na závěrečné obrazovce */
-  function saveRec() { const L = BY[O.open]; if (O.saved || !L) return; OP[L.id] = FH_LES.rec(OP[L.id], O.deck.length, O.ok, today()); store.set('fg-les', OP); O.saved = true; }
+  function saveRec() { const L = BY[O.open]; if (O.saved || !L) return; OP[L.id] = FH_LES.rec(OP[L.id], O.deck.length, O.ok, today()); store.set('fg-les', OP); O.saved = true; FH_LES.runSet('o', null); }
   function end() {
     const L = BY[O.open], n = O.deck.length;
     saveRec();
@@ -32428,10 +32452,10 @@ const FH_OL = (() => {
     if (O.step === 'memes') b.innerHTML = memesHTML();
     else if (O.step === 'quiz' && O.deck.length) b.innerHTML = O.i < O.deck.length ? quizHTML() : end();
     else if (O.step === 'read' && L) { const body = L.body(), aid = L.aid ? L.aid() : '';
-      b.innerHTML = FH_LES.read({ att: ATT, L, body, beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + (aid || FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' })) + jakHTML(L, body + aid) }); }
+      b.innerHTML = FH_LES.read({ att: ATT, L, body, beda: `<div class="ac-beda"><div class="ac-beda-pic bd-ico">${bedaHead()}</div><p><b>Béďa radí:</b> ${esc(L.beda)}</p></div>` + (aid || FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'chat' })) + jakHTML(L, body + aid), run: FH_LES.run('o') }); }
     else {
       const has = LES.map(x => x.topic).filter((t, i, a) => a.indexOf(t) === i);
-      b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
+      b.innerHTML = FH_LES.list({ att: ATT, lessons: mine(), prog: OP, run: FH_LES.run('o'), soon: S.mixOn ? [] : SOON[S.topic] || [], sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí ve Studiu, ať ti látka vydrží až ke zkoušce.',
         empty: `<p>K tomuhle tématu zatím lekce není.</p><div class="row">${has.map(t => `<button type="button" class="btn" ${ATT}="ltopic" data-v="${t}">Otevřít lekce k tématu ${esc(TOPIC_BY[t].label)}</button>`).join('')}</div>` });
     }
     if (O.step === 'read') lxInit(b);
@@ -32446,6 +32470,14 @@ const FH_OL = (() => {
   function start(id) {
     const L = BY[id]; if (!L) return;
     O.open = id; O.step = 'quiz'; O.deck = L.q.filter(k => BYID[k]); O.i = 0; O.ok = 0; O.missed = []; O.order = null; O.pick = null; O.saved = false;
+    FH_LES.runSet('o', null);
+    render(); window.scrollTo(0, 0);
+  }
+  /* pokračování rozpracovaného kvízu; když se mezitím změnil počet otázek lekce, začne se znovu */
+  function cont(id) {
+    const L = BY[id], r = FH_LES.run('o', id); if (!L) return;
+    const deck = L.q.filter(k => BYID[k]); if (!r || r.n !== deck.length) return start(id);
+    O.open = id; O.step = 'quiz'; O.deck = deck; O.i = r.i; O.ok = r.ok; O.missed = r.m; O.order = null; O.pick = null; O.saved = false;
     render(); window.scrollTo(0, 0);
   }
   function answer(k) {
@@ -32453,7 +32485,7 @@ const FH_OL = (() => {
     const g = BYID[O.deck[O.i]], ok = k === 0;
     O.pick = k; if (ok) O.ok++; else O.missed.push(`${esc(g.prompt)} → ${esc(g.full || (g.opts[0][0] && g.opts[0][0].t) || g.name)}`);
     srMark(g.id, ok, true); saveSR();
-    if (O.i + 1 >= O.deck.length) saveRec();
+    if (O.i + 1 >= O.deck.length) saveRec(); else FH_LES.runSet('o', { id: O.open, i: O.i + 1, n: O.deck.length, ok: O.ok, m: O.missed });
     render(); const nb = document.getElementById('olNext'); if (nb) nb.focus({ preventScroll: true });
     const right = g.full || g.opts[0].filter(p => p.t).map(p => p.t).join(' ');   // u obrázkových možností jen písmeno
     fhSay(`${ok ? 'Správně' : `Tohle ne. Správně je ${LTR[O.order.indexOf(0)]}`}${right ? ': ' + right.replace(/\n/g, ' ').replace(/\.$/, '') : ''}. ${g.why || ''}`.trim());
@@ -32469,6 +32501,7 @@ const FH_OL = (() => {
     const a = b.getAttribute(ATT), v = b.dataset.v;
     if (a === 'lopen') { O.open = v; O.step = 'read'; render(); return window.scrollTo(0, 0); }
     if (a === 'lquiz') return start(v);
+    if (a === 'lcont') return cont(v);
     if (a === 'lback') { O.step = 'list'; render(); return window.scrollTo(0, 0); }
     if (a === 'lnext') { O.i++; O.order = null; O.pick = null; render(); return window.scrollTo(0, 0); }
     if (a === 'ltopic') { const s = $('#topicSel'); s.value = v; s.dispatchEvent(new Event('change')); }
@@ -33887,7 +33920,7 @@ function quizView() {
 }
 function answer(ok, missText) {
   const cd = Q.cur; Q.done = true; if (ok) Q.ok++; else Q.missed.push(missText); acCheer(ok);
-  mark(cd.id, ok); Q.fb = feedback(cd, ok); if (Q.les && Q.i + 1 >= Q.deck.length) lesSave(); render();
+  mark(cd.id, ok); Q.fb = feedback(cd, ok); if (Q.les && Q.i + 1 >= Q.deck.length) lesSave(); else if (Q.les) FH_LES.runSet('a', { id: Q.les, i: Q.i + 1, n: Q.deck.length, ok: Q.ok, m: Q.missed }); render();
   const b = $a('#acNext'); if (b) b.focus({ preventScroll: true });
 }
 /* otázka končící otazníkem nedostane navíc dvojtečku („…reakce?: …“) */
@@ -34410,20 +34443,28 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]kontrola\b/.tes
 }
 const LS = { open: null, step: 'list' };
 function lesList() {
-  return FH_LES.list({ att: 'data-ac', lessons: AC_LES.filter(L => L.ch === ST.ch), prog: ST.les, soon: AC_LES_SOON,
+  return FH_LES.list({ att: 'data-ac', lessons: AC_LES.filter(L => L.ch === ST.ch), prog: ST.les, run: FH_LES.run('a'), soon: AC_LES_SOON,
     sub: 'Lekce zabere asi 5 až 6 minut. Otázky z kvízu se ti potom vracejí v Procvičování, ať ti látka vydrží až ke zkoušce.', empty: '<p>K tomuhle cvičení zatím lekce není.</p>' });
 }
 /* memy k lekci: L.mem = indexy v AC_MEMES, bez něj memy kapitoly */
 const lesMemes = L => (L.mem || AC_MEMES.map((m, i) => m[2] === L.ch ? i : -1).filter(i => i >= 0)).filter(i => AC_MEMES[i]).map(i => [AC_MEMES[i], 'ac:' + i]);
-function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg }) }); }
+function lesRead(L) { return FH_LES.read({ att: 'data-ac', L, body: L.body(), beda: acTipBox(L.beda) + FH_LES.mem({ items: lesMemes(L).map(x => x[0]), art: lesMemes(L).map(x => x[1]), kind: 'top', pic: () => AC_MASCOT.svg }), run: FH_LES.run('a') }); }
 function lesQuiz(id) {
   const L = LES[id]; if (!L) return;
   Q.deck = L.q.map(k => CARD[k]).filter(Boolean); Q.i = 0; Q.ok = 0; Q.missed = []; Q.empty = !Q.deck.length; Q.les = id; Q.lesSaved = false; Q.weak = false;
+  LS.open = id; LS.step = 'quiz'; FH_LES.runSet('a', null);
+  next(true); window.scrollTo(0, 0);
+}
+/* pokračování rozpracovaného kvízu; když se mezitím změnil počet otázek lekce, začne se znovu */
+function lesCont(id) {
+  const L = LES[id], r = FH_LES.run('a', id); if (!L) return;
+  const deck = L.q.map(k => CARD[k]).filter(Boolean); if (!r || r.n !== deck.length) return lesQuiz(id);
+  Q.deck = deck; Q.i = r.i; Q.ok = r.ok; Q.missed = r.m; Q.empty = false; Q.les = id; Q.lesSaved = false; Q.weak = false;
   LS.open = id; LS.step = 'quiz';
   next(true); window.scrollTo(0, 0);
 }
 /* lekce se zapíše hned po poslední odpovědi, ne až na závěrečné obrazovce */
-function lesSave() { const L = LES[Q.les]; if (Q.lesSaved || !L) return; ST.les = ST.les || {}; ST.les[L.id] = FH_LES.rec(ST.les[L.id], Q.deck.length, Q.ok, day()); save(); Q.lesSaved = true; }
+function lesSave() { const L = LES[Q.les]; if (Q.lesSaved || !L) return; ST.les = ST.les || {}; ST.les[L.id] = FH_LES.rec(ST.les[L.id], Q.deck.length, Q.ok, day()); save(); Q.lesSaved = true; FH_LES.runSet('a', null); }
 function lesEnd() {
   const L = LES[Q.les], n = Q.deck.length;
   lesSave();
@@ -34511,6 +34552,7 @@ document.addEventListener('click', e => {
   if (a === 'mode') return setMode(v);
   if (a === 'lopen') { if (Q.les) { Q.les = null; Q.deck = []; } LS.open = v; LS.step = 'read'; render(); return window.scrollTo(0, 0); }
   if (a === 'lquiz') return lesQuiz(v);
+  if (a === 'lcont') return lesCont(v);
   if (a === 'lback') { if (Q.les) { Q.les = null; Q.deck = []; } LS.step = 'list'; render(); return window.scrollTo(0, 0); }
   if (a === 'type') { ST.types = ST.types.includes(v) ? ST.types.filter(x => x !== v) : ST.types.concat(v); save(); return newDeck(); }
   if (a === 'due') { dueWiden(); if (ST.mode !== 'quiz') setMode('quiz'); return newDeck(true); }
