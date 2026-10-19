@@ -1369,6 +1369,9 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .jpic .lobe{fill:var(--surface);stroke:var(--accent);stroke-width:1.2}
 .jpic .ar{stroke:var(--pink);stroke-width:1.8;fill:none}
 .jpic marker path{fill:var(--pink)}
+.jpic .h{fill:var(--muted);font-weight:500}
+.jpic .pk{stroke:var(--pink)}
+.jpic .back circle{stroke-dasharray:3 2}
 .lx-jak-m figcaption{font-size:.8rem}
 @media (prefers-reduced-motion:reduce){.lx-jak summary::after{transition:none}}
 /* zkratka, dvojice, kartičky */
@@ -26814,7 +26817,81 @@ const JPIC = (() => {
       t(170, 70, 'H a Br naproti sobě,') + t(170, 88, '180°: antiperiplanární') + t(170, 116, 'Báze vezme H, Br⁻ odejde,', 'cap') + t(170, 132, 'mezi uhlíky vznikne C=C.', 'cap');
     return svg('jpa-e2', 390, 180, 'E2 v Newmanově projekci: vodík na předním uhlíku nahoře, brom na zadním uhlíku dole, svírají 180 stupňů; báze odtrhne vodík', b);
   };
-  return { t09sn2: sn2, t09sn1: sn1, t09e2: e2 };
+  const P = (cx, cy, r, a) => [+(cx + r * Math.cos(a * Math.PI / 180)).toFixed(1), +(cy + r * Math.sin(a * Math.PI / 180)).toFixed(1)];
+  const dbl = (x1, y1, x2, y2, c) => { const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = -dy / L * 2.6, ny = dx / L * 2.6; return ln(x1 + nx, y1 + ny, x2 + nx, y2 + ny, c) + ln(x1 - nx, y1 - ny, x2 - nx, y2 - ny, c); };
+  /* Newmanova projekce: přední vazby ze středu, zadní z kruhu (úhly ve stupních, 0 = doprava, kladné dolů) */
+  const nm = (cx, cy, fr, bk) => `<circle class="b" cx="${cx}" cy="${cy}" r="24"/>` +
+    bk.map(([a, l, la = a]) => { const [x1, y1] = P(cx, cy, 24, a), [x2, y2] = P(cx, cy, 40, a), [tx, ty] = P(cx, cy, 50, la); return ln(x1, y1, x2, y2) + (l ? t(tx, ty + 5, l, 'h', 'middle') : ''); }).join('') +
+    fr.map(([a, l, la = a]) => { const [x2, y2] = P(cx, cy, 36, a), [tx, ty] = P(cx, cy, 46, la); return ln(cx, cy, x2, y2) + (l ? t(tx, ty + 5, l, 'h', 'middle') : ''); }).join('') + `<circle class="dot" cx="${cx}" cy="${cy}" r="2.5"/>`;
+  const t04ko = () => svg('jpa-ko', 390, 175, 'Ethan v Newmanově projekci: střídavá konformace je nejstabilnější, v zákrytové se tři páry vodíků překrývají, každý zákryt stojí 4,0 kJ na mol, celkem 12,0',
+    nm(80, 74, [[-90, 'H'], [30, 'H'], [150, 'H']], [[-30, 'H'], [90, 'H'], [210, 'H']]) +
+    nm(300, 74, [[-90, 'H', -104], [30, 'H', 16], [150, 'H', 136]], [[-78, 'H', -62], [42, 'H', 58], [162, 'H', 178]]) +
+    ar('M150 74 L226 74') + t(188, 64, 'otoč o 60°', 'cap', 'middle') +
+    t(80, 152, 'střídavá: nejstabilnější', 'cap', 'middle') + t(300, 152, 'zákrytová: 3 × 4,0', 'cap', 'middle') + t(300, 168, '= 12,0 kJ·mol⁻¹ navíc', 'cap', 'middle'));
+  /* židlička: atom 0 = levá špička, 3 = pravá špička; axiální vazby svisle, na 0, 2, 4 dolů a na 1, 3, 5 nahoru; ekvatoriální rovnoběžně s vazbami kruhu ob jednu */
+  const CH = [[0, 0], [14, -20], [48, -10], [78, -20], [64, 0], [30, -10]], EQ = [[-34, -10], [-30, 10], [14, -20], [34, 10], [30, -10], [-14, 20]];
+  const chair = (ox, oy, k, f) => { const p = CH.map(([x, y]) => [ox + x * k, oy + y * k]); let h = `<polygon class="b" points="${p.map(q => q.join(',')).join(' ')}"/>`;
+    p.forEach(([x, y], i) => { const [a, b] = EQ[i], L = Math.hypot(a, b); h += f(i, x, y, i % 2 ? -1 : 1, [a / L * 22, b / L * 22]); }); return h; };
+  const t04ch = () => svg('jpa-ch', 390, 175, 'Židličková konformace cyklohexanu: na každém uhlíku jedna axiální vazba svisle, střídavě nahoru a dolů, a jedna ekvatoriální kolem rovníku',
+    chair(44, 98, 1.75, (i, x, y, u, [ex, ey]) => ln(x, y, x, y + u * 26, 'pk') + ln(x, y, x + ex, y + ey)) +
+    `<line class="b pk" x1="218" y1="56" x2="240" y2="56"/>` + t(248, 61, 'axiální: svisle,') + t(248, 79, 'střídavě nahoru a dolů', 'cap') +
+    ln(218, 106, 240, 100) + t(248, 105, 'ekvatoriální:') + t(248, 123, 'kolem rovníku kruhu', 'cap') +
+    t(195, 165, 'Překlopením kruhu se axiální a ekvatoriální vymění.', 'cap', 'middle'));
+  /* atom 3 = levá špička (axiálně dolů), atomy 1 a 5 mají axiální vazbu na stejné straně */
+  const t04mo = (m = []) => svg('jpa-mo', 390, 190, 'Methylcyklohexan: axiální methyl naráží na axiální vodíky na C3 a C5 téže strany, dvě interakce po 3,8 kJ na mol; ekvatoriální konformer je stabilnější',
+    chair(24, 76, 1.5, (i, x, y, u, [ex, ey]) => { m[i] = [x, y]; return i === 0 ? ln(x, y, x, y + 30) + t(x, y + 46, 'CH₃', 'x', 'middle') : i === 2 || i === 4 ? ln(x, y, x, y + 26) + t(x, y + 41, 'H', 'h', 'middle') : ''; }) +
+    [2, 4].map(i => `<path class="ar d" d="M${m[0][0] + 16} ${m[0][1] + 42} Q${(m[0][0] + m[i][0]) / 2} ${m[i][1] + 58} ${m[i][0] - 8} ${m[i][1] + 38}"/>`).join('') +
+    t(195, 44, '⇄', '', 'middle') +
+    chair(262, 76, 1.5, (i, x, y, u, [ex, ey]) => i === 0 ? ln(x, y, x + ex, y + ey) + t(x + ex - 4, y + ey + 4, 'CH₃', 'x', 'end') + ln(x, y, x, y + 26) + t(x, y + 41, 'H', 'h', 'middle') : '') +
+    t(80, 164, 'CH₃ axiálně: 2 × 3,8', 'cap', 'middle') + t(80, 180, '= 7,6 kJ·mol⁻¹ navíc', 'cap', 'middle') +
+    t(310, 164, 'CH₃ ekvatoriálně:', 'cap', 'middle') + t(310, 180, 'stabilnější', 'cap', 'middle'));
+  /* volant R/S: skupina 4 schovaná za uhlíkem, 1 → 2 → 3 */
+  const wheel = (cx, r) => { const p = a => P(cx, 84, 38, a), [x1, y1] = p(-90), [x2, y2] = p(r ? 30 : 150), [x3, y3] = p(r ? 150 : 30);
+    const [ax, ay] = P(cx, 84, 56, r ? -50 : -130), [bx, by] = P(cx, 84, 56, r ? 170 : 10);
+    return ln(cx, 84, x1, y1) + ln(cx, 84, x2, y2) + ln(cx, 84, x3, y3) + `<g class="s back"><circle cx="${cx}" cy="84" r="9"/><text x="${cx}" y="88.5" text-anchor="middle">4</text></g>` +
+      s(x1, y1, '1') + s(x2, y2, '2') + s(x3, y3, '3') + `<path class="ar" d="M${ax} ${ay} A56 56 0 1 ${r ? 1 : 0} ${bx} ${by}" marker-end="MK"/>`; };
+  const t08ci = () => svg('jpa-ci', 390, 190, 'Určení R a S: skupina 4 míří dozadu za uhlík; když jde 1, 2, 3 po směru hodinových ručiček, je to R, proti směru S',
+    wheel(90, 1) + wheel(300, 0) + t(90, 166, 'po směru hodin = R', '', 'middle') + t(300, 166, 'proti směru = S', '', 'middle') +
+    t(195, 186, '4 míří od tebe. Míří-li k tobě, výsledek obrať.', 'cap', 'middle'));
+  /* E/Z: 1 = vyšší priorita na každém uhlíku */
+  const ez = (ox, e) => dbl(ox + 40, 70, ox + 80, 70) + ln(ox + 40, 70, ox + 22, 42) + ln(ox + 40, 70, ox + 22, 98) + ln(ox + 80, 70, ox + 98, 42) + ln(ox + 80, 70, ox + 98, 98) +
+    s(ox + 16, 34, '1') + s(ox + 16, 106, '2') + s(ox + 104, 34, e ? '2' : '1') + s(ox + 104, 106, e ? '1' : '2') + t(ox + 60, 52, e ? 'E' : 'Z', 'x', 'middle');
+  const t06ez = () => svg('jpa-ez', 390, 175, 'Z: obě skupiny s vyšší prioritou na stejné straně dvojné vazby, E: na opačných stranách',
+    ez(20, 0) + ez(250, 1) + t(80, 136, 'Z = zusammen, spolu', 'cap', 'middle') + t(310, 136, 'E = entgegen, proti sobě', 'cap', 'middle') +
+    t(195, 166, '1 = vyšší priorita podle CIP, zvlášť na každém uhlíku', 'cap', 'middle'));
+  const t06ea = () => svg('jpa-ea', 390, 190, 'Markovnikov: propen a H plus, vodík jde na CH2, vznikne stabilnější sekundární karbokation, na něj se naváže bromid, produkt 2-brompropan',
+    t(195, 22, 'CH₂=CH–CH₃ + H⁺', '', 'middle') + ar('M170 32 L112 64') + ar('M220 32 L278 64') +
+    t(100, 86, 'CH₃–C⁺H–CH₃', '', 'middle') + t(100, 104, 'sekundární, stabilnější', 'cap', 'middle') +
+    t(292, 86, '⁺CH₂–CH₂–CH₃', 'h', 'middle') + t(292, 104, 'primární, méně stabilní', 'cap', 'middle') +
+    ar('M100 114 L100 142') + t(108, 134, 'Br⁻', 'x') + t(100, 162, 'CH₃–CHBr–CH₃', '', 'middle') + t(100, 180, 'H na CH₂, Br doprostřed', 'cap', 'middle') +
+    t(292, 150, 'Hlavní produkt jde', 'cap', 'middle') + t(292, 166, 'přes stabilnější kation.', 'cap', 'middle'));
+  /* orientace SEAr: kruh se substituentem nahoře, vyznačené polohy */
+  const ring = (cx, cy, r) => `<polygon class="b" points="${[-90, -30, 30, 90, 150, 210].map(a => P(cx, cy, r, a).join(',')).join(' ')}"/><circle class="b" cx="${cx}" cy="${cy}" r="${r * 0.58}"/>`;
+  const orient = (cx, sub, pos) => { let h = ring(cx, 84, 30) + ln(cx, 54, cx, 36) + t(cx, 30, sub, 'x', 'middle');
+    [['o', -30], ['m', 30], ['p', 90], ['m', 150], ['o', 210]].forEach(([l, a]) => { const [x, y] = P(cx, 84, 48, a); h += pos.includes(l) ? s(x, y, l) : t(x, y + 5, l, 'h', 'middle'); }); return h; };
+  const t12ef = () => svg('jpa-ef', 390, 190, 'Orientace při elektrofilní aromatické substituci: OH, NH2, alkyly a halogeny řídí do poloh ortho a para, NO2, CN, CHO a COOH do polohy meta',
+    orient(95, 'OH', 'op') + orient(295, 'NO₂', 'm') +
+    t(95, 160, 'o, p: OH, NH₂, OCH₃,', 'cap', 'middle') + t(95, 176, 'NHCOCH₃, CH₃, halogeny', 'cap', 'middle') +
+    t(295, 160, 'm: NO₂, CN, SO₃H, CHO,', 'cap', 'middle') + t(295, 176, 'COCH₃, COOH, COOCH₃', 'cap', 'middle'));
+  const t15na = () => svg('jpa-na', 390, 160, 'Nukleofilní adice na karbonyl: nukleofil napadne kladně polarizovaný uhlík, vznikne tetraedrický alkoxid, ten se protonuje na alkohol',
+    /* 1 */ t(44, 85, 'C', '', 'middle') + dbl(52, 80, 80, 80) + t(90, 85, 'O', 'x', 'middle') + t(50, 106, 'δ+', 'cap', 'middle') + t(92, 106, 'δ−', 'cap', 'middle') +
+    ln(37, 76, 22, 58) + t(16, 54, 'R', '', 'middle') + ln(37, 86, 22, 104) + t(16, 118, 'R', '', 'middle') +
+    t(64, 22, 'Nu⁻') + ar('M62 20 Q46 22 45 66') + ar('M66 76 Q82 64 90 70') + t(60, 148, '1. Nu⁻ na δ+ uhlík', 'cap', 'middle') +
+    /* 2 */ `<g transform="translate(140 0)">` + t(50, 85, 'C', '', 'middle') + ln(50, 72, 50, 50) + t(50, 44, 'Nu', '', 'middle') + ln(58, 80, 80, 80) + t(92, 85, 'O⁻', 'x', 'middle') +
+    ln(42, 84, 22, 92) + t(14, 98, 'R', '', 'middle') + wd(52, 90, 40, 112) + t(36, 126, 'R', '', 'middle') + t(55, 148, '2. alkoxid (sp³)', 'cap', 'middle') + `</g>` +
+    /* 3 */ `<g transform="translate(270 0)">` + t(40, 85, 'C', '', 'middle') + ln(40, 72, 40, 50) + t(40, 44, 'Nu', '', 'middle') + ln(48, 80, 66, 80) + t(80, 85, 'OH', 'x', 'middle') +
+    ln(32, 84, 14, 92) + t(8, 98, 'R', '', 'middle') + wd(42, 90, 30, 112) + t(26, 126, 'R', '', 'middle') + t(70, 30, '+ H⁺', 'cap') + t(55, 148, '3. alkohol', 'cap', 'middle') + `</g>`);
+  const t23da = () => { const v = (cx, a) => P(cx, 78, 34, a), A = [-90, -30, 30, 90, 150, 210];
+    const d = A.map(a => v(90, a)), q = A.map(a => v(300, a)), sh = ([x, y]) => [x + 22, y];
+    const L = (a, b, c) => ln(a[0], a[1], b[0], b[1], c), D = (a, b) => dbl(a[0], a[1], b[0], b[1]);
+    return svg('jpa-da', 390, 175, 'Dielsova-Alderova reakce: dien v konformaci s-cis a dienofil dají cyklohexen, vzniknou dvě nové vazby sigma a dvojná vazba se přesune doprostřed dienu',
+      D(d[0], d[5]) + L(d[5], d[4]) + D(d[4], d[3]) + D(sh(d[1]), sh(d[2])) +
+      `<line class="b pk d" x1="${d[0][0]}" y1="${d[0][1]}" x2="${sh(d[1])[0]}" y2="${sh(d[1])[1]}"/><line class="b pk d" x1="${d[3][0]}" y1="${d[3][1]}" x2="${sh(d[2])[0]}" y2="${sh(d[2])[1]}"/>` +
+      ar('M170 78 L222 78') + t(196, 68, 'teplo', 'cap', 'middle') +
+      L(q[0], q[5]) + D(q[5], q[4]) + L(q[4], q[3]) + L(q[1], q[2]) + L(q[0], q[1], 'pk') + L(q[3], q[2], 'pk') +
+      t(96, 142, 'dien (s-cis) + dienofil', 'cap', 'middle') + t(300, 142, 'cyklohexen', 'cap', 'middle') +
+      t(195, 166, 'Růžově dvě nové σ vazby, dvojná vazba je teď uprostřed.', 'cap', 'middle')); };
+  return { t09sn2: sn2, t09sn1: sn1, t09e2: e2, t04ko, t04ch, t04mo, t08ci, t06ez, t06ea, t12ef, t15na, t23da };
 })();
 function schemeHTML(sc, veil) {
   const side = parts => !parts ? '<div class="side"><span class="qbox">?</span></div>'
