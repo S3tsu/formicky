@@ -31354,11 +31354,7 @@ const FH_OL = (() => {
   /* záložka Memes: u témat, kde lekce mají místo memů pomůcky (L.aid), jsou všechny memy tématu tady */
   const memTopic = () => !S.mixOn && LES.some(L => L.topic === S.topic && L.aid) && (MEMES[S.topic] || []).length > 0;
   const memTab = () => { const b = document.querySelector('#modeSeg [data-omem]'); if (b) b.hidden = !memTopic(); };
-  function memesHTML() {
-    const M = MEMES[S.topic] || [], T = TOPIC_BY[S.topic] || {};
-    return `<div class="card"><span class="eyebrow">Memes</span><h2 class="q-name ac-long">Memes k tématu ${esc(T.label || '')}</h2><p class="ac-sub">Pointu si nejdřív zkus domyslet, pak klepni. Tlačítkem „Další meme“ projdeš všech ${M.length}.</p></div>`
-      + FH_LES.mem({ items: M, art: M.map((_, i) => S.topic + ':' + i), kind: 'chat' });
-  }
+  const memesHTML = () => { const M = MEMES[S.topic] || []; return FH_LES.mem({ items: M, art: M.map((_, i) => S.topic + ':' + i), kind: 'chat' }); };
   const lesMemes = L => { const M = MEMES[L.topic] || []; return (L.mem || M.map((_, i) => i)).filter(i => M[i]).map(i => [M[i], L.topic + ':' + i]); };
   const SOON = {};
   const BY = {}; LES.forEach(L => { BY[L.id] = L; });
