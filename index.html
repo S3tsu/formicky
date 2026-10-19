@@ -30299,29 +30299,37 @@ const FH_LES = (() => {
   W.fds = () => box('fds', '<b>Schody reaktivity:</b> z kopce to jede samo, do kopce jen oklikou. Vyber, odkud a kam chceš jít.',
     `<div class="lx-chips"><span>Z:</span>${fdsChips('fdsa', 0)}</div><div class="lx-chips"><span>Na:</span>${fdsChips('fdsb', 3)}</div><div class="lx-out" aria-live="polite" data-a="0" data-b="3">${fdsOut(0, 3)}</div>`);
 
-  /* Nenasyta, nebo brzda: LiAlH₄ a Grignard jdou dvakrát až na alkohol, DIBAH a Gilman se zastaví po prvním kroku, amid s LiAlH₄ dá amin */
-  const FDP = ['primární alkohol', 'terciární alkohol', 'aldehyd', 'keton', 'amin'];
-  const FDH = [
-    ['ester', 'LiAlH₄', 0, 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol. Z esteru tak vzniknou dva alkoholy.'],
-    ['ester', 'DIBAH, toluen, −78 °C', 2, 'Brzda: DIBAH za nízké teploty předá jen jeden hydrid a zastaví se na aldehydu.'],
-    ['ester', '2 R′MgX', 1, 'Nenasyta: Grignard se aduje dvakrát, přes keton až na terciární alkohol.'],
-    ['acylchlorid', 'R′MgX (nadbytek)', 1, 'Nenasyta: keton hned reaguje s dalším R′MgX, izolovat se nedá.'],
-    ['acylchlorid', 'R′₂CuLi (Gilman)', 3, 'Brzda: kuprát je mírnější a s ketonem už nereaguje.'],
-    ['acylchlorid', 'LiAlH₄', 0, 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol.'],
-    ['amid', 'LiAlH₄', 4, 'Výjimka: kyslík odejde přes iminiový ion, C=O se změní na CH₂ a dusík zůstane.']
-  ];
-  const fdhMix = () => { const s = [...FDH.keys()]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; };
-  function fdhOut(o) {
-    const S = o.dataset.s.split(',').map(Number), k = +o.dataset.k, [sub, rg, ans, why] = FDH[S[k]], d = o.dataset.d, n = +o.dataset.n || 0, ok = +o.dataset.ok || 0;
-    const q = `<p class="lx-big"><span class="lx-chem">${sub} + ${rg} → ?</span></p>`;
-    if (d === '') return `${q}<div class="lx-chips">${FDP.map((p, i) => `<button type="button" class="chip" data-lwa="fdhp" data-v="${i}">${p}</button>`).join('')}</div>${n ? `<p class="lx-end">Zatím ${ok} z ${n} správně.</p>` : ''}`;
-    const good = +d === ans;
-    return `${q}<div class="fb ${good ? 'ok' : 'bad'}"><p><b>${good ? 'Správně, ' : 'Vznikne '}${FDP[ans]}.</b> ${why}</p></div>
-      <div class="row"><button type="button" class="btn primary" data-lwa="fdhn">Další reakce</button></div><p class="lx-end">Zatím ${ok} z ${n} správně.</p>`;
+  /* Kvíz k pomůckám: o = { head, opts, items: [[zadání, správná možnost, vysvětlení, vlastní možnosti?], …] }; zadání jdou v náhodném pořadí dokola */
+  const QZ = {}; let qzN = 0;
+  const mix = n => { const s = [...Array(n).keys()]; for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; };
+  W.quiz = o => { const id = 'lxq' + (++qzN); QZ[id] = Object.assign({ s: mix(o.items.length), k: 0, d: null, n: 0, ok: 0 }, o);
+    return `<div class="lx-w lx-qz" data-lw="qz" id="${id}"><p class="lx-q">${o.head}</p><div class="lx-out" aria-live="polite">${qzOut(id)}</div></div>`; };
+  function qzOut(id) {
+    const Q = QZ[id], [p, ans, why, own] = Q.items[Q.s[Q.k]], opts = own || Q.opts;
+    const q = `<p class="lx-big"><span class="lx-chem">${p}</span></p>`, sc = Q.n ? `<p class="lx-end">Zatím ${Q.ok} z ${Q.n} správně.</p>` : '';
+    if (Q.d === null) return `${q}<div class="lx-chips">${opts.map((t, i) => `<button type="button" class="chip" data-lwa="qzp" data-v="${i}">${t}</button>`).join('')}</div>${sc}`;
+    const good = opts[Q.d] === ans;
+    return `${q}<div class="fb ${good ? 'ok' : 'bad'}"><p><b>${good ? 'Správně: ' : 'Správně je '}${ans}.</b> ${why}</p></div>
+      <div class="row"><button type="button" class="btn primary" data-lwa="qzn">Další</button></div>${sc}`;
   }
-  W.fdh = () => { const o = { dataset: { s: fdhMix().join(','), k: '0', d: '' } };
-    return box('fdh', '<b>Nenasyta, nebo brzda?</b> LiAlH₄ a Grignard se na derivát vrhnou dvakrát a skončí u alkoholu. Brzdu mají jen DIBAH (ester → aldehyd) a Gilman (acylchlorid → keton). Co vznikne?',
-      `<div class="lx-out" aria-live="polite" data-s="${o.dataset.s}" data-k="0" data-d="">${fdhOut(o)}</div>`); };
+  function qzAct(w, a, v) {
+    const Q = QZ[w.id], o = w.querySelector('.lx-out'); if (!Q) return;
+    if (a === 'qzp') { const it = Q.items[Q.s[Q.k]]; Q.d = +v; Q.n++; if ((it[3] || Q.opts)[Q.d] === it[1]) Q.ok++; }
+    else { Q.k++; if (Q.k >= Q.items.length) { Q.s = mix(Q.items.length); Q.k = 0; } Q.d = null; }
+    o.innerHTML = qzOut(w.id);
+    const f = o.querySelector(a === 'qzp' ? '[data-lwa="qzn"]' : '[data-lwa="qzp"]'); if (f) f.focus({ preventScroll: true });
+    if (a === 'qzp' && typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim());
+  }
+  /* Nenasyta, nebo brzda: LiAlH₄ a Grignard jdou dvakrát až na alkohol, DIBAH a Gilman se zastaví po prvním kroku, amid s LiAlH₄ dá amin */
+  W.fdh = () => W.quiz({ head: '<b>Nenasyta, nebo brzda?</b> LiAlH₄ a Grignard se na derivát vrhnou dvakrát a skončí u alkoholu. Brzdu mají jen DIBAH (ester → aldehyd) a Gilman (acylchlorid → keton). Co vznikne?',
+    opts: ['primární alkohol', 'terciární alkohol', 'aldehyd', 'keton', 'amin'], items: [
+    ['ester + LiAlH₄ → ?', 'primární alkohol', 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol. Z esteru tak vzniknou dva alkoholy.'],
+    ['ester + DIBAH, toluen, −78 °C → ?', 'aldehyd', 'Brzda: DIBAH za nízké teploty předá jen jeden hydrid a zastaví se na aldehydu.'],
+    ['ester + 2 R′MgX → ?', 'terciární alkohol', 'Nenasyta: Grignard se aduje dvakrát, přes keton až na terciární alkohol.'],
+    ['acylchlorid + R′MgX (nadbytek) → ?', 'terciární alkohol', 'Nenasyta: keton hned reaguje s dalším R′MgX, izolovat se nedá.'],
+    ['acylchlorid + R′₂CuLi (Gilman) → ?', 'keton', 'Brzda: kuprát je mírnější a s ketonem už nereaguje.'],
+    ['acylchlorid + LiAlH₄ → ?', 'primární alkohol', 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol.'],
+    ['amid + LiAlH₄ → ?', 'amin', 'Výjimka: kyslík odejde přes iminiový ion, C=O se změní na CH₂ a dusík zůstane.']] });
 
   function wUpd(w) {
     const k = w.dataset.lw, o = w.querySelector('.lx-out'), v = s => { const i = w.querySelector(`[data-lwi="${s}"]`); return i ? +String(i.value).replace(',', '.') : 0; };
@@ -30351,12 +30359,7 @@ const FH_LES = (() => {
     if (a === 'pht') { o.dataset.t = v; press(); return wUpd(w); }
     if (a === 'rotl') { o.dataset.l = v; press(); return wUpd(w); }
     if (a === 'fdsa' || a === 'fdsb') { o.dataset[a.slice(3)] = v; press(); o.innerHTML = fdsOut(+o.dataset.a, +o.dataset.b); if (typeof fhSay === 'function') fhSay(o.querySelector('p').textContent.trim()); return; }
-    if (a === 'fdhp') {
-      o.dataset.d = v; o.dataset.n = (+o.dataset.n || 0) + 1; if (+v === FDH[+o.dataset.s.split(',')[+o.dataset.k]][2]) o.dataset.ok = (+o.dataset.ok || 0) + 1;
-      o.innerHTML = fdhOut(o); const nb = o.querySelector('[data-lwa="fdhn"]'); if (nb) nb.focus({ preventScroll: true });
-      if (typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim()); return;
-    }
-    if (a === 'fdhn') { let k = +o.dataset.k + 1; if (k >= FDH.length) { o.dataset.s = fdhMix().join(','); k = 0; } o.dataset.k = k; o.dataset.d = ''; o.innerHTML = fdhOut(o); const c = o.querySelector('[data-lwa="fdhp"]'); if (c) c.focus({ preventScroll: true }); return; }
+    if (a === 'qzp' || a === 'qzn') return qzAct(w, a, v);
   });
   /* záznam o dokončení: nejlepší výsledek a počet průchodů */
   const rec = (prev, n, ok, d) => ({ d, n, ok, best: Math.max((prev && prev.best) || 0, ok), k: ((prev && prev.k) || 0) + 1 });
@@ -30428,6 +30431,8 @@ const FH_OL = (() => {
   if (!box() || typeof BYID === 'undefined') return { on: () => false, sync() {} };
   const tbl = (head, rows) => `<div class="ac-tw"><table class="ac-sheet"><thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => i ? `<td>${c}</td>` : `<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
+  const kap = a => `<ul class="ac-ul">${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  const pom = h => sec('Pomůcky na zapamatování', h);
   /* --- interaktivní pomůcky ve výkladu (stav jen na stránce) --- */
   /* butan v Newmanově projekci: otáčí se zadní uhlík, energie z tabulky lekce; křivka mezi nimi je jen náčrt */
   const NW = [[0, 'synperiplanární', '19,0 kJ·mol⁻¹, nejvyšší'], [60, 'synklinální (gauche)', '4,0 kJ·mol⁻¹'], [120, 'antiklinální', '16,0 kJ·mol⁻¹'], [180, 'antiperiplanární', '0, nejstabilnější']];
@@ -30998,6 +31003,19 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Kyselý je vodík na α-uhlíku, protože enolát nese náboj i na kyslíku. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t18_q1', 't18_q2', 't18_q5', 't18_q6', 't18_q8', 't18_q11', 't18_q12', 't18_q15', 't18_q16', 't18_q20', 't18_q21', 't18_q24'],
       beda: 'α-Uhlík je soused karbonylu a dělá s ním spolek: jakmile přijde o proton, karbonyl mu pomůže unést záporný náboj.',
+      aid: () => pom(`${FH_LES.ord({ q: 'látky podle kyselosti.', top: 'nejkyselejší', bottom: 'nejméně kyselá', items: [['pentan-2,4-dion', 'pKa 9'], ['voda', 'pKa 16'], ['aceton', 'pKa 19,3'], ['diisopropylamin', 'pKa ~40'], ['ethan', 'pKa ~60']] })}
+        ${FH_LES.w.quiz({ head: '<b>Kam to dopadne?</b> Vyber, co vznikne.', opts: ['jeden α-halogen', 'karboxylát a CHX₃', 'α-bromkyselina', 'R–CH₂–COOH', 'methylketon R–CH₂–CO–CH₃', 'enolát na méně substituovaném α-uhlíku'], items: [
+          ['keton + X₂, kyselina → ?', 'jeden α-halogen', 'Kyselá halogenace jde přes enol a skončí po jednom halogenu.'],
+          ['methylketon + X₂, NaOH → ?', 'karboxylát a CHX₃', 'Haloformová reakce potřebuje methylketon: z CH₃ se stane CHX₃ a zbytek dá karboxylát.'],
+          ['kyselina + Br₂, PBr₃, pak H₂O → ?', 'α-bromkyselina', 'Hell–Volhard–Zelinskij jde přes acylbromid, který snadno enolizuje.'],
+          ['malonester + NaOEt + R–X, pak hydrolýza a zahřátí → ?', 'R–CH₂–COOH', 'Malonesterová syntéza končí dekarboxylací a dá karboxylovou kyselinu.'],
+          ['acetoacetát + NaOEt + R–X, pak hydrolýza a zahřátí → ?', 'methylketon R–CH₂–CO–CH₃', 'Acetoacetátová syntéza končí dekarboxylací a dá methylketon.'],
+          ['keton + LDA → ?', 'enolát na méně substituovaném α-uhlíku', 'LDA je objemná báze: převede všechen keton na enolát, neaduje se na C=O a bere H z méně substituovaného α-uhlíku.']] })}
+        ${FH_LES.ord({ q: 'halogenalkany podle toho, jak ochotně je enolát alkyluje (SN2).', top: 'nejochotněji', bottom: 'vůbec ne', items: [['allyl a benzyl', ''], ['CH₃', ''], ['primární', ''], ['terciární', 'nereaguje']] })}
+        ${kap(['<b>Malonester dá kyselinu, acetoacetát keton.</b> Acetoacetát v názvu nese acetyl a ten zůstane jako methylketon.',
+          '<b>Báze vezme proton jen kyselejší látce, než je její konjugovaná kyselina.</b> Diisopropylamin má pKa asi 40 a aceton 19,3, proto LDA převede keton na enolát úplně.',
+          '<b>CO₂ odchází jen od β-karbonylu.</b> Při zahřátí ho snadno ztrácejí jen malonové kyseliny a β-ketokyseliny.',
+          '<b>Enol i enolát útočí α-uhlíkem.</b> Tam se váže halogen i alkyl.'])}`),
       body: () => sec('1. Kyselý α-vodík', `<p>Vodík na uhlíku hned vedle C=O je kyselý, protože vzniklý <b>enolát</b> rozloží záporný náboj rezonancí i na kyslík.</p>
         ${tbl(['Látka', 'pKa'], [['pentan-2,4-dion (CH₂ mezi dvěma C=O)', '9'], ['voda', '16'], ['aceton', '19,3'], ['diisopropylamin (konj. kys. LDA)', '~40'], ['ethan', '~60']])}
         <p>Aceton je v rovnováze skoro jen v ketoformě. Enol i enolát reagují s elektrofilem na <b>α-uhlíku</b>.</p>`)
@@ -31011,6 +31029,18 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Enolát se aduje na C=O a vznikne nová vazba C–C: aldol. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t18_q25', 't18_q26', 't18_q27', 't18_q28', 't18_q29', 't18_q31', 't18_q32', 't18_q34', 't18_q35', 't18_q36', 't18_q37', 't18_q40'],
       beda: 'Donor a akceptor: enolát přinese elektrony, karbonyl je přijme. Benzaldehyd nemá α-H, a tak může být jen akceptor, žádné zmatky ve směsi.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Která reakce to je?</b>', opts: ['aldolizace', 'aldolová kondenzace', 'Claisenova kondenzace', 'Dieckmannova reakce', 'Michaelova adice', 'Robinsonova anelace'], items: [
+          ['enolát + aldehyd → β-hydroxyaldehyd', 'aldolizace', 'Aldol = ALDehyd + alkohOL v jedné molekule.'],
+          ['aldol − H₂O → konjugovaný enon', 'aldolová kondenzace', 'Odštěpení vody posune rovnováhu k produktu.'],
+          ['ester + enolát esteru, odstoupí alkoxid → β-ketoester', 'Claisenova kondenzace', 'U esteru adice neskončí: odstoupí alkoxid.'],
+          ['diester uvnitř jedné molekuly → cyklický β-ketoester', 'Dieckmannova reakce', 'Dieckmann je Claisen uvnitř jedné molekuly.'],
+          ['nukleofil na β-uhlík α,β-nenasyceného karbonylu → 1,5-dikarbonyl', 'Michaelova adice', '1,4-adice: nukleofil míří na β-uhlík, ne na C=O.'],
+          ['Michaelova adice, pak intramolekulární aldolová kondenzace → nový šestičlenný kruh', 'Robinsonova anelace', 'Robinson = nejdřív Michael, pak aldol.']] })}
+        ${kap(['<b>Aldol = ALDehyd + alkohOL.</b> Produkt aldolizace nese obojí: β-hydroxyaldehyd nebo β-hydroxyketon.',
+          '<b>Donor dává, akceptor bere.</b> Enolát přinese elektrony, C=O je přijme. Benzaldehyd nemá α-H, umí být jen akceptor, a proto je smíšená aldolizace s ním čistá.',
+          '<b>Aldol přidá, Claisen vymění.</b> U aldehydu a ketonu adice skončí, u esteru odstoupí alkoxid a vznikne β-ketoester.',
+          '<b>Kruh je o jeden větší než druhé číslo.</b> 1,4-diketon dá pětičlenný, 1,5-diketon šestičlenný kruh.',
+          '<b>Claisen končí kyselinou.</b> β-Ketoester je v zásaditém prostředí hned deprotonovaný, proto se na konci okyselí H₃O⁺.'])}`),
       body: () => sec('1. Aldolizace', `<p>Enolát jedné molekuly (donor) se aduje na C=O druhé (akceptor) a vznikne <b>β-hydroxyaldehyd nebo β-hydroxyketon</b>. Je to rovnováha: u aldehydů výhodná, u ketonů ne (aceton jen asi 5 %).</p>
         <p><b>Aldolová kondenzace</b>: aldol odštěpí vodu a vznikne konjugovaný enon, to posune rovnováhu. Intramolekulárně dá 1,4-diketon pětičlenný a 1,5-diketon šestičlenný kruh.</p>
         <p class="aside">Smíšená aldolizace dvou aldehydů s α-H dá čtyři produkty. Čistá je, když jeden partner α-H nemá (benzaldehyd).</p>`)
@@ -31023,6 +31053,25 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Cyklohexylamin, protože anilin rozprostře volný pár do kruhu. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t19_q1', 't19_q2', 't19_q4', 't19_q7', 't19_q8', 't19_q9', 't19_q10', 't19_q12', 't19_q13', 't19_q15', 't19_q16', 't19_q17'],
       beda: 'Volný pár dusíku je jeho bazicita. Kdo ho rozdá do kruhu (anilin) nebo do C=O (amid), na proton už nemá.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Počítej uhlíky na dusíku</b>, ne typ uhlíku. Jaký je to amin?', opts: ['primární', 'sekundární', 'terciární'], items: [
+          ['terc-butylamin (CH₃)₃C–NH₂', 'primární', 'Na dusíku je jen jeden uhlík. Že je ten uhlík terciární, nerozhoduje.'],
+          ['diethylamin (CH₃CH₂)₂NH', 'sekundární', 'Na dusíku jsou dva uhlíky.'],
+          ['triethylamin (CH₃CH₂)₃N', 'terciární', 'Na dusíku jsou tři uhlíky.'],
+          ['anilin C₆H₅–NH₂', 'primární', 'Na dusíku je jeden uhlík, z kruhu.'],
+          ['N-methylanilin C₆H₅–NH–CH₃', 'sekundární', 'Na dusíku jsou dva uhlíky: kruh a methyl.'],
+          ['cyklohexylamin C₆H₁₁–NH₂', 'primární', 'Na dusíku je jeden uhlík, i když je sám sekundární.'],
+          ['diisopropylamin', 'sekundární', 'Dva isopropyly na dusíku. Z něj se dělá LDA.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Co z toho vyjde?</b> Příprava aminů.', opts: ['směs až po kvarterní sůl', 'čistý primární amin', 'amin o jeden uhlík kratší', 'amin se stejným počtem uhlíků'], items: [
+          ['NH₃ + R–X', 'směs až po kvarterní sůl', 'Proto je tahle cesta nevhodná.'],
+          ['ftalimid + KOH, pak R–X (Gabriel)', 'čistý primární amin', 'Gabrielova syntéza jde přes SN2 a dá čistý primární amin.'],
+          ['Hofmannovo odbourání amidu', 'amin o jeden uhlík kratší', 'Hofmann, Curtius i Lossen jdou přes isokyanát.'],
+          ['Curtiovo odbourání', 'amin o jeden uhlík kratší', 'Hofmann, Curtius i Lossen jdou přes isokyanát.'],
+          ['amid + LiAlH₄', 'amin se stejným počtem uhlíků', 'C=O se změní na CH₂ a uhlík zůstane.'],
+          ['keton + NH₃, pak H₂/Ni', 'amin se stejným počtem uhlíků', 'Reduktivní aminace jde přes imin, uhlíky zůstanou.']] })}
+        ${kap(['<b>HCL ubírá uhlík.</b> Hofmannovo, Curtiovo a Lossenovo odbourání dají amin o jeden uhlík kratší.',
+          '<b>Chceš čistý primární amin? Gabriel.</b> Přímá reakce NH₃ s R–X dá směs.',
+          '<b>Dusík se pořád převrací.</b> Rychlá inverze dusíku brání oddělit enantiomery aminu.',
+          '<b>Amino- jen jako předpona,</b> když je v molekule vyšší skupina (COOH, C=O).'])}`),
       body: () => sec('1. Typy a vlastnosti', `<p>Primární, sekundární a terciární amin se liší <b>počtem uhlíků na dusíku</b>, ne typem uhlíku: terc-butylamin je primární. Předpona amino- se píše, když je v molekule vyšší skupina (COOH, C=O). Aminy tvoří vodíkové vazby N–H···N, a proto vřou výš než alkany. Rychlá inverze dusíku brání oddělit enantiomery.</p>`)
         + sec('2. Bazicita', `${FH_LES.ord({ q: 'látky podle bazicity.', top: 'nejbazičtější', bottom: 'nejméně bazický', items: [['alkylamin', ''], ['arylamin', 'například anilin'], ['amid', '']] })}
         <p>Volný pár dusíku přijme proton. Bazicita klesá: <b>alkylamin > arylamin > amid</b>.</p>
@@ -31034,6 +31083,24 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku. Primární dá diazoniovou sůl, sekundární N-nitrosamin, terciární nic. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t19_q18', 't19_q19', 't19_q20', 't19_q22', 't19_q23', 't19_q24', 't19_q25', 't19_q26', 't19_q27', 't19_q30', 't19_q32', 't19_q37'],
       beda: 'Hofmannova eliminace je opak Zajceva: objemná skupina N(CH₃)₃⁺ nechá bázi sáhnout jen na nejbližší vodíky, a vznikne méně substituovaný alken.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Kyselina dusitá rozliší aminy.</b> Co vznikne?', opts: ['diazoniová sůl', 'N-nitrosamin', 'nereaguje'], items: [
+          ['primární amin + HNO₂', 'diazoniová sůl', 'Elektrofilem je nitrosoniový ion NO⁺.'],
+          ['anilin + HNO₂', 'diazoniová sůl', 'Anilin je primární amin.'],
+          ['sekundární amin + HNO₂', 'N-nitrosamin', 'Sekundární amin se zastaví u N-nitrosaminu.'],
+          ['diethylamin + HNO₂', 'N-nitrosamin', 'Diethylamin je sekundární amin.'],
+          ['terciární amin + HNO₂', 'nereaguje', 'Terciární amin s kyselinou dusitou podle přednášky nereaguje.'],
+          ['triethylamin + HNO₂', 'nereaguje', 'Triethylamin je terciární amin.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Co udělá diazoniová sůl?</b>', opts: ['ztratí N₂, vznikne karbokation', 'Ar–X', 'azobarvivo'], items: [
+          ['alifatická diazoniová sůl', 'ztratí N₂, vznikne karbokation', 'Alifatická diazoniová sůl je nestálá a N₂ ztratí hned.'],
+          ['ArN₂⁺ + CuBr (Sandmeyer)', 'Ar–X', 'Sandmeyerova reakce jde přes arylový radikál.'],
+          ['ArN₂⁺ + CuCl (Sandmeyer)', 'Ar–X', 'Sandmeyerova reakce jde přes arylový radikál.'],
+          ['ArN₂⁺ + fenol', 'azobarvivo', 'Kopulace jde do polohy para.'],
+          ['ArN₂⁺ + N,N-dialkylanilin', 'azobarvivo', 'Kopulace jde do polohy para.']] })}
+        ${FH_LES.ord({ q: 'jak postupně vzniká anilin redukcí nitrobenzenu.', top: 'začátek', bottom: 'konec', items: [['nitrobenzen', ''], ['nitrosobenzen', ''], ['fenylhydroxylamin', ''], ['anilin', '']] })}
+        ${kap(['<b>Hofmann hubne.</b> Hofmannova eliminace dá méně substituovaný alken (pent-1-en 94 %), Zajcev víc substituovaný.',
+          '<b>Beckmann udělá z oximu amid.</b> Z cyklohexanon-oximu vznikne kaprolaktam.',
+          '<b>Acetyl anilin zklidní.</b> Acetamidoskupina aktivuje kruh méně, substituuje se jen jednou a neváže AlCl₃.',
+          '<b>Wolff ubere N₂ a přidá uhlík.</b> Diazoketon dá keten a s vodou kyselinu o uhlík delší.'])}`),
       body: () => sec('1. Reakce aminů', `<ul class="ac-ul"><li><b>Acylace</b> acylchloridem, pyridin vychytá HCl.</li><li><b>Hofmannova eliminace</b> kvarterní amoniové soli dá hlavně <b>méně</b> substituovaný alken (pent-1-en 94 %).</li><li>Anilin se před bromací nebo Friedel–Craftsem <b>acetyluje</b>: acetamidoskupina aktivuje méně (jen jedna substituce) a neváže AlCl₃.</li></ul>`)
         + sec('2. Kyselina dusitá a diazoniové soli', `<p>Elektrofilem je <b>nitrosoniový ion NO⁺</b>. Primární amin dá diazoniovou sůl, sekundární N-nitrosamin, terciární nereaguje.</p>
         ${tbl(['Diazoniová sůl', 'Co dělá'], [['alifatická', 'hned ztratí N₂ a vznikne karbokation'], ['aromatická + CuX (Sandmeyer)', 'Ar–X přes arylový radikál'], ['aromatická + fenol nebo N,N-dialkylanilin', 'azobarvivo (kopulace do para)']])}`)
@@ -31045,6 +31112,26 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Uhlík na kovu je δ−, nukleofil i silná báze. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t20_q1', 't20_q4', 't20_q10', 't20_q14', 't20_q15', 't20_q18', 't20_q20', 't20_q23', 't20_q29', 't20_q31', 't20_q33', 't20_q35'],
       beda: 'Cross-coupling je tanec ve třech krocích: oxidativní adice, transmetalace, reduktivní eliminace. A palladium se po tanci vrátí tam, kde začalo.',
+      aid: () => pom(`${FH_LES.ord({ q: 'kroky cross-couplingu.', top: 'první krok', bottom: 'poslední krok', items: [['oxidativní adice R–X na Pd⁰', 'vznikne Pdᴵᴵ'], ['transmetalace', 'R′ přejde z kovu M na Pd'], ['reduktivní eliminace R–R′', 'vrátí se Pd⁰']] })}
+        ${FH_LES.w.quiz({ head: '<b>Podle kovu poznáš reakci.</b> Která to je?', opts: ['Suzuki–Miyaura', 'Stille', 'Negishi', 'Kumada', 'Hiyama', 'Sonogashira', 'Buchwald–Hartwig'], items: [
+          ['boronová kyselina R′–B(OH)₂, báze', 'Suzuki–Miyaura', 'Suzuki pracuje s boronovými kyselinami a boronáty.'],
+          ['stannan R′–SnBu₃', 'Stille', 'Stille a stannan začínají na St.'],
+          ['organozinečnatá R′–ZnX', 'Negishi', 'Negishi = zinek.'],
+          ['Grignard R′–MgX, nikl', 'Kumada', 'Kumada spojuje Grignardova činidla s halogenidy na niklu.'],
+          ['organokřemík, TBAF', 'Hiyama', 'Hiyama = křemík s TBAF.'],
+          ['terminální alkyn, CuI, báze', 'Sonogashira', 'Sonogashira připojí terminální alkyn.'],
+          ['vazba aryl–N', 'Buchwald–Hartwig', 'Buchwald–Hartwig tvoří vazbu aryl–N, O nebo S.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Co udělá organokov?</b>', opts: ['alkohol', 'karboxylová kyselina', 'alkohol o 2 C delší', 'terciární alkohol', 'alkan, činidlo se zničí'], items: [
+          ['R–MgX + aldehyd, pak H₃O⁺', 'alkohol', 'Grignard se aduje na C=O.'],
+          ['R–MgX + CO₂, pak H₃O⁺', 'karboxylová kyselina', 'Karboxylací vznikne kyselina o uhlík delší než R–X.'],
+          ['R–MgX + oxiran', 'alkohol o 2 C delší', 'Oxiran prodlouží řetězec o dva uhlíky.'],
+          ['ester + 2 R–MgX', 'terciární alkohol', 'Grignard se aduje dvakrát.'],
+          ['R–MgX + karboxylová kyselina', 'alkan, činidlo se zničí', 'S kyselinou Grignard nereaguje adicí, odtrhne proton.'],
+          ['R₂CuLi + enon', '1,4-adice', 'Gilmanovo činidlo jde na β-uhlík.', ['1,2-adice na C=O', '1,4-adice']]] })}
+        ${kap(['<b>Uhlík na kovu je δ−.</b> Je to nukleofil i silná báze, proto s kyselinou nejdřív odtrhne proton.',
+          '<b>Heck tančí jinak.</b> Místo transmetalace má inzerci alkenu a syn-β-eliminaci.',
+          '<b>Zinek třikrát:</b> Negishi, Reformatskij (α-halogenester + C=O → β-hydroxyester) a Simmons–Smith (ICH₂ZnI, alken → cyklopropan).',
+          '<b>Nobelova cena 2010:</b> Heck, Negishi, Suzuki.'])}`),
       body: () => sec('1. Li, Mg a Cu', `<p>Uhlík na elektropozitivním kovu je <b>δ−</b>: nukleofil a silná báze. BuLi slouží hlavně jako velmi silná báze, z diisopropylaminu udělá LDA.</p>
         ${tbl(['Činidlo', 'Typické reakce'], [['R–MgX', 'C=O → alkohol, CO₂ → kyselina, oxiran → alkohol o 2 C delší, ester → terciární alkohol (2 ekv.)'], ['R₂CuLi (Gilman)', 'acylchlorid → keton, enon → <b>1,4-adice</b>'], ['Zn (Reformatskij)', 'α-halogenester + C=O → β-hydroxyester'], ['ICH₂ZnI (Simmons–Smith)', 'alken → cyklopropan']])}
         <p class="ac-les-trap"><b>Pozor:</b> s kyselinou Grignard nereaguje adicí, odtrhne proton a zničí se na alkan.</p>`)
@@ -31059,6 +31146,23 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku. V kyselém jde nukleofil na terciární uhlík, jinak i tam spíš na méně bráněný CH₂. Bez kyseliny jde vždy na méně bráněný. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t21_q1', 't21_q2', 't21_q3', 't21_q14', 't21_q16', 't21_q24', 't21_q26', 't21_q29', 't21_q30', 't21_q31', 't21_q34', 't21_q35'],
       beda: 'Epoxid je napjatý jako struna. Stačí slabší nukleofil a kruh praskne, a útočník přichází vždycky zezadu.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Který názvoslovný systém?</b>', opts: ['triviální název', 'Hantzsch–Widman', 'záměnný princip'], items: [
+          ['pyridin (6 členů, jeden N)', 'triviální název', 'Triviální názvy mají 5- a 6-členné kruhy s 1–2 heteroatomy.'],
+          ['furan (5 členů, jeden O)', 'triviální název', 'Triviální názvy mají 5- a 6-členné kruhy s 1–2 heteroatomy.'],
+          ['oxiran (3 členy)', 'Hantzsch–Widman', 'Hantzsch–Widman pojmenuje 3-, 4- a 7- až 10-členné kruhy.'],
+          ['sedmičlenný kruh s dusíkem', 'Hantzsch–Widman', 'Hantzsch–Widman pojmenuje 3-, 4- a 7- až 10-členné kruhy.'],
+          ['dvanáctičlenný kruh s kyslíkem', 'záměnný princip', 'Kruhy nad 10 členů se jmenují záměnným principem (oxa-, thia-, aza-).'],
+          ['bicyklus penicilinu', 'záměnný princip', '4-thia-1-azabicyklo[3.2.0]heptan: bi- a polycykly mají záměnný princip.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Kam půjde nukleofil?</b> Kyselina táhne k terciárnímu uhlíku, bez ní se jde k nejvolnějšímu.', opts: ['na terciární uhlík', 'na CH₂, méně bráněný'], items: [
+          ['1,2-epoxy-2-methylpropan + H₃O⁺', 'na terciární uhlík', 'V kyselém se náboj hromadí jako u SN1 a terciární uhlík vyhraje.'],
+          ['1,2-epoxy-2-methylpropan + silný nukleofil bez kyseliny', 'na CH₂, méně bráněný', 'Bez kyseliny rozhoduje jen sterika, SN2.'],
+          ['1,2-epoxypropan + HCl', 'na CH₂, méně bráněný', 'Pozor: bez terciárního uhlíku jde Cl⁻ i v kyselém hlavně na CH₂ (90 %).'],
+          ['1,2-epoxypropan + silný nukleofil bez kyseliny', 'na CH₂, méně bráněný', 'Bez kyseliny rozhoduje jen sterika, SN2.']] })}
+        ${kap(['<b>NOS:</b> u kondenzovaných heterocyklů je základní složkou větší kruh a při stejné velikosti rozhoduje heteroatom N > O > S. Benzen je vždy jen připojený (benzo-).',
+          '<b>Útok zezadu dá trans.</b> Kyselá hydrolýza cyklohexenoxidu dá trans-diol.',
+          '<b>MCPBA geometrii nemění.</b> Z cis-alkenu vznikne cis-epoxid.',
+          '<b>Grignard + oxiran = alkohol o dva uhlíky delší.</b>',
+          '<b>Písmeno = vazba základní složky:</b> 1–2 je a, 2–3 je b.'])}`),
       body: () => sec('1. Tři názvoslovné systémy', `${tbl(['Systém', 'Kdy'], [['triviální názvy', '5- a 6-členné kruhy s 1–2 heteroatomy (furan, pyrrol, pyridin)'], ['Hantzsch–Widman', '3-, 4- a 7- až 10-členné kruhy a kruhy s víc heteroatomy'], ['záměnný princip (oxa-, thia-, aza-)', 'kruhy nad 10 členů a bi- a polycykly, třeba 4-thia-1-azabicyklo[3.2.0]heptan v penicilinu']])}
         <p>U kondenzovaných heterocyklů je <b>základní složkou</b> větší kruh, při stejné velikosti rozhoduje heteroatom N > O > S. Benzen je vždy jen připojená složka (benzo-), i když je větší (indol = benzo[b]pyrrol). Podle IUPAC se nejdřív hledá kruh s dusíkem, u dvojic heterocyklů z přednášky ale vychází obojí stejně. Písmeno označuje vazbu základní složky (1–2 = a, 2–3 = b), připojený thiofen je thieno-, furan furo-.</p>`)
         + sec('2. Příprava epoxidů', `<ul class="ac-ul"><li><b>Peroxykyselina</b> (MCPBA) přenese kyslík na oba uhlíky v jednom kroku, geometrie alkenu se zachová (z cis-alkenu cis-epoxid). Z MCPBA zbude kyselina m-chlorbenzoová.</li><li>Z <b>halohydrinu</b> a NaOH: vnitromolekulární SN2, alkoxid vytlačí halogenid zezadu.</li></ul>`)
@@ -31071,6 +31175,22 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Pyrrolidin, pyrrol by protonací přišel o aromaticitu. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t22_q4', 't22_q5', 't22_q6', 't22_q8', 't22_q9', 't22_q12', 't22_q16', 't22_q17', 't22_q18', 't22_q22', 't22_q23', 't22_q25'],
       beda: 'Pyrrol svůj volný pár nedá, je to jeho vstupenka do aromatického klubu. Proto je skoro nebazický a elektrofily ho naopak milují.',
+      aid: () => pom(`${FH_LES.ord({ q: 'dusíkaté báze podle bazicity.', top: 'nejbazičtější', bottom: 'nejméně bazická', items: [['pyrrolidin', 'pKa 11,27, sp³'], ['pyridin', 'pKa 5,25, pár mimo sextet'], ['pyrrol', 'pKa 0,4, pár v sextetu']] })}
+        ${FH_LES.w.quiz({ head: '<b>Co činidlo přinese, to v kruhu zůstane.</b> Co vznikne?', opts: ['pyrrol', 'furan', 'isoxazol', 'pyrazol', 'indol'], items: [
+          ['1,4-diketon + NH₃', 'pyrrol', 'Paal–Knorr: dusík přinese amoniak.'],
+          ['1,4-diketon + primární amin', 'pyrrol', 'Paal–Knorr: dusík přinese amin a jeho alkyl zůstane na dusíku.'],
+          ['1,4-diketon + H⁺', 'furan', 'Paal–Knorr bez dusíku: zůstane kyslík z karbonylu.'],
+          ['1,3-dikarbonyl + NH₂OH', 'isoxazol', 'Hydroxylamin přinese N i O.'],
+          ['1,3-dikarbonyl + N₂H₄', 'pyrazol', 'Hydrazin přinese dva dusíky.'],
+          ['arylhydrazon + kyselina (Fischer)', 'indol', 'Fischerova syntéza jde přes [3,3]-sigmatropní přesmyk.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Kam jde elektrofil?</b>', opts: ['poloha 2', 'poloha 3'], items: [
+          ['pyrrol + elektrofil', 'poloha 2', 'Kation po ataku na C2 má tři rezonanční struktury, na C3 jen dvě.'],
+          ['furan + elektrofil', 'poloha 2', 'Kation po ataku na C2 má tři rezonanční struktury, na C3 jen dvě.'],
+          ['indol + elektrofil', 'poloha 3', 'Benzenový kruh tak zůstane aromatický.']] })}
+        ${kap(['<b>Pár v sextetu na proton nemá.</b> Pyrrol by protonací přišel o aromaticitu, proto je skoro nebazický.',
+          '<b>Pyrrol 2, indol 3.</b>',
+          '<b>Pyrrol nitrační směsí nenitruj,</b> rozloží se. Použij HNO₃ v acetanhydridu.',
+          '<b>α = 2 a 5, β = 3 a 4.</b>'])}`),
       body: () => sec('1. Aromaticita a bazicita', `<p>V pyrrolu dodají dvě C=C čtyři elektrony π a <b>volný pár dusíku</b> další dva, vznikne sextet. Protonací by se pár ztratil a s ním aromaticita, proto je pyrrol skoro nebazický. U pyridinu je volný pár v sp² orbitalu mimo sextet.</p>
         ${tbl(['Báze', 'pKa konj. kyseliny'], [['pyrrolidin (sp³)', '11,27'], ['pyridin (sp²)', '5,25'], ['pyrrol', '0,4']])}
         <p class="aside">α polohy pyrrolu jsou 2 a 5, β 3 a 4. Indol = benzen + pyrrol.</p>`)
@@ -31083,6 +31203,20 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Pyridin je chudý na elektrony, dusík je táhne k sobě (2,26 D). Co jsi nevěděla, zopakuješ zítra.',
       q: ['t22_q1', 't22_q7', 't22_q11', 't22_q27', 't22_q30', 't22_q31', 't22_q32', 't22_q34', 't22_q35', 't22_q37', 't22_q15', 't22_q42'],
       beda: 'Pyridin je chudák na elektrony: elektrofily posílá jen do polohy 3 a nukleofily vítá v polohách 2 a 4, kde jim dusík podrží záporný náboj.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Elektrofil se dusíku vyhne, nukleofil se k němu tulí.</b> Kam to půjde?', opts: ['poloha 2', 'poloha 3', 'polohy 2 a 4', 'benzenový kruh, polohy 5 a 8'], items: [
+          ['pyridin + elektrofil (sulfonace)', 'poloha 3', 'Při ataku na 2 a 4 by kladný náboj šel na dusík.'],
+          ['pyridin + nukleofil (substituce)', 'polohy 2 a 4', 'Záporný náboj se uloží na dusík.'],
+          ['pyridin + NaNH₂ (Čičibabin)', 'poloha 2', 'Odstupuje hydrid.'],
+          ['chinolin + elektrofil', 'benzenový kruh, polohy 5 a 8', 'Elektrofil jde u chinolinu i isochinolinu do benzenového kruhu.'],
+          ['2-chlorpyridin + nukleofil', 'poloha 2', 'Připomíná nukleofilní acylovou substituci, C=N se chová jako C=O.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Která syntéza co dá?</b>', opts: ['1,4-dihydropyridin, oxidací pyridin', 'chinolin', 'isochinolinový skelet'], items: [
+          ['Hantzsch: ketoester, aldehyd, NH₃', '1,4-dihydropyridin, oxidací pyridin', 'Pyridin vznikne až oxidací.'],
+          ['Skraup: anilin + akrolein, oxidace', 'chinolin', 'Z anilinu vznikne chinolin.'],
+          ['Bischler–Napieralski: H₃PO₄, P₂O₅', 'isochinolinový skelet', 'Bischler–Napieralski dá isochinolinový skelet.']] })}
+        ${kap(['<b>Chinolin 1, isochinolin 2.</b> Číslo říká, kde je dusík.',
+          '<b>Kovy v porfyrinu:</b> hem Fe, chlorofyl Mg, vitamin B₁₂ Co.',
+          '<b>Purin = pyrimidin + imidazol.</b> V nukleosidech se cukr váže na N9.',
+          '<b>Statiny a Paal–Knorr:</b> pyrrol atorvastatinu vzniká Paalovou–Knorrovou syntézou.'])}`),
       body: () => sec('1. Reaktivita pyridinu', `<p>Elektronegativní dusík táhne elektrony z kruhu (dipól 2,26 D), pyridin je <b>chudý na elektrony</b>.</p>
         ${tbl(['Reakce', 'Poloha', 'Proč'], [['elektrofilní substituce (těžko, sulfonace 70 %)', '3', 'při ataku na 2 a 4 by kladný náboj šel na dusík'], ['nukleofilní substituce', '2 a 4', 'záporný náboj se uloží na dusík'], ['Čičibabin (NaNH₂)', '2', 'odstupuje hydrid']])}
         <p>SN 2-chlorpyridinu připomíná nukleofilní acylovou substituci, C=N se chová jako C=O.</p>`)
