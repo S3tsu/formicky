@@ -1301,6 +1301,20 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-3d .row{display:flex;gap:8px;flex-wrap:wrap}
 .lx-rs-b .btn{flex:1;font:700 1.3rem var(--f-display)}
 /* NMR */
+/* schody reaktivity derivátů */
+.lx-fd-pic{width:100%;max-width:360px;align-self:center}
+.lx-fd-st rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.lx-fd-st.from rect{fill:var(--accent-soft);stroke:var(--accent)}
+.lx-fd-st.to rect{fill:color-mix(in srgb,var(--pink) 18%,var(--surface));stroke:var(--pink)}
+.lx-w .lx-fd-pic .lx-fd-n{font:700 12.5px var(--f-body);fill:var(--ink)}
+.lx-w .lx-fd-pic .lx-fd-lg{font:600 13px var(--f-chem);fill:var(--muted)}
+.lx-w .lx-fd-pic .lx-fd-ax{font:11px var(--f-body);fill:var(--muted)}
+.lx-fd-arr{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:lx-draw .7s ease-out forwards}
+.lx-fd-arr.dn{stroke:var(--ok)} .lx-fd-arr.up{stroke:var(--bad);stroke-dasharray:6 5;animation:none}
+.lx-fd-hd.dn{fill:var(--ok)} .lx-fd-hd.up{fill:var(--bad)}
+.lx-w .lx-fd-pic .lx-fd-x{font:800 18px var(--f-body);fill:var(--bad)}
+.lx-big b.lx-fd-no{color:var(--bad)}
+@media (prefers-reduced-motion:reduce){.lx-fd-arr{animation:none;stroke-dashoffset:0}}
 .lx-nmr-pic{width:100%;max-width:320px}
 .lx-pk{stroke:var(--pink);stroke-width:4;stroke-linecap:round;transition:y2 .25s}
 /* pI */
@@ -30264,6 +30278,51 @@ const FH_LES = (() => {
     `<div class="lx-row3"><label class="lx-num">úhel α (°)<input type="number" step="0.05" value="5.3" data-lwi="rota"></label><label class="lx-num">c (g/l)<input type="number" step="1" min="0" value="50" data-lwi="rotc"></label></div>
      <div class="lx-chips"><span>Kyveta:</span><button type="button" class="chip" data-lwa="rotl" data-v="1" aria-pressed="false">10 cm = 1 dm</button><button type="button" class="chip" data-lwa="rotl" data-v="2" aria-pressed="true">20 cm = 2 dm</button></div><div class="lx-out" aria-live="polite" data-l="2">${rotOut(5.3, 2, 50)}</div>`);
 
+  /* Schody reaktivity derivátů: z kopce (na méně reaktivní derivát) to jde jedním krokem, do kopce jen oklikou přes kyselinu a SOCl₂ */
+  const FDS = [['acylchlorid', 'Cl⁻'], ['anhydrid', 'RCOO⁻'], ['ester', 'RO⁻'], ['amid', 'NH₂⁻']];
+  const FDS_T = { '01': 'Karboxylát (RCOO⁻ Na⁺) vytlačí Cl⁻ a vznikne anhydrid.', '02': 'R′OH s pyridinem, který vychytá HCl.', '03': '2 NH₃ nebo amin, druhý ekvivalent zachytí HCl.',
+    '12': 'R′OH. Odstoupí karboxylát, vedle esteru vznikne kyselina.', '13': 'NH₃ nebo amin. Takhle vzniká paracetamol z p-aminofenolu a acetanhydridu.', '23': 'NH₃ (aminolýza esteru), odstoupí alkoxid.' };
+  function fdsOut(a, b) {
+    const X = i => 14 + i * 78, T = i => 34 + i * 34, C = i => X(i) + 39, up = a > b;
+    const steps = FDS.map(([n, lg], i) => `<g class="lx-fd-st${i === a ? ' from' : i === b ? ' to' : ''}"><rect x="${X(i)}" y="${T(i)}" width="78" height="${182 - T(i)}" rx="3"/><text x="${C(i)}" y="${T(i) + 20}" text-anchor="middle" class="lx-fd-n">${n}</text><text x="${C(i)}" y="${T(i) + 38}" text-anchor="middle" class="lx-fd-lg">${lg}</text></g>`).join('');
+    const arr = a === b ? '' : `<path class="lx-fd-arr ${up ? 'up' : 'dn'}" d="M${C(a)} ${T(a) - 4} Q${(C(a) + C(b)) / 2} ${Math.min(T(a), T(b)) - 30} ${C(b)} ${T(b) - 4}" marker-end="url(#lxFdA${up ? 'u' : 'd'})"/>`
+      + (up ? `<text x="${(C(a) + C(b)) / 2}" y="${Math.min(T(a), T(b)) - 12}" text-anchor="middle" class="lx-fd-x">✕</text>` : '');
+    const pic = `<svg class="lx-fd-pic" viewBox="0 0 340 190" role="img" aria-label="Schody reaktivity: nahoře acylchlorid, pod ním anhydrid, ester a dole amid"><defs>${['d', 'u'].map(k => `<marker id="lxFdA${k}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" class="lx-fd-hd ${k === 'u' ? 'up' : 'dn'}"/></marker>`).join('')}</defs>
+      <text x="14" y="14" class="lx-fd-ax">↑ reaktivnější, odstupuje snáz</text>${steps}${arr}</svg>`;
+    let t;
+    if (a === b) t = '<p class="lx-end">Vyber jiný cíl, tohle je tentýž derivát.</p>';
+    else if (!up) t = `<p class="lx-big"><b>Z kopce: jde to jedním krokem</b><span>${FDS_T[a + '' + b]}</span></p><p class="lx-end">Odstoupí ${FDS[a][1]}, který odchází ochotněji než ${FDS[b][1]}, takže produkt je stálejší.</p>`;
+    else t = `<p class="lx-big"><b class="lx-fd-no">Do kopce: jedním krokem to nejde</b><span>Odstoupit by musel ${FDS[a][1]}, a ten odchází hůř než ${FDS[b][1]}.</span></p><p class="lx-end">Oklikou: hydrolýzou na kyselinu, SOCl₂ na acylchlorid${b ? ' a z něj zase z kopce' : ''}.</p>`;
+    return pic + t;
+  }
+  const fdsChips = (k, s) => FDS.map(([n], i) => `<button type="button" class="chip" data-lwa="${k}" data-v="${i}" aria-pressed="${i === s}">${n}</button>`).join('');
+  W.fds = () => box('fds', '<b>Schody reaktivity:</b> z kopce to jede samo, do kopce jen oklikou. Vyber, odkud a kam chceš jít.',
+    `<div class="lx-chips"><span>Z:</span>${fdsChips('fdsa', 0)}</div><div class="lx-chips"><span>Na:</span>${fdsChips('fdsb', 3)}</div><div class="lx-out" aria-live="polite" data-a="0" data-b="3">${fdsOut(0, 3)}</div>`);
+
+  /* Nenasyta, nebo brzda: LiAlH₄ a Grignard jdou dvakrát až na alkohol, DIBAH a Gilman se zastaví po prvním kroku, amid s LiAlH₄ dá amin */
+  const FDP = ['primární alkohol', 'terciární alkohol', 'aldehyd', 'keton', 'amin'];
+  const FDH = [
+    ['ester', 'LiAlH₄', 0, 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol. Z esteru tak vzniknou dva alkoholy.'],
+    ['ester', 'DIBAH, toluen, −78 °C', 2, 'Brzda: DIBAH za nízké teploty předá jen jeden hydrid a zastaví se na aldehydu.'],
+    ['ester', '2 R′MgX', 1, 'Nenasyta: Grignard se aduje dvakrát, přes keton až na terciární alkohol.'],
+    ['acylchlorid', 'R′MgX (nadbytek)', 1, 'Nenasyta: keton hned reaguje s dalším R′MgX, izolovat se nedá.'],
+    ['acylchlorid', 'R′₂CuLi (Gilman)', 3, 'Brzda: kuprát je mírnější a s ketonem už nereaguje.'],
+    ['acylchlorid', 'LiAlH₄', 0, 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol.'],
+    ['amid', 'LiAlH₄', 4, 'Výjimka: kyslík odejde přes iminiový ion, C=O se změní na CH₂ a dusík zůstane.']
+  ];
+  const fdhMix = () => { const s = [...FDH.keys()]; for (let i = s.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; };
+  function fdhOut(o) {
+    const S = o.dataset.s.split(',').map(Number), k = +o.dataset.k, [sub, rg, ans, why] = FDH[S[k]], d = o.dataset.d, n = +o.dataset.n || 0, ok = +o.dataset.ok || 0;
+    const q = `<p class="lx-big"><span class="lx-chem">${sub} + ${rg} → ?</span></p>`;
+    if (d === '') return `${q}<div class="lx-chips">${FDP.map((p, i) => `<button type="button" class="chip" data-lwa="fdhp" data-v="${i}">${p}</button>`).join('')}</div>${n ? `<p class="lx-end">Zatím ${ok} z ${n} správně.</p>` : ''}`;
+    const good = +d === ans;
+    return `${q}<div class="fb ${good ? 'ok' : 'bad'}"><p><b>${good ? 'Správně, ' : 'Vznikne '}${FDP[ans]}.</b> ${why}</p></div>
+      <div class="row"><button type="button" class="btn primary" data-lwa="fdhn">Další reakce</button></div><p class="lx-end">Zatím ${ok} z ${n} správně.</p>`;
+  }
+  W.fdh = () => { const o = { dataset: { s: fdhMix().join(','), k: '0', d: '' } };
+    return box('fdh', '<b>Nenasyta, nebo brzda?</b> LiAlH₄ a Grignard se na derivát vrhnou dvakrát a skončí u alkoholu. Brzdu mají jen DIBAH (ester → aldehyd) a Gilman (acylchlorid → keton). Co vznikne?',
+      `<div class="lx-out" aria-live="polite" data-s="${o.dataset.s}" data-k="0" data-d="">${fdhOut(o)}</div>`); };
+
   function wUpd(w) {
     const k = w.dataset.lw, o = w.querySelector('.lx-out'), v = s => { const i = w.querySelector(`[data-lwi="${s}"]`); return i ? +String(i.value).replace(',', '.') : 0; };
     if (k === 'nmr') o.innerHTML = nmrOut(v('nmr'));
@@ -30291,6 +30350,13 @@ const FH_LES = (() => {
     if (a === 'lbd') { o.dataset.d = v; press(); return wUpd(w); }
     if (a === 'pht') { o.dataset.t = v; press(); return wUpd(w); }
     if (a === 'rotl') { o.dataset.l = v; press(); return wUpd(w); }
+    if (a === 'fdsa' || a === 'fdsb') { o.dataset[a.slice(3)] = v; press(); o.innerHTML = fdsOut(+o.dataset.a, +o.dataset.b); if (typeof fhSay === 'function') fhSay(o.querySelector('p').textContent.trim()); return; }
+    if (a === 'fdhp') {
+      o.dataset.d = v; o.dataset.n = (+o.dataset.n || 0) + 1; if (+v === FDH[+o.dataset.s.split(',')[+o.dataset.k]][2]) o.dataset.ok = (+o.dataset.ok || 0) + 1;
+      o.innerHTML = fdhOut(o); const nb = o.querySelector('[data-lwa="fdhn"]'); if (nb) nb.focus({ preventScroll: true });
+      if (typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim()); return;
+    }
+    if (a === 'fdhn') { let k = +o.dataset.k + 1; if (k >= FDH.length) { o.dataset.s = fdhMix().join(','); k = 0; } o.dataset.k = k; o.dataset.d = ''; o.innerHTML = fdhOut(o); const c = o.querySelector('[data-lwa="fdhp"]'); if (c) c.focus({ preventScroll: true }); return; }
   });
   /* záznam o dokončení: nejlepší výsledek a počet průchodů */
   const rec = (prev, n, ok, d) => ({ d, n, ok, best: Math.max((prev && prev.best) || 0, ok), k: ((prev && prev.k) || 0) + 1 });
@@ -30914,7 +30980,17 @@ const FH_OL = (() => {
         + sec('2. Estery', `${tbl(['Reakce', 'Výsledek'], [['Fischerova esterifikace (H⁺)', 'rovnováha, štěpí se C–OH kyseliny a O–H alkoholu'], ['zmýdelnění (NaOH)', '<b>nevratné</b>, karboxylát s alkoholem nereaguje'], ['Baeyer–Villiger (MCPBA)', 'z ketonu ester, O jde k víc substituovanému uhlíku'], ['LiAlH₄', 'primární alkohol'], ['DIBAH, toluen', 'aldehyd'], ['2 RMgX', 'terciární alkohol']])}`)
         + sec('3. Organokovová činidla a amidy', `${tbl(['Acylchlorid +', 'Produkt'], [['R′MgX (nadbytek)', 'terciární alkohol, keton se izolovat nedá'], ['R′₂CuLi (Gilman)', 'keton']])}
         <p>Amid je nejstálejší derivát, hydrolyzuje se až za tepla v kyselině nebo zásadě. <b>LiAlH₄ redukuje amid na amin</b>, C=O se změní na CH₂.</p>
-        <p class="aside">Názvy: ethyl-ethanoát (ethyl-acetát), ethanoylchlorid, N-methylpropanamid. Laktam je cyklický amid, lakton cyklický ester.</p>`) },
+        <p class="aside">Názvy: ethyl-ethanoát (ethyl-acetát), ethanoylchlorid, N-methylpropanamid. Laktam je cyklický amid, lakton cyklický ester.</p>`)
+        + sec('4. Pomůcky na zapamatování', `${FH_LES.ord({ q: 'deriváty podle reaktivity.', top: 'nejreaktivnější', bottom: 'nejstálejší', items: [['acylchlorid', 'odstupuje Cl⁻'], ['anhydrid', 'odstupuje RCOO⁻'], ['ester', 'odstupuje RO⁻'], ['amid', 'odstupuje NH₂⁻']] })}
+        ${FH_LES.w.fds()}
+        ${FH_LES.w.fdh()}
+        ${FH_LES.ord({ q: 'kroky Fischerovy esterifikace.', top: 'první krok', bottom: 'poslední krok', items: [['protonace kyslíku C=O', 'P'], ['adice alkoholu na karbonylový uhlík', 'A'], ['deprotonace kyslíku z alkoholu', 'D'], ['protonace OH na ⁺OH₂', 'P'], ['eliminace vody, obnoví se C=O', 'E'], ['deprotonace, vznikne ester', 'D']] })}
+        <p class="aside">Písmena dají zkratku <b>PADPED</b>, kterou používají anglické učebnice. Prostřední D a P jsou na webu dohromady „přenos H⁺“. Všechny kroky jsou vratné.</p>
+        <ul class="ac-ul"><li><b>Kyselina vrací, zásada zamyká.</b> Fischerova esterifikace i kyselá hydrolýza jsou rovnováha. NaOH ester zmýdelní nevratně, protože karboxylát s alkoholem už nereaguje.</li>
+        <li><b>Kde vzniká HCl, tam patří báze.</b> Acylchlorid s alkoholem potřebuje pyridin, s amoniakem dva ekvivalenty NH₃.</li>
+        <li><b>Čím útočíš, tak se to jmenuje.</b> H₂O hydrolýza, R′OH alkoholýza, NH₃ aminolýza.</li>
+        <li><b>Lakt<u>am</u> je cyklický <u>am</u>id</b>, lakton je ten druhý, cyklický ester.</li>
+        <li><b>Amid je na schodech úplně dole</b>, nejstálejší derivát. Z amidových (peptidových) vazeb jsou poskládané bílkoviny.</li></ul>`) },
     { id: 't18a', topic: 't18', mem: [0, 1, 2, 3, 10, 11, 12], n: 1, min: 5, t: 'Enoly, enoláty a α-substituce',
       goal: 'Po lekci vysvětlíš kyselost α-vodíku, víš, k čemu je LDA, a předpovíš produkt α-halogenace, haloformové reakce, alkylace enolátu i malonesterové a acetoacetátové syntézy.',
       recall: 'Tipni si, který vodík v acetonu je nejkyselejší a proč.',
