@@ -1306,7 +1306,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-acr-t{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:64px;min-height:72px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;flex:1 1 64px}
 .lx-acr-t b{font:800 1.6rem/1 var(--f-display);color:var(--accent)}
 .lx-acr-t span{display:none;font-size:.85rem;line-height:1.25;text-align:center}
-.lx-acr-t.open{background:var(--accent-soft);border-color:var(--accent)} .lx-acr-t.open b{font-size:1.15rem} .lx-acr-t.open span{display:block}
+.lx-acr-t.open{background:var(--accent-soft);border-color:var(--accent);flex-basis:140px} .lx-acr-t.open b{font-size:1.15rem} .lx-acr-t.open span{display:block}
 .lx-pr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .lx-pr-c{display:flex;flex-direction:column;gap:6px}
 .lx-pr-i{min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-align:left;font-size:.9rem;line-height:1.25}
@@ -1321,6 +1321,17 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-card.f{background:color-mix(in srgb,var(--pink) 8%,var(--surface))}
 .lx-cards .row{align-items:center;gap:12px}
 @media (prefers-reduced-motion:reduce){.lx-pr-i.bad{animation:none}}
+/* osa s úseky (IČ oblasti apod.) */
+.lx-os-pic{width:100%;max-width:440px;align-self:center}
+.lx-os-b rect{fill:var(--surface);stroke:var(--line);stroke-width:1}
+.lx-os-b.alt rect{fill:color-mix(in srgb,var(--accent-soft) 70%,var(--surface))}
+.lx-os-b.ok rect{fill:color-mix(in srgb,var(--ok) 24%,var(--surface));stroke:var(--ok);stroke-width:1.5}
+.lx-os-b.bad rect{fill:color-mix(in srgb,var(--bad) 20%,var(--surface));stroke:var(--bad);stroke-width:1.5}
+.lx-w .lx-os-pic .lx-os-s{font:600 12px var(--f-chem);fill:var(--ink)}
+.lx-os-m{stroke:var(--pink);stroke-width:2.5}
+.lx-os-mh{fill:var(--pink)}
+.lx-w .lx-os-pic .lx-os-ml{font:700 12px var(--f-body);fill:var(--ink)}
+.lx-osa .chip{min-height:44px}
 /* schody reaktivity derivátů */
 .lx-fd-pic{width:100%;max-width:360px;align-self:center}
 .lx-fd-st rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
@@ -30394,6 +30405,37 @@ const FH_LES = (() => {
     ['acylchlorid + LiAlH₄ → ?', 'primární alkohol', 'Nenasyta: hydrid jde dvakrát, přes aldehyd až na primární alkohol.'],
     ['amid + LiAlH₄ → ?', 'amin', 'Výjimka: kyslík odejde přes iminiový ion, C=O se změní na CH₂ a dusík zůstane.']] });
 
+  /* Osa: o = { head, from, to, unit, zones: [[od, do, popis, zkratka?], …], items: [[zadání, hodnota, vysvětlení, popisek hodnoty?], …] }
+     zadání jdou v náhodném pořadí dokola, čtenářka klepne na úsek osy (čip), pak se na ose ukáže značka u hodnoty; správný úsek je ten, do kterého hodnota padne */
+  const OS = {}; let osN = 0;
+  W.osa = o => { const id = 'lxos' + (++osN); OS[id] = Object.assign({ s: mix(o.items.length), k: 0, d: null, n: 0, ok: 0 }, o);
+    return `<div class="lx-w lx-osa" data-lw="osa" id="${id}"><p class="lx-q">${o.head}</p><div class="lx-out" aria-live="polite">${osOut(id)}</div></div>`; };
+  const osZone = (O, v) => O.zones.findIndex(([a, b]) => v <= Math.max(a, b) && v >= Math.min(a, b));
+  function osOut(id) {
+    const O = OS[id], [p, val, why, lab] = O.items[O.s[O.k]], good = osZone(O, val), done = O.d !== null;
+    const X = v => 20 + 300 * (v - O.from) / (O.to - O.from), f = v => String(v).replace('.', ','), mk = lab || f(val);
+    const cuts = [...new Set(O.zones.flatMap(([a, b]) => [a, b]))].sort((a, b) => X(a) - X(b));
+    const bands = O.zones.map(([a, b, , s], i) => { const x1 = Math.min(X(a), X(b)), wd = Math.abs(X(b) - X(a)), c = (i % 2 ? ' alt' : '') + (done ? (i === good ? ' ok' : i === O.d ? ' bad' : '') : '');
+      return `<g class="lx-os-b${c}"><rect x="${x1.toFixed(1)}" y="22" width="${wd.toFixed(1)}" height="34"/>${s ? `<text x="${(x1 + wd / 2).toFixed(1)}" y="44" text-anchor="middle" class="lx-os-s">${s}</text>` : ''}</g>`; }).join('');
+    const ticks = cuts.map((v, i) => `<text x="${X(v).toFixed(1)}" y="${i % 2 ? 86 : 72}" text-anchor="middle">${f(v)}</text>`).join('');
+    let m = '';
+    if (done) { const x = X(val), tx = Math.min(290, Math.max(50, x));
+      m = `<path class="lx-os-m" d="M${x.toFixed(1)} 58V19"/><path class="lx-os-mh" d="M${(x - 5).toFixed(1)} 12h10l-5 7z"/><text x="${tx.toFixed(1)}" y="9" text-anchor="middle" class="lx-os-ml">${mk} ${O.unit}</text>`; }
+    const pic = `<svg class="lx-os-pic" viewBox="0 0 340 92" role="img" aria-label="Osa od ${f(O.from)} do ${f(O.to)} ${O.unit}: ${O.zones.map(z => `${f(z[0])} až ${f(z[1])} ${z[2]}`).join(', ')}${done ? `. Značka je u ${mk} ${O.unit}` : ''}">${bands}${ticks}${m}</svg>`;
+    const q = `<p class="lx-big"><span class="lx-chem">${p}</span></p>`, sc = O.n ? `<p class="lx-end">Zatím ${O.ok} z ${O.n} správně.</p>` : '';
+    if (!done) return `${q}${pic}<div class="lx-chips">${O.zones.map(([, , t], i) => `<button type="button" class="chip" data-lwa="osp" data-v="${i}">${t}</button>`).join('')}</div>${sc}`;
+    const ok = O.d === good;
+    return `${q}${pic}<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně: ' : 'Správně je '}${O.zones[good][2]}.</b> ${why}</p></div>
+      <div class="row"><button type="button" class="btn primary" data-lwa="osn">Další</button></div>${sc}`;
+  }
+  function osAct(w, a, v) {
+    const O = OS[w.id], o = w.querySelector('.lx-out'); if (!O) return;
+    if (a === 'osp') { const it = O.items[O.s[O.k]]; O.d = +v; O.n++; if (O.d === osZone(O, it[1])) O.ok++; }
+    else { O.k++; if (O.k >= O.items.length) { O.s = mix(O.items.length); O.k = 0; } O.d = null; }
+    o.innerHTML = osOut(w.id);
+    const f = o.querySelector(a === 'osp' ? '[data-lwa="osn"]' : '[data-lwa="osp"]'); if (f) f.focus({ preventScroll: true });
+    if (a === 'osp' && typeof fhSay === 'function') fhSay(o.querySelector('.fb').textContent.trim());
+  }
   function wUpd(w) {
     const k = w.dataset.lw, o = w.querySelector('.lx-out'), v = s => { const i = w.querySelector(`[data-lwi="${s}"]`); return i ? +String(i.value).replace(',', '.') : 0; };
     if (k === 'nmr') o.innerHTML = nmrOut(v('nmr'));
@@ -30423,6 +30465,7 @@ const FH_LES = (() => {
     if (a === 'rotl') { o.dataset.l = v; press(); return wUpd(w); }
     if (a === 'fdsa' || a === 'fdsb') { o.dataset[a.slice(3)] = v; press(); o.innerHTML = fdsOut(+o.dataset.a, +o.dataset.b); if (typeof fhSay === 'function') fhSay(o.querySelector('p').textContent.trim()); return; }
     if (a === 'qzp' || a === 'qzn') return qzAct(w, a, v);
+    if (a === 'osp' || a === 'osn') return osAct(w, a, v);
     if (a === 'prl' || a === 'prr' || a === 'pragain') return prAct(w, a, v);
     if (a === 'cdf' || a === 'cdn') return cdAct(w, a);
     if (a === 'acr') { b.classList.toggle('open'); b.setAttribute('aria-expanded', b.classList.contains('open')); if (b.classList.contains('open') && typeof fhSay === 'function') fhSay(b.textContent); return; }
@@ -30690,6 +30733,24 @@ const FH_OL = (() => {
       tail: 'Vrať se ke kresbám ze začátku a zkontroluj je s přehledem. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t03_q1', 'fg_q10', 'fg_q1', 'fg_q2', 'fg_q3', 'fg_q4', 'fg_q5', 't02_q60', 'fg_q6', 'fg_q7', 'fg_q8', 'fg_q9'],
       beda: 'Kyslík je v přehledu všude, rozhoduje, kdo ho drží. Uhlík a vodík: alkohol. Dva uhlíky: ether. A když je kyslík na C=O, rozhodne, co ještě sedí na uhlíku: vodík aldehyd, OH kyselina.',
+      aid: () => pom(`${FH_LES.w.pair({ head: '<b>Kdo sedí na C=O?</b> Karbonyl je pořád stejný, jméno dává jeho soused. Spoj souseda se skupinou.', pairs: [['H a uhlík', 'aldehyd'], ['dva uhlíky', 'keton'], ['OH', 'karboxylová kyselina'], ['O–C', 'ester'], ['dusík', 'amid'], ['halogen', 'acylhalogenid']] })}
+        ${FH_LES.w.quiz({ head: '<b>AL má vodík, KET ho nemá, HEMI je napůl.</b> Co je na uhlíku?', opts: ['hemiacetal', 'hemiketal', 'acetal', 'ketal'], items: [
+          ['na uhlíku OH, OR a H', 'hemiacetal', 'Je tu vodík, takže AL. Jedno OH zůstalo, takže hemi.'],
+          ['na uhlíku OH, OR a dva uhlíky', 'hemiketal', 'Vodík chybí, takže KET. Jedno OH zůstalo, takže hemi.'],
+          ['na uhlíku dvě OR a H', 'acetal', 'Vodík je tu, takže AL. Obě skupiny jsou OR, žádné hemi.'],
+          ['na uhlíku dvě OR a dva uhlíky', 'ketal', 'Bez vodíku a bez OH: celý ketal.'],
+          ['kyslík etheru sedí na uhlíku C=C', 'enol ether', 'Ether, jehož kyslík je na dvojné vazbě. S OH místo OR by to byl enol.', ['enol ether', 'enol', 'ester', 'keten']],
+          ['C=C=O', 'keten', 'Kumulované vazby jako u alenu C=C=C, jen poslední atom je kyslík. Keten není keton.', ['keten', 'keton', 'alen', 'enol ether']]] })}
+        ${FH_LES.w.cards({ head: '<b>Voda s převlekem.</b> Vybav si odpověď, pak kartičku otoč.', items: [
+          ['Jak z vody H–O–H udělat alkohol?', 'Jeden vodík vyměň za uhlík: C–OH.'],
+          ['A jak z ní udělat ether?', 'Vyměň oba vodíky: C–O–C.'],
+          ['Ester, nebo ether: kdo má víc kyslíků?', 'Ester dva (C=O a –O–), ether jen jeden.'],
+          ['Kde v řetězci sedí aldehyd a kde keton?', 'Aldehyd na konci, protože má na C=O vodík. Keton uvnitř.'],
+          ['Halogen na nasyceném uhlíku je acylhalogenid?', 'Ne, to je alkylhalogenid. Acyl potřebuje halogen přímo na C=O.']] })}
+        ${kap(['<b>Ald- = na uhlíku je H, ket- = H tam není.</b> Platí pro aldehyd a keton i pro acetal a ketal.',
+          '<b>Hemi = napůl.</b> Jedno –OH zůstalo, druhá skupina je OR.',
+          '<b>Nejdřív najdi C=O.</b> Bez něj jde o alkohol, ether nebo acetal. S ním rozhodne soused.',
+          '<b>Keten není keton.</b> C=C=O má kumulované vazby jako alen.'])}`),
       body: () => sec('1. Proč funkční skupiny', `<p>Organických látek je přes 19 milionů, ale podle <b>funkčních skupin</b> se dají roztřídit do pár desítek kategorií, jejichž chování se dá předvídat. Funkční skupina je skupina atomů s charakteristickým chemickým chováním a reaktivitu molekuly určuje bez ohledu na její velikost.</p>`)
         + sec('2. Kyslík jednoduchou vazbou', `${tbl(['Skupina', 'Jak vypadá'], [['alkohol (1°, 2°, 3°)', 'C–OH'], ['ether', 'C–O–C'], ['enol ether', 'kyslík etheru na uhlíku C=C'], ['hemiacetal', 'na uhlíku OH, OR a H'], ['hemiketal', 'na uhlíku OH, OR a dva uhlíky'], ['acetal', 'na uhlíku dvě OR a H'], ['ketal', 'na uhlíku dvě OR a dva uhlíky']])}`)
         + sec('3. Karbonyl a deriváty kyselin', `${tbl(['Skupina', 'Co je na C=O'], [['aldehyd', 'vodík a uhlík'], ['keton', 'dva uhlíky'], ['karboxylová kyselina', 'OH'], ['ester', 'O–C'], ['amid (1°, 2°, 3°)', 'dusík'], ['acylhalogenid', 'halogen']])}
@@ -30701,6 +30762,19 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Thiol je sirný alkohol a sulfid sirný ether. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t19_q1', 'fg_q11', 'fg_q12', 'fg_q13', 'fg_q14', 'fg_q15', 'fg_q16', 't02_q58', 'fg_q18', 't02_q59', 'fg_q19', 'fg_q20'],
       beda: 'Síra je kyslíkova sestřenice z venkova: thiol místo alkoholu, sulfid místo etheru. A čím víc kyslíků si na sebe navlékne, tím vznešenější jméno: sulfoxid, sulfon.',
+      aid: () => pom(`${FH_LES.ord({ q: 'sirné skupiny podle počtu vazeb S=O.', top: 'žádná S=O', bottom: 'dvě S=O', items: [['sulfid C–S–C', '0 S=O'], ['sulfoxid C–S(=O)–C', '1 S=O'], ['sulfon C–S(=O)₂–C', '2 S=O']] })}
+        ${FH_LES.w.quiz({ head: '<b>C=N je imin.</b> Co visí na dusíku, rozhodne o jménu. ALD má na uhlíku vodík, KET ne.', opts: ['aldimin', 'ketimin', 'oxim', 'hydrazon'], items: [
+          ['C=N–OH', 'oxim', 'OX jako kyslík: na dusíku je OH.'],
+          ['C=N–N', 'hydrazon', 'Hydraz- jsou dva dusíky za sebou.'],
+          ['C=N, na uhlíku H a uhlík', 'aldimin', 'Vodík na uhlíku: imin z aldehydu.'],
+          ['C=N, na uhlíku dva uhlíky', 'ketimin', 'Bez vodíku na uhlíku: imin z ketonu.'],
+          ['–C≡N', 'nitril', 'Trojná vazba C≡N není imin, to je nitril.', ['nitril', 'isokyanát', 'azid', 'aldimin']],
+          ['–N=N⁺=N⁻', 'azid', 'Tři dusíky v řadě s náboji jsou azid.', ['azid', 'hydrazin', 'nitril', 'nitrososloučenina']]] })}
+        ${FH_LES.w.pair({ head: '<b>Kdo sousedí s C=O?</b> Kyselina uhličitá má na karbonylu dva sousedy. Spoj je s názvem.', pairs: [['O + O', 'karbonát'], ['O + N', 'karbamát'], ['N + N', 'močovina'], ['X + N', 'karbamoylhalogenid'], ['N=C=O', 'isokyanát'], ['N=C=N', 'karbodiimid'], ['N=C=S', 'isothiokyanát']] })}
+        ${kap(['<b>Počítej dusíky:</b> hydrazin a hydrazon dva za sebou, azid tři v řadě.',
+          '<b>Nitro dva kyslíky, nitroso jeden.</b> Nitro nese náboje N⁺ a O⁻, nitroso žádné.',
+          '<b>Karbamát je napůl ester, napůl amid.</b> Močovina je dvojitý amid.',
+          '<b>Kumuleny čti zleva doprava:</b> N=C=O isokyanát, N=C=S isothiokyanát, N=C=N karbodiimid.'])}`),
       body: () => sec('1. Dusík', `${tbl(['Skupina', 'Jak vypadá'], [['amin (1°, 2°, 3°)', 'dusík na 1, 2 nebo 3 uhlících'], ['nitril', '–C≡N'], ['aldimin, ketimin', 'C=N, na uhlíku H a uhlík, nebo dva uhlíky'], ['oxim', 'C=N–OH'], ['hydrazon', 'C=N–N'], ['hydrazin, hydrazid', 'N–N, hydrazid má dusík na C=O'], ['azid, acylazid', '–N=N⁺=N⁻, acylazid na C=O'], ['nitro-, nitrososloučenina', '–NO₂, –N=O'], ['hydroxamová kyselina', 'C(=O)–N–OH']])}`)
         + sec('2. Síra', `${tbl(['Skupina', 'Jak vypadá'], [['thiol (merkaptan)', 'C–SH'], ['sulfid', 'C–S–C'], ['disulfid', 'C–S–S–C'], ['sulfoxid', 'C–S(=O)–C'], ['sulfon', 'C–S(=O)₂–C'], ['sulfonová kyselina', 'R–S(=O)₂–OH'], ['sulfonylhalogenid, sulfonát ester', 'R–S(=O)₂–X, R–S(=O)₂–O–R']])}`)
         + sec('3. Deriváty kyseliny uhličité a kumulované skupiny', `${tbl(['Skupina', 'Jak vypadá'], [['karbonát', 'O–C(=O)–O'], ['karbamát', 'O–C(=O)–N'], ['močovina', 'N–C(=O)–N'], ['karbamoylhalogenid', 'X–C(=O)–N'], ['isokyanát, isothiokyanát', 'N=C=O, N=C=S'], ['karbodiimid', 'N=C=N'], ['ketenimin', 'C=C=N']])}
@@ -30711,6 +30785,29 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku a zkontroluj konfiguraci uhlíku a úhel 109,5°. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t01_q5', 't01_q13', 't01_q14', 't01_q15', 't01_q23', 't01_q29', 't01_q32', 't01_q33', 't01_q37', 't01_q39', 't01_q44', 't01_q48'],
       beda: 'Hybridizace je jako skládání tanečníků: sp³ tančí ve čtyřech do čtyřstěnu, sp² ve třech do trojúhelníku a sp ve dvou do přímky. Kdo zbyl mimo tanec (nehybridizovaný orbital p), drží vazbu π.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>V, P, H:</b> tři pravidla pro elektrony v pořadí, jak je použiješ. Klepni na písmeno.', items: [['V', 'výstavbový princip: kam dřív, od nejnižší energie 1s → 2s → 2p'], ['P', 'Pauliho princip: kolik, v orbitalu nejvýš 2 elektrony s opačným spinem'], ['H', 'Hundovo pravidlo: jak rozesadit, rovnocenné orbitaly nejdřív po jednom se stejným spinem']], note: 'Hund jako v autobusu: nejdřív si každý sedne na volnou dvojsedačku sám, k cizímu si přisedne, až volné místo dojde.' })}
+        ${FH_LES.w.quiz({ head: '<b>Které pravidlo to porušuje?</b>', opts: ['výstavbový princip', 'Pauliho princip', 'Hundovo pravidlo'], items: [
+          ['elektron jde do 2p, i když 2s ještě není plný', 'výstavbový princip', 'Orbitaly se plní od nejnižší energie, 2s je před 2p.'],
+          ['dva elektrony v jednom orbitalu se stejným spinem', 'Pauliho princip', 'Ve dvojici musí mít elektrony opačný spin.'],
+          ['tři elektrony v jednom orbitalu', 'Pauliho princip', 'Do orbitalu se vejdou nejvýš dva.'],
+          ['uhlík 1s²2s²2px², orbital 2py prázdný', 'Hundovo pravidlo', 'Správně 1s²2s²2px¹2py¹: dva 2p elektrony jdou každý do jiného orbitalu.'],
+          ['dva elektrony ve dvou 2p orbitalech s opačným spinem', 'Hundovo pravidlo', 'Když sedí každý zvlášť, mají mít stejný spin.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Počítej vazby π.</b> Žádná: sp³. Jedna: sp². Dvě: sp. Jaká je hybridizace?', opts: ['sp³', 'sp²', 'sp'], items: [
+          ['uhlík v methanu', 'sp³', 'Jen čtyři vazby σ, žádná π. Tetraedr, 109,5°.'],
+          ['uhlík v ethanu', 'sp³', 'Jednoduchá vazba C–C je jen σ.'],
+          ['uhlík v ethenu', 'sp²', 'Dvojná vazba = σ + π. Na π zbyl jeden nehybridizovaný p orbital.'],
+          ['uhlík v ethynu', 'sp', 'Trojná vazba = σ + 2π. Na ně zbyly dva p orbitaly, molekula je přímka.'],
+          ['dusík v amoniaku', 'sp³', 'Žádná vazba π. Volný pár sedí v jednom ze čtyř orbitalů sp³.'],
+          ['kyslík ve vodě', 'sp³', 'Žádná vazba π. Dva orbitaly sp³ nesou vazby, dva volné páry.']] })}
+        ${FH_LES.w.cards({ head: '<b>Kartičky k vazbám.</b> Vybav si odpověď, pak kartičku otoč.', items: [
+          ['Proč má C=C méně než dvojnásobek energie C–C?', 'Vazba π je jen boční překryv a je slabší: 611, ne 2 × 376 kJ·mol⁻¹.'],
+          ['Která vazba C–C je nejkratší a nejpevnější?', 'Trojná v ethynu: 120 pm a 835 kJ·mol⁻¹. Víc s, kratší a pevnější vazba.'],
+          ['Jak vzniká vazebný MO?', 'Součtem atomových orbitalů. Má nižší energii a elektrony drží mezi jádry.'],
+          ['Co ukázal Wöhler v roce 1828?', 'Z kyanatanu amonného zahříváním připravil močovinu, organickou látku z anorganické.']] })}
+        ${kap(['<b>σ čelem, π bokem.</b> Čelní překryv leží na ose mezi jádry, boční nad ní a pod ní.',
+          '<b>Víc s = kratší a pevnější.</b> sp³ → sp² → sp: 154 → 133 → 120 pm.',
+          '<b>Volný pár je taky soused.</b> Amoniak má tři vazby, a přesto je dusík sp³.',
+          '<b>Uhlík 1s² 2s² 2px¹ 2py¹,</b> 2p⁴ má až kyslík.'])}`),
       body: () => sec('1. Elektrony v orbitalech', `<p>Orbital je prostor, kde se elektron vyskytuje 90–95 % času. Elektrony se zaplňují podle tří pravidel:</p>
         ${tbl(['Pravidlo', 'Co říká'], [['výstavbový princip', 'od nejnižší energie: 1s → 2s → 2p → 3s → 3p → 4s → 3d'], ['Pauliho princip', 'v orbitalu nejvýš 2 elektrony s opačným spinem'], ['Hundovo pravidlo', 'rovnocenné orbitaly se nejdřív obsadí po jednom elektronu se stejným spinem']])}
         <p>Uhlík má v základním stavu <b>1s² 2s² 2px¹ 2py¹</b>. Organická chemie je chemie sloučenin uhlíku. Že organickou látku jde připravit z anorganické, ukázal Wöhler v roce 1828 a tím padla představa o „živé síle“.</p>`)
@@ -30725,6 +30822,25 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku. Silnější kyselina má nižší pKa a rovnováha jde vždy ke slabší kyselině. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t02_q1', 't02_q5', 't02_q14', 't02_q18', 't02_q19', 't02_q31', 't02_q32', 't02_q37', 't02_q38', 't02_q44', 't02_q49', 't02_q52'],
       beda: 'Proton vždycky utíká od silnější kyseliny ke slabší. Rovnováha leží tam, kde je kyselina s vyšším pKa, jako voda teče z kopce.',
+      aid: () => pom(`${FH_LES.ord({ q: 'kyseliny podle síly.', top: 'nejsilnější kyselina', bottom: 'nejslabší kyselina', items: [['HCl', 'pKa −7,0'], ['kyselina mravenčí', 'pKa 3,75'], ['kyselina octová', 'pKa 4,76'], ['HCN', 'pKa 9,31'], ['voda', 'pKa 15,74'], ['ethyn', 'pKa 25,0'], ['amoniak', 'pKa 36,0']] })}
+        ${FH_LES.w.quiz({ head: '<b>Proton skončí u silnější báze.</b> Najdi kyselinu vlevo i vpravo a porovnej pKa. Kam leží rovnováha?', opts: ['doprava', 'doleva'], items: [
+          ['CH₃COOH + OH⁻ ⇌ CH₃COO⁻ + H₂O', 'doprava', 'Kyselina octová 4,76 je silnější než voda 15,74.'],
+          ['HCN + CH₃COO⁻ ⇌ CN⁻ + CH₃COOH', 'doleva', 'HCN 9,31 je slabší než kyselina octová 4,76.'],
+          ['HC≡CH + OH⁻ ⇌ HC≡C⁻ + H₂O', 'doleva', 'Ethyn 25,0 je slabší kyselina než voda 15,74.'],
+          ['HC≡CH + NH₂⁻ ⇌ HC≡C⁻ + NH₃', 'doprava', 'Ethyn 25,0 je silnější kyselina než amoniak 36,0. Proto NaNH₂.'],
+          ['CH₃COCH₃ + OH⁻ ⇌ ⁻CH₂COCH₃ + H₂O', 'doleva', 'Aceton 19,0 je slabší kyselina než voda 15,74. NaOH nestačí.'],
+          ['CH₃CH₂OH + CN⁻ ⇌ CH₃CH₂O⁻ + HCN', 'doleva', 'Ethanol 16,0 je slabší kyselina než HCN 9,31.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Formální náboj od oka:</b> valenční elektrony − čárky − tečky. Každá vazba je jedna čárka, každý nevazebný elektron jedna tečka.', opts: ['+1', '0', '−1'], items: [
+          ['dusík se čtyřmi vazbami (NH₄⁺)', '+1', '5 − 4 − 0 = +1.'],
+          ['dusík se třemi vazbami a volným párem (NH₃)', '0', '5 − 3 − 2 = 0.'],
+          ['kyslík s jednou vazbou a třemi volnými páry', '−1', '6 − 1 − 6 = −1. Takový je jednoduše vázaný kyslík v nitromethanu.'],
+          ['kyslík se dvěma vazbami a dvěma volnými páry (H₂O)', '0', '6 − 2 − 4 = 0.'],
+          ['kyslík se třemi vazbami a volným párem (H₃O⁺)', '+1', '6 − 3 − 2 = +1. Oxoniový ion.'],
+          ['bor ve čtyřech vazbách aduktu BF₃ s etherem', '−1', '3 − 4 − 0 = −1. Kyslík etheru má v aduktu +1.']] })}
+        ${kap(['<b>Nižší pKa = silnější kyselina = slabší konjugovaná báze.</b> HCl se protonu zbaví snadno a Cl⁻ ho zpátky nechce.',
+          '<b>Rezonance hýbe jen elektrony.</b> Elektrony π a volné páry se posouvají, atomy zůstávají na místě.',
+          '<b>Lewis je širší.</b> Každá Brønstedova kyselina je i Lewisova, BF₃ ale H⁺ nedá.',
+          '<b>Uhlík s kovem δ−, s O nebo Cl δ+.</b> Elektrony táhne elektronegativnější partner.'])}`),
       body: () => sec('1. Polarita a formální náboj', `<p>Polaritu vazby způsobuje <b>rozdíl elektronegativit</b>. Pod 2 je vazba polární kovalentní, nad 2 převážně iontová. V C–Cl nese uhlík δ+, v C–Li naopak δ−. Posun elektronů po vazbách σ je <b>induktivní efekt</b>: kovy elektrony dodávají (+I), O a Cl je přitahují (−I).</p>
         <p><b>Formální náboj</b> = valenční elektrony − ½ vazebných − nevazebné. Rychlá kontrola: dusík se čtyřmi vazbami má +1, kyslík s jednou vazbou −1.</p>`)
         + sec('2. Rezonance', `<p>Rezonanční struktury se liší <b>jen umístěním elektronů π a volných párů</b>, atomy zůstávají na místě. Skutečnou strukturou je rezonanční hybrid a má nižší energii než kterákoli jednotlivá struktura. Proto jsou obě vazby N–O v nitromethanu stejně dlouhé (122 pm).</p>
@@ -30738,6 +30854,23 @@ const FH_OL = (() => {
       tail: 'Vrať se ke kresbě ze začátku. C₅H₁₂ má tři izomery: pentan, isopentan a neopentan. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t03_q3', 't03_q5', 't03_q7', 't03_q10', 't03_q12', 't03_q16', 't03_q19', 't03_q20', 't03_q23', 't03_q24', 't03_q26', 't03_q35'],
       beda: 'Neopentan je kulička, pentan nudle. Nudle se k sobě lepí víc, a tak vře výš.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>Máma Ela Pere Buchty:</b> první čtyři alkany mají vlastní jména. Klepni na slabiku.', items: [['Meth', 'methan CH₄, 1 uhlík'], ['Eth', 'ethan C₂H₆, 2 uhlíky'], ['Prop', 'propan C₃H₈, 3 uhlíky'], ['But', 'butan C₄H₁₀, 4 uhlíky']], note: 'Pak už jdou názvy po řadě: pentan, hexan, heptan, oktan, nonan, dekan. Vzorec vždy CₙH₂ₙ₊₂.' })}
+        ${FH_LES.w.quiz({ head: '<b>Spočítej uhlíkové sousedy.</b> Jeden primární, dva sekundární, tři terciární, čtyři kvartérní.', opts: ['primární', 'sekundární', 'terciární', 'kvartérní'], items: [
+          ['koncový CH₃ v butanu', 'primární', 'Má jediného uhlíkového souseda.'],
+          ['vnitřní CH₂ v butanu', 'sekundární', 'Sousedí se dvěma uhlíky.'],
+          ['prostřední uhlík isobutanu (2-methylpropanu)', 'terciární', 'Váže tři methyly.'],
+          ['prostřední uhlík neopentanu', 'kvartérní', 'Váže čtyři methyly a žádný vodík.'],
+          ['kterýkoli uhlík cyklohexanu', 'sekundární', 'V kruhu má každý uhlík dva uhlíkové sousedy.']] })}
+        ${FH_LES.w.pair({ head: '<b>Staré přezdívky, nová jména.</b> Spoj triviální název alkylu se systematickým.', pairs: [['isopropyl', 'propan-2-yl'], ['sek-butyl', 'butan-2-yl'], ['isobutyl', '2-methylpropyl'], ['terc-butyl', '2-methylpropan-2-yl'], ['isopentyl', '3-methylbutyl'], ['neopentyl', '2,2-dimethylpropyl']] })}
+        ${FH_LES.w.quiz({ head: '<b>Co je na názvu špatně?</b> Najdi porušené pravidlo.', opts: ['nejdelší řetězec', 'nejnižší lokanty', 'abecední pořadí', 'kmen je kruh'], items: [
+          ['2-ethylpentan', 'nejdelší řetězec', 'Ethyl na C2 řetězec prodlužuje: správně 3-methylhexan.'],
+          ['2-methyl-4-ethylhexan', 'abecední pořadí', 'Ethyl jde před methyl: 4-ethyl-2-methylhexan.'],
+          ['3-ethyl-5-methylhexan', 'nejnižší lokanty', 'Čísluj od konce bližšího prvnímu větvení: 4-ethyl-2-methylhexan.'],
+          ['1-cyklopropylbutan', 'kmen je kruh', 'Kmenem je kruh i u delšího řetězce: butylcyklopropan.']] })}
+        ${kap(['<b>Parafin = parum affinis, malá sloučivost.</b> Alkany hoří a na světle se chlorují, jinak moc nereagují.',
+          '<b>Kruh ubere dva vodíky.</b> Alkan CₙH₂ₙ₊₂, cykloalkan CₙH₂ₙ.',
+          '<b>Alkyl: -an za -yl.</b> Methan dá methyl, propan propyl.',
+          '<b>V kruhu se neotáčí.</b> Cis a trans cykloalkan převedeš jen rozštěpením vazby v kruhu.'])}`),
       body: () => sec('1. Izomery a typy uhlíků', `<p>Alkany mají vzorec <b>CₙH₂ₙ₊₂</b>, cykloalkany s jedním kruhem CₙH₂ₙ. <b>Konstituční izomery</b> mají stejný vzorec, ale jinak pospojované atomy (ethanol a dimethylether). C₄H₁₀ má dva izomery, C₅H₁₂ tři.</p>
         ${tbl(['Uhlík', 'Váže se na'], [['primární', '1 další uhlík'], ['sekundární', '2 uhlíky'], ['terciární', '3 uhlíky'], ['kvartérní', '4 uhlíky']])}`)
         + sec('2. Názvosloví', `<ol class="ac-les-steps"><li>najdi nejdelší řetězec, při shodě ten s víc větveními</li><li>čísluj od konce bližšího prvnímu větvení, při shodě rozhodne druhé větvení</li><li>substituenty seřaď abecedně, stejné spoj předponou di-, tri-</li><li>složitý substituent pojmenuj jako samostatnou látku (propan-2-yl, 2-methylpropyl)</li></ol>
@@ -30752,6 +30885,24 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Ekvatoriální methyl se vyhne dvěma 1,3-diaxiálním interakcím (7,6 kJ·mol⁻¹). Co jsi nevěděla, zopakuješ zítra.',
       q: ['t04_q1', 't04_q3', 't04_q6', 't04_q10', 't04_q13', 't04_q15', 't04_q19', 't04_q21', 't04_q22', 't04_q26', 't04_q28', 't04_q34'],
       beda: 'Objemný substituent si v židličce vždycky sedne k oknu, tedy ekvatoriálně. Axiálně by mu do loktů strkali sousedé na C3 a C5.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>Název konformace butanu poskládej ze dvou půlek:</b> syn- nebo anti-, pak -periplanární nebo -klinální. Klepni na dlaždici.', items: [['syn', 'syn-: úhel CH₃–CH₃ 0° nebo 60°'], ['anti', 'anti-: úhel CH₃–CH₃ 120° nebo 180°'], ['peri', '-periplanární: úhel CH₃–CH₃ 0° nebo 180°'], ['klin', '-klinální: úhel CH₃–CH₃ 60° nebo 120°']], note: 'Průnik dá úhel: syn + klinální = 60° (gauche), anti + periplanární = 180° (nejstabilnější), syn + periplanární = 0° (nejvyšší energie), anti + klinální = 120°.' })}
+        ${FH_LES.w.quiz({ head: '<b>Ceník zákrytů 4, 6, 11:</b> H↔H 4,0, CH₃↔H 6,0, CH₃↔CH₃ 11,0 kJ·mol⁻¹. Sečti zákryty.', opts: ['12,0 kJ·mol⁻¹', '14,0 kJ·mol⁻¹', '16,0 kJ·mol⁻¹', '19,0 kJ·mol⁻¹'], items: [
+          ['ethan, zákrytová konformace', '12,0 kJ·mol⁻¹', 'Tři zákryty H↔H: 3 × 4,0.'],
+          ['propan, zákrytová konformace', '14,0 kJ·mol⁻¹', 'Jeden CH₃↔H a dva H↔H: 6,0 + 2 × 4,0.'],
+          ['butan antiklinální (120°)', '16,0 kJ·mol⁻¹', 'Dva CH₃↔H a jeden H↔H: 2 × 6,0 + 4,0.'],
+          ['butan synperiplanární (0°)', '19,0 kJ·mol⁻¹', 'Jeden CH₃↔CH₃ a dva H↔H: 11,0 + 2 × 4,0.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Trans je e,e, jen u 1,3 je to obráceně.</b> Mohou být oba substituenty ekvatoriálně?', opts: ['ano, e,e jde', 'ne, jen a,e nebo e,a'], items: [
+          ['cis-1,2-disubstituovaný cyklohexan', 'ne, jen a,e nebo e,a', '1,2-cis má a,e nebo e,a.'],
+          ['trans-1,2-disubstituovaný cyklohexan', 'ano, e,e jde', '1,2-trans má a,a nebo e,e.'],
+          ['cis-1,3-disubstituovaný cyklohexan', 'ano, e,e jde', 'U 1,3 je to obráceně: cis má a,a nebo e,e.'],
+          ['trans-1,3-disubstituovaný cyklohexan', 'ne, jen a,e nebo e,a', 'U 1,3 má trans a,e nebo e,a.'],
+          ['cis-1,4-disubstituovaný cyklohexan', 'ne, jen a,e nebo e,a', '1,4-cis má a,e nebo e,a.'],
+          ['trans-1,4-disubstituovaný cyklohexan', 'ano, e,e jde', '1,4-trans má a,a nebo e,e.']] })}
+        ${FH_LES.w.pair({ head: '<b>Které pnutí patří ke kterému kruhu?</b>', pairs: [['cyklopropan', 'planární, úhel o 49° menší, vše v zákrytu'], ['cyklobutan', 'odchylka 19°, víc torzního pnutí'], ['cyklopentan', 'odchylka 1°, zkroucený do obálky'], ['cyklohexan', 'židlička bez pnutí']] })}
+        ${kap(['<b>4, 6, 11.</b> Zákryty H↔H, CH₃↔H a CH₃↔CH₃ v kJ·mol⁻¹. Z nich sečteš každou zákrytovou konformaci.',
+          '<b>Překlopení mění polohu, ne stranu.</b> Axiální se stane ekvatoriálním, cis zůstane cis.',
+          '<b>Čím objemnější, tím víc ekvatoriálně.</b> terc-Butyl je prakticky vždy ekvatoriálně.',
+          '<b>Baeyer se mýlil.</b> Plochý je jen cyklopropan, ostatní kruhy se prohnou.'])}`),
       body: () => sec('1. Konformace ethanu a butanu', `<p>Konformace vzniká <b>otáčením kolem jednoduché vazby</b>. V Newmanově projekci je přední uhlík bod a zadní kruh. Střídavá konformace ethanu je o 12,0 kJ·mol⁻¹ níž než zákrytová (tři zákryty H↔H po 4,0).</p>
         ${tbl(['Butan (C2–C3)', 'Úhel CH₃–CH₃', 'Energie'], [['antiperiplanární', '180°', '0, nejstabilnější'], ['synklinální (gauche)', '60°', '4,0 kJ·mol⁻¹, jen sterické pnutí'], ['antiklinální', '120°', '16,0 kJ·mol⁻¹'], ['synperiplanární', '0°', '19,0 kJ·mol⁻¹, nejvyšší']])}
         ${newman()}`)
@@ -30766,6 +30917,26 @@ const FH_OL = (() => {
       tail: 'Vrať se k šipkám ze začátku: jeden hrot je jeden elektron, plný hrot pár elektronů. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t05_q1', 't05_q7', 't05_q9', 't05_q16', 't05_q19', 't05_q33', 't05_q36', 't05_q41', 't05_q47', 't05_q51', 't05_q58', 't05_q62'],
       beda: 'Zahnutá šipka vždycky vede od elektronů k místu, kde chybí. Nukleofil přináší dárek, elektrofil ho rád přijme.',
+      aid: () => pom(`${FH_LES.w.pair({ head: '<b>Spočítej molekuly před šipkou a za ní.</b> Spoj počet s typem reakce.', pairs: [['2 → 1', 'adice'], ['1 → 2', 'eliminace'], ['2 → 2, vymění si části', 'substituce'], ['1 → 1, vznikne izomer', 'přesmyk']] })}
+        ${FH_LES.ord({ q: 'kroky chlorace methanu.', top: 'první krok', bottom: 'konec řetězu', items: [['Cl₂ → 2 Cl• (hν)', 'iniciace'], ['Cl• + CH₄ → HCl + •CH₃', 'propagace, 1. krok'], ['•CH₃ + Cl₂ → CH₃Cl + Cl•', 'propagace, 2. krok, Cl• jde znovu do kola'], ['Cl• + •CH₃ → CH₃Cl', 'terminace, srazí se dva radikály']] })}
+        ${FH_LES.w.quiz({ head: '<b>Nukleofil miluje jádro</b>, a tak nese elektronový pár ke kladnému místu. <b>Elektrofil miluje elektrony</b> a pár přijme. Co je co?', opts: ['nukleofil', 'elektrofil'], items: [
+          ['NH₃', 'nukleofil', 'Volný pár na dusíku. Náboj mít nemusí.'],
+          ['OH⁻', 'nukleofil', 'Záporný náboj a volné páry.'],
+          ['dvojná vazba C=C ethenu', 'nukleofil', 'Elektrony π nad a pod rovinou napadnou H⁺.'],
+          ['H₃O⁺', 'elektrofil', 'Kladný náboj, elektronový pár přijme.'],
+          ['uhlík v CH₃Br', 'elektrofil', 'Brom je elektronegativnější, uhlík nese δ+.'],
+          ['karbonylový uhlík C=O', 'elektrofil', 'Kyslík táhne elektrony, uhlík zůstane δ+.'],
+          ['Cl⁻', 'nukleofil', 'Anion s volnými páry.']] })}
+        ${FH_LES.w.cards({ head: '<b>Znaménka v energii.</b> Vybav si odpověď, pak kartičku otoč.', items: [
+          ['ΔG° je záporné. Co to znamená?', 'Exergonní reakce, samovolně k produktům, K > 1.'],
+          ['ΔH° je záporné. Co to znamená?', 'Exotermická reakce, vazby v produktu jsou pevnější.'],
+          ['Jaké znaménko má ΔS u adice?', 'Záporné, ze dvou molekul je jedna. U eliminace kladné.'],
+          ['Co rozhodne o rychlosti?', 'Výška bariéry ΔG‡. ΔG° říká jen, kam rovnováha dopadne.'],
+          ['Vrchol, nebo dolík: kde je meziprodukt?', 'V dolíku mezi dvěma vrcholy. Na vrcholu je přechodový stav ‡, ten izolovat nejde.']] })}
+        ${kap(['<b>Homo = stejně, hetero = jinak.</b> Homolýza dá každému fragmentu jeden elektron, heterolýza oba jednomu.',
+          '<b>Rybí háček nese jeden elektron.</b> Šipka s jedním hrotem je radikálová, s plným hrotem posouvá pár.',
+          '<b>I, P, T: iniciace, propagace, terminace.</b> Propagace se točí dokola, terminace je vzácná srážka dvou radikálů.',
+          '<b>ΔG° říká kam, ΔG‡ jak rychle.</b>'])}`),
       body: () => sec('1. Čtyři typy reakcí', `${tbl(['Typ', 'Co se děje', 'Příklad'], [['adice', 'dva reaktanty → jeden produkt', 'ethen + HBr → bromethan'], ['eliminace', 'jeden reaktant → dva produkty, vznikne násobná vazba', 'bromethan → ethen + HBr'], ['substituce', 'dva reaktanty → dva produkty, atomy si vymění místa', 'CH₄ + Cl₂ → CH₃Cl + HCl'], ['přesmyk', 'přeskupení atomů, vznikne izomer', 'but-1-en → but-2-en']])}
         <p>Podle mechanismu se reakce dělí na <b>radikálové</b>, <b>iontové (polární)</b>, které jsou běžnější, a pericyklické.</p>`)
         + sec('2. Radikály a ionty', `<p><b>Homolytické</b> štěpení dá dva radikály (šipka s jedním hrotem, jeden elektron), <b>heterolytické</b> kation a anion (plný hrot, pár elektronů).</p>
@@ -30780,6 +30951,24 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Kolem dvojné vazby se neotáčí, otočení by zrušilo vazbu π. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t06_q2', 't06_q4', 't06_q5', 't06_q8', 't06_q10', 't06_q13', 't06_q14', 't06_q16', 't06_q17', 't06_q21', 't06_q25', 't06_q27'],
       beda: 'Z jako zusammen: velcí kamarádi stojí spolu na jedné straně. E jako entgegen: stojí si naproti. A kdo je velký, rozhodne protonové číslo, ne velikost skupiny.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Kdo má přednost podle CIP?</b> Nejdřív protonové číslo prvního atomu. Při shodě jdi o sféru dál, dvojná vazba se počítá dvakrát.', opts: [], items: [
+          ['–Cl, nebo –CH₃?', '–Cl', 'Cl má protonové číslo 17, uhlík 6.', ['–Cl', '–CH₃']],
+          ['–CH₃, nebo –H?', '–CH₃', 'Uhlík 6 vyhraje nad vodíkem 1.', ['–CH₃', '–H']],
+          ['–CH₂CH₃, nebo –CH₃?', '–CH₂CH₃', 'První atom je u obou uhlík. Ve druhé sféře má ethyl (C, H, H), methyl jen (H, H, H).', ['–CH₂CH₃', '–CH₃']],
+          ['–CH₂OH, nebo –CH(CH₃)₂?', '–CH₂OH', '(O, H, H) proti (C, C, H): rozhodne první rozdíl a kyslík je víc než uhlík.', ['–CH₂OH', '–CH(CH₃)₂']],
+          ['–CH=O, nebo –CH₂OH?', '–CH=O', 'Dvojná vazba se počítá dvakrát: (O, O, H) proti (O, H, H).', ['–CH=O', '–CH₂OH']]] })}
+        ${FH_LES.w.quiz({ head: '<b>Dvě stejné skupiny na jednom uhlíku = žádné E/Z.</b> Má alken stereoizomery?', opts: ['ano', 'ne'], items: [
+          ['but-2-en CH₃CH=CHCH₃', 'ano', 'Na každém uhlíku dvojné vazby je CH₃ a H.'],
+          ['2-methylpropen (CH₃)₂C=CH₂', 'ne', 'Jeden uhlík nese dva methyly, druhý dva vodíky.'],
+          ['but-1-en CH₂=CHCH₂CH₃', 'ne', 'Koncový uhlík nese dva vodíky.'],
+          ['2-chlorbut-2-en', 'ano', 'Na C2 je Cl a CH₃, na C3 CH₃ a H.'],
+          ['ethen CH₂=CH₂', 'ne', 'Oba uhlíky nesou po dvou vodících.']] })}
+        ${FH_LES.w.pair({ head: '<b>Vinyl je dvojná vazba sama, allyl o CH₂ dál.</b> Spoj skupinu s názvem.', pairs: [['CH₂=CH–', 'vinyl'], ['CH₂=CH–CH₂–', 'allyl'], ['=CH₂', 'methyliden'], ['CH₃CH=', 'ethyliden']] })}
+        ${FH_LES.ord({ q: 'alkeny podle stability.', top: 'nejstabilnější', bottom: 'nejméně stabilní', items: [['R₂C=CR₂', 'tetrasubstituovaný'], ['R₂C=CHR', 'trisubstituovaný'], ['RCH=CHR', 'disubstituovaný, stejně jako R₂C=CH₂'], ['RCH=CH₂', 'monosubstituovaný']] })}
+        ${kap(['<b>Víc alkylů na C=C = stabilnější alken.</b> Pomáhá hyperkonjugace a pevnější vazby sp³–sp².',
+          '<b>Kdo uvolní míň tepla, byl stabilnější.</b> trans-But-2-en dá při hydrogenaci −116, cis −120 kJ·mol⁻¹.',
+          '<b>E/Z není cis/trans.</b> U (E)-2-chlorbut-2-enu jsou methyly na stejné straně, protože na C2 vede Cl.',
+          '<b>V kruhu má dvojná vazba vždy polohy 1 a 2.</b> Proto 1-methylcyklohexen, ne 2-methyl.'])}`),
       body: () => sec('1. Stupeň nenasycenosti', `<p>Alkeny (olefiny) s jednou dvojnou vazbou mají vzorec <b>CₙH₂ₙ</b>. Kolik kruhů a násobných vazeb látka má, ukáže <b>stupeň nenasycenosti</b> = (počet H alkanu − počet H látky) / 2.</p>
         <ul class="ac-ul"><li>halogen se přičte k H,</li><li>kyslík se vynechá,</li><li>dusík se od H odečte.</li></ul>
         <p class="aside">C₇H₈O: O vynechat, alkan C₇H₁₆, (16 − 8)/2 = 4.</p>
@@ -30795,6 +30984,23 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Terciární karbokation je nejstabilnější a podle něj se řídí Markovnikovo pravidlo. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t06_q30', 't06_q31', 't06_q32', 't06_q33', 't06_q35', 't06_q39', 't06_q40', 't06_q41', 't06_q45', 't06_q49', 't06_q50', 't06_q53'],
       beda: 'Markovnikov: bohatý zbohatne. Vodík jde k uhlíku, který už vodíků má víc. Hydroborace je rebel a dělá to obráceně.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Můstek, nebo jedna strana?</b> Když přes jednu stranu sedí můstek, druhá skupina přijde zezadu: anti. Když přijdou obě z jedné molekuly nebo z povrchu kovu: syn.', opts: ['syn', 'anti'], items: [
+          ['Br₂ na cyklopenten', 'anti', 'Br⁻ napadá bromoniový ion z opačné strany, vznikne jen trans-dibromid.'],
+          ['Br₂ ve vodě (halohydrin)', 'anti', 'Bromoniový ion napadne zezadu voda.'],
+          ['BH₃, pak H₂O₂, OH⁻', 'syn', 'B–H se aduje naráz přes čtyřčlenný přechodový stav.'],
+          ['H₂, Pd/C', 'syn', 'Oba vodíky přicházejí z povrchu katalyzátoru.'],
+          ['OsO₄, pak NaHSO₃', 'syn', 'Oba kyslíky jsou z jedné molekuly OsO₄, vznikne cis-diol.']] })}
+        ${FH_LES.w.pair({ head: '<b>Činidlo a výsledek.</b> Spoj, co k čemu patří.', pairs: [['Hg(OAc)₂, pak NaBH₄', 'alkohol podle Markovnikova, bez přesmyku'], ['H₂O, H⁺', 'alkohol podle Markovnikova, hrozí přesmyk'], ['BH₃·THF, pak H₂O₂, OH⁻', 'OH na méně substituovaný uhlík'], ['O₃, pak Zn', 'aldehydy a ketony'], ['KMnO₄, H₃O⁺', 'z RCH= kyselina, z R₂C= keton'], ['HIO₄', 'rozštěpí 1,2-diol na karbonyly'], ['CH₂I₂, Zn(Cu)', 'cyklopropan']] })}
+        ${FH_LES.w.quiz({ head: '<b>Hledej stabilnější karbokation.</b> Halogen nebo OH skončí tam, kde byl kladný náboj. Co vznikne?', opts: [], items: [
+          ['2-methylpropen + HBr', '2-brom-2-methylpropan', 'H jde na CH₂, vznikne terciární karbokation.', ['2-brom-2-methylpropan', '1-brom-2-methylpropan']],
+          ['pent-1-en + HI (KI, H₃PO₄)', '2-jodpentan', 'H na koncový CH₂, sekundární karbokation na C2.', ['2-jodpentan', '1-jodpentan']],
+          ['1-methylcyklohexen + HBr', '1-brom-1-methylcyklohexan', 'Terciární kation na uhlíku s methylem vyhraje nad sekundárním.', ['1-brom-1-methylcyklohexan', '1-brom-2-methylcyklohexan']],
+          ['3-methylbut-1-en + HCl, přesmyknutý produkt', '2-chlor-2-methylbutan', 'Sekundární kation si od souseda vezme hydrid a stane se terciárním.', ['2-chlor-2-methylbutan', '1-chlor-3-methylbutan']],
+          ['1-methylcyklopenten, BH₃, pak H₂O₂, OH⁻', 'trans-2-methylcyklopentan-1-ol', 'Hydroborace volný karbokation netvoří. Bor jde na méně substituovaný uhlík a OH skončí trans k methylu.', ['trans-2-methylcyklopentan-1-ol', '1-methylcyklopentan-1-ol']]] })}
+        ${kap(['<b>Volný karbokation = možný přesmyk.</b> Hydridový nebo methylový posun udělá ze sekundárního terciární.',
+          '<b>Zn aldehydy uchrání, KMnO₄ je dooxiduje.</b> Ozonolýza se Zn končí u aldehydů, KMnO₄ jde až na kyseliny.',
+          '<b>OsO₄ cis, Br₂ trans.</b> Cis-diol z OsO₄, trans-dibromid a halohydrin přes bromoniový ion.',
+          '<b>Hydroxymerkurace a hydroborace jsou dvojčata naopak.</b> Stejný alken, OH jednou na více, podruhé na méně substituovaném uhlíku.'])}`),
       body: () => sec('1. Adice HX a Markovnikovo pravidlo', `${FH_LES.ord({ q: 'karbokationty podle stability.', top: 'nejstabilnější', bottom: 'nejméně stabilní', items: [['terciární', ''], ['sekundární', ''], ['primární', ''], ['methyl', '']] })}
         <p>HX se aduje přes <b>karbokation</b>, který je planární (sp², prázdný p orbital). Pořadí stability: terciární > sekundární > primární > methyl (hyperkonjugace a +I efekt). Vznikne přednostně stabilnější karbokation, a proto H jde na uhlík s méně alkyly a X na více substituovaný: <b>Markovnikovo pravidlo</b>.</p>
         <p>Podle Hammondova postulátu se přechodový stav podobá karbokationtu, takže stabilnější karbokation vzniká rychleji. Méně stabilní karbokation se může <b>přesmyknout</b> (posun hydridu nebo methylu).</p>`)
@@ -30807,6 +31013,32 @@ const FH_OL = (() => {
       tail: 'Vrať se k pořadí ze začátku: alkyn (pKa 25) > alken (44) > alkan (60). Co jsi nevěděla, zopakuješ zítra.',
       q: ['t07_q1', 't07_q3', 't07_q6', 't07_q7', 't07_q13', 't07_q15', 't07_q16', 't07_q19', 't07_q22', 't07_q23', 't07_q27', 't07_q29'],
       beda: 'Lindlar je opatrný a dá cis-alken. Lithium v amoniaku je divočák a dá trans. A NaNH₂ s alkynem udělá acetylid, kterým pak přilepíš další uhlíky.',
+      aid: () => pom(`${FH_LES.w.pair({ head: '<b>Jeden alkyn, šest činidel.</b> Hex-1-yn potkal činidlo vlevo. Co z něj vznikne?', pairs: [
+          ['H₂O, H₂SO₄, HgSO₄', 'hexan-2-on'],
+          ['1. BH₃, THF, 2. H₂O₂, NaOH', 'hexanal'],
+          ['2 HBr', '2,2-dibromhexan'],
+          ['H₂, Pd/C', 'hexan'],
+          ['KMnO₄', 'kyselina pentanová a CO₂'],
+          ['NaNH₂', 'acetylid (sodná sůl)']] })}
+        ${FH_LES.w.quiz({ head: '<b>Otrávený katalyzátor se zastaví, elektrony po jednom dají trans.</b> Jaký produkt redukce vznikne?', opts: ['cis-alken', 'trans-alken', 'alkan'], items: [
+          ['dec-5-yn + H₂, Lindlarův katalyzátor', 'cis-alken', 'Olovo a chinolin katalyzátor otráví, takže se zastaví u alkenu. Oba H přijdou z povrchu kovu ze stejné strany: (Z)-dec-5-en.'],
+          ['dec-5-yn + Li v kapalném NH₃', 'trans-alken', 'Kov dává elektrony po jednom (anionradikál) a přes stabilnější trans vinylový anion vznikne (E)-dec-5-en.'],
+          ['dec-5-yn + H₂, Pd/C', 'alkan', 'Na aktivním katalyzátoru se alken nezastaví a vznikne decan.'],
+          ['but-2-yn + Na v kapalném NH₃', 'trans-alken', 'Sodík funguje stejně jako lithium: trans-but-2-en.'],
+          ['ethyn + H₂, Pd/C', 'alkan', 'Bez otravy jede hydrogenace až na ethan.'],
+          ['alkyn ve syntéze vitaminu A + H₂, Lindlar', 'cis-alken', 'Vznikne cis-retinol. Až zahřátí ho převede na all-trans vitamin A.']] })}
+        ${FH_LES.w.cards({ head: '<b>Proč to tak je?</b> Nejdřív odpověz sama, pak otoč.', items: [
+          ['Proč NaNH₂ koncový alkyn deprotonuje, ale NaOH ne?', 'Rovnováha míří ke slabší kyselině. NH₃ má pKa 36, alkyn 25: jde to. Voda má 15,74, je kyselejší než alkyn, a hydroxid proto nestačí.'],
+          ['Proč hex-3-yn s NaNH₂ acetylid netvoří?', 'Je vnitřní. Na trojné vazbě nemá žádný vodík, který by šel odtrhnout.'],
+          ['Proč acetylid s 2-brompropanem řetězec neprodlouží?', 'Acetylid je silná báze. U sekundárního halogenidu vyhraje eliminace (E2), proto se alkyluje jen primárním R–CH₂Br.'],
+          ['Proč hydratace ethynu dá aldehyd, a ne keton?', 'Enol CH₂=CH–OH nemá na uhlíku s OH žádný alkyl, a tak přejde na acetaldehyd. Ethyn je jediný alkyn, který hydratací dá aldehyd.'],
+          ['Kolik NaNH₂ potřebuješ na 1,2-dibrompentan → pent-1-yn?', 'Tři. Dva odtrhnou dvě HBr, třetí sebere kyselý koncový vodík. H₃O⁺ ho na konci vrátí.'],
+          ['Proč je acetylidový anion stabilnější než vinylový a alkylový?', 'Orbital sp má 50 % s-charakteru (sp² 33 %, sp³ 25 %). Elektrony jsou blíž jádru a náboj se nese snáz.']] })}
+        ${kap(['<b>Rtuť doprostřed, bor na kraj.</b> Hydratace s Hg²⁺ jde podle Markovnikova a z koncového alkynu dá methylketon. Bor sedne na koncový uhlík a hydroborace dá aldehyd.',
+          '<b>Druhý HBr jde za prvním.</b> Druhý ekvivalent HX míří na stejný uhlík jako první halogen, vznikne geminální dihalogenid (2,2-dibromhexan).',
+          '<b>Alkyn si pomáhá vinylovým kationtem.</b> HX se aduje přes R–C⁺=CH₂, kladný uhlík leží na dvojné vazbě.',
+          '<b>Konec alkynu odletí jako CO₂.</b> KMnO₄ nebo O₃ trojnou vazbu rozštěpí: z každého vnitřního uhlíku je COOH, z koncového CH oxid uhličitý.',
+          '<b>Na NaNH₂ s OH počítej jeden ekvivalent navíc.</b> Kyselý vodík skupiny OH ho spotřebuje dřív než eliminace.'])}`),
       body: () => sec('1. Stavba a názvy', `<p>Uhlíky trojné vazby jsou <b>sp</b>, molekula je lineární (180°). Trojná vazba = jedna σ a dvě π, je nejkratší (120 pm) a nejpevnější vazba C–C. Acetylen se vyrábí pyrolýzou methanu při 1 200 °C.</p>
         <p>V názvu koncovka <b>-yn</b>. Nejnižší lokanty dostanou násobné vazby dohromady, při shodě má přednost dvojná vazba: hept-1-en-6-yn.</p>`)
         + sec('2. Adice na trojnou vazbu', `${tbl(['Činidlo', 'Výsledek'], [['HBr', 'přes vinylový kation, podle Markovnikova'], ['H₂O, H₂SO₄, HgSO₄', 'enol → <b>keton</b> (koncový alkyn dá methylketon)'], ['hydroborace', 'koncový alkyn dá <b>aldehyd</b>'], ['H₂, Lindlarův katalyzátor', '<b>cis</b>-alken (syn)'], ['Li v kapalném NH₃', '<b>trans</b>-alken'], ['KMnO₄ nebo O₃', 'dvě karboxylové kyseliny']])}
@@ -30821,6 +31053,33 @@ const FH_OL = (() => {
       tail: 'Vrať se k větě ze začátku. Ruce jsou zrcadlové obrazy, které nejsou totožné, a přesně to je chiralita. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t08_q1', 't08_q2', 't08_q3', 't08_q5', 't08_q12', 't08_q14', 't08_q19', 't08_q22', 't08_q24', 't08_q25', 't08_q26', 't08_q27'],
       beda: 'Volant: dej skupinu 4 dozadu a jeď 1 → 2 → 3. Točíš doprava? R jako rectus. Doleva? S jako sinister.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Kdo vyhraje prioritu?</b> Rozhoduje první atom. Teprve při shodě jdi o sféru dál a hledej první rozdíl.', opts: ['vlevo', 'vpravo'], items: [
+          ['–OH, nebo –COOH?', '–OH', 'Kyslík sedí přímo na stereocentru (Z = 8), uhlík COOH má jen 6. Tři kyslíky dál už nerozhodují.', ['–OH', '–COOH']],
+          ['–CH₂OH, nebo –C(CH₃)₃?', '–CH₂OH', 'Oba začínají uhlíkem. Ve druhé sféře je (O, H, H) proti (C, C, C) a první rozdíl vyhraje kyslík.', ['–CH₂OH', '–C(CH₃)₃']],
+          ['–CHO, nebo –CH₂OH?', '–CHO', 'Dvojná vazba se počítá dvakrát: CHO je C s (O, O, H), CH₂OH jen (O, H, H).', ['–CH₂OH', '–CHO']],
+          ['–CH₂CH₃, nebo –CH₃?', '–CH₂CH₃', 'Ethyl má ve druhé sféře (C, H, H), methyl (H, H, H).', ['–CH₃', '–CH₂CH₃']],
+          ['–NH₂, nebo –COOH?', '–NH₂', 'Dusík (7) je přímo na stereocentru, uhlík má 6. Tak to je u alaninu: NH₂ > COOH > CH₃ > H.', ['–COOH', '–NH₂']],
+          ['–Cl, nebo –COOH?', '–Cl', 'Chlor má protonové číslo 17, uhlík 6. Kyselina 2-chlorpropanová: Cl > COOH > CH₃ > H.', ['–Cl', '–COOH']],
+          ['–Br, nebo –CH₂CH₃?', '–Br', 'Brom (35) přebije každý uhlík. 2-Brombutan: Br > CH₂CH₃ > CH₃ > H.', ['–CH₂CH₃', '–Br']]] })}
+        ${FH_LES.w.pair({ head: '<b>Co znamená které značení?</b> Spoj pojem s významem.', pairs: [
+          ['R', 'rectus, pravý: 1 → 2 → 3 po směru ručiček'],
+          ['S', 'sinister, levý: proti směru ručiček'],
+          ['(+)', 'pravotočivá, změří polarimetr'],
+          ['(−)', 'levotočivá'],
+          ['racemát', 'enantiomery 50 : 50, otáčivost 0°'],
+          ['D v [α]D', 'sodíková čára, 589 nm'],
+          ['chirální', 'od cheir, dlaň']] })}
+        ${FH_LES.w.cards({ head: '<b>Pasti s R a S.</b> Vybav si odpověď, pak otoč.', items: [
+          ['Skupina 4 míří k tobě a 1 → 2 → 3 jde po směru ručiček. Co to je?', 'S. Díváš se z opačné strany, než máš, tak výsledek obrať.'],
+          ['Ve Fischerově projekci je H vodorovně. Na co nesmíš zapomenout?', 'Vodorovné vazby k tobě natahují ruce jako na objetí, svislé míří od tebe. H vodorovně = výsledek obrať.'],
+          ['Ve Fischerově projekci prohodíš dvě skupiny. Co se stane?', 'Konfigurace se obrátí. Z (R)-kyseliny mléčné prohozením COOH a CH₃ vznikne obraz (S).'],
+          ['Je (R)-kyselina mléčná pravotočivá?', 'Ne. Na webu je (R)-kyselina mléčná levotočivá (−). Písmeno R dají pravidla CIP, znaménko (+)/(−) jen polarimetr.'],
+          ['Je CH₂XY chirální?', 'Ne. Dvě stejné skupiny znamenají rovinu symetrie. Chirální je až CHXYZ se čtyřmi různými skupinami.'],
+          ['5-Bromnonan, nebo 5-bromdekan: který je chirální?', '5-Bromdekan. Na C5 je butyl a pentyl. 5-Bromnonan má dva stejné butyly.']] })}
+        ${kap(['<b>Rozhoduje první rozdíl.</b> Porovnávej sféru po sféře a skonči u prvního atomu, který se liší. Co je dál, už nehraje roli.',
+          '<b>Dvojná vazba se počítá dvakrát.</b> C=O je pro pravidla C se dvěma kyslíky.',
+          '<b>Hledej čtyři různé ruce.</b> Stereocentrum má čtyři různé skupiny. Skryté rozdíly hledej až na konci řetězce (butyl a pentyl).',
+          '<b>[α] = α děleno c · l.</b> Kyveta v dm, koncentrace v g·ml⁻¹. Enantiomery točí o stejný úhel, každý na opačnou stranu.'])}`),
       body: () => sec('1. Chiralita', `<p>Molekula je <b>chirální</b> (cheir = dlaň), když není totožná se svým zrcadlovým obrazem a nemá rovinu symetrie. Obě zrcadlové formy jsou <b>enantiomery</b>. Typické stereogenní centrum je uhlík se <b>čtyřmi různými substituenty</b>.</p>
         <p>Enantiomery mají stejné fyzikální vlastnosti kromě směru otáčení polarizovaného světla: pravotočivý (+), levotočivý (−). Směs 50 : 50 je <b>racemát</b> a je opticky neaktivní.</p>
         <p class="aside">Specifická otáčivost [α] = α / (c · l), kyveta v dm a c v g·ml⁻¹.</p>`)
@@ -30836,6 +31095,33 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Kyselina vinná má jen tři stereoizomery, protože jeden je meso. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t08_q36', 't08_q37', 't08_q39', 't08_q41', 't08_q43', 't08_q44', 't08_q49', 't08_q52', 't08_q53', 't08_q57', 't08_q62', 't08_q67'],
       beda: 'Br₂ na but-2-en: cis + anti = racemát, trans + anti = meso. Zapamatuj si to jako říkanku a nemusíš pak kreslit.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Obrať všechno, je to zrcadlo. Obrať jen část, je to diastereomer.</b> Jaký vztah mají tyto dvě látky?', opts: ['enantiomery', 'diastereomery', 'tatáž látka'], items: [
+          ['(2R,3R) a (2S,3S)-kyselina 2-amino-3-hydroxybutanová', 'enantiomery', 'Obrácená jsou obě centra, je to zrcadlový obraz.'],
+          ['(2R,3R) a (2R,3S)-kyselina 2-amino-3-hydroxybutanová', 'diastereomery', 'Liší se jen jedno centrum ze dvou.'],
+          ['(2R,3S) a (2S,3R)-kyselina vinná', 'tatáž látka', 'Je to meso forma. Má uvnitř rovinu symetrie, a tak je sama sobě zrcadlovým obrazem.'],
+          ['(+)- a (−)-kyselina vinná', 'enantiomery', 'Točí o stejný úhel na opačné strany (+12° a −12°), jinak mají stejné vlastnosti.'],
+          ['meso- a (+)-kyselina vinná', 'diastereomery', 'Mají různé vlastnosti: meso taje při 146–148 °C, (+) při 168–170 °C.'],
+          ['cis- a trans-but-2-en', 'diastereomery', 'cis-trans izomery jsou stereoizomery, které nejsou zrcadlové, tedy diastereomery.'],
+          ['(2S,4R) a (2R,4R)-2-brom-4-methylhexan', 'diastereomery', 'C4 zůstalo R, liší se jen C2.']] })}
+        ${FH_LES.w.pair({ head: '<b>Podle meziproduktu poznáš výsledek.</b> Spoj reakci s produktem.', pairs: [
+          ['HBr + but-1-en', 'racemický 2-brombutan'],
+          ['Br₂ + cis-but-2-en', 'racemát (2R,3R) a (2S,3S)'],
+          ['Br₂ + trans-but-2-en', 'meso-2,3-dibrombutan'],
+          ['Br₂ + 1-methylcyklohexen', 'trans-dibromid jako dvojice enantiomerů'],
+          ['HBr + (R)-4-methylhex-1-en', 'diastereomery v nestejném množství'],
+          ['NaBH₄ + acetofenon', 'racemický 1-fenylethan-1-ol']] })}
+        ${FH_LES.w.cards({ head: '<b>Počítej a hledej zrcadlo.</b> Vybav si odpověď, pak otoč.', items: [
+          ['Kolik stereoizomerů může mít penicilin V se třemi stereocentry?', 'Nejvýš 2³ = 8. Každé centrum je vypínač R/S a n vypínačů dá 2ⁿ kombinací.'],
+          ['Kolik stereoizomerů má kyselina vinná?', 'Tři, ne čtyři. (2R,3S) a (2S,3R) jsou tatáž meso molekula, zbývají (R,R) a (S,S).'],
+          ['Jak poznáš meso ve Fischerově projekci?', 'Hledej vodorovnou rovinu symetrie: obě OH na stejné straně a nahoře i dole stejný konec (COOH). Když jsou konce různé, meso to být nemůže.'],
+          ['Proč nejde oddělit enantiomery N-methylethanaminu?', 'Dusík se rychle překlápí jako deštník a enantiomery se pořád mění jeden v druhý. Fosfan se překlápí pomalu, ten oddělíš.'],
+          ['Strana Re, nebo Si?', 'Seřaď tři skupiny podle CIP. Po směru ručiček je Re, proti směru Si, stejně jako R a S.'],
+          ['Kdo z achirální látky udělá jen jeden enantiomer?', 'Jen chirální činidlo nebo enzym. Fumaráza dá z kyseliny fumarové jen (S)-kyselinu jablečnou. Bez nich vznikne racemát.']] })}
+        ${kap(['<b>Zrcadlo uvnitř = meso.</b> Má stereocentra i rovinu symetrie, je achirální a točí 0°.',
+          '<b>Diastereomer prozradí teploměr.</b> Diastereomery mají jiné fyzikální vlastnosti, enantiomery stejné až na směr otáčení.',
+          '<b>Plochý kation = půl na půl.</b> Planární karbokation se napadá z obou stran stejně snadno a vznikne racemát.',
+          '<b>Volný pár je až za vodíkem.</b> Na N, P nebo S má volný elektronový pár nejnižší prioritu.',
+          '<b>Staré centrum se nehýbe.</b> Když reakce vytvoří nové centrum vedle existujícího, vzniknou diastereomery a směs je opticky aktivní.'])}`),
       body: () => sec('1. Diastereomery a meso', `<p><b>Diastereomery</b> jsou stereoizomery, které nejsou enantiomery: třeba (2R,3R) a (2R,3S). Mají <b>různé</b> fyzikální vlastnosti. Látka s n stereocentry má nejvýš <b>2ⁿ</b> stereoizomerů.</p>
         <p><b>Meso</b> sloučenina má stereocentra i rovinu symetrie, a proto je achirální. Kyselina vinná má tak jen tři stereoizomery: (R,R), (S,S) a meso.</p>`)
         + sec('2. Stereochemie adic', `${tbl(['Reakce', 'Produkt'], [['HBr na but-1-en', '<b>racemát</b>, planární karbokation se napadá z obou stran stejně'], ['Br₂ na cis-but-2-en (anti)', 'racemát (2R,3R) a (2S,3S)'], ['Br₂ na trans-but-2-en (anti)', '<b>meso</b>-2,3-dibrombutan'], ['HBr na chirální alken', 'diastereomery v nestejném poměru, směs je opticky aktivní']])}
@@ -30847,6 +31133,34 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku a zkontroluj, co znamená SN2 a SN1. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t09_q12', 't09_q13', 't09_q15', 't09_q16', 't09_q19', 't09_q21', 't09_q23', 't09_q25', 't09_q26', 't09_q42', 't09_q46', 't09_q47'],
       beda: 'SN2 je šermíř: útočí zezadu a molekulu převrátí jako deštník ve větru. SN1 počká, až X odejde sám, a pak si vezme, co zbylo, z obou stran.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>SN2 nesnáší tlačenici, SN1 nesnáší samotu.</b> SN2 vadí objemné skupiny kolem uhlíku, SN1 potřebuje karbokation podepřený alkyly nebo rezonancí. Kam to ukazuje?', opts: ['SN2', 'SN1'], items: [
+          ['substrát CH₃Br', 'SN2', 'Methyl je nejvolnější uhlík: SN2 relativně 2 000 000, karbokation by byl nejméně stabilní.'],
+          ['substrát (CH₃)₃CBr ve vodě', 'SN1', 'Zezadu se k terciárnímu uhlíku nikdo nedostane. Terciární karbokation je naopak nejstabilnější (1 200 000).'],
+          ['benzylbromid ve vodě', 'SN1', 'Je primární, ale benzylový kation drží rezonance s kruhem.'],
+          ['rozpouštědlo DMSO nebo HMPA', 'SN2', 'Aprotické rozpouštědlo obalí jen kation a nukleofil zůstane nahý.'],
+          ['rozpouštědlo voda', 'SN1', 'Polární protické rozpouštědlo stabilizuje karbokation. Ve vodě jde SN1 100 000× rychleji než v ethanolu.'],
+          ['z (R)-halogenidu vznikl skoro racemát', 'SN1', 'Plochý karbokation se napadá z obou stran. Mírná převaha inverze je stopa iontového páru.'],
+          ['čistá inverze konfigurace', 'SN2', 'Útok zezadu převrátí uhlík vždy (Waldenův obrat).'],
+          ['v = k [RX]', 'SN1', 'Nukleofil přichází až po pomalém kroku, v rovnici není.'],
+          ['HS⁻ s 1-brombutanem v acetonu', 'SN2', 'Silný aniontový nukleofil, primární substrát a aprotické rozpouštědlo.']] })}
+        ${FH_LES.w.pair({ head: '<b>Pojem a jeho příběh.</b> Spoj dvojice.', pairs: [
+          ['Waldenův obrat', 'inverze při SN2'],
+          ['iontový pár', 'proč je racemizace u SN1 neúplná'],
+          ['nahý nukleofil', 'polární aprotické rozpouštědlo'],
+          ['neopentylbromid', 'primární, a přesto SN2 skoro nejde'],
+          ['benzylchlorid', 'primární, a přesto jde SN1'],
+          ['TsO⁻', 'nejlepší odstupující skupina'],
+          ['NaI v acetonu', 'NaCl vypadne a posune rovnováhu']] })}
+        ${FH_LES.w.cards({ head: '<b>Proč to tak je?</b> Vybav si odpověď, pak otoč.', items: [
+          ['Proč je v protickém rozpouštědle I⁻ lepší nukleofil než Cl⁻?', 'Voda obalí vodíkovými vazbami nejvíc malé anionty. Velký jodid zůstane volnější, proto I⁻ > Br⁻ > Cl⁻ a HS⁻ > HO⁻.'],
+          ['Proč F⁻ odstupuje nejhůř z halogenidů?', 'Dobře odchází stabilní aniont. A vazba C–F je nejpevnější vazba C–X (452 kJ·mol⁻¹).'],
+          ['Jak donutit alkohol k substituci, když OH⁻ neodstupuje?', 'V kyselině se OH protonuje a odejde jako voda. Nebo z něj udělej tosylát: tosylace konfiguraci nezmění, C–O se neštěpí.'],
+          ['Methyl-terc-butylether: kdo bude nukleofil a kdo substrát?', '(CH₃)₃CO⁻ + CH₃I. SN2 chce nebráněný substrát, terciární bromid by s methoxidem eliminoval.'],
+          ['Co vznikne z (R)-2-brombutanu a NaCN v DMSO?', '(S)-2-methylbutannitril. SN2 s inverzí, a CN má stejně jako Br nejvyšší prioritu, takže R se změní na S.']] })}
+        ${kap(['<b>Nukleofilita jde ruku v ruce s bazicitou.</b> CH₃O⁻ > HO⁻ > CH₃COO⁻ > H₂O a anionty jsou silnější než neutrální molekuly.',
+          '<b>Protické má OH, aprotické ne.</b> Voda a alkoholy obalí nukleofil vodíkovými vazbami. DMSO, DMF, CH₃CN a HMPA ho nechají volný.',
+          '<b>Nukleofil pro SN1 nesmí být bazický.</b> Bazický nukleofil by u karbokationtu spustil konkurenční eliminaci.',
+          '<b>SN1 je na nukleofilu nezávislá.</b> Terciární alkohol reaguje s HCl, HBr i HI stejně rychle.'])}`),
       body: () => sec('1. Dvě cesty k témuž produktu', `<p>Při nukleofilní substituci nahradí nukleofil (Nu) odstupující skupinu (X) na sp³ uhlíku. Stejný produkt může vzniknout dvěma mechanismy. S = substituce, N = nukleofilní, číslice říká, kolik částic je v kroku, který určuje rychlost.</p>
         ${tbl(['', 'SN2', 'SN1'], [['Průběh', 'jeden krok: Nu útočí zezadu a X zároveň odchází', 'dva kroky: X odejde, vznikne karbokation, pak přijde Nu'], ['Rychlost', 'v = k [RX] [Nu]', 'v = k [RX]'], ['Stereochemie', 'vždy inverze (Waldenův obrat)', 'racemizace, často neúplná: odstupující aniont chvíli stíní jednu stranu']])}
         <p class="aside">Obrat geometrie ještě neznamená, že se R změní na S. Záleží na prioritě nového substituentu.</p>`)
@@ -30863,6 +31177,30 @@ const FH_OL = (() => {
       tail: 'Vrať se ke svému tipu ze začátku a porovnej ho s tím, co teď víš o E2 a E1. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t09_q48', 't09_q27', 't09_q28', 't09_q29', 't09_q30', 't09_q31', 't09_q32', 't09_q49', 't09_q35', 't09_q36', 't09_q44', 't09_q45'],
       beda: 'E2 je tanec ve dvojici: báze bere H a X odchází ve stejném taktu, a to jen když stojí proti sobě. E1 je sólo: X odejde, karbokation chvíli postává a pak pustí H⁺.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Kdo má, tomu bude dáno.</b> Podle Zajceva dostane dvojnou vazbu ta strana, kde už je víc alkylů. Přebít ho umí jen objemná báze a geometrie kruhu. Který alken převládne?', opts: ['více substituovaný', 'méně substituovaný'], items: [
+          ['2-brombutan + EtO⁻Na⁺', 'více substituovaný', 'Zajcev: but-2-en 81 %, but-1-en 19 %.'],
+          ['2-brom-2-methylbutan + EtO⁻Na⁺', 'více substituovaný', '2-Methylbut-2-en 70 %, 2-methylbut-1-en 30 %.'],
+          ['2-brom-2-methylbutan + t-BuOK', 'méně substituovaný', 'Objemná báze sáhne jen na přístupné H z CH₃: převládne 2-methylbut-1-en.'],
+          ['menthylchlorid + 1 M EtONa, 100 °C (E2)', 'méně substituovaný', 'Antiperiplanární H proti axiálnímu Cl je jen na jednom sousedovi: 100 % 2-menthenu.'],
+          ['menthylchlorid + 0,01 M EtONa, 160 °C (E1)', 'více substituovaný', 'E1 geometrii nehlídá: 68 % 3-menthenu, který je substituovanější.'],
+          ['terciární alkohol + H₂SO₄ (E1)', 'více substituovaný', 'Přes karbokation, produkty podle Zajceva.']] })}
+        ${FH_LES.w.pair({ head: '<b>Pojem a co znamená.</b> Spoj dvojice.', pairs: [
+          ['antiperiplanární', 'H a X proti sobě, 180°, v jedné rovině'],
+          ['trans-diaxiální', 'jediná poloha pro E2 na cyklohexanu'],
+          ['izotopový efekt 7,11×', 'C–H se trhá v kroku určujícím rychlost'],
+          ['Zajcevovo pravidlo', 'převládne více substituovaný alken'],
+          ['t-BuOK', 'objemná báze, bere H z kraje'],
+          ['v = k [RX]', 'E1, rychlost určí jen odchod X']] })}
+        ${FH_LES.w.cards({ head: '<b>Eliminace na kruhu a v prostoru.</b> Vybav si odpověď, pak otoč.', items: [
+          ['Kde musí být H a Cl na cyklohexanu, aby proběhla E2?', 'Oba axiálně, jeden nahoru, druhý dolů. Axiální vazby jsou jako svislé tyče a jen dvě svislé proti sobě leží v jedné rovině.'],
+          ['Menthylchlorid, nebo neomenthylchlorid: kdo eliminuje hned?', 'Neomenthylchlorid, má Cl axiálně rovnou. Menthylchlorid se musí nejdřív překlopit.'],
+          ['Co dá meso-1,2-dibrom-1,2-difenylethan s KOH v ethanolu?', 'Jediný stereoizomer, (E)-1-brom-1,2-difenylethen s fenyly na stejné straně. E2 jde jen z antiperiplanární konformace.'],
+          ['Proč E1 nehlídá geometrii?', 'Nejdřív odejde X a zůstane plochý karbokation. H⁺ pak může odejít z kteréhokoli souseda, a tak vyhraje stabilnější alken.'],
+          ['Primární halogenid a ethoxid: proč nevznikne alken?', 'U primárního vyhraje SN2. E2 tam převládne jen se silnou a objemnou bází (t-BuOK, LDA).']] })}
+        ${kap(['<b>Silná báze → E2, slabá báze → E1.</b> E1 jde se slabou bází (H₂O, ROH) a obvykle ruku v ruce s SN1.',
+          '<b>Tlustá báze bere z kraje.</b> t-BuOK dosáhne jen na stericky přístupné H a dá méně substituovaný alken.',
+          '<b>Geometrie přebije Zajceva.</b> Když antiperiplanární H nabízí jen jeden soused, E2 nemá na výběr.',
+          '<b>Alkohol s H₂SO₄ = dehydratace E1.</b> Protonovaná OH odejde jako voda a karbokation pustí H⁺.'])}`),
       body: () => sec('1. Eliminace: z halogenidu alken', `<p>Při eliminaci odejde z halogenalkanu HX: X z jednoho uhlíku, H ze sousedního, a mezi nimi vznikne dvojná vazba. Stejně jako u substituce existují dva mechanismy.</p>
         ${tbl(['', 'E2', 'E1'], [['Průběh', 'jeden krok, bez meziproduktu', 'dva kroky: X odejde, vznikne karbokation, pak odejde H⁺'], ['Rychlost', 'v = k [RX] [báze]', 'v = k [RX]'], ['Báze', 'silná (RO⁻, OH⁻, NR₂⁻)', 'slabá (H₂O, ROH), obvykle spolu s SN1'], ['Geometrie', 'H a X antiperiplanárně (180°, v jedné rovině)', 'na geometrii nezáleží']])}
         <p class="aside">Důkaz, že E2 trhá vazbu C–H v kroku, který určuje rychlost: deuterovaný substrát eliminuje asi 7× pomaleji (izotopový efekt).</p>`)
@@ -30876,6 +31214,36 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku a porovnej svou první otázku s diagramem. Co jsi nevěděla z hlavy, zopakuješ zítra.',
       q: ['t09_q55', 't09_q34', 't09_q54', 't09_q36', 't09_q52', 't09_q33', 't09_q53', 't09_q50', 't09_q51', 't09_q45', 't09_q37', 't09_q35'],
       beda: 'Nejdřív se podívej, kdo nese X, teprve potom, kdo klepe na dveře. Silná báze u terciárního uhlíku? Bez debaty E2. A když se v zadání topí, sázej na eliminaci.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>SeČTi to.</b> Tři otázky v pořadí, ve kterém je klade diagram. Klepni na písmeno.', items: [
+          ['S', 'substrát: primární, sekundární, nebo terciární? U primárního ještě, jestli není allylový či benzylový.'],
+          ['Č', 'činidlo: silná báze, silný nebazický nukleofil, nebo slabý nukleofil?'],
+          ['T', 'teplota: teplo posune poměr k eliminaci.']], note: 'Rozpouštědlo napoví navíc: aprotické podporuje SN2, protické SN1.' })}
+        ${FH_LES.w.quiz({ head: '<b>Do které skupiny patří činidlo?</b> Aniont, který je i silnou bází, eliminuje. Aniont bez bazicity substituuje. Neutrální voda a alkohol čekají na karbokation.', opts: ['silný a bazický', 'silný a nebazický', 'slabý'], items: [
+          ['NaOH', 'silný a bazický', 'Hydroxid je silná báze, táhne k E2.'],
+          ['CH₃CH₂ONa', 'silný a bazický', 'Alkoxid je silná báze, u sekundárních a terciárních dá E2.'],
+          ['NaNH₂', 'silný a bazický', 'Amid sodný je silná báze, tvoří i acetylidy.'],
+          ['NaC≡CR', 'silný a bazický', 'Acetylid je silná báze, proto se alkyluje jen primárními halogenidy.'],
+          ['NaCN', 'silný a nebazický', 'Kyanid je silný nukleofil, ale ne silná báze: SN2.'],
+          ['NaN₃', 'silný a nebazický', 'Azid substituuje, i u sekundárního substrátu.'],
+          ['CH₃COONa', 'silný a nebazický', 'Acetát je slabá báze: 2-brompropan s ním dá 100 % esteru.'],
+          ['NaSH', 'silný a nebazický', 'HS⁻ je jeden z nejsilnějších nukleofilů.'],
+          ['H₂O', 'slabý', 'Voda je slabý nukleofil i báze: SN1 a E1 přes karbokation.'],
+          ['CH₃CH₂OH', 'slabý', 'Ethanol bez přidané báze: u terciárního hlavně ether (SN1).']] })}
+        ${FH_LES.w.quiz({ head: '<b>A teď celý diagram.</b> Co převládne?', opts: ['SN2', 'SN1', 'E2', 'E1'], items: [
+          ['1-brombutan + NaCN', 'SN2', 'Primární substrát a nebazický nukleofil: asi 90 % nitrilu.'],
+          ['1-brombutan + t-BuOK', 'E2', 'Primární, ale báze je silná a objemná: asi 85 % but-1-enu.'],
+          ['1-brombutan + CH₃CH₂ONa', 'SN2', 'Ethoxid není stericky bráněný, u primárního vyhraje substituce a vznikne ether.'],
+          ['2-brombutan + NaN₃ v DMSO', 'SN2', 'Sekundární a aniont, který není silnou bází. DMSO SN2 ještě pomůže.'],
+          ['2-brompropan + CH₃CH₂ONa', 'E2', 'Sekundární a silná báze: asi 80 % propenu.'],
+          ['sekundární halogenid + voda', 'SN1', 'Nukleofil není aniont a nejde o alkohol s kyselinou.'],
+          ['terciární bromid + CH₃CH₂ONa', 'E2', 'Terciární a báze: asi 97 % alkenu.'],
+          ['terciární bromid + ethanol', 'SN1', 'Bez báze přes karbokation, asi 80 % etheru.'],
+          ['terciární alkohol + H₂SO₄', 'E1', 'Alkohol s kyselinou se dehydratuje.'],
+          ['benzylový halogenid + voda', 'SN1', 'Primární, ale benzylový kation drží rezonance.']] })}
+        ${kap(['<b>Terciární a SN2 se nepotkají.</b> Obyčejný primární a karbokation taky ne, výjimkou jsou allylové a benzylové.',
+          '<b>Aniont, a přitom slabá báze? SN2.</b> CN⁻, N₃⁻, RS⁻ a RCOO⁻ substituují i u sekundárního uhlíku.',
+          '<b>Objemná báze udělá E2 i z primárního.</b> t-BuOK a LDA na uhlík nedosáhnou, vezmou jen vodík.',
+          '<b>Kyselina a alkohol = E1.</b> S H₂SO₄ nebo H₃PO₄ se alkohol dehydratuje, hydrogensíran je slabý nukleofil.'])}`),
       body: () => sec('1. Tři druhy nukleofilů', `<p>Diagram se ptá, jestli je nukleofil silný a jestli je zároveň silnou bází. Podle toho se dělí do tří skupin (Na může být i Li nebo K):</p>
         ${tbl(['Skupina', 'Příklady', 'Kam táhne'], [['silné a bazické', 'NaOH, NaOR, NaNH₂, NaNR₂, NaC≡CR', 'k E2, hlavně u sekundárních a terciárních'], ['silné a nebazické', 'NaSH, NaSR, NaCN, NaN₃, RCOONa, NH₃, NR₃, X⁻', 'k SN2'], ['slabé', 'H₂O, ROH, RCOOH', 'k SN1 a E1 přes karbokation']])}`)
         + sec('2. Diagram: nejdřív substrát', `${tbl(['Substrát', 'Pak se ptej', 'Výsledek'], [
@@ -30894,6 +31262,31 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. UV má kratší vlnovou délku, a tedy vyšší energii. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t10_q2', 't10_q5', 't10_q10', 't10_q12', 't10_q14', 't10_q15', 't10_q16', 't10_q25', 't10_q31', 't10_q35', 't10_q36', 't10_q43'],
       beda: 'Chlor v MS kulhá 3 : 1, brom chodí rovně 1 : 1. A když z molekuly odletí 15, utekl methyl.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>IČ spektrum čti zleva jako odpočet: H, 3, 2, 1, start.</b> Klepni na dlaždici.', items: [
+          ['H', '4000–2500 cm⁻¹: vazby k vodíku (O–H, N–H, C–H)'],
+          ['3', '2500–2000 cm⁻¹: trojné vazby (C≡C, C≡N)'],
+          ['2', '1800–1550 cm⁻¹: dvojné vazby (C=O, C=N, C=C)'],
+          ['1', 'pod 1550 cm⁻¹: jednoduché vazby, otisk prstu']], note: 'Mezi 2000 a 1800 cm⁻¹ je skoro ticho, málo pásů. Lehký vodík kmitá nejrychleji, proto stojí úplně vlevo.' })}
+        ${FH_LES.w.osa({ head: '<b>Kam na osu patří pás?</b> Vyber úsek, pak uvidíš, kde pás leží.', from: 4000, to: 400, unit: 'cm⁻¹', zones: [[4000, 2500, 'vazby k H', 'X–H'], [2500, 2000, 'trojné vazby', '≡'], [2000, 1800, 'málo pásů', ''], [1800, 1550, 'dvojné vazby', '='], [1550, 400, 'jednoduché vazby, otisk prstu', 'otisk']], items: [
+          ['O–H alkoholu (propan-2-ol)', 3350, 'Široký pás O–H kolem 3350 cm⁻¹, rozšířený vodíkovými vazbami.', '~3350'],
+          ['C=O ketonu (aceton)', 1715, 'Silný pás C=O u 1715 cm⁻¹.'],
+          ['C=O esteru (methyl-acetát)', 1735, 'Ester má C=O o kousek výš než keton, u 1735 cm⁻¹.'],
+          ['C–O esteru', 1250, 'Ester má navíc dva pásy C–O, u 1250 a 1050 cm⁻¹.', '1250 a 1050'],
+          ['C≡N acetonitrilu', 2250, 'Trojná vazba nitrilu leží asi u 2250 cm⁻¹.', '~2250'],
+          ['Ar–H toluenu', 3050, 'Aromatické C–H jsou nad 3000 cm⁻¹, alifatické pod 3000.', 'nad 3000'],
+          ['sp³ C–H toluenu', 2900, 'Methylová C–H kmitá u 2900 cm⁻¹.'],
+          ['C=C aromatického kruhu', 1600, 'Toluen má C=C u 1600 a 1475 cm⁻¹.', '1600'],
+          ['C=O kyseliny máselné', 1710, 'Karbonyl kyseliny je u 1710 cm⁻¹, k němu velmi široký O–H.', '~1710']] })}
+        ${FH_LES.w.quiz({ head: '<b>Spočítej izotopy.</b> Chlor je tři ku jedné, brom půl na půl. Dva atomy se násobí: (3 + 1)² dá 9 : 6 : 1, (1 + 1)² dá 1 : 2 : 1. Co je v molekule?', opts: ['jeden Cl', 'jeden Br', 'dva Cl', 'dva Br'], items: [
+          ['M 62 a M+2 64 v poměru 3 : 1 (chlorethen)', 'jeden Cl', '³⁵Cl je 75,77 %, ³⁷Cl 24,23 %, tedy asi 3 : 1.'],
+          ['M 64 a M+2 66 v poměru 3 : 1', 'jeden Cl', 'Chlorethan: 2 × 12 + 5 + 35 = 64.'],
+          ['M 108 a M+2 110 stejně vysoké', 'jeden Br', 'Bromethan: ⁷⁹Br a ⁸¹Br jsou skoro po 50 %.'],
+          ['píky 158, 160 a 162 v poměru 1 : 2 : 1', 'dva Br', 'Smíšená dvojice ⁷⁹Br⁸¹Br vzniká dvakrát častěji, proto je 160 nejvyšší.'],
+          ['píky 84, 86 a 88 v poměru 9 : 6 : 1', 'dva Cl', 'Dichlormethan: kombinace ³⁵Cl³⁵Cl, ³⁵Cl³⁷Cl (dvakrát) a ³⁷Cl³⁷Cl.']] })}
+        ${kap(['<b>Fragmenty rostou po 14.</b> CH₃ je 15, ethyl 29, propyl 43: každý další CH₂ přidá 14.',
+          '<b>Základní pík nemusí být M.</b> Hexan má M⁺• 86, ale nejvyšší pík je 57, ztráta ethylu.',
+          '<b>Kopec u 3350 = OH. Kopec a k tomu C=O = kyselina.</b> Alkohol karbonyl nemá.',
+          '<b>Vlnočet je převrácená vlnová délka.</b> 4000 cm⁻¹ odpovídá 2,5 μm, 400 cm⁻¹ odpovídá 25 μm.'])}`),
       body: () => sec('1. Která metoda na co', `${tbl(['Metoda', 'Odpověď'], [['MS', 'velikost a složení molekuly (molekulová hmotnost, fragmenty)'], ['IČ', 'funkční skupiny (molekulové vibrace)'], ['UV', 'konjugovaný π systém'], ['NMR', 'uhlíková kostra a typy C a H']])}
         ${FH_LES.ord({ q: 'oblasti záření podle energie.', top: 'nejvyšší energie', bottom: 'nejnižší energie', items: [['UV', ''], ['viditelné', '380–780 nm'], ['IČ', ''], ['mikrovlny', ''], ['rádiové vlny', 'používá je NMR']] })}
         <p>Energie záření roste s klesající vlnovou délkou: UV > viditelné (380–780 nm) > IČ > mikrovlny > rádiové vlny (NMR).</p>`)
@@ -30908,6 +31301,29 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Aceton má jediný singlet, všech šest H je ekvivalentních. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t10_q44', 't10_q49', 't10_q50', 't10_q51', 't10_q53', 't10_q55', 't10_q56', 't10_q57', 't10_q63', 't10_q65', 't10_q66', 't10_q78'],
       beda: 'Pravidlo n + 1: kolik má vodík sousedů, o jednu víc čar. Ethyl se pozná na první pohled, triplet a kvartet tančí vždycky spolu.',
+      aid: () => pom(`${FH_LES.ord({ q: 'signály ¹H NMR podle chemického posunu.', top: 'nejvíc vlevo, nejvyšší δ', bottom: 'úplně vpravo, δ = 0', items: [['CHCl₂ v 1,1-dichlorethanu', '5,9 ppm, dva Cl'], ['OCH₃ v methyl-acetátu', '3,7 ppm, kyslík'], ['CH₂Br v bromethanu', '3,42 ppm, brom'], ['CH₃C=O v methyl-acetátu', '2,1 ppm, soused C=O'], ['CH₃ v bromethanu', '1,68 ppm'], ['TMS', '0 ppm, standard']] })}
+        ${FH_LES.w.quiz({ head: '<b>Hledej zrcadlo.</b> Co se v molekule zrcadlí, má stejné okolí a dá jeden společný signál. Kolik signálů uvidíš?', opts: ['1', '2', '3', '4', '5', '6'], items: [
+          ['aceton, ¹H NMR', '1', 'Všech šest H je ekvivalentních: jediný singlet kolem 2,2 ppm.'],
+          ['methyl-acetát, ¹H NMR', '2', 'CH₃C=O a OCH₃, dva singlety v poměru 1 : 1.'],
+          ['1-brompropan, ¹H NMR', '3', 'CH₂Br, prostřední CH₂ a CH₃.'],
+          ['hexan, ¹³C NMR', '3', 'Symetrie: C1 = C6, C2 = C5, C3 = C4.'],
+          ['ethyl-acetát, ¹³C NMR', '4', 'CH₃C=O, C=O, OCH₂ a CH₃ ethylu.'],
+          ['toluen, ¹³C NMR', '5', 'CH₃, ipso, dva ortho, dva meta a para: pět typů ze sedmi uhlíků.'],
+          ['acetofenon, ¹³C NMR', '6', 'Čtyři typy aromatických C, C=O a CH₃.'],
+          ['diethyl-ether, ¹³C NMR', '2', 'Symetrický: OCH₂ a CH₃.'],
+          ['benzen, ¹H i ¹³C NMR', '1', 'Všech šest C i šest H je ekvivalentních.']] })}
+        ${FH_LES.w.cards({ head: '<b>Rozštěp si to v hlavě.</b> Spočítej sousedy, přičti jedničku, pak otoč.', items: [
+          ['2-brompropan', 'Dublet 6 H (dva stejné CH₃, soused je jeden CH) a septet 1 H (šest sousedů).'],
+          ['1,1-dichlorethan', 'Dublet CH₃ (2,1 ppm) a kvartet CH (5,9 ppm), integrály 3 : 1.'],
+          ['prostřední CH₂ v 1-brompropanu', 'Sextet: 3 + 2 = 5 sousedů, plus jedna.'],
+          ['butan-2-on', 'Singlet CH₃C=O (karbonyl H nemá), kvartet CH₂ a triplet CH₃.'],
+          ['methyl-acetát', 'Dva singlety. Ani jeden methyl nemá sousední H, jen kyslík nebo C=O.'],
+          ['TMS', 'Jeden ostrý singlet. Všech 12 H na čtyřech methylech je stejných.']] })}
+        ${kap(['<b>Stíněný stojí vpravo.</b> Elektrony jádro chrání a signál jde k nižšímu δ. Elektronegativní soused (O, Cl, Br) je odtáhne a signál uteče doleva.',
+          '<b>Integrál počítá vodíky, multiplicita sousedy.</b> Plocha říká, kolik H signál dává. Počet čar říká, kolik H je vedle.',
+          '<b>Sudé a sudé mlčí.</b> Jádro se sudým počtem protonů i neutronů (¹²C, ¹⁶O, ³²S) spin nemá a v NMR není vidět.',
+          '<b>δ je na magnetu nezávislé.</b> Hz děleno MHz: stejná látka má stejné δ na 200 i 600 MHz.',
+          '<b>¹³C se musí sčítat.</b> Je ho jen 1,1 %, proto se měření opakuje stokrát až tisíckrát.'])}`),
       body: () => sec('1. Princip', `<p>Magnetická jádra (¹H, ¹³C, ¹⁹F, ³¹P, ne ¹²C ani ¹⁶O) se ve vnějším poli orientují a radiové vlny je překlopí. Rezonanční frekvence roste se silou magnetu a závisí na druhu jádra.</p>
         <p>Elektrony kolem jádra ho <b>stíní</b>: signál je vpravo, při nižším δ. Elektronegativní soused jádro <b>odstíní</b> a signál posune doleva, k vyššímu δ. Nulu ukazuje standard <b>TMS</b>. Chemický posun δ v ppm nezávisí na přístroji.</p>`)
         + sec('2. ¹³C NMR', `<p>¹³C je v přírodě jen 1,1 %, proto se měření sčítají. Každý typ uhlíku dá jeden signál, <b>ekvivalentní uhlíky jeden společný</b>.</p>
@@ -30921,6 +31337,26 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Za studena vyhraje rychlejší 1,2-adukt, za tepla stabilnější 1,4-adukt. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t11_q2', 't11_q8', 't11_q10', 't11_q14', 't11_q17', 't11_q18', 't11_q22', 't11_q24', 't11_q25', 't11_q30', 't11_q32', 't11_q38'],
       beda: 'Za studena vyhraje sprinter (1,2-adukt), za tepla vytrvalec (1,4-adukt). Jen za tepla má reakce čas se rozmyslet.',
+      aid: () => pom(`${FH_LES.ord({ q: 'látky podle λmax.', top: 'nejdelší vlnová délka', bottom: 'nejkratší vlnová délka', items: [['β-karoten', '455 nm, 11 konjugovaných C=C'], ['okta-1,3,5,7-tetraen', '290 nm'], ['hexa-1,3,5-trien', '258 nm'], ['2-methylbuta-1,3-dien', '220 nm'], ['benzen', '203 nm']] })}
+        <p class="aside">Čím delší vláček konjugace, tím delší vlna. Každá další konjugovaná C=C zmenší rozdíl HOMO a LUMO a λmax se prodlouží.</p>
+        ${FH_LES.w.quiz({ head: '<b>Rychlejší není stabilnější.</b> Kterého aduktu buta-1,3-dienu se to týká?', opts: ['1,2-adukt', '1,4-adukt'], items: [
+          ['HBr při 0 °C, většinový produkt', '1,2-adukt', 'Za studena je reakce nevratná a rozhoduje rychlost: 71 %.'],
+          ['HBr při 40 °C, většinový produkt', '1,4-adukt', 'Za tepla se ustaví rovnováha a vyhraje stabilita: 85 %.'],
+          ['vzniká s nižší ΔG‡', '1,2-adukt', 'Menší bariéra, proto vzniká rychleji.'],
+          ['má vnitřní, disubstituovanou dvojnou vazbu', '1,4-adukt', 'Víc substituovaná dvojná vazba je stabilnější.'],
+          ['3-brombut-1-en', '1,2-adukt', 'H na C1, Br na C2, dvojná vazba zůstala na konci.'],
+          ['1-brombut-2-en', '1,4-adukt', 'H na C1, Br na C4, dvojná vazba se posunula mezi C2 a C3.'],
+          ['Br₂ při 25 °C, většinový produkt (55 %)', '1,2-adukt', '3,4-Dibrombut-1-en 55 %, 1,4-dibrombut-2-en 45 %.']] })}
+        ${FH_LES.w.acr({ head: '<b>π orbitaly butadienu:</b> číslo orbitalu minus jedna = počet uzlových rovin. Klepni na dlaždici.', items: [
+          ['ψ₁', '0 uzlových rovin, vazebný, obsazený'],
+          ['ψ₂', '1 uzlová rovina, vazebný, obsazený: HOMO'],
+          ['ψ₃*', '2 uzlové roviny, antivazebný, prázdný: LUMO'],
+          ['ψ₄*', '3 uzlové roviny, antivazebný, prázdný']], note: 'Foton UV přenese elektron z ψ₂ do ψ₃*: přechod π → π*.' })}
+        ${kap(['<b>Konjugace šetří teplo.</b> Butadien uvolní hydrogenací −236 místo −252 kJ·mol⁻¹. O 16 méně tepla = stabilnější.',
+          '<b>Mezi dvojnými vazbami jen jedna jednoduchá.</b> Když je mezi nimi CH₂ navíc (penta-1,4-dien), chovají se jako dva alkeny.',
+          '<b>H⁺ jde na kraj.</b> Na C1 vznikne allylový kation s nábojem na C2 i C4, a odtud jsou oba adukty.',
+          '<b>Vidíš, co zbude.</b> β-Karoten pohltí modré světlo, a proto je oranžový.',
+          '<b>Tyčinky v šeru, čípky ve světle.</b> Tyčinky zajišťují vidění v nejasném světle, čípky v jasném.'])}`),
       body: () => sec('1. Proč je konjugace výhodná', `<p>Izolovaný dien se chová jako dva samostatné alkeny. Konjugovaný buta-1,3-dien je stabilnější: hydrogenací uvolní −236 kJ·mol⁻¹ místo očekávaných −252, tedy o 16 kJ·mol⁻¹ méně.</p>
         <p>Vazba C2–C3 je kratší (148 pm) a silnější než v butanu, protože ji tvoří orbitaly sp² a π elektrony jsou delokalizované přes všechny čtyři uhlíky. Ze čtyř orbitalů p vzniknou čtyři π MO, obsazené jsou vazebné ψ₁ a ψ₂.</p>`)
         + sec('2. 1,2- a 1,4-adice', `<p>H⁺ se naváže na C1 a vznikne <b>allylový karbokation</b> s nábojem rozprostřeným na C2 a C4. Br⁻ pak může přijít na C2 (1,2-adukt) nebo na C4 (1,4-adukt, dvojná vazba se posune mezi C2 a C3).</p>
@@ -30934,6 +31370,33 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Benzen si chrání aromatickou stabilitu, a tak substituuje místo aby adoval. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t12_q3', 't12_q7', 't12_q8', 't12_q9', 't12_q10', 't12_q12', 't12_q16', 't12_q17', 't12_q18', 't12_q21', 't12_q22', 't12_q23'],
       beda: 'Aromatický klub má čtyři podmínky vstupu: kruh, rovina, konjugace a 4n + 2 elektronů π. Cyklobutadien se 4 elektrony nesmí ani ke dveřím.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Spočítej π elektrony</b> a porovnej s řadou 2, 6, 10 (4n + 2). Jaký je to systém?', opts: ['aromatický', 'antiaromatický', 'nearomatický'], items: [
+          ['benzen, 6 π', 'aromatický', 'Cyklický, planární, konjugovaný a 6 = 4 · 1 + 2.'],
+          ['cyklobutadien, 4 π', 'antiaromatický', 'Kruh, rovina i konjugace sedí, ale 4 je 4n. Planární kruh se 4n elektrony je antiaromatický.'],
+          ['cyklopentadienylový anion', 'aromatický', 'Dvě C=C dají 4 elektrony, volný pár v p-orbitalu další 2. Celkem 6.'],
+          ['cykloheptatrienylový (tropyliový) kation', 'aromatický', 'Tři C=C dají 6 elektronů, sedmý uhlík má prázdný p-orbital. Uhlíků je 7, elektronů 6.'],
+          ['cyklopropenylový kation', 'aromatický', 'Jedna C=C a prázdný p-orbital: 2 elektrony, 4n + 2 pro n = 0.'],
+          ['cyklopentadienylový kation, 4 π', 'antiaromatický', 'Planární cyklický konjugovaný ion se 4n elektrony.'],
+          ['cyklopenta-1,3-dien', 'nearomatický', 'CH₂ je sp³ a cyklickou konjugaci přeruší. Aromatický je až anion po odtržení H⁺.'],
+          ['naftalen, 10 π', 'aromatický', '10 = 4 · 2 + 2. Má 3 rezonanční struktury.']] })}
+        ${FH_LES.w.pair({ head: '<b>Každá SEAr si elektrofil vyrobí jinak.</b> Spoj činidla s elektrofilem, který z nich vznikne.', pairs: [
+          ['Br₂, FeBr₃', 'polarizovaný Br₃Fe⁻···Br–Br⁺'],
+          ['I₂, CuCl₂', 'I⁺ (Cu²⁺ jod oxiduje)'],
+          ['HNO₃, H₂SO₄', 'nitroniový ion NO₂⁺'],
+          ['oleum nebo konc. H₂SO₄', 'SO₃ nebo HSO₃⁺'],
+          ['R–Cl, AlCl₃', 'karbokation R⁺'],
+          ['R–COCl, AlCl₃', 'acyliový ion R–C≡O⁺']] })}
+        ${FH_LES.w.quiz({ head: '<b>Alkyl bloudí, acyl drží.</b> Patří to k Friedelově–Craftsově alkylaci, nebo acylaci?', opts: ['alkylace', 'acylace'], items: [
+          ['Elektrofil se může přesmyknout na stabilnější kation.', 'alkylace', 'Z 1-chlorbutanu vznikne hlavně sek-butylbenzen (65 %) po 1,2-posunu hydridu.'],
+          ['Elektrofil je stabilizovaný rezonancí a nepřesmykuje se.', 'acylace', 'Acyliový ion R–C⁺=O ↔ R–C≡O⁺, všechny atomy mají oktet.'],
+          ['Produkt je reaktivnější než benzen, hrozí polysubstituce.', 'alkylace', 'Alkyl kruh aktivuje, a tak se alkyluje znovu.'],
+          ['Zastaví se po jedné skupině.', 'acylace', 'C=O kruh deaktivuje.'],
+          ['AlCl₃ se váže na produkt.', 'acylace', 'Keton AlCl₃ zachytí, u alkylace se katalyzátor vrací.'],
+          ['Cesta k propylbenzenu bez přesmyku, když po ní redukuješ C=O na CH₂.', 'acylace', 'Nejdřív acylace propanoylchloridem, pak redukce. Alkylace 1-chlorpropanem dá směs s kumenem.']] })}
+        ${kap(['<b>Benzen vyměňuje, nepřidává.</b> Adicí by přišel o 150 kJ·mol⁻¹ aromatické stabilizace, proto s Br₂ a FeBr₃ dá brombenzen a HBr.',
+          '<b>Přijít o aromaticitu je pomalé, vrátit ji rychlé.</b> Vznik σ-komplexu určuje rychlost, odtržení H⁺ je rychlý krok.',
+          '<b>V 4n + 2 je n celé číslo, ne počet atomů.</b> Tropyliový kation má sedm uhlíků a 6 π elektronů, n = 1.',
+          '<b>Ortho vedle, meta ob jeden, para naproti.</b> Tedy 1,2, 1,3 a 1,4.'])}`),
       body: () => sec('1. Aromaticita', `<p>Benzen je o asi <b>150 kJ·mol⁻¹</b> stabilnější, než by odpovídalo třem izolovaným dvojným vazbám, a všechny vazby C–C má stejně dlouhé (139 pm). Kekulého struktury jsou jen rezonanční.</p>
         <p>Aromatická molekula je <b>cyklická, planární, konjugovaná a má 4n + 2 elektronů π</b> (Hückel: 2, 6, 10…). Se 4n elektrony je antiaromatická (cyklobutadien).</p>
         ${tbl(['Systém', 'π elektronů'], [['benzen, pyridin', '6'], ['cyklopentadienylový anion', '6 (volný pár v p)'], ['cykloheptatrienylový kation', '6 (prázdný p)'], ['naftalen', '10']])}
@@ -30948,6 +31411,32 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. OH dodá do kruhu volný pár, σ-komplex stabilizuje a orientuje ortho a para. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t12_q25', 't12_q26', 't12_q27', 't12_q28', 't12_q29', 't12_q30', 't12_q31', 't12_q32', 't12_q33', 't12_q35', 't12_q37', 't12_q38'],
       beda: 'Dárci elektronů (OH, NH₂, alkyl) zvou hosty do ortho a para. Zloději elektronů (NO₂, C=O, CN) je pošlou do meta. Halogeny jsou podivíni: zpomalí, ale pošlou do ortho a para.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Podívej se na atom, kterým skupina sedí na kruhu.</b> Má volný pár? Ortho a para. Má násobnou vazbu k elektronegativnímu atomu nebo plus? Meta. Jak skupina působí?', opts: ['aktivuje, ortho a para', 'deaktivuje, ortho a para', 'deaktivuje, meta'], items: [
+          ['–OH', 'aktivuje, ortho a para', 'Kyslík má volný pár a silný +M převládne nad slabým −I. Nitrace fenolu dá 0 % meta.'],
+          ['–NH₂', 'aktivuje, ortho a para', 'Volný pár dusíku, nejsilnější aktivátor spolu s OH.'],
+          ['–OCH₃', 'aktivuje, ortho a para', 'Volný pár kyslíku jako u OH.'],
+          ['–NHCOCH₃', 'aktivuje, ortho a para', 'Dusík má volný pár. Na slajdu 28 aktivuje slaběji než NH₂ a OCH₃.'],
+          ['–CH₃', 'aktivuje, ortho a para', 'Výjimka bez volného páru: σ-komplex po ataku o a p má strukturu s terciárním kationtem.'],
+          ['–Cl', 'deaktivuje, ortho a para', 'Halogen má volný pár (slabý +M), ale silný −I kruh zpomalí. Chlorbenzen: para 64 %, meta 1 %.'],
+          ['–Br', 'deaktivuje, ortho a para', 'Halogen: −I brzdí, volný pár přesto ukáže o a p.'],
+          ['–NO₂', 'deaktivuje, meta', 'Na dusíku je plus a vazba N=O. Relativní rychlost nitrace nitrobenzenu je 6 × 10⁻⁸, benzenu 1.'],
+          ['–CHO', 'deaktivuje, meta', 'C=O u kruhu. Benzaldehyd: meta 72 %.'],
+          ['–COOH', 'deaktivuje, meta', 'C=O u kruhu.'],
+          ['–CN', 'deaktivuje, meta', 'Trojná vazba C≡N u kruhu.'],
+          ['–N⁺(CH₃)₃', 'deaktivuje, meta', 'Dusík nese plus. Meta 87 %.']] })}
+        ${FH_LES.ord({ q: 'substituenty podle toho, jak kruh aktivují (slajd 28).', top: 'nejvíc aktivuje', bottom: 'nejvíc deaktivuje', items: [['–OH', 'spolu s –NH₂'], ['–OCH₃', ''], ['–NHCOCH₃', ''], ['–CH₃', 'spolu s –C₆H₅'], ['–H (benzen)', 'srovnání'], ['–Cl', 'halogeny'], ['–CHO', 'spolu s –COCH₃, –COOH'], ['–NO₂', 'spolu s –N⁺R₃']] })}
+        ${FH_LES.w.cards({ head: '<b>SEAr chce dárce, SNAr zloděje.</b> Kladný náboj σ-komplexu podrží donor, záporný náboj aduktu akceptor. Vybav si odpověď a otoč.', items: [
+          ['Chlorbenzen + NaOH za běžných podmínek: co vznikne?', 'Nic. SN2 brání kruh a arylový kation (SN1) je nestabilní.'],
+          ['2-Chlor-1,3,5-trinitrobenzen + ⁻OH, pak H₃O⁺?', 'Kyselina pikrová (2,4,6-trinitrofenol). Tři NO₂ v ortho a para drží záporný náboj, reaguje snadno.'],
+          ['Jak se jmenuje meziprodukt adičně-eliminační SNAr?', 'Meisenheimerův adukt, karbanion. Nukleofil se aduje na uhlík s halogenem, pak halogenid odstoupí.'],
+          ['NO₂ v meta k halogenu: pomůže SNAr?', 'Ne. Záporný náboj aduktu se dostane jen na uhlíky ortho a para, na uhlík s NO₂ v meta nedosáhne.'],
+          ['Chlorbenzen + NaOH, 340 °C, 18 MPa?', 'Fenol přes benzyn. Báze odtrhne ortho H, odstoupí Cl⁻ a na benzyn se aduje voda.'],
+          ['Čím je zvláštní „trojná“ vazba benzynu?', 'Je z překryvu dvou sp² orbitalů v rovině kruhu, mimo aromatický π systém. Proto je benzyn velmi reaktivní.']] })}
+        ${kap(['<b>Volný pár u kruhu ukazuje ortho a para.</b> Alkyl volný pár nemá, a přesto orientuje o a p: σ-komplex podrží jako terciární kation.',
+          '<b>Halogen je jediný, kdo brzdí a ukazuje o a p.</b> Indukce zpomalí, volný pár orientuje.',
+          '<b>Dva substituenty: vyhraje silnější aktivátor.</b> 4-Methylfenol se bromuje vedle OH, ne vedle CH₃.',
+          '<b>Mezi dvě skupiny v meta se nic nevejde.</b> 3-Chlortoluen nedá 2,3-dichlortoluen, poloha je stericky bráněná.',
+          '<b>Na pořadí kroků záleží.</b> Nitrace a pak bromace dá meta, bromace a pak nitrace ortho a para.'])}`),
       body: () => sec('1. Aktivace a deaktivace', `${FH_LES.ord({ q: 'látky podle rychlosti nitrace.', top: 'nejrychleji', bottom: 'nejpomaleji', items: [['fenol', '1000'], ['benzen', '1'], ['chlorbenzen', '0,033'], ['nitrobenzen', '6 × 10⁻⁸']] })}
         <p>Rychlost nitrace: fenol 1000 > benzen 1 > chlorbenzen 0,033 > nitrobenzen 6 × 10⁻⁸. Rozhodují dva efekty:</p>
         <ul class="ac-ul"><li><b>indukční</b> přes vazby σ (halogen, O odčerpávají),</li><li><b>mezomerní</b> přes π systém: +M dodá volný pár (OH, OR, NH₂, Cl), −M odčerpá (C=O, CN, NO₂).</li></ul>
@@ -30964,6 +31453,28 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Alkoholy drží pohromadě vodíkové vazby. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t13_q1', 't13_q2', 't13_q3', 't13_q8', 't13_q13', 't13_q15', 't13_q16', 't13_q17', 't13_q23', 't13_q26', 't13_q27', 't13_q28'],
       beda: 'Fenol je kyselejší než ethanol, protože svůj záporný náboj rozdělí mezi kyslík a kruh. Sdílená starost, poloviční starost.',
+      aid: () => pom(`${FH_LES.w.pair({ head: '<b>Triviální jméno a systematický název.</b> Spoj dvojice.', pairs: [
+          ['glycerol', 'propan-1,2,3-triol'],
+          ['ethylenglykol', 'ethan-1,2-diol'],
+          ['allylalkohol', 'prop-2-en-1-ol'],
+          ['terc-butylalkohol', '2-methylpropan-2-ol'],
+          ['benzylalkohol', 'fenylmethanol'],
+          ['m-kresol', '3-methylfenol'],
+          ['kyselina pikrová', '2,4,6-trinitrofenol']] })}
+        ${FH_LES.ord({ q: 'alkoholy a fenoly podle kyselosti (slajdy 9 a 10).', top: 'nejkyselejší', bottom: 'nejméně kyselý', items: [['(CF₃)₃COH', 'pKa 5,4'], ['p-nitrofenol', 'pKa 7,15'], ['fenol', 'pKa 9,89'], ['p-aminofenol', 'pKa 10,46'], ['CF₃CH₂OH', 'pKa 12,43'], ['ethanol', 'pKa 16,00'], ['(CH₃)₃COH', 'pKa 18,00']] })}
+        ${FH_LES.w.quiz({ head: '<b>Grignard přidá jeden R.</b> Kolik R nese karbonylový uhlík, tolik plus jeden jich bude mít uhlík s OH. Z čeho alkohol vznikne?', opts: ['formaldehyd', 'jiný aldehyd', 'keton', 'karboxylová kyselina'], items: [
+          ['primární alkohol, o uhlík delší než R–X', 'formaldehyd', 'HCHO nemá žádný R, po adici je na uhlíku s OH jeden: primární alkohol.'],
+          ['cyklohexylmethanol z cyklohexylmagnesiumbromidu', 'formaldehyd', 'Cyklohexyl + CH₂OH z formaldehydu.'],
+          ['sekundární alkohol', 'jiný aldehyd', 'Aldehyd má jeden R, Grignard přidá druhý.'],
+          ['1-fenylethan-1-ol z CH₃MgBr', 'jiný aldehyd', 'Benzaldehyd + CH₃MgBr dá sekundární 1-fenylethan-1-ol.'],
+          ['terciární alkohol', 'keton', 'Keton má dva R, Grignard přidá třetí.'],
+          ['2-fenylpropan-2-ol z PhMgBr', 'keton', 'Aceton + PhMgBr. Terciární alkohol potřebuje keton.'],
+          ['alkan, alkohol nevznikne', 'karboxylová kyselina', 'Kyselý vodík z COOH zničí činidlo na alkan a vznikne karboxylát.']] })}
+        ${kap(['<b>Fenol = OH přímo na kruhu.</b> Benzylalkohol má OH na CH₂ vedle kruhu, je to obyčejný primární alkohol.',
+          '<b>Počítej uhlíky kolem uhlíku s OH.</b> Jeden nebo žádný primární, dva sekundární, tři terciární.',
+          '<b>Kyselost zvýší vše, co podrží záporný náboj.</b> Fluor ho táhne indukcí, fenol ho rozloží do kruhu, NO₂ v para ho převezme až na své kyslíky. CH₃ a NH₂ kyselost sníží.',
+          '<b>NaOH zvládne fenol, ethanol ne.</b> Fenol (9,89) je kyselejší než voda (15,74), ethanol (16,00) ne. Alkoxid se proto dělá sodíkem nebo NaH.',
+          '<b>NaBH₄ bere jen aldehydy a ketony, LiAlH₄ i kyseliny a estery.</b> Dvojnou vazbu C=C nechá LiAlH₄ být.'])}`),
       body: () => sec('1. Názvy a vlastnosti', `<p>Alkohol je primární, sekundární nebo terciární podle uhlíku s OH. U <b>fenolu</b> je OH přímo na aromatickém uhlíku (benzylalkohol je obyčejný primární alkohol). Skupina OH dostane nejnižší lokant: 2-methylpentan-2-ol, glycerol = propan-1,2,3-triol.</p>
         <p>Alkoholy tvoří <b>vodíkové vazby</b>, proto vřou mnohem výš než uhlovodíky podobné hmotnosti (propan-1-ol 97 °C, butan −0,5 °C). Jsou amfoterní: s HX se protonují na oxoniový ion, se silnou bází dají alkoxid.</p>`)
         + sec('2. Kyselost', `${tbl(['Látka', 'pKa'], [['(CH₃)₃COH', '18,0'], ['ethanol', '16,0'], ['voda', '15,74'], ['methanol', '15,54'], ['fenol', '9,89'], ['p-nitrofenol', '7,15'], ['(CF₃)₃COH', '5,4']])}
@@ -30976,6 +31487,28 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Terciární alkohol s HBr jde přes karbokation (SN1). Co jsi nevěděla, zopakuješ zítra.',
       q: ['t13_q29', 't13_q30', 't13_q31', 't13_q32', 't13_q34', 't13_q36', 't13_q37', 't13_q38', 't13_q39', 't13_q41', 't13_q42', 't13_q21'],
       beda: 'OH je mizerná odstupující skupina. Musíš ji převléknout: protonovat na vodu, nebo z ní udělat tosylát, a pak už odejde s grácií.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Kdo sahá na uhlík zezadu, ten otáčí.</b> Retence, nebo inverze konfigurace?', opts: ['retence', 'inverze'], items: [
+          ['R–OH + TsCl, pyridin → R–OTs', 'retence', 'Reaguje kyslík, vazba C–O se neštěpí.'],
+          ['R–OTs + CN⁻ (SN2)', 'inverze', 'Kyanid napadne uhlík zezadu a tosylát odstoupí.'],
+          ['sekundární alkohol + SOCl₂ bez pyridinu', 'retence', 'SNi: chlor přijde ze strany odcházejícího kyslíku.'],
+          ['sekundární alkohol + SOCl₂ s pyridinem', 'inverze', 'Pyridin uvolní Cl⁻ a ten útočí zezadu (SN2).'],
+          ['sekundární alkohol + PBr₃', 'inverze', 'Primární a sekundární alkoholy s PBr₃ reagují SN2.'],
+          ['(R)-tosylát + CH₃COO⁻ (Waldenův cyklus)', 'inverze', 'Jediná inverze celého cyklu. Z (R) vznikne (S)-acetát.'],
+          ['acetát + H₂O, ⁻OH → alkohol', 'retence', 'Hydrolýza esteru na uhlík nesahá. Konec Waldenova cyklu: (S)-alkohol, −33°.']] })}
+        ${FH_LES.ord({ q: 'kroky reakce terc-butylalkoholu s HBr (SN1).', top: 'první krok', bottom: 'poslední krok', items: [['protonace OH na ⁺OH₂', 'rychlá rovnováha'], ['odchod vody, vznikne karbokation', 'pomalý krok, určuje rychlost'], ['navázání Br⁻ na karbokation', 'rychlý krok']] })}
+        ${FH_LES.w.cards({ head: '<b>Oxidace a fenoly.</b> Vybav si odpověď, pak kartičku otoč.', items: [
+          ['Primární alkohol + CrO₃, H₃O⁺, aceton?', 'Aldehyd a hned dál karboxylová kyselina. Dekan-1-ol dá kyselinu dekanovou.'],
+          ['Sekundární alkohol + Na₂Cr₂O₇?', 'Keton. 4-terc-Butylcyklohexanol dá 4-terc-butylcyklohexanon.'],
+          ['Terciární alkohol + oxidant?', 'Nic. Na uhlíku s OH není vodík, který by oxidace odtrhla.'],
+          ['Jak vzniká C=O při oxidaci chromem?', 'Alkohol se naváže na Cr (chromanový ester), báze odtrhne H z uhlíku a eliminace E2 vytvoří C=O.'],
+          ['Kumenový proces: co vznikne?', 'Kumen + O₂ dá kumenhydroperoxid, kyselina ho rozloží na fenol a aceton.'],
+          ['p-Benzochinon + SnCl₂?', 'Hydrochinon. Je to redoxní pár, oxidace ho vrátí zpět. Stejně pracují ubichinony (koenzym Q).'],
+          ['Kdo dá trans-diol: OsO₄, nebo MCPBA a H₃O⁺?', 'MCPBA a H₃O⁺: epoxid otevře voda zezadu. OsO₄ dá přes osmátový ester cis-diol.']] })}
+        ${kap(['<b>Nejdřív proton, pak odchod.</b> V kyselině neodchází OH⁻, ale voda.',
+          '<b>Terciární přes kation, primární zezadu.</b> Terciární alkohol s HX jde SN1, primární a sekundární s SOCl₂ nebo PBr₃ SN2.',
+          '<b>Pyridin otáčí.</b> SOCl₂ s pyridinem inverze, bez pyridinu retence.',
+          '<b>Počítej vodíky na uhlíku s OH.</b> Primární RCH₂OH má dva: aldehyd a pak kyselina. Sekundární jeden: keton. Terciární žádný: nic.',
+          '<b>Dehydratace jde podle stability kationtu.</b> Primární < sekundární < terciární, převládne víc substituovaný alken (Zajcev).'])}`),
       body: () => sec('1. Dehydratace a halogenace', `<p>OH⁻ špatně odstupuje, proto se alkohol nejdřív <b>protonuje</b> a odchází voda. Dehydratace (E1) jde nejsnáz u terciárních: primární < sekundární < terciární.</p>
         ${tbl(['Alkohol', 'Činidlo', 'Mechanismus'], [['terciární', 'HX', 'SN1, pomalý krok je odchod vody'], ['primární, sekundární', 'SOCl₂ (pyridin), PBr₃', 'SN2']])}`)
         + sec('2. Tosyláty a stereochemie', `<p>Tosylace (TsCl, pyridin) <b>nemění konfiguraci</b>, reaguje kyslík a vazba C–O zůstane. Z OH je tak výborná odstupující skupina pro SN2 a teprve SN2 konfiguraci obrátí.</p>
@@ -30989,6 +31522,33 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Terc-butoxid s jodmethanem, protože SN2 chce nebráněný halogenid. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t14_q2', 't14_q4', 't14_q6', 't14_q8', 't14_q9', 't14_q10', 't14_q13', 't14_q14', 't14_q15', 't14_q16', 't14_q19', 't14_q20'],
       beda: 'Williamson je SN2: halogenid musí být malý a nebráněný, alkoxid klidně objemný. Obráceně dostaneš jen alken.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Ether, nebo alken?</b> Alkoxid je nukleofil i silná báze. Podívej se na halogenid.', opts: ['ether (SN2)', 'alken (E2)', 'nereaguje'], items: [
+          ['terc-butoxid + CH₃I', 'ether (SN2)', 'Jodmethan je nebráněný, vznikne terc-butyl(methyl)ether (MTBE).'],
+          ['methoxid + 2-chlor-2-methylpropan', 'alken (E2)', 'Terciární halogenid: methoxid odtrhne proton a vznikne 2-methylpropen.'],
+          ['ethoxid + CH₃I', 'ether (SN2)', 'Methylhalogenid je pro SN2 ideální.'],
+          ['alkoxid + primární halogenalkan', 'ether (SN2)', 'Primární uhlík SN2 snese.'],
+          ['alkoxid + terciární halogenalkan', 'alken (E2)', 'Bráněný uhlík: místo substituce eliminace.'],
+          ['alkoxid + brombenzen', 'nereaguje', 'Na sp² uhlík aromátu SN2 neprobíhá.']] })}
+        ${FH_LES.w.pair({ head: '<b>Kdo je kdo mezi ethery.</b> Spoj název s popisem.', pairs: [
+          ['anisol', 'methoxybenzen'],
+          ['THF', 'pětičlenný nasycený cyklický ether'],
+          ['1,4-dioxan', 'šestičlenný kruh se dvěma kyslíky'],
+          ['oxiran', '1,2-epoxyethan, tříčlenný kruh'],
+          ['MTBE', 'terc-butyl(methyl)ether'],
+          ['18-crown-6', '18 atomů v kruhu, z toho 6 kyslíků']] })}
+        ${FH_LES.w.quiz({ head: '<b>Kudy se kruh nebo ether rozstřihne?</b> Kam půjde nukleofil?', opts: ['na méně bráněný uhlík (SN2)', 'na terciární uhlík (přes kation)', 'na alkyl, aryl zůstane fenolem'], items: [
+          ['ethyl(isopropyl)ether + HI', 'na méně bráněný uhlík (SN2)', 'I⁻ napadne ethyl. Vznikne jodethan a isopropylalkohol.'],
+          ['ethyl(fenyl)ether + HBr', 'na alkyl, aryl zůstane fenolem', 'Na aromát SN2 nejde. Vznikne fenol a bromethan.'],
+          ['terc-butyl(cyklohexyl)ether + CF₃COOH, 0 °C', 'na terciární uhlík (přes kation)', 'Terciární kation vznikne snadno. Vznikne cyklohexanol a 2-methylpropen.'],
+          ['1,2-epoxypropan + HCl', 'na méně bráněný uhlík (SN2)', 'V kyselině mezi primárním a sekundárním uhlíkem vyhraje méně bráněný: 1-chlorpropan-2-ol, 90 %.'],
+          ['1,2-epoxy-2-methylpropan + HCl', 'na terciární uhlík (přes kation)', 'Terciární uhlík unese kladný náboj, charakter SN1 (60 %).'],
+          ['1,2-epoxy-2-methylpropan + ⁻OH', 'na méně bráněný uhlík (SN2)', 'Bez kyseliny jde silný nukleofil vždy na méně bráněný uhlík.'],
+          ['oxiran + BuMgBr, pak H₃O⁺', 'na méně bráněný uhlík (SN2)', 'Grignard otevře epoxid SN2 a vznikne hexan-1-ol.']] })}
+        ${kap(['<b>Terciární halogenid a alkoxid dají alken.</b> Ether z terciární skupiny udělej tak, že terciární bude alkoxid.',
+          '<b>NaH: alkoxid a bublinky.</b> ROH + NaH dá RO⁻Na⁺ a H₂, plyn unikne a reakce dojde do konce.',
+          '<b>Kyslík k fenylu přirostl.</b> Aryl–O se neštěpí, z aryl(alkyl)etheru je vždy fenol.',
+          '<b>Kyselina hledá kation, zásada zadní vrátka.</b> V kyselině míří nukleofil k terciárnímu uhlíku, jinak k méně bráněnému. Bez kyseliny vždy k méně bráněnému.',
+          '<b>x-crown-y: x atomů v kruhu, y kyslíků.</b> 18-crown-6 obalí K⁺ a draselná sůl se rozpustí i v nepolárním rozpouštědle.'])}`),
       body: () => sec('1. Názvy a vlastnosti', `<p>Skupinový název: zbytky abecedně + ether, třeba ethyl(fenyl)ether, substitučně ethoxybenzen. Anisol je methoxybenzen, THF pětičlenný nasycený cyklický ether. Korunové ethery (18-crown-6 má 18 atomů a 6 kyslíků) obalí K⁺ a rozpustí draselné soli v nepolárním rozpouštědle.</p>`)
         + sec('2. Příprava', `${tbl(['Metoda', 'Podmínka'], [['Williamsonova syntéza (RO⁻ + R′X)', 'SN2, R′X methyl nebo primární, alkoxid z alkoholu a NaH'], ['alkoxymerkurace alkenu', 'Markovnikov, bez přesmyků'], ['kyselá kondenzace ethanolu', 'SN2 na protonovaném ethanolu']])}
         <p class="ac-les-trap"><b>Pozor:</b> methoxid s terciárním halogenidem dá jen alken (E2), ne ether.</p>`)
@@ -31001,6 +31561,29 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Disulfidový můstek vzniká oxidací dvou thiolů. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t14_q21', 't14_q22', 't14_q23', 't14_q25', 't14_q26', 't14_q28', 't14_q29', 't14_q30', 't14_q31', 't14_q32', 't14_q34', 't14_q35'],
       beda: 'Síra je jako kyslík, jen víc smrdí a umí víc vazeb. Thioly přidávají do plynu, aby se únik ucítil dřív, než bouchne.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>E, I, O jako v abecedě: 0, 1, 2.</b> Samohláska v názvu kyseliny prozradí, kolik dvojných vazeb S=O má síra.', items: [['E', 'sulfEnová R–S–OH: žádná S=O, síra dvouvazná'], ['I', 'sulfInová R–S(O)OH: jedna S=O (I jako jednička), síra čtyřvazná'], ['O', 'sulfOnová R–SO₂OH: dvě S=O, síra šestivazná']], note: 'Stejně rostou sulfid, sulfoxid a sulfon: každá oxidace přidá síře jeden kyslík.' })}
+        ${FH_LES.w.quiz({ head: '<b>Spočítej vazby síry.</b> Kolikavazná je síra v této skupině?', opts: ['dvouvazná', 'čtyřvazná', 'šestivazná'], items: [
+          ['thiol R–SH', 'dvouvazná', 'Dvě vazby: na uhlík a na vodík.'],
+          ['sulfid R–S–R′', 'dvouvazná', 'Síra jako kyslík v etheru.'],
+          ['disulfid R–S–S–R′', 'dvouvazná', 'Každá síra má vazbu na uhlík a na druhou síru.'],
+          ['sulfoxid R–S(O)–R′ (DMSO)', 'čtyřvazná', 'Jedna S=O přidá dvě vazby.'],
+          ['sulfinová kyselina R–S(O)OH', 'čtyřvazná', 'Jedna S=O.'],
+          ['sulfon R–SO₂–R′', 'šestivazná', 'Dvě S=O.'],
+          ['sulfonamid R–SO₂–NHR′', 'šestivazná', 'Derivát sulfonové kyseliny, dvě S=O.'],
+          ['sulfonylchlorid R–SO₂Cl', 'šestivazná', 'Dvě S=O jako u sulfonové kyseliny.']] })}
+        ${FH_LES.w.pair({ head: '<b>Co udělá činidlo se sírou?</b> Spoj činidlo s přeměnou.', pairs: [
+          ['I₂', 'thioly → disulfid'],
+          ['Zn/H⁺', 'disulfid → thioly'],
+          ['H₂O₂', 'sulfid → sulfoxid'],
+          ['peroxykyselina CH₃COOOH', 'sulfoxid → sulfon'],
+          ['thiomočovina, pak NaOH/H₂O', 'halogenalkan → thiol'],
+          ['CH₃I', 'sulfid → sulfoniová sůl'],
+          ['Raneyův nikl', 'dithiolan → CH₂']] })}
+        ${kap(['<b>Thiomočovina hlídá, ať zůstane u thiolu.</b> S NaSH by vzniklý thiolát napadl další halogenalkan a vznikl by sulfid.',
+          '<b>Oxidace spojí, redukce rozpojí.</b> Dva cysteiny se oxidují na cystin s disulfidovým můstkem, Zn/H⁺ ho rozdělí.',
+          '<b>HgCl₂ vrací, nikl ubírá.</b> HgCl₂ z dithiolanu vrátí keton, Raneyův nikl síru odstraní a z C=O zbude CH₂.',
+          '<b>Ketoskupina se schová, ester ne.</b> S ethan-1,2-dithiolem reaguje keton, ester ne, a LiAlH₄ pak redukuje jen ester.',
+          '<b>Plus a mínus vedle sebe je ylid.</b> Báze vezme trimethylsulfoniu proton z CH₃ a vznikne (CH₃)₂S⁺–CH₂⁻.'])}`),
       body: () => sec('1. Názvy', `${tbl(['Vaznost síry', 'Skupiny'], [['dvouvazná', 'thiol R–SH (předpona sulfanyl), sulfid R–S–R, disulfid, sulfenová kyselina R–S–OH'], ['čtyřvazná', 'sulfoxid R–S(O)–R, sulfinová kyselina R–S(O)OH'], ['šestivazná', 'sulfon R–SO₂–R, sulfonová kyselina R–SO₂OH, sulfonamid R–SO₂–NHR′']])}
         <p>CH₃S– je methylsulfanyl. Trialkylsulfonium je R₃S⁺.</p>`)
         + sec('2. Thioly a disulfidy', `<p>Thioly nepříjemně zapáchají už ve stopách. Připravují se přes <b>thiomočovinu</b>, protože s NaSH by vzniklý thiolát napadl další halogenalkan a vznikl by sulfid.</p>
@@ -31013,6 +31596,35 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Keton nemá na karbonylovém uhlíku vodík, oxidace by musela štěpit vazbu C–C. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t15_q1', 't15_q2', 't15_q3', 't15_q4', 't15_q5', 't15_q8', 't15_q9', 't15_q10', 't15_q11', 't15_q13', 't15_q14', 't15_q15'],
       beda: 'Aldehyd je ten ukecaný, rád se nechá oxidovat a Tollensovi nakreslí stříbrné zrcátko. Keton mlčí.',
+      aid: () => pom(`${FH_LES.w.pair({ head: '<b>Odkud a čím.</b> Spoj přeměnu s činidlem, které ji udělá.', pairs: [
+          ['primární alkohol → aldehyd', 'PCC v CH₂Cl₂'],
+          ['alken → aldehydy a ketony', '1. O₃, 2. Zn, H₃O⁺'],
+          ['ester → aldehyd', 'DIBAH, −78 °C'],
+          ['koncový alkyn → methylketon', 'H₃O⁺, HgSO₄'],
+          ['acylchlorid → keton', '(CH₃)₂CuLi'],
+          ['benzen → arylketon', 'RCOCl, AlCl₃'],
+          ['fenol → salicylaldehyd', 'CHCl₃, NaOH']] })}
+        ${FH_LES.w.quiz({ head: '<b>Benz<u>o</u>yl má v názvu „o“ i kyslík, benzyl nemá ani jedno.</b> Jak se jmenuje skupina nebo přípona?', opts: ['formyl', 'acetyl', 'benzoyl', 'benzyl', 'fenyl'], items: [
+          ['HCO–', 'formyl', 'Acyl formaldehydu.'],
+          ['CH₃CO–', 'acetyl', 'Acyl kyseliny octové.'],
+          ['C₆H₅CO–', 'benzoyl', 'Acyl kyseliny benzoové, s C=O.'],
+          ['C₆H₅CH₂–', 'benzyl', 'Mezi kruhem a místem připojení je CH₂, žádný kyslík.'],
+          ['C₆H₅–', 'fenyl', 'Samotný kruh.'],
+          ['CHO navázaná na cyklohexan', '-karbaldehyd', 'Uhlík CHO není součástí kruhu: cyklohexankarbaldehyd.', ['-al', '-karbaldehyd', '-on', 'oxo-']],
+          ['keton v molekule, kde hlavní skupinou je ester', 'oxo-', 'Methyl-3-oxohexanoát: ester je přípona, keton předpona.', ['-al', '-karbaldehyd', '-on', 'oxo-']],
+          ['CH₂=CH–CHO triviálně', 'akrolein', 'Prop-2-enal se jmenuje akrolein.', ['akrolein', 'aceton', 'acetofenon', 'propionaldehyd']]] })}
+        ${FH_LES.w.quiz({ head: '<b>Kdo má na C=O vodík, ten se oxiduje.</b> Co vznikne?', opts: ['karboxylová kyselina', 'aldehyd, dál ne', 'nereaguje', 'dikyselina štěpením C–C'], items: [
+          ['hexanal + CrO₃, H₃O⁺, aceton, 0 °C', 'karboxylová kyselina', 'Aldehyd má vodík na C=O. Vznikne kyselina hexanová.'],
+          ['benzaldehyd + Tollensovo činidlo', 'karboxylová kyselina', 'Kyselina benzoová, Ag⁺ se vyloučí jako stříbrné zrcátko.'],
+          ['aceton + Tollensovo činidlo', 'nereaguje', 'Keton nemá na C=O vodík. Zkouška je negativní.'],
+          ['citronelol + PCC v CH₂Cl₂', 'aldehyd, dál ne', 'Citronelal (82 %). Bez vody se oxidace zastaví na aldehydu.'],
+          ['cyklohexanon + KMnO₄, NaOH, pak H₃O⁺', 'dikyselina štěpením C–C', 'Drastická oxidace rozštěpí kruh na kyselinu hexandiovou.'],
+          ['keton + běžné oxidační činidlo', 'nereaguje', 'Oxidace by musela štěpit vazbu C–C.']] })}
+        ${kap(['<b>PCC zastaví, CrO₃ ve vodě dojede.</b> PCC v CH₂Cl₂ skončí u aldehydu, CrO₃ v H₃O⁺ jde až na kyselinu.',
+          '<b>DIBAH chce mráz.</b> Při −78 °C předá jen jeden hydrid a z esteru je aldehyd. LiAlH₄ by šel až na alkohol.',
+          '<b>Koncový alkyn dá methylketon, ne aldehyd.</b> Markovnikov pošle OH na vnitřní uhlík a enol tautomerizuje na keton.',
+          '<b>Ozon stříhá, uhlíky neubývají.</b> =CH– dá CHO, =CR– keton, =CH₂ formaldehyd. Kruh se jen otevře.',
+          '<b>Kuprát se zastaví na ketonu.</b> Se vzniklým ketonem už nereaguje, Grignard by šel dál až na alkohol.'])}`),
       body: () => sec('1. Názvy', `<ul class="ac-ul"><li>Aldehyd -al, keton -on. C=O dostane nejnižší lokant: hex-4-en-2-on.</li><li>CHO na kruhu: <b>-karbaldehyd</b> (cyklohexankarbaldehyd).</li><li>Když je hlavní skupinou vyšší skupina (třeba ester), keton se píše předponou <b>oxo-</b>.</li><li>Acyly: formyl HCO–, acetyl CH₃CO–, benzoyl C₆H₅CO–. Akrolein je prop-2-enal.</li></ul>
         <p>Na rozdíl od esterů a acylchloridů nemají aldehydy a ketony odstupující skupinu (–H a –R neodejdou), proto se na ně nukleofil <b>aduje</b>, nesubstituuje.</p>`)
         + sec('2. Příprava', `${tbl(['Z čeho', 'Činidlo', 'Produkt'], [['primární alkohol', 'PCC v CH₂Cl₂', 'aldehyd, dál se neoxiduje'], ['alken', '1. O₃, 2. Zn, H₃O⁺', 'aldehydy a ketony (=CH₂ dá formaldehyd)'], ['ester', 'DIBAH, −78 °C', 'aldehyd'], ['koncový alkyn', 'H₃O⁺, HgSO₄', 'methylketon'], ['acylchlorid', '(CH₃)₂CuLi', 'keton (kuprát s ketonem už nereaguje)'], ['aren + acylchlorid', 'AlCl₃, zahřívání', 'arylketon'], ['fenol', 'CHCl₃, NaOH (Reimer–Tiemann)', 'aldehyd přes :CCl₂']])}`)
@@ -31024,6 +31636,29 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Formaldehyd nemá žádný alkyl, který by stínil nebo stabilizoval δ+. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t15_q16', 't15_q17', 't15_q18', 't15_q7', 't15_q21', 't15_q22', 't15_q23', 't15_q24', 't15_q25', 't15_q27', 't15_q28', 't15_q32'],
       beda: 'Primární amin s ketonem udělá imin, sekundární enamin. Kdo nemá na dusíku vodík, musí si ho půjčit od α-uhlíku.',
+      aid: () => pom(`${FH_LES.ord({ q: 'kroky vzniku iminu z ketonu a primárního aminu.', top: 'první krok', bottom: 'poslední krok', items: [['amin se aduje na C=O', 'vznikne hemiaminal'], ['protonace OH hemiaminalu', 'potřebuje kyselinu'], ['odstoupí voda', 'vznikne iminiový ion'], ['odejde H⁺ z dusíku', 'imin C=N–R']] })}
+        ${FH_LES.w.quiz({ head: '<b>Jeden mechanismus, různé nukleofily.</b> Co vznikne z aldehydu nebo ketonu?', opts: ['kyanhydrin', 'imin', 'enamin', 'oxim', 'acetal', 'alken', 'CH₂ místo C=O', 'alkohol'], items: [
+          ['HCN, katalyticky ⁻CN', 'kyanhydrin', 'OH a CN na stejném uhlíku. Útočí kyanidový anion.'],
+          ['primární amin RNH₂, pH 4–5', 'imin', 'C=N–R, voda odejde a H z dusíku taky.'],
+          ['sekundární amin R₂NH', 'enamin', 'Iminiový ion nemá H na dusíku, proton odejde z α-uhlíku.'],
+          ['NH₂OH', 'oxim', 'Cyklohexanon dá cyklohexanon-oxim.'],
+          ['2 ROH, H⁺, odstraňování vody', 'acetal', 'Přes hemiacetal. U ketonu se mu říká ketal.'],
+          ['Ph₃P=CH₂', 'alken', 'Wittig: C=C přesně na místě C=O, vedle Ph₃P=O.'],
+          ['H₂NNH₂, KOH', 'CH₂ místo C=O', 'Wolff–Kižněr, uniká N₂. Propiofenon dá propylbenzen.'],
+          ['RMgX, pak H₃O⁺', 'alkohol', 'Nová vazba C–C. Formaldehyd dá primární, aldehyd sekundární, keton terciární alkohol.'],
+          ['NaBH₄, pak H₃O⁺', 'alkohol', 'Aldehyd dá primární, keton sekundární alkohol.']] })}
+        ${FH_LES.w.cards({ head: '<b>Dvojice, které se pletou.</b> Vybav si rozdíl a otoč.', items: [
+          ['Ph₃P=CH₂, nebo (CH₃)₂S⁺–CH₂⁻: kdo dá epoxid?', 'Síra. Fosfor si kyslík odnese jako Ph₃P=O a nechá alken, síra odejde jako (CH₃)₂S bez kyslíku a nechá epoxid.'],
+          ['Kdo je nukleofil v adici HCN?', 'Kyanidový anion ⁻CN. Proto se přidává katalyticky, samotný HCN napadá C=O jen pomalu.'],
+          ['Proč imin vzniká nejrychleji kolem pH 4–5?', 'Kyselina je potřeba k protonaci OH v hemiaminalu. V silně kyselém se amin protonuje a přestane být nukleofilem.'],
+          ['Acetal: kde vydrží a kde se rozpadne?', 'Vydrží v zásadě a s hydridy, H₃O⁺ ho rozloží. Proto chrání C=O, když LiAlH₄ redukuje ester.'],
+          ['Methanol, nebo hydrid: kdo potřebuje kyselou katalýzu?', 'Methanol. Neutrální nukleofil je slabý a potřebuje protonovanou C=O. Hydrid H⁻ je záporný a aduje se přímo.'],
+          ['Proč je Wittig lepší cesta k methylencyklohexanu než CH₃MgBr a dehydratace?', 'Wittig dá dvojnou vazbu jen na místě C=O. Dehydratace dá hlavně 1-methylcyklohexen (9 : 1).']] })}
+        ${kap(['<b>Minus jde sám, neutrální potřebuje H⁺.</b> ⁻OH, ⁻CN, H⁻ a R⁻ se adují přímo, H₂O, ROH a aminy na protonovanou C=O.',
+          '<b>Čím méně R na C=O, tím ochotnější.</b> Formaldehyd > aldehydy > ketony. Aromatické aldehydy jsou méně reaktivní než alifatické.',
+          '<b>Acetal je deštník pro C=O.</b> Chrání v zásadě a před hydridy, kyselina ve vodě ho sundá.',
+          '<b>Wittig: alken přesně tam, kde byl kyslík.</b> Hnací silou je pevná vazba P=O.',
+          '<b>Wolff–Kižněr vyžene dusík.</b> Hydrazin a KOH udělají z C=O skupinu CH₂ a uvolní N₂.'])}`),
       body: () => sec('1. Reaktivita', `<p>Nukleofil napadne δ+ karbonylový uhlík. Aldehydy jsou reaktivnější než ketony (jeden alkyl: menší bránění i menší stabilizace δ+), aromatické aldehydy méně než alifatické (kruh rezonancí zmenší δ+). Formaldehyd je ve vodě z 99,9 % hydrát, aceton jen z 0,1 %.</p>
         <p>Záporné nukleofily (⁻OH, H⁻, R⁻, ⁻CN) se adují přímo. Neutrální (H₂O, ROH, amin) potřebují <b>kyselou katalýzu</b>: protonace kyslíku zvýší elektrofilitu uhlíku.</p>`)
         + sec('2. C, H a O nukleofily', `${tbl(['Nukleofil', 'Produkt'], [['HCN (kat. ⁻CN)', 'kyanhydrin, nukleofilem je kyanid'], ['RMgX', 'formaldehyd → primární, aldehyd → sekundární, keton → terciární alkohol'], ['ROH, H⁺, odstraňování vody', 'hemiacetal → <b>acetal</b> (chránicí skupina: vydrží LiAlH₄, H₃O⁺ ji odstraní)'], ['Wittigův ylid Ph₃P=CHR', 'alken přesně na místě C=O, vedle vznikne Ph₃P=O']])}`)
@@ -31035,6 +31670,29 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Karboxylát rozloží záporný náboj na dva kyslíky. Co jsi nevěděla, zopakuješ zítra.',
       q: ['q2', 'q3', 'q4', 'q5', 'q6', 'q10', 'q11', 'q13', 'q14', 'q17', 'q18', 'q23'],
       beda: 'Chlor na kyselině je jako bodyguard: odtáhne elektrony a karboxylát je v bezpečí. Čím blíž a čím víc chlorů, tím silnější kyselina.',
+      aid: () => pom(`${FH_LES.ord({ q: 'látky podle kyselosti.', top: 'nejkyselejší', bottom: 'nejméně kyselá', items: [['kyselina trifluoroctová', 'pKa 0,23'], ['kyselina trichloroctová', 'pKa 0,64'], ['kyselina dichloroctová', 'pKa 1,48'], ['kyselina chloroctová', 'pKa 2,85'], ['kyselina mravenčí', 'pKa 3,75'], ['kyselina octová', 'pKa 4,75'], ['ethanol', 'pKa 16']] })}
+        ${FH_LES.w.quiz({ head: '<b>Akceptor kyselinu posílí, donor oslabí.</b> Co udělá skupina s kyselostí?', opts: ['zesílí', 'zeslabí'], items: [
+          ['–NO₂ v para kyseliny benzoové', 'zesílí', 'Silný akceptor: pKa 3,41 proti 4,19.'],
+          ['–CN v para kyseliny benzoové', 'zesílí', 'Akceptor: pKa 3,55.'],
+          ['–Cl v para kyseliny benzoové', 'zesílí', 'Akceptor: pKa 4,0.'],
+          ['–CH₃ v para kyseliny benzoové', 'zeslabí', 'Donor: pKa 4,34.'],
+          ['–OCH₃ v para kyseliny benzoové', 'zeslabí', 'Tady působí +M jako donor: pKa 4,46.'],
+          ['–OCH₃ na alifatickém řetězci', 'zesílí', 'Na alifatickém řetězci převládne −I a kyselost stoupne.'],
+          ['CH₃ místo H na karboxylu (mravenčí → octová)', 'zeslabí', 'Methyl tlačí elektrony ke karboxylátu: 3,75 → 4,75.'],
+          ['Cl na C2 kyseliny butanové', 'zesílí', 'Blízko COOH působí nejvíc: pKa 2,86. Na C4 už jen 4,52.']] })}
+        ${FH_LES.w.pair({ head: '<b>Řetízek kyseliny a nitrilu.</b> Spoj výchozí látku a činidlo s produktem.', pairs: [
+          ['R–Br + NaCN', 'nitril R–C≡N'],
+          ['R–C≡N + H₃O⁺', 'R–COOH a NH₃, přes amid'],
+          ['R–MgBr + CO₂, pak H₃O⁺', 'R–COOH o uhlík delší než R–Br'],
+          ['R–C≡N + LiAlH₄', 'primární amin R–CH₂–NH₂'],
+          ['R–C≡N + R′MgX, pak H₃O⁺', 'keton'],
+          ['primární amid + SOCl₂', 'nitril (dehydratace)'],
+          ['R–COOH + BH₃', 'primární alkohol, NO₂ zůstane']] })}
+        ${kap(['<b>Dva kyslíky unesou víc než jeden.</b> Karboxylát rozloží náboj na dva kyslíky (obě vazby C–O 127 pm), ethoxid ho má jen na jednom.',
+          '<b>Indukce se sčítá a slábne se vzdáleností.</b> Každý další chlor kyselinu octovou zesílí (4,75 až 0,64), chlor na C4 kyseliny butanové už skoro nic (4,52). Fluor táhne víc než chlor.',
+          '<b>Stejná skupina, jiné místo, opačný efekt.</b> OCH₃ na řetězci kyselinu zesílí, v para kyseliny benzoové zeslabí.',
+          '<b>CN i CO₂ přidají jeden uhlík.</b> Z R–Br přes nitril nebo přes Grignarda a CO₂ vznikne kyselina o uhlík delší.',
+          '<b>Na nitril Grignard jen jednou.</b> Imidový anion je záporný a další nukleofil odpuzuje, hydrolýzou vznikne keton.'])}`),
       body: () => sec('1. Stavba a vlastnosti', `<p>Uhlík COOH je sp², skupina je planární. Kyseliny tvoří vodíkovými vazbami <b>dimery</b>, a proto mají vysoké teploty varu. S NaOH dají sůl, která je ve vodě rozpustná.</p>
         <p>Kyselé jsou díky <b>rezonanci karboxylátu</b>: záporný náboj se rozloží na dva kyslíky, obě vazby C–O v mravenčanu mají 127 pm.</p>`)
         + sec('2. Kyselost a substituenty', `${tbl(['Látka', 'pKa'], [['ethanol', '16'], ['kyselina octová', '4,75'], ['kyselina mravenčí', '3,75'], ['chloroctová', '2,85'], ['trichloroctová', '0,64'], ['trifluoroctová', '0,23']])}
@@ -31296,6 +31954,22 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku. HOMO je ψ₂, LUMO ψ₃*, a světlo mezi nimi přehodí elektron. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t23_q1', 't23_q2', 't23_q5', 't23_q7', 't23_q11', 't23_q17', 't23_q18', 't23_q19', 't23_q26', 't23_q29', 't23_q35', 't23_q41'],
       beda: 'U elektrocyklické reakce jde sudý počet párů termicky konrotačně, lichý disrotačně. Světlo to obrátí, jako když převrátíš přesýpací hodiny.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>TECA</b> (The Electrons Circle Around): jedna věta pro všechny tři tabulky pravidel. Otoč dlaždice.', items: [['T', 'termicky'], ['E', 'sudý počet párů'], ['C', 'kon&shy;rotačně'], ['A', 'antara&shy;faciálně']], note: 'E je anglicky even, sudý. C platí pro elektrocyklické reakce, A pro cykloadice a sigmatropní přesmyky. Světlo nebo lichý počet párů výsledek obrátí na disrotačně a suprafaciálně. Když se změní obojí, změny se vyruší.' })}
+        ${FH_LES.w.quiz({ head: '<b>Spočítej páry, pak použij TECA.</b> Jak to proběhne?', opts: ['konrotačně', 'disrotačně', 'suprafaciálně', 'antarafaciálně'], items: [
+          ['dien ⇌ cyklobuten, zahřátí', 'konrotačně', 'Dien má 2 páry, sudý počet. Termicky přesně TECA: konrotačně.'],
+          ['trien ⇌ cyklohexadien, zahřátí', 'disrotačně', 'Trien má 3 páry, lichý počet obrátí TECA na disrotaci.'],
+          ['trien ⇌ cyklohexadien, světlo', 'konrotačně', 'Lichý počet i světlo, dvě změny se vyruší: konrotačně.'],
+          ['Dielsova–Alderova reakce, zahřátí', 'suprafaciálně', '2 páry z dienu a 1 z dienofilu jsou 3, lichý počet: suprafaciálně.'],
+          ['[2 + 2] dvou alkenů, světlo', 'suprafaciálně', '2 páry, sudý počet, ale světlo TECA obrátí: suprafaciálně. Proto se cyklobutany dělají fotochemicky.'],
+          ['[1,5]-posun H, zahřátí', 'suprafaciálně', '2 π-vazby a 1 σ-vazba jsou 3 páry, lichý počet: suprafaciálně, u cyklopentadienu už při 25 °C.'],
+          ['[1,7]-posun H u vitaminu D, zahřátí', 'antarafaciálně', '4 páry, sudý počet, termicky: antarafaciálně.']] })}
+        ${FH_LES.ord({ q: 'děje v Jablonského diagramu od nejrychlejšího.', top: 'nejrychlejší', bottom: 'nejpomalejší', items: [['absorpce', '~10⁻¹⁵ s'], ['vibrační relaxace a vnitřní konverze', '10⁻¹⁴–10⁻¹¹ s'], ['fluorescence S₁ → S₀', '10⁻⁹–10⁻⁷ s'], ['fosforescence T₁ → S₀', '10⁻³–10² s']] })}
+        ${FH_LES.w.pair({ head: '<b>Předpona prozradí zdroj energie.</b> Spoj luminiscenci s příkladem.', pairs: [['fotoluminiscence', 'nálepka svítí po osvícení lampou'], ['chemiluminiscence', 'osvětlovací tyčinka s TCPO'], ['bioluminiscence', 'světluška (luciferin + luciferasa)'], ['elektroluminiscence', 'LED dioda']] })}
+        ${kap(['<b>Fosforescence je zakázaná, a proto se loudá.</b> T₁ → S₀ mění spin, svítí i po zhasnutí. Fluorescence má spin v pořádku a je za nanosekundy pryč.',
+          '<b>Dien musí do s-cis.</b> Cyklopentadien a furan v ní bydlí napořád, dien zamčený v s-trans nereaguje.',
+          '<b>Endo dřív, exo vydrží.</b> Endo vzniká kineticky, exo je stabilnější: furan s maleimidem dá za 25 °C endo, za 90 °C exo.',
+          '<b>„1,2“ nebo „1,4“, nikdy „1,3“.</b> 1-substituovaný dien dá „1,2“ produkt, 2-substituovaný „1,4“.',
+          '<b>Molozonid před ozonidem, jako M před O v abecedě.</b>'])}`),
       body: () => sec('1. Fotochemie a luminiscence', `${tbl(['Děj', 'Přechod', 'Poznámka'], [['fluorescence', 'S₁ → S₀, zářivý', 'stejná multiplicita, rychlá'], ['fosforescence', 'T₁ → S₀, zářivý', 'spinově zakázaný, trvá 10⁻³–10² s'], ['mezisystémová konverze', 'S₁ → T₁, nezářivý', 'mění multiplicitu']])}
         <p><b>Chemiluminiscence</b>: energii dodá reakce. Luminol se oxiduje na excitovaný 3-aminoftalát, který svítí, a železo z hemoglobinu oxidaci katalyzuje (stopy krve).</p>`)
         + sec('2. Pericyklické reakce', `<p>Probíhají <b>součinně přes cyklický přechodový stav</b> bez meziproduktů. Patří sem elektrocyklické reakce, cykloadice, sigmatropní přesmyky, cheletropní a enové reakce. Rozhoduje symetrie hraničních orbitalů (Woodward–Hoffmann, Fukui).</p>
@@ -31307,6 +31981,22 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. D-cukr má OH na posledním stereocentru vpravo. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t24_q1', 't24_q2', 't24_q6', 't24_q7', 't24_q10', 't24_q12', 't24_q17', 't24_q19', 't24_q21', 't24_q22', 't24_q23', 't24_q24'],
       beda: 'Vpravo ve Fischerovi je dole v Haworthovi. A α-anomer má OH dole, jako α jde dolů na lyžích.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>Alenka v altánu globus má gumový i galalitový tác.</b> Osm D-aldohexos v pořadí podle Fiesera. Otoč dlaždice.', items: [['Al', 'allosa'], ['Alt', 'altrosa'], ['Glu', 'glukosa'], ['Man', 'mannosa'], ['Gul', 'gulosa'], ['Id', 'idosa'], ['Gal', 'galaktosa'], ['Tal', 'talosa']], note: 'Anglicky: All altruists gladly make gum in gallon tanks. Fieser: C5 vždy vpravo, C4 4× vpravo a 4× vlevo, C3 po dvou, C2 střídavě.' })}
+        ${FH_LES.w.quiz({ head: '<b>Aldo, nebo keto? A kolik uhlíků?</b> Zařaď monosacharid.', opts: ['aldotetrosa', 'aldopentosa', 'aldohexosa', 'ketohexosa'], items: [
+          ['D-glukosa', 'aldohexosa', 'Šest uhlíků a aldehyd na C1.'],
+          ['D-galaktosa', 'aldohexosa', 'Od glukosy se liší jen na C4, pořád je to aldohexosa.'],
+          ['D-mannosa', 'aldohexosa', 'Od glukosy se liší jen na C2, epimer.'],
+          ['D-fruktosa', 'ketohexosa', 'Šest uhlíků a keton na C2.'],
+          ['D-ribosa', 'aldopentosa', 'Pět uhlíků a aldehyd, cukr RNA.'],
+          ['2-deoxy-D-ribosa', 'aldopentosa', 'Deoxy jí ubere jen OH, uhlíky i aldehyd zůstanou.'],
+          ['D-erythrosa', 'aldotetrosa', 'Čtyři uhlíky. Kilianiho–Fischerova syntéza z ní udělá ribosu a arabinosu.']] })}
+        ${FH_LES.w.pair({ head: '<b>Kdo se od koho liší?</b> Spoj pojem s jeho významem.', pairs: [['anomery (α a β)', 'liší se na anomerním uhlíku'], ['epimery (glukosa a mannosa)', 'liší se na jediném stereocentru'], ['enantiomery (D- a L-glukosa)', 'obrácená všechna stereocentra'], ['pyranosa', 'šestičlenný kruh jako pyran'], ['furanosa', 'pětičlenný kruh jako furan'], ['mutarotace', 'pomalá přeměna anomerů ve vodě']] })}
+        ${FH_LES.ord({ q: 'formy D-glukosy ve vodě podle zastoupení.', top: 'nejvíc', bottom: 'nejméně', items: [['β-D-glukopyranosa', '62,6 %'], ['α-D-glukopyranosa', '37,3 %'], ['otevřená aldehydová forma', '0,002 %']] })}
+        ${kap(['<b>Mannosa na dvojce, galaktosa na čtyřce.</b> Od glukosy se mannosa liší jen na C2, galaktosa jen na C4.',
+          '<b>β bere většinu.</b> V židličce má β-D-glukopyranosa všechny objemné skupiny ekvatoriálně.',
+          '<b>2ⁿ a polovina je D.</b> Aldohexosa má 4 stereocentra, 16 stereoisomerů, z toho 8 D. Aldopentosa 8 a 4 D.',
+          '<b>Točit jen o 180°.</b> Otočení Fischerovy projekce o 90° udělá z R S.',
+          '<b>L-glukosa je zrcadlo celé.</b> Obrácená jsou všechna OH, ne jen to poslední.'])}`),
       body: () => sec('1. Fischerova projekce a D/L', `<p>Vodorovné vazby míří k tobě, svislé od tebe. Otočit projekci smíš o 180°, ne o 90°.</p>
         <p><b>D</b> nebo <b>L</b> se pozná podle OH na stereocentru <b>nejvzdálenějším od karbonylu</b>: vpravo D, vlevo L. Neříká nic o směru otáčení (D-fruktosa je levotočivá). L-glukosa je enantiomer D-glukosy, má obrácená všechna centra.</p>`)
         + sec('2. Typy monosacharidů', `<p>Sacharidy jsou polyhydroxyaldehydy a polyhydroxyketony. Podle karbonylu aldosy a ketosy, podle počtu uhlíků triosy až hexosy: D-ribosa je aldopentosa, D-fruktosa ketohexosa. D-aldohexos je 8, glukosa a galaktosa se liší jen na C4.</p>`)
@@ -31319,6 +32009,28 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Sacharosa má oba anomerní uhlíky ve vazbě a žádný volný hemiacetal. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t24_q27', 't24_q28', 't24_q32', 't24_q33', 't24_q34', 't24_q35', 't24_q37', 't24_q40', 't24_q42', 't24_q43', 't24_q45', 't24_q46'],
       beda: 'Sacharosa je pár, který se drží za obě ruce: glukosa i fruktosa mají anomerní uhlík obsazený, a tak nikoho neredukují.',
+      aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Hledej volný hemiacetal.</b> Kdo ho má, otevře se na aldehyd a redukuje Tollensovo i Fehlingovo činidlo.', opts: ['redukuje', 'neredukuje'], items: [
+          ['maltosa', 'redukuje', 'Vazba α(1→4) nechá druhé glukose volný hemiacetal.'],
+          ['cellobiosa', 'redukuje', 'Vazba β(1→4) nechá druhé glukose volný hemiacetal.'],
+          ['laktosa', 'redukuje', 'Glukosová jednotka má volný hemiacetal.'],
+          ['sacharosa', 'neredukuje', 'Vazba (1→2) spojuje oba anomerní uhlíky, volný hemiacetal nezbyl.'],
+          ['trehalosa, glukosa (1→1) glukosa', 'neredukuje', 'Jako u sacharosy jsou v glykosidové vazbě oba anomerní uhlíky.'],
+          ['methyl-α-D-glukopyranosid', 'neredukuje', 'Glykosid je acetal a ten se ve vodě sám neotevře.'],
+          ['D-fruktosa', 'redukuje', 'Je to ketosa, ale v zásaditém činidle se přes endiol izomeruje na aldosu.']] })}
+        ${FH_LES.w.pair({ head: '<b>Cello z celulosy, malto ze škrobu.</b> Spoj disacharid se složením.', pairs: [['maltosa', 'glukosa + glukosa, α(1→4)'], ['cellobiosa', 'glukosa + glukosa, β(1→4)'], ['laktosa', 'galaktosa + glukosa, β(1→4)'], ['sacharosa', 'glukosa + fruktosa, (1→2)']] })}
+        ${FH_LES.w.quiz({ head: '<b>Co udělá s aldosou?</b> Br₂ oxiduje jen jeden konec, HNO₃ oba. Kiliani přidá uhlík, Wohl ho ubere.', opts: ['alditol', 'aldonová kyselina', 'aldarová kyselina', 'aldosa o uhlík delší, dva C2 epimery', 'aldosa o uhlík kratší'], items: [
+          ['D-glukosa + NaBH₄', 'alditol', 'Z aldehydu je CH₂OH: D-glucitol, sorbit.'],
+          ['D-glukosa + Br₂, H₂O', 'aldonová kyselina', 'Bromová voda je mírná, oxiduje jen CHO na COOH: D-glukonová kyselina.'],
+          ['D-glukosa + HNO₃, zahřátí', 'aldarová kyselina', 'HNO₃ oxiduje CHO i koncové CH₂OH: D-glukarová kyselina.'],
+          ['D-arabinosa + HCN, H₂/Pd, H₃O⁺', 'aldosa o uhlík delší, dva C2 epimery', 'Kilianiho–Fischerova syntéza: D-glukosa a D-mannosa.'],
+          ['D-galaktosa + NH₂OH, (CH₃CO)₂O, CH₃ONa', 'aldosa o uhlík kratší', 'Wohl: C1 odejde jako HCN, vznikne D-lyxosa.'],
+          ['D-mannosa + NaBH₄', 'alditol', 'D-mannitol, konfigurace se nemění.']] })}
+        ${FH_LES.ord({ q: 'kroky Wohlova odbourávání.', top: 'první krok', bottom: 'poslední krok', items: [['NH₂OH', 'aldehyd → oxim'], ['(CH₃CO)₂O, CH₃COONa', 'oxim → nitril'], ['CH₃ONa', 'odštěpí HCN, aldosa o uhlík kratší']] })}
+        ${kap(['<b>-osid = acetal = zamčeno.</b> Glykosid nemutarotuje a neredukuje, otevře ho až kyselá hydrolýza.',
+          '<b>Wohl je Kiliani pozpátku.</b> C2 epimery (glukosa a mannosa) dají Wohlem stejnou D-arabinosu.',
+          '<b>Koenigs–Knorr dává β.</b> Acetyl na C2 zablokuje spodní stranu a alkohol přijde shora.',
+          '<b>Celulosa β, amylosa α.</b> Obě jsou (1→4) glukosa, amylopektin se navíc větví přes α(1→6).',
+          '<b>Invertní cukr = glukosa + fruktosa</b> z hydrolýzy sacharosy.'])}`),
       body: () => sec('1. Glykosidy a redukující cukry', `<p><b>Glykosid</b> je acetal cukru: anomerní OH nahradí OR. Acetal se ve vodě sám neotevře, proto glykosid nemutarotuje ani neredukuje. Koenigs–Knorr (Ag₂O) dá díky acetylu na C2 β-glykosid.</p>
         <p><b>Redukující</b> jsou cukry s volným hemiacetalem, tedy s aldehydem v otevřené formě. Pozitivní je i fruktosa, v zásaditém prostředí se přes endiol izomeruje na aldosu.</p>`)
         + sec('2. Reakce aldos', `${tbl(['Reakce', 'Produkt'], [['NaBH₄', 'alditol (D-glukosa → D-glucitol, sorbit)'], ['Br₂, H₂O', 'aldonová kyselina (COOH na C1)'], ['HNO₃', 'aldarová kyselina (COOH na obou koncích)'], ['Kiliani–Fischer (HCN)', 'o uhlík delší, dva C2 epimery'], ['Wohl', 'o uhlík kratší, C1 odejde jako HCN']])}`)
@@ -31330,6 +32042,28 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Skoro všechny L-aminokyseliny jsou S, výjimkou je L-cystein (R). Co jsi nevěděla, zopakuješ zítra.',
       q: ['t25_q1', 't25_q3', 't25_q8', 't25_q9', 't25_q10', 't25_q11', 't25_q13', 't25_q14', 't25_q15', 't25_q17', 't25_q19', 't25_q20'],
       beda: 'Při pH pod pI je aminokyselina kladná a jde k zápornému pólu. Nad pI je záporná a jde ke kladnému. Protiklady se přitahují.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>HAL-eluja!</b> Tři bazické aminokyseliny. Otoč dlaždice.', items: [['H', 'histidin'], ['A', 'arginin'], ['L', 'lysin']], note: 'Histidin má imidazol (bazický je dusík pyridinového typu), arginin guanidinovou skupinu, lysin druhou NH₂. Kyselé jsou jen dvě, Asp a Glu (druhá COOH). Zbylých 15 je neutrálních: 15, 2, 3.' })}
+        ${FH_LES.w.quiz({ head: '<b>Kyselá, bazická, nebo neutrální?</b> Rozhoduje postranní řetězec.', opts: ['kyselá', 'bazická', 'neutrální'], items: [
+          ['kyselina asparagová (Asp)', 'kyselá', 'V postranním řetězci má druhou COOH.'],
+          ['kyselina glutamová (Glu)', 'kyselá', 'O CH₂ delší než Asp, druhá COOH.'],
+          ['asparagin (Asn)', 'neutrální', 'Místo druhé COOH má amid CONH₂, a ten kyselý není.'],
+          ['lysin (Lys)', 'bazická', 'Druhá aminoskupina. Proto má i vysoké pI, asi 9,7.'],
+          ['arginin (Arg)', 'bazická', 'Guanidinová skupina je silně bazická.'],
+          ['histidin (His)', 'bazická', 'Imidazol s dusíkem pyridinového typu.'],
+          ['serin (Ser)', 'neutrální', 'CH₂OH náboj nenese.'],
+          ['glycin (Gly)', 'neutrální', 'R = H. Jako jediný není chirální.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Podle výchozí látky poznáš syntézu.</b> Kyselina, malonát, nebo ketokyselina?', opts: ['bromace, pak NH₃', 'acetamidomalonátová syntéza', 'reduktivní aminace'], items: [
+          ['kyselina 4-methylpentanová → leucin', 'bromace, pak NH₃', 'Br₂ a PBr₃ dají α-bromkyselinu, amoniak vymění Br za NH₂ (SN2).'],
+          ['kyselina 3-methylbutanová → valin', 'bromace, pak NH₃', 'Počet uhlíků se nemění: C5 je valin.'],
+          ['diethyl-acetamidomalonát + BrCH₂COOEt → Asp', 'acetamidomalonátová syntéza', 'NaOEt, alkylace, nakonec H₃O⁺ a zahřátí: hydrolýza a dekarboxylace.'],
+          ['diethyl-acetamidomalonát + benzylbromid → Phe', 'acetamidomalonátová syntéza', 'Benzyl se stane postranním řetězcem fenylalaninu.'],
+          ['kyselina pyrohroznová → alanin', 'reduktivní aminace', 'NH₃ dá imin a NaBH₄ ho zredukuje na amin.'],
+          ['2-oxoglutarát → kyselina glutamová', 'reduktivní aminace', 'Keton na C2 se přes imin změní na NH₂.']] })}
+        ${kap(['<b>L = NH₃⁺ vLevo.</b> COO⁻ nahoře, R dole, NH₃⁺ vlevo, jako OH u L-glyceraldehydu.',
+          '<b>L neznamená S.</b> L-alanin a L-serin jsou S, L-cystein R, protože síra v CH₂SH předběhne COOH.',
+          '<b>α, β, γ = C2, C3, C4.</b> GABA má NH₂ na C4, α-aminokyselinou není.',
+          '<b>Obojetný ion se chová jako sůl.</b> Taje vysoko, ve vodě se rozpustí, v organických rozpouštědlech ne.',
+          '<b>Achirální na vstupu, racemát na výstupu.</b> Všechny tři syntézy dají (R,S).'])}`),
       body: () => sec('1. Stavba a konfigurace', `<p>Peptid má méně než 50 aminokyselin, protein víc. Z 20 aminokyselin je 15 neutrálních, 2 kyselé (Asp, Glu) a 3 bazické (Lys, Arg, His). U histidinu je bazický dusík pyridinového typu.</p>
         <p><b>L</b> ve Fischerově projekci: COO⁻ nahoře, R dole, NH₃⁺ vlevo (jako OH u L-glyceraldehydu). L-alanin a L-serin jsou <b>S</b>, ale L-cystein je <b>R</b>, protože CH₂SH má díky síře vyšší prioritu než COOH.</p>
         <p class="aside">GABA má aminoskupinu na C4 (γ), α-aminokyselinou není.</p>`)
@@ -31345,6 +32079,22 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Volný pár dusíku je v rezonanci s C=O a vazba má částečně dvojný charakter. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t25_q23', 't25_q25', 't25_q26', 't25_q28', 't25_q29', 't25_q30', 't25_q34', 't25_q37', 't25_q38', 't25_q41', 't25_q47', 't25_q49'],
       beda: 'Trypsin stříhá za bazickými Lys a Arg, chymotrypsin za aromatickými Phe, Tyr a Trp. Dvoje nůžky, každé na jinou látku.',
+      aid: () => pom(`${FH_LES.ord({ q: 'úrovně struktury bílkoviny.', top: 'nejnižší', bottom: 'nejvyšší', items: [['primární', 'sekvence aminokyselin'], ['sekundární', 'α-helix, skládaný list'], ['terciární', 'celý 3D tvar: fibrilární nebo globulární'], ['kvartérní', 'uspořádání víc podjednotek']] })}
+        <p class="aside">Řada jde od písmen k tvaru: <b>sekvence, šroubovice, tvar, tým</b>. Kvartérní strukturu má jen bílkovina z víc řetězců.</p>
+        ${FH_LES.ord({ q: 'jeden cyklus Edmanova odbourávání.', top: 'první krok', bottom: 'poslední krok', items: [['PITC se naváže na N-koncovou NH₂', 'vznikne thiomočovina'], ['HCl odštěpí ATZ', 'zbytek peptidu má novou volnou NH₂'], ['H₃O⁺ přemění ATZ na PTH', 'stabilní N-fenylthiohydantoin'], ['identifikace PTH', 'pozná se N-koncová aminokyselina']] })}
+        ${FH_LES.w.pair({ head: '<b>Apo je jen bílkovina, holo je celek.</b> Spoj pojem s významem.', pairs: [['apoenzym', 'bílkovinná část, sama neaktivní'], ['holoenzym', 'apoenzym + kofaktor, jediná aktivní forma'], ['koenzym', 'organický kofaktor, třeba NAD⁺'], ['prostetická skupina', 'kofaktor pevně vázaný, třeba hem'], ['Zn, Fe, Cu, Mn, Se', 'anorganické kofaktory'], ['ribozym', 'RNA, která katalyzuje']] })}
+        ${FH_LES.w.quiz({ head: '<b>Čti zleva od N-konce a počítej.</b>', opts: [], items: [
+          ['Kolik peptidových vazeb má tripeptid?', '2', 'n aminokyselin, n − 1 vazeb.', ['1', '2', '3']],
+          ['Kolik peptidových vazeb má pentapeptid?', '4', 'n − 1: pět aminokyselin spojí čtyři vazby.', ['4', '5', '6']],
+          ['Ala-Ser: která aminokyselina je N-konec?', 'Ala', 'N-konec se píše vlevo, je to alanylserin.', ['Ala', 'Ser']],
+          ['Val-Phe-Leu-Met: první cyklus Edmana dá', 'PTH-valin', 'Edman ukusuje zleva, od N-konce.', ['PTH-valin', 'PTH-methionin', 'PTH-leucin']],
+          ['Gly-Ala-Ser + karboxypeptidasa uvolní', 'serin', 'Karboxypeptidasa bere C-konec, ten je vpravo.', ['glycin', 'alanin', 'serin']],
+          ['Ala-Lys-Gly-Arg-Val + trypsin dá fragmentů', '3', 'Střih za Lys a za Arg: Ala-Lys, Gly-Arg, Val.', ['2', '3', '5']]] })}
+        ${kap(['<b>Peptid pod 50, protein nad 50</b> aminokyselin.',
+          '<b>Páteř je pořád –NH–CH–CO–,</b> liší se jen postranní řetězce R.',
+          '<b>Enzym zkrátí cestu, cíl nepřesune.</b> Sníží aktivační energii, polohu rovnováhy nezmění: E + S ⇌ ES ⇌ EP ⇌ E + P.',
+          '<b>Ninhydrin: purpur, RCHO a CO₂.</b> Dusík aminokyseliny skončí v barvivu.',
+          '<b>Disulfidový můstek je oxidace.</b> Dvě SH cysteinů dají –S–S–.'])}`),
       body: () => sec('1. Peptidová vazba a struktura', `<p>Peptid se píše od <b>N-konce</b> (vlevo) ke C-konci. n aminokyselin spojí n − 1 peptidových vazeb, páteř se opakuje jako –NH–CH–CO–. Vazba C–N má částečně dvojný charakter, proto se kolem ní neotáčí.</p>
         ${tbl(['Struktura', 'Co popisuje'], [['primární', 'sekvence aminokyselin'], ['sekundární', 'α-helix, skládaný list'], ['terciární', 'celkový tvar: fibrilární nebo globulární'], ['kvartérní', 'uspořádání víc podjednotek']])}
         <p class="aside">Disulfidový můstek vzniká oxidací SH dvou cysteinů.</p>`)
@@ -31357,6 +32107,22 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Cis dvojné vazby nenasycených kyselin zalomí řetězce a ty se neuspořádají. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t26_q1', 't26_q3', 't26_q5', 't26_q6', 't26_q9', 't26_q11', 't26_q13', 't26_q14', 't26_q16', 't26_q17', 't26_q19', 't26_q24'],
       beda: 'Mýdlo je dvojí agent: ocasem se schová do mastnoty, hlavou kamarádí s vodou. A tvrdá voda mu kazí kšeft vápníkem.',
+      aid: () => pom(`${FH_LES.ord({ q: 'mastné kyseliny podle teploty tání.', top: 'nejvyšší', bottom: 'nejnižší', items: [['stearová, C18, nasycená', '68,8 °C'], ['palmitová, C16, nasycená', '63,1 °C'], ['laurová, C12, nasycená', '43,2 °C'], ['olejová, C18, 1 cis vazba', '13,4 °C'], ['linolová, C18, 2 cis vazby', '−12 °C'], ['arachidonová, C20, 4 cis vazby', '−49,5 °C']] })}
+        <p class="aside"><b>Delší rovný řetězec taje výš, každý cis zlom teplotu srazí.</b> Rovné řetězce se skládají těsně jako tužky v krabičce, zalomené ne.</p>
+        ${FH_LES.w.quiz({ head: '<b>Delší název, víc dvojných vazeb:</b> olej 1, linol 2, linolen 3. Kolik jich má?', opts: ['0', '1', '2', '3', '4'], items: [
+          ['kyselina olejová (C18)', '1', 'Jedna cis vazba na C9.'],
+          ['kyselina linolová (C18)', '2', 'Lino-l přidá druhou: 9 a 12.'],
+          ['kyselina linolenová (C18)', '3', 'Lino-len přidá třetí. Je to omega-3.'],
+          ['kyselina arachidonová (C20)', '4', 'Čtyři cis vazby, z ní vznikají prostaglandiny.'],
+          ['kyselina stearová (C18)', '0', 'Nasycená. Hydrogenací olejové vznikne právě ona.'],
+          ['kyselina arachová (C20)', '0', 'Pozor: arachová je nasycená, arachidonová má čtyři.'],
+          ['kyselina palmitolejová (C16)', '1', 'Jako olejová má jednu, jen je o dva uhlíky kratší.']] })}
+        ${FH_LES.w.pair({ head: '<b>Z čeho to je?</b> Spoj lipid se složením.', pairs: [['triacylglycerol (tuk, olej)', 'glycerol + 3 mastné kyseliny'], ['vosk', 'mastná kyselina + alkohol s dlouhým řetězcem'], ['mýdlo', 'sodná nebo draselná sůl mastné kyseliny'], ['lecithin (fosfatidylcholin)', 'fosfát s cholinem'], ['kefalin (fosfatidylethanolamin)', 'fosfát s 2-aminoethanolem'], ['sfingomyelin', 'sfingosin místo glycerolu']] })}
+        ${kap(['<b>Lipid je lipofilní, nic víc.</b> Společnou funkční skupinu nemají.',
+          '<b>Sudé uhlíky, cis vazby.</b> Mastné kyseliny v tucích mají nerozvětvený řetězec C12 až C20 a dvojné vazby Z.',
+          '<b>Na C1 rovná, na C2 zalomená, na C3 fosfát.</b> Tak sedí kyseliny ve fosfoacylglycerolu.',
+          '<b>Olivový olej je skoro celý olejová</b> (80 %). Kokosový olej je výjimka mezi oleji: 50 % laurové.',
+          '<b>Mýdlo dělá kuličku, fosfolipid dvojvrstvu.</b> V micele i v membráně míří ocasy od vody a hlavy do vody.'])}`),
       body: () => sec('1. Lipidy a tuky', `<p>Lipidy nemají společnou funkční skupinu, spojuje je jen <b>lipofilita</b>. Vosky jsou estery vyšších mastných kyselin s dlouhými alkoholy, <b>triacylglyceroly</b> triestery glycerolu (tuky a oleje).</p>
         <p>Mastné kyseliny mají nerozvětvený řetězec se <b>sudým</b> počtem uhlíků a dvojné vazby Z. Nejběžnější: palmitová, stearová, olejová (C18, jedna cis vazba na C9), linolová (2 vazby), linolenová (3), arachidonová (C20, 4).</p>
         <p>Cis dvojné vazby zalomí řetězec a sníží teplotu tání (stearová 69 °C, olejová 13 °C, linolová −12 °C), proto jsou oleje (víc nenasycených kyselin) kapalné. Olivový olej má asi 80 % kyseliny olejové.</p>`)
@@ -31370,6 +32136,27 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Isopren má 5 uhlíků, monoterpen dvě jednotky, tedy 10. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t26_q26', 't26_q27', 't26_q28', 't26_q29', 't26_q30', 't26_q33', 't26_q34', 't26_q36', 't26_q37', 't26_q39', 't26_q40', 't26_q42'],
       beda: 'Terpeny stavíš z lega: kostičky isoprenu C5 spojené hlava–pata. Dvě jsou mono, tři seskvi, čtyři di a osm dá β-karoten.',
+      aid: () => pom(`${FH_LES.ord({ q: 'cestu k prostaglandinům.', top: 'začátek', bottom: 'konec', items: [['kyselina linolová', 'esenciální, C18'], ['kyselina arachidonová', 'C20, 4 cis vazby'], ['PGG₂', 'COX zabuduje dvě O₂'], ['PGH₂', 'OOH na C15 se zredukuje na OH'], ['další prostaglandiny', 'krevní tlak, srážení, záněty']] })}
+        ${FH_LES.w.quiz({ head: '<b>Koncovka -coxib míří jen na COX-2.</b> Ostatní tlumí i COX-1, a proto bolí žaludek.', opts: ['neselektivně, COX-1 i COX-2', 'selektivně jen COX-2'], items: [
+          ['kyselina acetylsalicylová', 'neselektivně, COX-1 i COX-2', 'Navíc acetyluje serin v aktivním místě COX, inhibice je nevratná.'],
+          ['ibuprofen', 'neselektivně, COX-1 i COX-2', 'Blokuje i COX-1 pro běžné fyziologické funkce, odtud nežádoucí účinky.'],
+          ['naproxen', 'neselektivně, COX-1 i COX-2', 'Patří s aspirinem a ibuprofenem mezi neselektivní.'],
+          ['celecoxib', 'selektivně jen COX-2', 'Koncovka -coxib: jen zánětlivá COX-2.'],
+          ['rofecoxib', 'selektivně jen COX-2', 'Koncovka -coxib: jen zánětlivá COX-2.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Vyděl uhlíky pěti.</b> Kolik je isoprenů, taková je skupina.', opts: ['monoterpen', 'seskviterpen', 'diterpen', 'triterpen', 'tetraterpen'], items: [
+          ['myrcen, C10', 'monoterpen', '10 : 5 = 2 jednotky.'],
+          ['α-pinen, C10', 'monoterpen', '10 : 5 = 2 jednotky, jen uzavřené do kruhů.'],
+          ['pačulový alkohol, C15', 'seskviterpen', '15 : 5 = 3. Seskvi znamená jeden a půl krát monoterpen.'],
+          ['retinol (vitamin A), C20', 'diterpen', '20 : 5 = 4, zhruba polovina β-karotenu.'],
+          ['lanosterol, C30', 'triterpen', '30 : 5 = 6. Steroidy jsou upravené triterpeny.'],
+          ['skvalen, C30', 'triterpen', '30 : 5 = 6. Jeho cyklizací vzniká lanosterol.'],
+          ['β-karoten, C40', 'tetraterpen', '40 : 5 = 8 jednotek.']] })}
+        ${FH_LES.w.pair({ head: '<b>Sůl, cukr, sex.</b> Mineralokortikoid hlídá sůl, glukokortikoid cukr, zbytek jsou pohlavní hormony. Spoj hormon se skupinou.', pairs: [['aldosteron', 'mineralokortikoid: Na⁺ a K⁺'], ['hydrokortison', 'glukokortikoid: glukosa a záněty'], ['testosteron', 'androgen'], ['estradiol', 'estrogen, aromatický kruh A'], ['progesteron', 'gestagen'], ['ethynylestradiol', 'syntetický estrogen do antikoncepce']] })}
+        ${kap(['<b>Eikosa = 20.</b> Prostaglandiny jsou eikosanoidy, C20 s pětičlenným kruhem.',
+          '<b>Terpen je čistý uhlovodík,</b> terpenoid nese i kyslík.',
+          '<b>Steroid je 6-6-6-5.</b> Kruhy A, B, C šestičlenné, D pětičlenný, methyly na C10 a C13.',
+          '<b>Estrogen je bez methylu na C10.</b> Aromatický kruh A methyl C19 unést nemůže.',
+          '<b>COX-1 chrání, COX-2 zapaluje.</b> COX-1 tvoří prostaglandiny pro běžné funkce, COX-2 při zánětu.'])}`),
       body: () => sec('1. Prostaglandiny a léky', `<p>Prostaglandiny jsou C20 lipidy s pětičlenným kruhem. Vznikají z <b>kyseliny arachidonové</b> působením cyklooxygenasy (COX).</p>
         ${tbl(['Enzym', 'Role'], [['COX-1', 'prostaglandiny pro běžné fyziologické funkce'], ['COX-2', 'prostaglandiny při zánětu']])}
         <p>Aspirin, ibuprofen a naproxen blokují neselektivně i COX-1, a proto mají nežádoucí účinky. Celecoxib a rofecoxib jsou selektivní na COX-2. Leukotrieny spouštějí astma.</p>`)
@@ -31383,6 +32170,21 @@ const FH_OL = (() => {
       tail: 'Vrať se k papíru ze začátku. DNA má A, G, C a T, adenin se páruje s thyminem dvěma vodíkovými vazbami. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t27_q1', 't27_q2', 't27_q5', 't27_q10', 't27_q12', 't27_q13', 't27_q18', 't27_q26', 't27_q27', 't27_q33', 't27_q36', 't27_q46'],
       beda: 'A–T se drží dvěma rukama, G–C třemi. Proto je úsek bohatý na G–C pevnější.',
+      aid: () => pom(`${FH_LES.w.acr({ head: '<b>Pure As Gold</b> a <b>CUT the Py</b>: puriny jsou A a G, pyrimidiny C, U a T. Otoč dlaždice.', items: [['A', 'adenin'], ['G', 'guanin'], ['C', 'cytosin'], ['U', 'uracil'], ['T', 'thymin']], note: 'Puriny mají dva kruhy, pyrimidiny jeden. Uracil je jen v RNA, thymin (5-methyluracil) jen v DNA. Pár je vždy purin + pyrimidin, proto má dvoušroubovnice všude stejnou šířku 2,0 nm.' })}
+        ${FH_LES.ord({ q: 'stavbu nukleové kyseliny od nejmenšího dílu.', top: 'nejmenší', bottom: 'největší', items: [['báze a sacharid zvlášť', 'adenin, ribosa'], ['nukleosid', 'sacharid + báze: adenosin'], ['nukleotid', 'nukleosid + fosfát: adenosin-5′-fosfát'], ['nukleová kyselina', 'mnoho nukleotidů přes fosfátové esterové vazby']] })}
+        ${FH_LES.w.pair({ head: '<b>Puriny -osin, pyrimidiny -idin.</b> Spoj bázi s nukleosidem.', pairs: [['adenin', 'adenosin'], ['guanin', 'guanosin'], ['cytosin', 'cytidin'], ['uracil', 'uridin'], ['thymin', 'thymidin']] })}
+        ${FH_LES.w.quiz({ head: '<b>A k T, G k C.</b> Doplň komplementární vlákno nebo spočítej zastoupení.', opts: [], items: [
+          ['TAGGCT', 'ATCCGA', 'T↔A, A↔T, G↔C, C↔G. V DNA k adeninu patří thymin, ne uracil.', ['ATCCGA', 'AUCCGA', 'TAGGCT']],
+          ['GATTACA', 'CTAATGT', 'Báze proti bázi: G↔C, A↔T, T↔A, C↔G.', ['CTAATGT', 'CUAAUGU', 'GTAATCT']],
+          ['CCGGAT', 'GGCCTA', 'C↔G a A↔T, báze proti bázi.', ['GGCCTA', 'GGCCUA', 'TAGGCC']],
+          ['Dvouvláknová DNA má 20 % adeninu. Kolik má guaninu?', '30 %', 'A = T = 20 %, na G + C zbývá 60 %, tedy G = 30 %.', ['20 %', '30 %', '60 %']],
+          ['Dvouvláknová DNA má 30 % adeninu. Kolik má cytosinu?', '20 %', 'A = T = 30 %, na G + C zbývá 40 %, tedy C = 20 %.', ['20 %', '30 %', '40 %']],
+          ['S čím se páruje adenin v RNA?', 'uracil', 'Thymin v RNA není, místo něj je uracil.', ['thymin', 'uracil', 'guanin']]] })}
+        ${kap(['<b>Deoxy = bez kyslíku.</b> 2′-Deoxyribosa nemá OH na C2′, OH na C3′ zůstává pro fosfát.',
+          '<b>Čárka patří cukru.</b> C1′ až C5′ je sacharid, čísla bez čárky jsou báze.',
+          '<b>Purin 9, pyrimidin 1.</b> Puriny se vážou na C1′ přes N9, pyrimidiny přes N1.',
+          '<b>Fosfát spojí 3′ a 5′,</b> báze visí na 1′. Páteř je fosfát, cukr, fosfát, cukr.',
+          '<b>Transkripce přepisuje, translace překládá.</b> DNA → RNA → bílkovina, replikace je DNA → DNA.'])}`),
       body: () => sec('1. Stavební kameny', `<p><b>Nukleosid</b> = cukr + báze, <b>nukleotid</b> = nukleosid + fosfát. Cukr je aldopentosa ve formě β-D-furanosy: v RNA ribosa, v DNA <b>2′-deoxyribosa</b> (na C2′ chybí OH). Uhlíky cukru se značí s čárkou (1′–5′), aby se nepletly s bází.</p>
         ${tbl(['Báze', 'Typ', 'Kde'], [['adenin, guanin', 'puriny (dva kruhy), na cukr přes N9', 'DNA i RNA'], ['cytosin', 'pyrimidin, na cukr přes N1', 'DNA i RNA'], ['thymin (5-methyluracil)', 'pyrimidin', 'jen DNA'], ['uracil', 'pyrimidin', 'jen RNA']])}
         <p class="aside">Nukleosidy: adenosin, guanosin, cytidin, uridin, thymidin.</p>`)
@@ -31395,6 +32197,29 @@ const FH_OL = (() => {
       tail: 'Vrať se k tipu ze začátku. Dvě OH na jednom uhlíku samovolně odštěpí vodu. Co jsi nevěděla, zopakuješ zítra.',
       q: ['t29_q1', 't29_q2', 't29_q7', 't29_q8', 't29_q13', 't29_q20', 't29_q23', 't29_q24', 't29_q25', 't29_q29', 't29_q34', 't29_q36'],
       beda: 'Isokyanát má prostřední uhlík jako terč: nukleofil míří přesně doprostřed mezi N a O. S vodou z něj zbude amin a bublina CO₂.',
+      aid: () => pom(`${FH_LES.w.pair({ head: '<b>Názvy ze stavebnice.</b> Každý díl názvu říká, co sedí místo OH (nebo =O). Spoj díl s významem.', pairs: [['amid', 'NH₂ místo OH'], ['hydrazid', 'NH–NH₂ místo OH'], ['imid', '=NH místo =O'], ['nitril', 'C≡N'], ['iso-', 'vodík nebo R na dusíku'], ['thio-', 'S místo O']] })}
+        ${FH_LES.w.quiz({ head: '<b>Slož název z dílů.</b> Co to je?', opts: ['diamid kyseliny uhličité', 'diamid-imid kyseliny uhličité', 'diimid kyseliny uhličité', 'hydrazid kyseliny karbamové', 'nitril kyseliny karbamové', 'ester kyseliny karbamové'], items: [
+          ['H₂N–CO–NH₂ (močovina)', 'diamid kyseliny uhličité', 'Obě OH nahradila NH₂.'],
+          ['H₂N–C(=NH)–NH₂ (guanidin)', 'diamid-imid kyseliny uhličité', 'Dvě NH₂ a =NH místo =O. Guanidinovou skupinu nese arginin.'],
+          ['HN=C=NH (karbodiimid)', 'diimid kyseliny uhličité', 'Dvakrát =NH. Kyanamid je jeho tautomer.'],
+          ['H₂N–CO–NH–NH₂ (semikarbazid)', 'hydrazid kyseliny karbamové', 'Kyselina karbamová H₂N–COOH, OH nahradil NH–NH₂.'],
+          ['H₂N–C≡N (kyanamid)', 'nitril kyseliny karbamové', 'Z H₂N–COOH se stal nitril.'],
+          ['H₂N–COOCH₂CH₃ (urethan)', 'ester kyseliny karbamové', 'Ethyl-karbamát.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Jedna OH nestačí, pryč musí obě.</b> Je derivát stálý?', opts: ['stálý', 'rozpadne se na CO₂ + HX'], items: [
+          ['kyselina chlormravenčí Cl–COOH', 'rozpadne se na CO₂ + HX', 'Nahrazená jen jedna OH: CO₂ + HCl.'],
+          ['ethyl-hydrogen-karbonát', 'rozpadne se na CO₂ + HX', 'Monoester: CO₂ + ethanol.'],
+          ['kyselina karbamová H₂N–COOH', 'rozpadne se na CO₂ + HX', 'Monoamid: CO₂ + NH₃.'],
+          ['fosgen Cl–CO–Cl', 'stálý', 'Obě OH nahradil chlor.'],
+          ['diethyl-karbonát', 'stálý', 'Obě OH jsou esterifikované.'],
+          ['ethyl-karbamát (urethan)', 'stálý', 'Jedna OH je NH₂, druhá OEt.'],
+          ['močovina', 'stálý', 'Obě OH nahradila NH₂.']] })}
+        ${FH_LES.ord({ q: 'výchozí látky podle toho, kolik NH₃ spotřebují na močovinu.', top: 'nejvíc', bottom: 'nejméně', items: [['fosgen', '4 NH₃'], ['ethyl-chlorformiát', '3 NH₃'], ['diethyl-karbonát', '2 NH₃'], ['ethyl-karbamát (urethan)', '1 NH₃']] })}
+        <p class="aside"><b>Každý Cl stojí dva NH₃, každá OEt jeden.</b> Druhý NH₃ za chlor jen vychytá HCl jako NH₄Cl, u esteru odejde ethanol a nic vychytávat netřeba.</p>
+        ${kap(['<b>Fosgen = dichlorid kyseliny uhličité.</b> Reaguje jako acylchlorid, jen dvakrát: s ethanolem nejdřív chlorformiát, pak karbonát.',
+          '<b>Amin + fosgen + teplo = isokyanát.</b> Přes karbamoylchlorid, zahřátí odštěpí HCl.',
+          '<b>Močovina: halogenid na kyslík.</b> Alkylhalogenid dá isomočovinu, na dusík jde jen alkylamonium.',
+          '<b>Hofmann z močoviny dá hydrazin,</b> ne amin.',
+          '<b>Malonát + močovina = barbituráty.</b> 5,5-disubstituované jsou hypnotika.'])}`),
       body: () => sec('1. Kyselina uhličitá a její deriváty', `<p>Uhlík je tu v oxidačním stupni IV jako v CO₂. Kyselina uhličitá (pKa 3,8 a 10,2; zdánlivá pKa₁ se započteným rozpuštěným CO₂ je 6,35, v krvi při 37 °C 6,1) i orthouhličitá v čistém stavu neexistují, víc OH na jednom uhlíku odštěpí vodu. <b>Monofunkční</b> deriváty se rozpadají na CO₂ a HX, <b>stálé</b> jsou až deriváty s oběma nahrazenými OH: fosgen, chlorformiáty, karbonáty, karbamáty, močovina.</p>
         <p class="aside">Urethan je ethyl-karbamát, guanidin diamid-imid kyseliny uhličité, semikarbazid hydrazid kyseliny karbamové.</p>`)
         + sec('2. Fosgen a močovina', `<p><b>Fosgen</b> (CO + Cl₂) je nejdostupnější derivát. Chová se jako dichlorid kyseliny: s alkoholy a aminy reaguje nukleofilní acylovou substitucí, s vodou dá HCl a CO₂, s primárním aminem a zahřátím isokyanát.</p>
