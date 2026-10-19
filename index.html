@@ -35185,13 +35185,757 @@ const kap = a => `<ul class="ac-ul">${a.map(x => `<li>${x}</li>`).join('')}</ul>
 const pom = h => sec('Pomůcky na zapamatování', h);
 /* karta „Jak se to učit a co si zapamatovat“: jak se učit cvičení (AC_JAK_M), co si z lekce zapamatovat s obrázkem (AC_JAK_L) a pojmy cvičení (AC_JAK_G); co už lekce říká stejnými slovy, se vynechá */
 const AC_JAK_M = {
-/*JAK_M*/
+  ka: ['Projdi lekce popořadě: nejdřív skupinová činidla (HCl, H₂SO₄, sulfidy, NaOH, NH₃, KI, octan), pak kombinované úlohy a až potom selektivní důkazy kationtů a anionty. Každé další činidlo staví na tom, co jsi škrtla v předchozím.',
+    'Ke každému činidlu si nejdřív z hlavy řekni tři věci: koho sráží, jakou barvu má sraženina a co s ní udělá nadbytek. Pak si to ověř v režimu <b>Tabulka</b> se schovanými políčky.',
+    'V režimu <b>Ionty</b> jdi opačně: vezmi jeden kationt a vyjmenuj, co s ním udělá každé činidlo. Úvahu nad celým vzorkem trénuj v <b>Neznámém vzorku</b>, kde se vyplatí začít levnými skupinovými činidly.',
+    'Pořadí kroků analýzy a laboratorní postupy si skládej v <b>Seřaď postup</b>. Otázky, ve kterých jsi chybovala, zopakuj druhý den v <b>Procvičování</b>.',
+    'Pletou se dvojice, uč je proto vedle sebe: amfoterní × amminkomplex (NaOH × NH₃), Hg₂²⁺ × Hg²⁺, žlutý AgI × PbI₂, karmínový plamen Li⁺ × Sr²⁺. U každé hledej jedno pozorování, které je rozliší.'],
+  org: ['Projdi lekce popořadě: prvky, rozpustnost a pak funkční skupiny. Funkční skupiny dávají smysl, až když víš, jaké prvky a jakou třídu látka má.',
+    'Ke každé zkoušce si z hlavy řekni trojici: čím, co uvidíš a co to dokazuje. V <b>Taháku</b> pak zakryj poslední sloupec a zkontroluj se.',
+    'Pořadí rozpouštědel trénuj v režimu <b>Rozpustnost</b> a v <b>Seřaď postup</b>, dokud ho nepoložíš bez váhání. Pak hraj <b>Neznámou látku</b>: vybírej zkoušky, které co nejvíc vyloučí.',
+    'Pletou se zkoušky se stejnou barvou nebo stejným činidlem: berlínská modř u dusíku i u fenolu, NaNO₂ a HCl u aminů i amidů. Rozliš je podle toho, co se se vzorkem dělo předtím (žíhání, oxidace, redukce).',
+    'U každé zkoušky si zapamatuj i směr: co potvrdí kladný výsledek a co vyloučí záporný. Chybné otázky zopakuj druhý den v <b>Procvičování</b>.'],
+  fyz: ['Obě lekce jsou o měření, takže si ke každé veličině napiš jednotku a podmínky: teplota, vlnová délka, délka kyvety.',
+    'Vzorce (pH silné a slabé kyseliny, pOH, [α]) si napiš z hlavy na papír a pak je počítej v <b>Procvičování</b>, dokud dosazuješ bez přemýšlení.',
+    'V <b>Bodotávku</b> trénuj, kterou teplotu zapsat a co z ní plyne o čistotě. Postupy (bodotávek, kalibrace pH metru, polarimetr) skládej v <b>Seřaď postup</b>.',
+    'Pletou se OFFSET se SLOPE a silná se slabou kyselinou. Před výpočtem se vždy zeptej, jestli látka disociuje úplně, a u kalibrace, který pufr přijde první.',
+    'Na kontrolu před zkouškou ti stačí <b>Tahák</b>: projdi ho a u každého řádku si řekni proč.'],
+  uv: ['Začni lekcí o absorbanci, protože bez A = ε·d·c a A = −log T druhá lekce nedává smysl.',
+    'Převod propustnosti na absorbanci si procvič na papíře: 100, 10 a 1 % znáš zpaměti, ostatní odhadneš. Příklady pak počítej v <b>Procvičování</b>.',
+    'Indikátory si nakresli na osu pH s barvami z hlavy a pak je porovnej s grafem v <b>Taháku</b>. Pořadí přechodů a postup měření si slož v <b>Seřaď postup</b>.',
+    'Plete se methyloranž s methylčervení. Uč je jako dvojici: jedna končí u pH 4,4, kde druhá začíná, a obě jsou v kyselém červené.'],
+  ir: ['Lekce 1 je o přístroji, lekce 2 o čtení spektra. Přístroj stačí umět jako pár pravidel, čtení spekter se musíš natrénovat.',
+    'Tabulku pásů si přepiš z hlavy na osu od 4000 do 600 cm⁻¹ a porovnej ji s <b>Tahákem</b>.',
+    'V režimu <b>Čti spektrum</b> hledej u každého spektra nejdřív C=O a O–H nebo N–H, teprve potom detaily. Pořadí karbonylů a IČ oblastí si ověř v <b>Seřaď postup</b>.',
+    'Plete se vlnočet s vlnovou délkou: vyšší vlnočet je kratší vlna a víc energie. Spektrum se proto čte zleva od vysokých vlnočtů.'],
 };
 const AC_JAK_G = {
-/*JAK_G*/
+  ka: [['skupinové činidlo', 'sráží celou skupinu iontů najednou (HCl, H₂SO₄, H₂S, NH₃…), jen zúží výběr'],
+    ['selektivní činidlo', 'reaguje jen s několika ionty, použije se na zúžený výběr'],
+    ['specifická reakce', 'charakteristicky reaguje jen jeden iont, třeba Ag⁺ s Chelatonem III, NH₃ a KI'],
+    ['++ a + v tabulce', 'úplné srážení / neúplné, jen z koncentrovanějších roztoků'],
+    ['amfoterní hydroxid', 'rozpustí se v kyselině i v nadbytku 2M NaOH na hydroxokomplex [M(OH)₄]ⁿ⁻'],
+    ['amminkomplex', 'komplex s molekulami NH₃, vznikne v nadbytku amoniaku, třeba tmavě modrý [Cu(NH₃)₄]²⁺'],
+    ['hydrolýza', 'kationt reaguje s vodou a vyloučí se zásaditá sůl nebo hydroxid (Bi³⁺, Sb³⁺ a cín s octanem)'],
+    ['disproporcionace (dismutace)', 'z jednoho oxidačního čísla vzniknou dvě: Hg₂²⁺ dá Hg²⁺ a černou Hg⁰'],
+    ['maskování', 'činidlo schová rušivé ionty do komplexu, aby nereagovaly (Chelaton III, NaF, vínan)'],
+    ['těžké kovy', 'formálně všechny kationty kromě alkalických kovů a kovů alkalických zemin'],
+    ['odkouření', 'odpaření amonných solí do sucha a mírné vyžíhání odparku'],
+    ['Böttgerův systém', 'staré dělení kationtů do pěti skupin podle HCl, H₂S, NH₄HS a (NH₄)₂CO₃']],
+  org: [['mineralizace', 'rozklad organické látky žíháním, aby prvky přešly na ionty'],
+    ['výluh', 'vodný roztok po redukčním žíhání s Mg a K₂CO₃'],
+    ['berlínská modř', 'modrá sraženina železa s kyanidem, důkaz dusíku a s FeCl₃ a K₃[Fe(CN)₆] i fenolu'],
+    ['S, A, B, M, N, I', 'soluble (rozpustný), acid (kyselý), basic (zásaditý), miscellaneous (rozmanitý), neutral (neutrální), inert (nereaktivní)'],
+    ['amfoterní', 'rozpustí se v kyselině i v louhu, třídy A1B a A2B'],
+    ['1°, 2°, 3°', 'primární, sekundární, terciární alkohol nebo amin'],
+    ['Lucasovo činidlo', 'ZnCl₂ v koncentrované HCl, typ alkoholu pozná podle doby do zákalu'],
+    ['2,4-DNPH', 'činidlo na karbonyl, aldehyd i keton s ním dají hydrazon'],
+    ['Tollensovo činidlo', '[Ag(NH₃)₂]⁺, aldehyd z něj vyloučí stříbrné zrcadlo'],
+    ['Schiffovo činidlo', 'fuchsin odbarvený siřičitanem, s aldehydem zfialoví'],
+    ['diazotace a kopulace', 'amin s NaNO₂ a HCl dá diazoniovou sůl, ta s fenolem nebo 2-naftolem azobarvivo'],
+    ['Dragendorffovo činidlo', '[BiI₄]⁻, oranžové s terciárními aminy a alkaloidy']],
+  fyz: [['teplota tání', 'teplota, kdy vznikne tavenina, kritérium čistoty'],
+    ['bodotávek', 'přístroj na teplotu tání, látka je v kapiláře'],
+    ['n<sub>D</sub><sup>20</sup>', 'index lomu při sodíkové čáře D a 20 °C'],
+    ['Abbého refraktometr', 'měří index lomu přes mezní úhel úplného odrazu, 1,300–1,700'],
+    ['pravotočivá (+)', 'stáčí rovinu polarizace po směru hodinových ručiček, když se díváš proti světlu; levotočivá (−) opačně'],
+    ['polostínová metoda', 'analyzátor nastavíš na stejnoměrně šedé zorné pole'],
+    ['nonius', 'pomocná stupnice polarimetru, čte na 0,05°'],
+    ['[α]', 'specifická otáčivost, 1000·α/(l·c), l v dm, c v g/l'],
+    ['Kw', 'iontový součin vody 10⁻¹⁴, proto pH + pOH = 14'],
+    ['pKa', 'čím menší, tím silnější kyselina, octová má 4,75'],
+    ['OFFSET / SLOPE', 'posun / sklon kalibrační přímky pH metru'],
+    ['Hammettova funkce', 'popisuje kyselost nevodných roztoků']],
+  uv: [['UV-VIS', 'ultrafialová a viditelná oblast (ultraviolet, visible), 190–900 nm'],
+    ['chromofor', 'skupina, která v UV-VIS absorbuje, třeba C=C, C=O, N=N, NO₂'],
+    ['T', 'propustnost (transmitance), T = I/I₀'],
+    ['A', 'absorbance, A = log(I₀/I) = −log T'],
+    ['ε', 'absorpční koeficient látky, l·mol⁻¹·cm⁻¹'],
+    ['d', 'tloušťka kyvety v cm'],
+    ['blank', 'slepý vzorek, odečte rozpouštědlo a činidla'],
+    ['DAD', 'detektor s diodovým polem (diode array detector), změří celé spektrum najednou'],
+    ['1. derivace spektra', 'její nulové body ukážou maxima a minima'],
+    ['přechod indikátoru', 'rozmezí pH, ve kterém indikátor mění barvu'],
+    ['konjugace', 'uspořádání dvojných vazeb v molekule, její změna posune absorpční maximum']],
+  ir: [['IČ, IR', 'infračervená oblast, anglicky infrared'],
+    ['NIR / MIR / FIR', 'blízká / střední / vzdálená IČ oblast (near, mid, far)'],
+    ['ν̃', 'vlnočet v cm⁻¹, převrácená vlnová délka, 10 000 / λ v µm'],
+    ['fundamentální vibrace', 'leží ve střední oblasti (MIR), podle nich se určují organické látky'],
+    ['svrchní tóny (overtony)', 'přechody do vyšších vibračních stavů, typické pro NIR'],
+    ['FT-IR', 'IČ spektrometr s Fourierovou transformací (Fourier transform infrared), srdcem je interferometr'],
+    ['interferometr', 'dělič paprsků, pevné a pohyblivé zrcadlo'],
+    ['pozadí (background)', 'spektrum vzduchu bez vzorku, ukáže vodní páru a CO₂'],
+    ['transmise', 'záření projde celým vzorkem: KBr tableta, kapalinová kyveta'],
+    ['ATR', 'měření odrazem na krystalu (attenuated total reflection, zeslabený úplný odraz), záření pronikne asi 1 µm'],
+    ['tiché pásmo', '2300–2000 cm⁻¹, ozve se tu jen trojná vazba']],
 };
 const AC_JAK_L = {
-/*JAK_L*/
+  k1: { r: ['Skupinové činidlo nic nedokazuje, jen zužuje výběr. Jméno iontu potvrdí až selektivní důkaz na konci.',
+    'HCl a H₂SO₄ jsou kroky 3 a 4. Před nimi zjistíš pH a dokážeš NH₄⁺ v původním vzorku.',
+    'Tři bílé chloridy od sebe rozliší druhý krok: AgCl zmizí ve 2M NH₃, Hg₂Cl₂ v něm zčerná, PbCl₂ se rozpustí v horké vodě.',
+    'Olovo se z HCl nesráží celé. Když HCl nic nedá, olovo hledej dál v síranech.',
+    'Sírany jsou všechny bílé. Ba²⁺ a Pb²⁺ padnou úplně, Sr²⁺ a Ca²⁺ jen z koncentrovanějších roztoků, protože rozpustnost roste od BaSO₄ k CaSO₄.',
+    'Vápník spolehlivěji ukáže kyselina šťavelová (bílý šťavelan). PbSO₄ od BaSO₄ odliší NH₄HS, olovnatý zčerná.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 372" role="img" aria-label="Vývojový diagram: vzorek s 3% HCl, bílá sraženina znamená Ag⁺, Hg₂²⁺ nebo Pb²⁺, čirý roztok škrtne Ag⁺ a Hg₂²⁺. Pak 35% H₂SO₄: bílá sraženina znamená Ba²⁺, Pb²⁺, Sr²⁺ nebo Ca²⁺, čirý roztok škrtne Ba²⁺ a Pb²⁺.">
+<defs><marker id="jak-k1-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="lobe" x="140" y="6" width="110" height="30" rx="15"/><text x="195" y="26" text-anchor="middle">vzorek</text>
+<path class="ar" d="M195 36V70" marker-end="url(#jak-k1-a)"/><text class="cap" x="204" y="58">3% HCl</text>
+<rect class="lobe" x="110" y="72" width="170" height="30" rx="6"/><text x="195" y="92" text-anchor="middle">bílá sraženina?</text>
+<path class="ar" d="M150 102L104 134" marker-end="url(#jak-k1-a)"/><text class="x" x="112" y="122" text-anchor="end">ano</text>
+<path class="ar" d="M240 102L286 134" marker-end="url(#jak-k1-a)"/><text class="x" x="278" y="122">ne</text>
+<rect class="lobe" x="8" y="136" width="180" height="50" rx="6"/><text x="98" y="157" text-anchor="middle">Ag⁺, Hg₂²⁺, Pb²⁺</text><text class="cap" x="98" y="177" text-anchor="middle">rozliší NH₃ a horká voda</text>
+<rect class="lobe" x="202" y="136" width="180" height="50" rx="6"/><text x="292" y="157" text-anchor="middle">škrtni Ag⁺, Hg₂²⁺</text><text class="cap" x="292" y="177" text-anchor="middle">Pb²⁺ mohlo utéct</text>
+<path class="b d" d="M98 186V204H292V186"/>
+<path class="ar" d="M195 204V234" marker-end="url(#jak-k1-a)"/><text class="cap" x="204" y="224">roztok dál: 35% H₂SO₄</text>
+<rect class="lobe" x="110" y="236" width="170" height="30" rx="6"/><text x="195" y="256" text-anchor="middle">bílá sraženina?</text>
+<path class="ar" d="M150 266L104 298" marker-end="url(#jak-k1-a)"/><text class="x" x="112" y="286" text-anchor="end">ano</text>
+<path class="ar" d="M240 266L286 298" marker-end="url(#jak-k1-a)"/><text class="x" x="278" y="286">ne</text>
+<rect class="lobe" x="8" y="300" width="180" height="64" rx="6"/><text x="98" y="321" text-anchor="middle">Ba²⁺, Pb²⁺, Sr²⁺, Ca²⁺</text><text class="cap" x="98" y="339" text-anchor="middle">PbSO₄ s NH₄HS zčerná</text><text class="cap" x="98" y="355" text-anchor="middle">Ca²⁺ ověř šťavelovou</text>
+<rect class="lobe" x="202" y="300" width="180" height="64" rx="6"/><text x="292" y="321" text-anchor="middle">škrtni Ba²⁺, Pb²⁺</text><text class="cap" x="292" y="339" text-anchor="middle">Sr²⁺ a Ca²⁺ se sráží</text><text class="cap" x="292" y="355" text-anchor="middle">jen z konc. roztoků</text>
+</svg>` },
+  k2: { r: ['Sulfan je slabá kyselina. V kyselém prostředí dá jen málo S²⁻, v amoniakálním mnohem víc. Proto jsou sulfidová síta dvě.',
+    'Z kyselého prostředí se sráží jen nejméně rozpustné sulfidy: Ag⁺, Pb²⁺, rtuť, Cu²⁺, Cd²⁺, Bi³⁺, Sb³⁺ a cín. Zn²⁺ jen neúplně.',
+    'NH₄HS sráží totéž a k tomu Fe, Co²⁺, Ni²⁺, Mn²⁺ a Zn²⁺. Al³⁺ a Cr³⁺ místo sulfidu hydrolyzují na hydroxid.',
+    'Černá je pravidlo, barva je stopa: žlutý CdS, oranžový Sb₂S₃, hnědý Bi₂S₃ a SnS, tělový MnS, bílý ZnS.',
+    'Fe³⁺ s H₂S sulfid nedá. Sulfan zoxiduje na síru a sám přejde na Fe²⁺, černý FeS se objeví až s NH₄HS.',
+    'V nadbytku NH₄HS se oranžový Sb₂S₃ rozpustí na thioantimonitan a HCl ho vrátí. Zestárlé CoS a NiS nerozpustí ani zředěná kyselina.'],
+    pic: () => { const it = (x, y, c, t) => `<circle cx="${x}" cy="${y - 5}" r="7" fill="${c}" stroke="var(--muted)" stroke-width=".8"/><text x="${x + 12}" y="${y}">${t}</text>`, C = AC_COL;
+      return `<svg class="jpic" viewBox="0 0 390 286" role="img" aria-label="Sulfidová síta podle množství S²⁻. Kyselé prostředí s H₂S: Ag⁺, Pb²⁺, Hg, Cu²⁺ černé, CdS žlutý, Sb₂S₃ oranžový, Bi₂S₃ a SnS hnědé. NH₄HS navíc: Fe, Co²⁺, Ni²⁺ černé, MnS tělový, ZnS bílý, Al³⁺ a Cr³⁺ jako hydroxid. Nesráží se alkalické kovy, kovy alkalických zemin, Mg²⁺ a NH₄⁺.">
+<defs><marker id="jak-k2-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<path class="ar" d="M16 24V196" marker-end="url(#jak-k2-a)"/><text class="cap" transform="rotate(-90 12 110)" x="12" y="110" text-anchor="middle">S²⁻ přibývá</text>
+<text x="34" y="20">H₂S, kyselé prostředí</text><text class="cap" x="384" y="20" text-anchor="end">málo S²⁻</text>
+${it(42, 48, C.cerna, 'Ag⁺')}${it(130, 48, C.cerna, 'Pb²⁺')}${it(218, 48, C.cerna, 'Hg')}${it(306, 48, C.cerna, 'Cu²⁺')}
+${it(42, 74, C.zluta, 'Cd²⁺')}${it(130, 74, C.oranzova, 'Sb³⁺')}${it(218, 74, C.hneda, 'Bi³⁺')}${it(306, 74, C.hneda, 'Sn')}
+<line class="b d" x1="34" y1="92" x2="384" y2="92"/>
+<text x="34" y="114">NH₄HS: vše výše a navíc</text>
+${it(42, 142, C.cerna, 'Fe')}${it(130, 142, C.cerna, 'Co²⁺')}${it(218, 142, C.cerna, 'Ni²⁺')}${it(306, 142, C.telova, 'Mn²⁺')}
+${it(42, 168, C.bila, 'Zn²⁺')}${it(130, 168, C.bila, 'Al³⁺')}${it(218, 168, C.sedozelena, 'Cr³⁺')}
+<text class="cap" x="34" y="192">Al³⁺ a Cr³⁺ dají hydroxid, Zn²⁺ s H₂S jen neúplně</text>
+<line class="b d" x1="34" y1="206" x2="384" y2="206"/>
+<text x="34" y="230">nesráží ani NH₄HS</text>
+<text class="h" x="34" y="254">Li⁺, Na⁺, K⁺, NH₄⁺, Mg²⁺, Ca²⁺, Sr²⁺, Ba²⁺</text>
+<text class="cap" x="34" y="276">barva kolečka = barva sraženiny</text>
+</svg>`; } },
+  k3: { r: ['Zředěný NaOH vysráží skoro každý kationt kovu. Čirý zůstane s alkalickými kovy, NH₄⁺ a Ba²⁺, Ca²⁺ dá sraženinu jen z koncentrovanějšího roztoku.',
+    'Mg(OH)₂ se objeví jen v silně zásaditém prostředí a jen tehdy, když ve vzorku chybí NH₄⁺.',
+    'Ag⁺ a Hg²⁺ hydroxid nedrží a rovnou z nich vznikne oxid: hnědý Ag₂O a žlutý HgO. Co²⁺ dá nejdřív modrou zásaditou sůl.',
+    'Nadbytek 2M NaOH je zkouška amfoterity. Pb²⁺, Al³⁺, Zn²⁺, Sb³⁺, Sn²⁺ a Cr³⁺ přejdou na hydroxokomplex, barevný je z nich jen zelený chromitan.',
+    'Když sraženina na vzduchu tmavne, oxiduje ji kyslík: Mn(OH)₂ zčerná na MnO₂, Fe(OH)₂ zrezaví, sraženina Co²⁺ zhnědne.',
+    'Nadbytkem NaOH oddělíš amfoterní kationty (zůstanou v roztoku) od ostatních hydroxidů na filtru, třeba Al³⁺ od Fe³⁺.'],
+    pic: () => { const C = AC_COL, sw = (x, y, c) => `<rect x="${x}" y="${y - 11}" width="14" height="14" rx="3" fill="${c}" stroke="var(--muted)" stroke-width=".8"/>`, it = (x, y, c, t) => sw(x, y, c) + `<text x="${x + 20}" y="${y}">${t}</text>`;
+      return `<svg class="jpic" viewBox="0 0 390 352" role="img" aria-label="Rozhodovací strom pro sraženinu z NaOH. V nadbytku 2M NaOH zmizí amfoterní Pb²⁺, Al³⁺, Zn²⁺, Sb³⁺, Sn²⁺ na bezbarvý roztok a Cr³⁺ na zelený. Ostatní zůstanou: na vzduchu změní barvu Mn²⁺, Fe²⁺ a Co²⁺, beze změny zůstanou Cd²⁺, Bi³⁺, Mg²⁺, Cu²⁺, Fe³⁺, Ni²⁺, Ag⁺ a Hg²⁺. Bez sraženiny jsou alkalické kovy, NH₄⁺ a Ba²⁺.">
+<defs><marker id="jak-k3-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="lobe" x="60" y="6" width="270" height="30" rx="6"/><text x="195" y="26" text-anchor="middle">sraženina + nadbytek 2M NaOH</text>
+<path class="ar" d="M130 36L96 64" marker-end="url(#jak-k3-a)"/><text class="x" x="104" y="54" text-anchor="end">zmizí</text>
+<path class="ar" d="M260 36L294 64" marker-end="url(#jak-k3-a)"/><text class="x" x="286" y="54">zůstane</text>
+<rect class="lobe" x="6" y="66" width="180" height="136" rx="6"/>
+<text x="16" y="86">amfoterní</text>
+${it(16, 112, 'var(--surface)', 'Pb²⁺, Al³⁺, Zn²⁺')}<text x="36" y="132">Sb³⁺, Sn²⁺</text><text class="cap" x="36" y="150">bezbarvý roztok</text>
+${it(16, 174, C.zelena, 'Cr³⁺')}<text class="cap" x="36" y="192">zelený chromitan</text>
+<rect class="lobe" x="204" y="66" width="180" height="30" rx="6"/><text x="294" y="86" text-anchor="middle">na vzduchu?</text>
+<path class="ar" d="M234 96V112" marker-end="url(#jak-k3-a)"/><text class="cap" x="242" y="110">změní barvu</text>
+<rect class="lobe" x="204" y="114" width="140" height="88" rx="6"/>
+<text x="214" y="138">Mn²⁺</text>${sw(262, 138, C.bila)}${sw(282, 138, C.cerna)}
+<text x="214" y="164">Fe²⁺</text>${sw(262, 164, C.zelenobila)}${sw(282, 164, C.rezava)}
+<text x="214" y="190">Co²⁺</text>${sw(262, 190, C.modra)}${sw(282, 190, C.ruzova)}${sw(302, 190, C.hneda)}
+<path class="ar" d="M366 96V212" marker-end="url(#jak-k3-a)"/>
+<text class="cap" x="355" y="162" text-anchor="middle">ne</text>
+<rect class="lobe" x="204" y="214" width="180" height="132" rx="6"/><text x="214" y="234">beze změny</text>
+${it(214, 258, C.bila, 'Cd²⁺, Bi³⁺, Mg²⁺')}${it(214, 282, C.modra, 'Cu²⁺')}${it(294, 282, C.rezava, 'Fe³⁺')}
+${it(214, 306, C.svzelena, 'Ni²⁺')}${it(294, 306, C.hneda, 'Ag⁺')}${it(214, 330, C.zluta, 'Hg²⁺')}
+<rect class="lobe" x="6" y="214" width="180" height="132" rx="6"/><text x="16" y="234">bez sraženiny</text>
+<text class="h" x="16" y="258">alkalické kovy</text><text class="h" x="16" y="280">NH₄⁺, Ba²⁺</text>
+<text class="cap" x="16" y="304">Ca²⁺ jen z konc. roztoků</text><text class="cap" x="16" y="324">Mg²⁺ jen bez NH₄⁺</text>
+</svg>`; } },
+  k4: { r: ['Vodný amoniak je hydroxid amonný, takže zpočátku sráží hydroxidy stejně jako NaOH. Alkalické kovy a kovy alkalických zemin nesráží, Mg²⁺ jen zčásti.',
+    'Rozhoduje až nadbytek 2M NH₃: sraženiny Ag⁺, Cd²⁺, Zn²⁺, Cu²⁺, Ni²⁺, Co²⁺ a Mn²⁺ v něm zmizí jako amminkomplexy.',
+    'Barvu mají jen tři amminkomplexy: měďnatý tmavě modrou, nikelnatý světle modrou a kobaltitý žlutohnědou, protože kobalt se cestou vzduchem zoxiduje. Zbytek je bezbarvý.',
+    'Z amfoterních hydroxidů rozpustí amoniak jen Zn(OH)₂. Pb²⁺, Al³⁺, Sb³⁺, Sn²⁺ i modrozelený Cr(OH)₃ zůstanou na filtru.',
+    'Rtuť s amoniakem: z Hg²⁺ bílá amidosůl, z Hg₂²⁺ šedočerná směs amidosoli a Hg⁰.',
+    'Nadbytkem NH₃ oddělíš Cu²⁺ v modrém roztoku od rezavého Fe(OH)₃ na filtru.'],
+    pic: () => { const C = AC_COL, d = (x, y, c) => `<circle cx="${x}" cy="${y - 5}" r="6" fill="${c}" stroke="var(--muted)" stroke-width=".8"/>`;
+      return `<svg class="jpic" viewBox="0 0 390 290" role="img" aria-label="Dvě překrývající se množiny. Jen v nadbytku NaOH se rozpustí Pb²⁺, Al³⁺, Sb³⁺, Sn²⁺ a Cr³⁺ na zelený roztok. Jen v nadbytku NH₃ se rozpustí Ag⁺, Cd²⁺, Mn²⁺ bezbarvě, Cu²⁺ tmavě modře, Ni²⁺ světle modře a Co²⁺ žlutohnědě. V obou se rozpustí Zn²⁺. V žádném Fe³⁺ a Bi³⁺.">
+<circle class="lobe" cx="140" cy="140" r="102"/><circle class="lobe" cx="250" cy="140" r="102" fill-opacity=".55"/>
+<text x="92" y="24" text-anchor="middle">zmizí v NaOH</text><text x="298" y="24" text-anchor="middle">zmizí v NH₃</text>
+<text class="cap" x="92" y="40" text-anchor="middle">amfoterní</text><text class="cap" x="298" y="40" text-anchor="middle">amminkomplex</text>
+<text x="80" y="88" text-anchor="middle">Pb²⁺</text><text x="80" y="113" text-anchor="middle">Al³⁺</text><text x="80" y="138" text-anchor="middle">Sb³⁺</text><text x="80" y="163" text-anchor="middle">Sn²⁺</text>
+${d(64, 188, C.zelena)}<text x="74" y="188">Cr³⁺</text>
+<text class="x" x="195" y="145" text-anchor="middle">Zn²⁺</text><text class="cap" x="195" y="163" text-anchor="middle">v obou</text>
+<text x="296" y="78">Ag⁺</text><text x="296" y="102">Cd²⁺</text><text x="296" y="126">Mn²⁺</text>
+${d(286, 150, C.tmmodra)}<text x="296" y="150">Cu²⁺</text>${d(286, 174, C.svmodra)}<text x="296" y="174">Ni²⁺</text>${d(286, 198, C.zlutohneda)}<text x="296" y="198">Co²⁺</text>
+<text class="h" x="195" y="266" text-anchor="middle">v žádném: Fe³⁺, Bi³⁺</text><text class="cap" x="195" y="284" text-anchor="middle">kolečko = barva roztoku, bez kolečka bezbarvý</text>
+</svg>`; } },
+  k5: { r: ['0,1M KI dá barevné jodidy: žlutý AgI i PbI₂, červený HgI₂, černohnědý BiI₃, žlutozelený Hg₂I₂ a z koncentrovanějších roztoků žlutooranžový SbI₃.',
+    'V 1M KI se PbI₂ a HgI₂ rozpustí na bezbarvé jodokomplexy, BiI₃ na oranžový [BiI₄]⁻. AgI a SbI₃ zůstanou.',
+    'Cu²⁺ a Fe³⁺ jodid zoxidují na hnědý jód. U mědi zůstane hnědě zbarvená sraženina CuI, u železa jen hnědý roztok.',
+    'Jód odhalí siřičitan: vrátí ho na bezbarvý jodid a hnědá zmizí.',
+    'Octan sodný je zásaditý jen mírně, a tak hydrolyzují jen Bi³⁺, Sb³⁺ a cín na bílé zásadité soli. Chloridy předtím vysrážíš pevným NaCl a odfiltruješ.',
+    'S octanem dá Fe³⁺ slabě červený roztok acetátokomplexů. Cr³⁺ se nejdřív chvíli zakalí šedozeleně a pak skončí jako modrofialový roztok.'],
+    pic: () => { const C = AC_COL, tb = (x, y, sol, p) => `<path d="M${x} ${y + 18}V${y + 52}Q${x} ${y + 62} ${x + 9} ${y + 62}Q${x + 18} ${y + 62} ${x + 18} ${y + 52}V${y + 18}Z" fill="${sol || 'var(--surface)'}" fill-opacity=".85"/>${p ? `<path d="M${x} ${y + 48}Q${x + 9} ${y + 44} ${x + 18} ${y + 48}V${y + 52}Q${x + 18} ${y + 62} ${x + 9} ${y + 62}Q${x} ${y + 62} ${x} ${y + 52}Z" fill="${p}" stroke="var(--muted)" stroke-width=".8"/>` : ''}<path class="b" d="M${x} ${y}V${y + 52}Q${x} ${y + 62} ${x + 9} ${y + 62}Q${x + 18} ${y + 62} ${x + 18} ${y + 52}V${y}"/>`;
+      const col = (cx, f, sol0, p0, sol1, p1, l1, l2) => `${tb(cx - 30, 30, sol0, p0)}<path class="ar" d="M${cx - 8} 62H${cx + 6}" marker-end="url(#jak-k5-a)"/>${tb(cx + 12, 30, sol1, p1)}<text x="${cx}" y="114" text-anchor="middle">${f}</text><text class="cap" x="${cx}" y="132" text-anchor="middle">${l1}</text>${l2 ? `<text class="cap" x="${cx}" y="148" text-anchor="middle">${l2}</text>` : ''}`;
+      return `<svg class="jpic" viewBox="0 0 390 286" role="img" aria-label="Nadbytek 1M KI: žlutý AgI zůstane, žlutý PbI₂ a červený HgI₂ se rozpustí bezbarvě, černohnědý BiI₃ dá oranžový roztok [BiI₄]⁻. Dole: hnědý roztok Fe³⁺ s KI se siřičitanem odbarví, jód se vrátí na jodid.">
+<defs><marker id="jak-k5-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<text x="6" y="18">nadbytek 1M KI</text>
+${col(48, 'AgI', '', C.zluta, '', C.zluta, 'zůstane')}${col(145, 'PbI₂', '', C.zluta, '', '', 'bezbarvý', 'roztok')}${col(242, 'HgI₂', '', C.cervena, '', '', 'bezbarvý', 'roztok')}${col(339, 'BiI₃', '', C.tmhneda, C.oranzova, '', 'oranžový', '[BiI₄]⁻')}
+<line class="b d" x1="6" y1="166" x2="384" y2="166"/>
+<text x="6" y="190">hnědá po KI = jód?</text>
+${tb(40, 202, C.hneda, '')}<text class="cap" x="49" y="282" text-anchor="middle">Fe³⁺ + KI</text>
+<path class="ar" d="M70 236H150" marker-end="url(#jak-k5-a)"/><text class="cap" x="110" y="226" text-anchor="middle">+ siřičitan</text>
+${tb(160, 202, '', '')}<text class="cap" x="169" y="282" text-anchor="middle">odbarví se</text>
+<text x="206" y="232">I₂ → I⁻</text><text class="cap" x="206" y="252">jód se zredukuje</text><text class="cap" x="206" y="268">zpátky na jodid</text>
+</svg>`; } },
+  k6: { r: ['První stopa je barva vzorku. Zbarvených kationtů je šest: Cu²⁺, Ni²⁺, Co²⁺, Cr³⁺, Fe³⁺ a Fe²⁺. Bezbarvý vzorek je všechny škrtne.',
+    'Čirá zkumavka po skupinovém činidle vyřadí každý iont, který se s ním sráží úplně. Sraženina jen říká, kdo zůstává ve hře.',
+    'Seznam podezřelých přepisuj po každém činidle. Správná odpověď vysvětlí všechna pozorování, i nadbytek činidla a změnu na vzduchu.',
+    'Hledej jedinečná znamení: oranžový sulfid Sb³⁺, žlutý sulfid z kyselého Cd²⁺, tělový MnS, zelený chromitan, tmavě modrý amminkomplex mědi, zákal síry od Fe³⁺.',
+    'Když nic nesrazí žádné skupinové činidlo, pokračuj důkazy z lekce 7 na NH₄⁺, Li⁺, Na⁺, K⁺ a Mg²⁺.'],
+    pic: () => { const ch = (x, y, t, out) => out ? `<text class="h" x="${x}" y="${y}" text-anchor="middle">${t}</text><line class="b pk" x1="${x - 19}" y1="${y - 5}" x2="${x + 19}" y2="${y - 5}"/>` : `<text x="${x}" y="${y}" text-anchor="middle">${t}</text>`;
+      const row = (i, a, b, s) => { const y = 34 + i * 52; return `<circle cx="14" cy="${y - 5}" r="5" fill="var(--accent)"/><text x="30" y="${y}">${a}</text><text class="cap" x="30" y="${y + 18}">${b}</text>${ch(272, y, 'Ni²⁺', 0)}${ch(320, y, 'Cr³⁺', s > 0)}${ch(366, y, 'Fe²⁺', s > 1)}`; };
+      return `<svg class="jpic" viewBox="0 0 390 294" role="img" aria-label="Příklad úvahy: zelený vzorek může být Ni²⁺, Cr³⁺ nebo Fe²⁺. H₂S v kyselém nic nedá a nikoho neškrtne. NH₄HS dá černou sraženinu, Cr³⁺ by dal hydroxid, škrtni ho. Nadbytek NH₃ dá modrý roztok, Fe(OH)₂ by zůstal, škrtni Fe²⁺. Zbývá Ni²⁺, potvrdí ho Čugajevovo činidlo.">
+<line class="b" x1="14" y1="29" x2="14" y2="237"/>
+<text class="cap" x="320" y="10" text-anchor="middle">kdo zbývá</text>
+${row(0, 'zelený vzorek', 'zelený bývá Ni²⁺, Fe²⁺ i Cr³⁺', 0)}
+${row(1, 'H₂S v kyselém: nic', 'žádný z nich tu sulfid nedá', 0)}
+${row(2, 'NH₄HS: černá', 'Cr³⁺ by dal šedozelený hydroxid', 1)}
+${row(3, 'nadbytek NH₃: modrá', 'Fe(OH)₂ by se nerozpustil', 2)}
+<circle cx="14" cy="237" r="5" fill="var(--accent)"/><text x="30" y="242">selektivní důkaz</text><text class="cap" x="30" y="260">Čugajevovo činidlo: červená</text>
+<rect x="250" y="222" width="44" height="28" rx="14" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="272" y="242" text-anchor="middle">Ni²⁺</text>
+<text class="cap" x="6" y="288">Příklad úvahy podle úlohy o zeleném vzorku.</text>
+</svg>`; } },
+  k7: { r: ['NH₄⁺ hledej hned po pH v původním vzorku. 2M NaOH za mírného tepla z něj uvolní plynný NH₃ a ten ukážou papírky nad zkumavkou.',
+    'Amonný kationt překáží důkazům K⁺ i Mg²⁺. Před hledáním draslíku ho odkouříš s HCl.',
+    'Plamen: Li⁺ karmínový, Na⁺ intenzivně žlutý, K⁺ světle fialový jen přes kobaltové sklo, Ca²⁺ cihlový, Ba²⁺ a Cu²⁺ zelený. Karmín dává i Sr²⁺.',
+    'K⁺ v roztoku: dipikrylamin dá oranžově červenou, Na₃[Co(NO₂)₆] žlutou sraženinu. Sodík v činidle nevadí, s Na⁺ sraženina nevzniká.',
+    'Mg²⁺: chrpově modrý lak s magnesonem v NaOH, nebo bílá krystalická MgNH₄PO₄ s NH₄Cl, Na₂HPO₄ a NH₃.',
+    'Ba²⁺ a Ca²⁺ si nepřekážejí: žlutý BaCrO₄ z K₂CrO₄ v kyselině octové, bílý šťavelan vápenatý z kyseliny šťavelové.'],
+    pic: () => { const C = AC_COL, P = (x, y, c) => `<rect x="${x}" y="${y}" width="30" height="16" rx="2" fill="${c}" stroke="var(--muted)" stroke-width=".8"/>`;
+      const row = (y, c, n, v) => `${P(146, y, 'var(--surface)')}<path class="ar" d="M182 ${y + 8}H202" marker-end="url(#jak-k7-a)"/>${P(208, y, c)}<text class="cap" x="250" y="${y + 4}">${n}</text><text x="250" y="${y + 22}">${v}</text>`;
+      return `<svg class="jpic" viewBox="0 0 390 252" role="img" aria-label="Důkaz NH₄⁺: vzorek s 2M NaOH se lehce zahřeje a uniká plynný NH₃. Navlhčený indikátorový papírek zmodrá, papír se solí Cu²⁺ zmodrá, papír s Nesslerovým činidlem zhnědne.">
+<defs><marker id="jak-k7-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<path d="M44 110V176Q44 192 60 192Q76 192 76 176V110Z" fill="var(--accent-soft)"/>
+<path class="b" d="M38 70H82M44 70V176Q44 192 60 192Q76 192 76 176V70"/>
+<path class="ar" d="M52 104Q46 92 52 80T52 46" marker-end="url(#jak-k7-a)"/><path class="ar" d="M68 104Q74 92 68 80T68 46" marker-end="url(#jak-k7-a)"/>
+<text class="x" x="60" y="32" text-anchor="middle">NH₃ ↑</text>
+<path class="b d" d="M48 204Q54 198 48 192M60 206Q66 200 60 194M72 204Q78 198 72 192" transform="translate(0 6)"/>
+<text class="cap" x="60" y="230" text-anchor="middle">vzorek + NaOH</text><text class="cap" x="60" y="246" text-anchor="middle">lehce zahřát</text>
+<text class="cap" x="146" y="22">papírky nad zkumavkou</text>
+${row(40, C.modra, 'indikátorový papírek', 'zmodrá')}${row(96, C.modra, 'papír se solí Cu²⁺', 'zmodrá')}${row(152, C.hneda, 'Nesslerovo činidlo', 'zhnědne')}
+<text class="cap" x="146" y="222">NH₄⁺ jde první, ruší K⁺ a Mg²⁺</text>
+</svg>`; } },
+  k8: { r: ['Selektivní reakce potvrdí, co skupinová jen naznačila. Na bílé chloridy z HCl proto navazují důkazy Ag⁺, Pb²⁺ a rtuti.',
+    'Ag⁺ má specifický důkaz: žlutý AgI z NH₃ a KI vedle Chelatonu III, který rušivé kovy zamaskuje. Na papíře s K₂CrO₄ dá stříbro červený prstenec Ag₂CrO₄.',
+    'Pb²⁺ prozradí bílá skvrna PbSO₄, která s (NH₄)₂S zčerná, žluté šupinky PbI₂ po zahřátí a ochlazení s KI a žlutý PbCrO₄ rozpustný v HNO₃ i NaOH.',
+    'Rtuťný od rtuťnatého odliší dvě skvrny: s NaNO₂ a AgNO₃ zčerná jen Hg₂²⁺, se směsí KI, Na₂SO₃, CuSO₄ a HCl zoranžoví jen Hg²⁺.',
+    'Alobal, SnCl₂ s anilinem a difenylkarbazid ukážou rtuť, ale ne její oxidační číslo.',
+    'Hg₂²⁺ se v zásaditém rozpadá na Hg²⁺ a černou Hg⁰. Proto jeho bílý chlorid v amoniaku zčerná a z NaOH je šedočerná sraženina.'],
+    pic: () => { const C = AC_COL, sp = (x, y, c, l1, l2) => `<circle cx="${x}" cy="${y}" r="15" fill="${c}" fill-opacity=".9" stroke="var(--muted)" stroke-width=".8"/><text class="cap" x="${x}" y="${y + 33}" text-anchor="middle">${l1}</text>${l2 ? `<text class="cap" x="${x}" y="${y + 49}" text-anchor="middle">${l2}</text>` : ''}`;
+      return `<svg class="jpic" viewBox="0 0 390 268" role="img" aria-label="Skvrny na papíře pro rtuť. Jen Hg₂²⁺: NaNO₂ a AgNO₃ černá skvrna, bílý Hg₂Cl₂ s NH₃ zčerná. Obě rtuti: alobal šedobílý povlak, SnCl₂ s anilinem tmavá skvrna, difenylkarbazid modrofialová. Jen Hg²⁺: KI, Na₂SO₃, CuSO₄ a HCl oranžově červená skvrna.">
+<defs><marker id="jak-k8-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<text class="x" x="65" y="20" text-anchor="middle">jen Hg₂²⁺</text><text class="x" x="195" y="20" text-anchor="middle">obě</text><text class="x" x="325" y="20" text-anchor="middle">jen Hg²⁺</text>
+<line class="b d" x1="130" y1="32" x2="130" y2="262"/><line class="b d" x1="260" y1="32" x2="260" y2="262"/>
+${sp(65, 56, C.cerna, 'NaNO₂ + AgNO₃', 'černá Hg⁰')}
+<circle cx="44" cy="150" r="13" fill="${C.bila}" stroke="var(--muted)" stroke-width=".8"/><path class="ar" d="M60 150H72" marker-end="url(#jak-k8-a)"/><circle cx="88" cy="150" r="13" fill="${C.cerna}" stroke="var(--muted)" stroke-width=".8"/>
+<text class="cap" x="65" y="182" text-anchor="middle">Hg₂Cl₂ + NH₃</text><text class="cap" x="65" y="198" text-anchor="middle">zčerná</text>
+${sp(195, 56, C.bila, 'alobal', 'šedobílý povlak')}${sp(195, 136, C.cerna, 'SnCl₂ + anilin', 'tmavá skvrna')}${sp(195, 216, C.modrofialova, 'difenylkarbazid', '')}
+${sp(325, 56, C.oranzova, 'KI, Na₂SO₃,', 'CuSO₄ a HCl')}<text class="cap" x="325" y="124" text-anchor="middle">oranžově</text><text class="cap" x="325" y="140" text-anchor="middle">červená skvrna</text>
+</svg>`; } },
+  k9: { r: ['<b>Kupron je tu jediný specifický.</b> Cu²⁺ s vínanem sodno-draselným, kupronem a parami NH₃ dá zelenou skvrnu, vínan přitom drží ostatní kationty stranou.',
+    '<b>Hatchettova hněď patří mědi.</b> Cu²⁺ s HCl a K₄[Fe(CN)₆] na papíře zhnědne. Tmavě modrou by se stejným činidlem dalo Fe³⁺.',
+    '<b>Kadmium dvakrát.</b> Se sulfanem v 10% HCl žlutý CdS (Cu²⁺, Co²⁺ a Ni²⁺ někdy maskuj), na papíře s Cadionem S a NaOH fialová skvrna, která zrůžoví.',
+    '<b>Žlutá s thiomočovinou je jen podezření.</b> Rozhodni druhou reakcí: červená s bismutiolem znamená Bi³⁺, červená s Čugajevem Ni²⁺, slabší žlutá spíš Sb³⁺.',
+    '<b>Sb³⁺ oranžově i červeně.</b> Sulfid amonný ho rozpustí na thioantimonitan a HCl vrátí oranžový Sb₂S₃. S Na₂S₂O₃ a Na₂CO₃ za opatrného zahřátí vznikne červená rumělka.',
+    '<b>Bi³⁺ a Sb³⁺ nenech zbělat.</b> Roztok drž pod pH 2 kyselinou se stejným aniontem, jinak hydrolýzou vypadnou bílé oxidosoli.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 248" role="img" aria-label="Thiomočovina zežloutla: podezření na Bi, Sb nebo Ni. Bismutiol dá červenou s Bi, Čugajevovo činidlo červenou s Ni, thiosíran se sodou za tepla červenou rumělku se Sb.">
+      <defs><marker id="jak-k9-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect class="lobe" x="80" y="6" width="230" height="48" rx="10"/>
+      <circle cx="102" cy="30" r="10" fill="${AC_COL.zluta}" stroke="var(--line)"/>
+      <text x="120" y="27">thiomočovina žlutá</text><text class="cap" x="120" y="45">Bi³⁺? Sb³⁺? Ni²⁺? Ověř:</text>
+      <path class="ar" d="M150 56 L70 86" marker-end="url(#jak-k9-a)"/><path class="ar" d="M195 56 L195 86" marker-end="url(#jak-k9-a)"/><path class="ar" d="M240 56 L320 86" marker-end="url(#jak-k9-a)"/>
+      <rect class="lobe" x="6" y="92" width="120" height="124" rx="10"/><rect class="lobe" x="135" y="92" width="120" height="124" rx="10"/><rect class="lobe" x="264" y="92" width="120" height="124" rx="10"/>
+      <text x="66" y="113" text-anchor="middle">bismutiol</text><text class="cap" x="66" y="130" text-anchor="middle">na papíře</text>
+      <text x="195" y="113" text-anchor="middle">Čugajev</text><text class="cap" x="195" y="130" text-anchor="middle">a páry NH₃</text>
+      <text x="324" y="113" text-anchor="middle">Na₂S₂O₃</text><text class="cap" x="324" y="130" text-anchor="middle">Na₂CO₃, zahřát</text>
+      <circle cx="66" cy="156" r="12" fill="${AC_COL.cervena}" stroke="var(--line)"/><circle cx="195" cy="156" r="12" fill="${AC_COL.cervena}" stroke="var(--line)"/><circle cx="324" cy="156" r="12" fill="${AC_COL.cervena}" stroke="var(--line)"/>
+      <text class="x" x="66" y="190" text-anchor="middle">Bi³⁺</text><text class="x" x="195" y="190" text-anchor="middle">Ni²⁺</text><text class="x" x="324" y="190" text-anchor="middle">Sb³⁺</text>
+      <text class="cap" x="66" y="207" text-anchor="middle">červená sraž.</text><text class="cap" x="195" y="207" text-anchor="middle">červená sraž.</text><text class="cap" x="324" y="207" text-anchor="middle">rumělka</text>
+      <text class="cap" x="195" y="238" text-anchor="middle">U Sb³⁺ je žlutá s thiomočovinou slabší než u Bi³⁺.</text></svg>` },
+  k10: { r: ['<b>Železo má tři barvy.</b> Fe³⁺ dá s K₄[Fe(CN)₆] tmavě modrou berlínskou modř, s NH₄SCN krvavě červený roztok a s 5% kyselinou sulfosalicylovou fialový.',
+    '<b>Nejdřív z chromu udělej chroman.</b> Povař vzorek s 2M NaOH a H₂O₂, odfiltruj hydroxidy a pracuj se žlutým filtrátem s CrO₄²⁻.',
+    '<b>Chroman dvakrát.</b> H₂O₂, okyselení H₂SO₄ a hned amylalkohol dají modrou alkoholovou vrstvu (specifický důkaz). S 3% HCl a difenylkarbazidem vznikne fialově červená.',
+    '<b>Filtrát nevylévej.</b> Zůstaly v něm amfoterní Al³⁺ a Zn²⁺, takže z jedné zkumavky dokážeš tři kationty.',
+    '<b>Hliník vedle slepého pokusu.</b> S alizarinem S se vysráží Al(OH)₃ s červeným lakem, s morinem pod UV lampou svítí zeleně. Barvu vždy porovnej se vzorkem bez Al³⁺.',
+    '<b>Zinek bíle.</b> S 3% HCl a K₄[Fe(CN)₆] bílý Zn₂[Fe(CN)₆], s NH₄HS bílý ZnS. Zmodrání znamená jen stopy železa.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 298" role="img" aria-label="Vzorek s chromem se povaří s NaOH a peroxidem vodíku. Hydroxidy se odfiltrují, žlutý filtrát obsahuje chroman, hliník a zinek. Z filtrátu se dokáže chroman modrou vrstvou amylalkoholu, hliník červeným lakem s alizarinem a zinek bílou sraženinou s hexakyanoželeznatanem.">
+      <defs><marker id="jak-k10-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect class="lobe" x="90" y="6" width="210" height="48" rx="10"/>
+      <text x="195" y="26" text-anchor="middle">vzorek s Cr³⁺</text><text class="cap" x="195" y="44" text-anchor="middle">povař s 2M NaOH a H₂O₂</text>
+      <path class="ar" d="M150 56 L90 80" marker-end="url(#jak-k10-a)"/><path class="ar" d="M240 56 L270 76" marker-end="url(#jak-k10-a)"/>
+      <rect class="lobe" x="6" y="84" width="150" height="48" rx="10"/>
+      <text x="81" y="104" text-anchor="middle">hydroxidy</text><text class="cap" x="81" y="122" text-anchor="middle">odfiltrovat</text>
+      <rect class="lobe" x="172" y="80" width="212" height="56" rx="10"/>
+      <circle cx="194" cy="108" r="11" fill="${AC_COL.zluta}" stroke="var(--line)"/>
+      <text x="214" y="103">žlutý filtrát</text><text class="cap" x="214" y="121">CrO₄²⁻, Al³⁺ a Zn²⁺</text>
+      <path class="ar" d="M240 138 L80 170" marker-end="url(#jak-k10-a)"/><path class="ar" d="M270 138 L200 170" marker-end="url(#jak-k10-a)"/><path class="ar" d="M310 138 L322 170" marker-end="url(#jak-k10-a)"/>
+      <rect class="lobe" x="6" y="174" width="120" height="118" rx="10"/><rect class="lobe" x="135" y="174" width="120" height="118" rx="10"/><rect class="lobe" x="264" y="174" width="120" height="118" rx="10"/>
+      <text x="66" y="194" text-anchor="middle">CrO₄²⁻</text><text x="195" y="194" text-anchor="middle">Al³⁺</text><text x="324" y="194" text-anchor="middle">Zn²⁺</text>
+      <text class="cap" x="66" y="211" text-anchor="middle">H₂O₂, H₂SO₄,</text><text class="cap" x="66" y="226" text-anchor="middle">amylalkohol</text>
+      <text class="cap" x="195" y="211" text-anchor="middle">alizarin S, HCl,</text><text class="cap" x="195" y="226" text-anchor="middle">pak po kapkách NH₃</text>
+      <text class="cap" x="324" y="211" text-anchor="middle">3% HCl a</text><text class="cap" x="324" y="226" text-anchor="middle">K₄[Fe(CN)₆]</text>
+      <circle cx="66" cy="250" r="11" fill="${AC_COL.modra}" stroke="var(--line)"/><circle cx="195" cy="250" r="11" fill="${AC_COL.cervena}" stroke="var(--line)"/><circle cx="324" cy="250" r="11" fill="${AC_COL.bila}" stroke="var(--line)"/>
+      <text class="cap" x="66" y="282" text-anchor="middle">modrá vrstva</text><text class="cap" x="195" y="282" text-anchor="middle">červený lak</text><text class="cap" x="324" y="282" text-anchor="middle">bílá sraženina</text></svg>` },
+  k11: { r: ['<b>Barvu kobaltu řídí voda.</b> Hydratovaný Co²⁺ je růžový, bez vody modrý. Skvrna s konc. HCl proto zmodrá (Co[CoCl₄]) až po vysušení nad plamenem.',
+    '<b>Co²⁺ s thiokyanatanem do alkoholu.</b> S NH₄SCN a amylalkoholem vznikne modrá alkoholová vrstva. Fe³⁺ před tím zamaskuj NaF, jinak ji přebije červená.',
+    '<b>Nikl prozradí Čugajev.</b> Diacetyldioxim s parami NH₃ dá červenou sraženinu, specifický důkaz. Rozpustné barevné komplexy Fe²⁺, Co²⁺ a Cu²⁺ ze skvrny vymyješ zředěným NH₃.',
+    '<b>Nikl v amoniaku zmodrá.</b> Světle zelený Ni(OH)₂ se v nadbytku NH₃ rozpustí na modrý [Ni(NH₃)₆]²⁺.',
+    '<b>Mangan na manganistan.</b> V 15% HNO₃ s K₂S₂O₈ a kapkou AgNO₃ po lehkém povaření vznikne fialový MnO₄⁻. Stříbro jen katalyzuje, důkaz je specifický.',
+    '<b>Skvrna Mn²⁺ s NaOH tmavne.</b> Na papíře ji postupně oxiduje vzdušný kyslík.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 262" role="img" aria-label="Tři důkazy na papíře a ve zkumavce: skvrna kobaltu je růžová a po vysušení nad plamenem modrá; nikl s Čugajevovým činidlem dá červenou skvrnu a zředěný amoniak vymyje rozpustné komplexy; mangan s peroxodisíranem a kapkou stříbra dá fialový manganistan.">
+      <defs><marker id="jak-k11-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect x="6" y="8" width="138" height="66" rx="4" fill="var(--ac-paper)" stroke="var(--line)"/>
+      <circle cx="34" cy="41" r="15" fill="${AC_COL.ruzova}" stroke="var(--line)"/><circle cx="116" cy="41" r="15" fill="${AC_COL.modra}" stroke="var(--line)"/>
+      <path class="ar" d="M54 41 L94 41" marker-end="url(#jak-k11-a)"/><text class="cap" x="75" y="68" text-anchor="middle">vysušit</text>
+      <text x="156" y="30">Co²⁺ s konc. HCl</text><text class="cap" x="156" y="48">s vodou růžová skvrna,</text><text class="cap" x="156" y="64">nasucho modrá Co[CoCl₄]</text>
+      <rect x="6" y="94" width="138" height="66" rx="4" fill="var(--ac-paper)" stroke="var(--line)"/>
+      <circle class="b d" cx="75" cy="127" r="27"/><circle cx="75" cy="127" r="13" fill="${AC_COL.cervena}" stroke="var(--line)"/>
+      <text x="156" y="116">Ni²⁺: Čugajev, páry NH₃</text><text class="cap" x="156" y="134">červená skvrna zůstane, zředěný</text><text class="cap" x="156" y="150">NH₃ vymyje Fe²⁺, Co²⁺ a Cu²⁺</text>
+      <path d="M58 182 V236 Q58 252 75 252 Q92 252 92 236 V182" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M58 204 V236 Q58 252 75 252 Q92 252 92 236 V204 Z" fill="${AC_COL.fialova}" opacity=".85"/>
+      <text x="156" y="202">Mn²⁺: K₂S₂O₈ v HNO₃</text><text class="cap" x="156" y="220">kapka AgNO₃ oxidaci katalyzuje,</text><text class="cap" x="156" y="236">vznikne fialový MnO₄⁻</text></svg>` },
+  k12: { r: ['<b>Kyselé pH škrtá.</b> V kyselém vzorku nehledej CO₃²⁻, NO₂⁻, SO₃²⁻ ani S₂O₃²⁻ (a ani S²⁻ a CN⁻), rozložily by se.',
+    '<b>Barevný vzorek s bezbarvými kationty:</b> žlutá ukazuje na CrO₄²⁻ nebo [Fe(CN)₆]⁴⁻, oranžová na Cr₂O₇²⁻, fialová na MnO₄⁻.',
+    '<b>Pořadí na začátku:</b> v původním vzorku dokaž CO₃²⁻, NO₃⁻, PO₄³⁻ a SO₄²⁻, teprve pak povař s Na₂CO₃ a odfiltruj kationty těžkých kovů. Anionty zůstanou v roztoku jako sodné soli.',
+    '<b>BaCl₂ sráží v neutrálním, kyselina třídí.</b> Kyselina octová rozpustí barnatý PO₄³⁻, CO₃²⁻ a BO₂⁻, 3% HCl navíc CrO₄²⁻, SO₃²⁻ a S₂O₃²⁻. BaSO₄ (a jodičnan) zůstane.',
+    '<b>AgNO₃ třídí HNO₃ a amoniak.</b> V HNO₃ vydrží AgCl, AgBr, AgSCN a AgI, stříbrný fosforečnan, chroman, uhličitan a siřičitan se rozpustí. Ve 2M NH₃ povolí AgCl, ve 25% NH₃ AgBr a AgSCN, AgI nikdy.',
+    '<b>Ag₂SO₄ skoro neuvidíš.</b> Sráží se jen z koncentrovaných roztoků.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 312" role="img" aria-label="Postup na začátku analýzy aniontů ve čtyřech krocích: podívat se na pH a barvu, v původním vzorku dokázat uhličitan, dusičnan, fosforečnan a síran, povařit se sodou a odfiltrovat kationty, pak srážet BaCl2 a AgNO3 v neutrálním prostředí.">
+      <defs><marker id="jak-k12-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <rect class="lobe" x="6" y="4" width="378" height="68" rx="10"/>
+      <text x="18" y="24">1. Podívej se na pH a barvu</text>
+      <text class="cap" x="18" y="42">kyselé: škrtni CO₃²⁻, NO₂⁻, SO₃²⁻, S₂O₃²⁻</text>
+      <text class="cap" x="18" y="60">barva: CrO₄²⁻, Cr₂O₇²⁻, MnO₄⁻, [Fe(CN)₆]⁴⁻</text>
+      <path class="ar" d="M195 74 L195 90" marker-end="url(#jak-k12-a)"/>
+      <rect class="lobe" x="6" y="94" width="378" height="50" rx="10"/>
+      <text x="18" y="114">2. Dokaž v původním vzorku</text>
+      <text class="cap" x="18" y="132">CO₃²⁻, NO₃⁻, PO₄³⁻ a SO₄²⁻</text>
+      <path class="ar" d="M195 146 L195 162" marker-end="url(#jak-k12-a)"/>
+      <rect class="lobe" x="6" y="166" width="378" height="68" rx="10"/>
+      <text x="18" y="186">3. Povař s Na₂CO₃ a přefiltruj</text>
+      <text class="cap" x="18" y="204">kationty těžkých kovů jsou pryč,</text>
+      <text class="cap" x="18" y="222">anionty zůstanou jako sodné soli</text>
+      <path class="ar" d="M195 236 L195 252" marker-end="url(#jak-k12-a)"/>
+      <rect class="lobe" x="6" y="256" width="378" height="50" rx="10"/>
+      <text x="18" y="276">4. Sráž v neutrálním</text>
+      <text class="cap" x="18" y="294">BaCl₂ a AgNO₃, sraženinu pak zkoušej kyselinou</text></svg>` },
+  k13: { r: ['<b>Pořadí zkoušek:</b> nejdřív KMnO₄ v kyselém. Jód se škrobem (neutrální vzorek, zrnko NaHCO₃) zkoušej, jen když se manganistan odbarvil.',
+    '<b>Jód je přísnější síto.</b> Z aniontů, které odbarví KMnO₄, zvládnou jód jen SO₃²⁻, S₂O₃²⁻, CN⁻ a z koncentrovaných roztoků SCN⁻. Br⁻, I⁻ a NO₂⁻ ne.',
+    '<b>KI se škrobem v kyselém hledá oxidující anionty.</b> Zmodrá jen s CrO₄²⁻ (ten se redukuje na Cr³⁺) a s NO₂⁻ (redukuje se na NO).',
+    '<b>NO₂⁻ stojí v obou táborech.</b> KMnO₄ ho zoxiduje na NO₃⁻, z jodidu ale sám vyloučí jód.',
+    '<b>Cl⁻ odbarví KMnO₄ jen z koncentrovaných roztoků.</b> Zředěný chlorid manganistan nechá fialový.',
+    '<b>Co se nesnese, nepiš do výsledku spolu.</b> Najdeš redukující aniont? Oxidující, třeba chroman, škrtni. Zreagovaly by spolu.',
+    '<b>NO₃⁻ tu mlčí.</b> Na žádné skupinové činidlo nereaguje, hledej ho až selektivními důkazy.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 262" role="img" aria-label="Množiny aniontů: velká elipsa jsou anionty, které odbarví KMnO4, uvnitř menší elipsa těch, které odbarví i jód; vpravo elipsa aniontů, které z KI vyloučí jód. Dusitan leží v průniku, chroman jen vpravo.">
+      <ellipse class="lobe" cx="150" cy="125" rx="142" ry="106"/>
+      <ellipse cx="105" cy="148" rx="72" ry="58" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+      <ellipse cx="302" cy="125" rx="84" ry="72" fill="none" stroke="var(--pink)" stroke-width="1.6"/>
+      <text x="150" y="40" text-anchor="middle">KMnO₄ odbarví</text>
+      <text x="80" y="66" text-anchor="middle">Br⁻</text><text x="130" y="66" text-anchor="middle">I⁻</text><text x="180" y="66" text-anchor="middle">S²⁻</text>
+      <text class="cap" x="140" y="86" text-anchor="middle">Cl⁻ jen z konc. roztoků</text>
+      <text class="x" x="105" y="118" text-anchor="middle">odbarví i jód</text>
+      <text x="72" y="146" text-anchor="middle">SO₃²⁻</text><text x="138" y="146" text-anchor="middle">S₂O₃²⁻</text>
+      <text x="72" y="170" text-anchor="middle">CN⁻</text><text x="132" y="170" text-anchor="middle">SCN⁻</text>
+      <text class="cap" x="128" y="186" text-anchor="middle">jen konc.</text>
+      <text class="x" x="330" y="82" text-anchor="middle">z KI jód</text>
+      <text x="254" y="131" text-anchor="middle">NO₂⁻</text><text x="338" y="131" text-anchor="middle">CrO₄²⁻</text>
+      <text class="cap" x="338" y="166" text-anchor="middle">oxidující</text>
+      <text class="cap" x="212" y="198" text-anchor="middle">redukující</text>
+      <text class="cap" x="195" y="254" text-anchor="middle">SO₄²⁻ a NO₃⁻ leží mimo: nereagují s žádným z nich.</text></svg>` },
+  k14: { r: ['<b>Síran se nebojí kyseliny.</b> S BaCl₂ v 10% HCl dá bílý mikrokrystalický BaSO₄.',
+    '<b>Siřičitan a thiosíran po jódu:</b> oba ho odbarví, siřičitan přitom roztok okyselí, thiosíran ho nechá neutrální. Votočkovo činidlo odbarví siřičitan.',
+    '<b>Plyn nad zkumavkou.</b> Uhličitan s chromsírovou směsí šumí a CO₂ zakalí kapku barytové vody (BaCO₃). Siřičitan i thiosíran po okyselení H₂SO₄ a zahřátí zčerní papírek s Ni(OH)₂.',
+    '<b>HgCl₂ rozliší uhličitan.</b> CO₃²⁻ dá červenohnědou sraženinu HgCO₃·3HgO, hydrogenuhličitan jen bílý zákal.',
+    '<b>Fosforečnan dvěma solucemi.</b> S molybdenovou za mírného zahřátí žlutá sraženina, s hořečnatou (MgCl₂, NH₄Cl, NH₃) bílá krystalická, kterou AgNO₃ zbarví do žluta.',
+    '<b>Boritan třikrát.</b> Zelený plamen esteru, kurkumový papírek po HCl červenohnědý (s NaOH zelený) a fenolftalein, kterému mannitol vezme malinovou barvu.',
+    '<b>Chroman jako u kationtů.</b> Modrá vrstva amylalkoholu s H₂O₂ a H₂SO₄, fialově červený difenylkarbazid s HCl.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 240" role="img" aria-label="Důkazy plynem nad zkumavkou: uhličitan s chromsírovou směsí uvolní CO2 a kapka barytové vody nad zkumavkou zbělá; siřičitan i thiosíran po okyselení a zahřátí uvolní SO2 a papírek s hydroxidem nikelnatým zčerná.">
+      <defs><marker id="jak-k14-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <path d="M130 22 C124 32 121 38 121 43 A9 9 0 0 0 139 43 C139 38 136 32 130 22 Z" fill="${AC_COL.bila}" stroke="var(--line)" stroke-width="1.5"/>
+      <text class="cap" x="112" y="44" text-anchor="end">barytová voda</text>
+      <path class="ar" d="M130 86 L130 60" marker-end="url(#jak-k14-a)"/><text x="140" y="78">CO₂</text>
+      <path d="M115 128 V160 Q115 176 130 176 Q145 176 145 160 V128 Z" fill="var(--ac-water)"/>
+      <path d="M112 92 H148 M115 92 V160 Q115 176 130 176 Q145 176 145 160 V92" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="124" cy="150" r="3" fill="none" stroke="var(--ink)"/><circle cx="135" cy="160" r="2.5" fill="none" stroke="var(--ink)"/><circle cx="131" cy="138" r="2.5" fill="none" stroke="var(--ink)"/>
+      <text x="130" y="198" text-anchor="middle">CO₃²⁻</text>
+      <text class="cap" x="130" y="215" text-anchor="middle">chromsírová směs</text><text class="cap" x="130" y="231" text-anchor="middle">kapka zbělá: BaCO₃</text>
+      <rect x="270" y="28" width="60" height="18" rx="2" fill="var(--ac-paper)" stroke="var(--line)"/>
+      <circle cx="300" cy="37" r="6" fill="${AC_COL.cerna}"/>
+      <text class="cap" x="262" y="42" text-anchor="end">Ni(OH)₂</text>
+      <path class="ar" d="M300 86 L300 54" marker-end="url(#jak-k14-a)"/><text x="310" y="78">SO₂</text>
+      <path d="M285 128 V160 Q285 176 300 176 Q315 176 315 160 V128 Z" fill="var(--ac-water)"/>
+      <path d="M282 92 H318 M285 92 V160 Q285 176 300 176 Q315 176 315 160 V92" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text x="300" y="198" text-anchor="middle">SO₃²⁻ i S₂O₃²⁻</text>
+      <text class="cap" x="300" y="215" text-anchor="middle">H₂SO₄, zahřát</text><text class="cap" x="300" y="231" text-anchor="middle">černá skvrna na papírku</text></svg>` },
+  k15: { r: ['<b>Br⁻ a I⁻ rozliší barva chloroformu.</b> S H₂SO₄ a chloraminem T se spodní chloroformová vrstva zbarví žlutě až hnědě (bromid), nebo fialově (jodid).',
+    '<b>Jodid ještě dvakrát.</b> S NaNO₂, kyselinou octovou a škrobem zmodrá. S Hg²⁺ dá červenou sraženinu, kterou nadbytek jodidu zase rozpustí.',
+    '<b>Chlorid: obyčejně i specificky.</b> AgCl z HNO₃ a AgNO₃ se rozpustí ve zředěném NH₃. Specifický je chromylchlorid: odparek s K₂Cr₂O₇ a konc. H₂SO₄, páry na papír s NaOH a difenylkarbazid ho zbarví červenofialově.',
+    '<b>SCN⁻ s FeCl₃ krvavě červeně.</b> Stejná barva jako u důkazu Fe³⁺ thiokyanatanem, jen obráceně: činidlem je tu železo.',
+    '<b>Dusitan dvěma cestami.</b> S KI, kyselinou octovou a škrobem ihned modrá. S kyselinou sulfanilovou a 1-naftolem za chladu červené azobarvivo (diazotace a kopulace).',
+    '<b>Dusičnan až po dusitanu.</b> Odstraň dusitany močovinou, pak buď fenolsulfonová kyselina (po NH₃ žlutá), nebo redukce zinkem v kyselině octové na dusitan a azobarvivo.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 422" role="img" aria-label="Dvě zkumavky s vodou nahoře a chloroformem dole: s bromidem je chloroformová vrstva žlutohnědá, s jodidem fialová. Pod nimi postup důkazu dusičnanu: močovina s kyselinou sírovou odstraní dusitan, zinek v kyselině octové zredukuje dusičnan na dusitan a kyselina sulfanilová s naftolem dá červené azobarvivo.">
+      <defs><marker id="jak-k15-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <text class="cap" x="195" y="14" text-anchor="middle">H₂SO₄, chloroform a chloramin T</text>
+      <rect x="90" y="56" width="40" height="46" fill="var(--ac-water)"/>
+      <path d="M90 102 V134 Q90 150 110 150 Q130 150 130 134 V102 Z" fill="${AC_COL.oranzova}" opacity=".85"/>
+      <path d="M86 26 H134 M90 26 V134 Q90 150 110 150 Q130 150 130 134 V26" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="cap" x="82" y="84" text-anchor="end">voda</text><text class="cap" x="82" y="130" text-anchor="end">CHCl₃</text>
+      <rect x="260" y="56" width="40" height="46" fill="var(--ac-water)"/>
+      <path d="M260 102 V134 Q260 150 280 150 Q300 150 300 134 V102 Z" fill="${AC_COL.fialova}" opacity=".85"/>
+      <path d="M256 26 H304 M260 26 V134 Q260 150 280 150 Q300 150 300 134 V26" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text class="cap" x="308" y="84">voda</text><text class="cap" x="308" y="130">CHCl₃</text>
+      <text x="110" y="172" text-anchor="middle">Br⁻</text><text class="cap" x="110" y="189" text-anchor="middle">žlutá až hnědá</text>
+      <text x="280" y="172" text-anchor="middle">I⁻</text><text class="cap" x="280" y="189" text-anchor="middle">fialová</text>
+      <text x="6" y="222">Důkaz NO₃⁻ vedle NO₂⁻</text>
+      <rect class="lobe" x="6" y="232" width="378" height="48" rx="10"/>
+      <text x="18" y="252">1. močovina a kapka H₂SO₄</text><text class="cap" x="18" y="270">přidávej, dokud vzorek vylučuje jód z KI</text>
+      <path class="ar" d="M195 282 L195 296" marker-end="url(#jak-k15-a)"/>
+      <rect class="lobe" x="6" y="300" width="378" height="48" rx="10"/>
+      <text x="18" y="320">2. Zn v kyselině octové</text><text class="cap" x="18" y="338">zredukuje NO₃⁻ na NO₂⁻</text>
+      <path class="ar" d="M195 350 L195 364" marker-end="url(#jak-k15-a)"/>
+      <rect class="lobe" x="6" y="368" width="378" height="48" rx="10"/>
+      <text x="18" y="388">3. kys. sulfanilová a 1-naftol</text><text class="cap" x="18" y="406">červené azobarvivo: byl tam NO₃⁻</text>
+      <circle cx="352" cy="392" r="12" fill="${AC_COL.cervena}" stroke="var(--line)"/></svg>` },
+  o1: { r: ['Organickou látku nejdřív rozlož žíháním. Teprve z iontů dokážeš prvky reakcemi z anorganické analýzy.',
+    'Žíhání s CuO ukáže uhlík (bílý zákal BaCO₃ v barytové vodě) a vodík (kapky vody). Žíhání s Mg a K₂CO₃ dá výluh s kyanidem, sulfidem a halogenidy.',
+    'Ve výluhu dokážeš dusík berlínskou modří (FeSO₄, HCl), síru nitroprusidem, Cl jako AgCl rozpustný ve 2M NH₃, Br a I barvou chloroformové vrstvy a F jako bílý CaF₂.',
+    'Kyslík zjistíš jódem přímo ve vzorku: rozpustí se hnědě, je tam kyslík, fialově, není. U látek s N, S nebo I to nejde.',
+    'Rychlé zkoušky platí jen jedním směrem: Beilstein jistě vyloučí Cl, Br a I, když je záporný. Natronové vápno jistě potvrdí dusík, když je kladné.',
+    'Obsahuje-li látka N nebo S, halogeny hledej ve výluhu po žíhání s CaO.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 300" role="img" aria-label="Dvě cesty mineralizace: žíhání s CuO převede uhlík na CO₂, který zakalí barytovou vodu, a vodík na kapky vody. Žíhání s Mg a K₂CO₃ dá výluh s kyanidem pro berlínskou modř, sulfidem pro nitroprusid a halogenidy. Kyslík se dokazuje jódem bez žíhání.">
+<defs><marker id="jak-o1-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="lobe" x="140" y="4" width="110" height="28" rx="14"/>
+<text x="195" y="23" text-anchor="middle">vzorek</text>
+<path class="ar" d="M150 32 Q100 44 80 66" marker-end="url(#jak-o1-a)"/>
+<path class="ar" d="M240 32 Q290 44 300 66" marker-end="url(#jak-o1-a)"/>
+<text x="16" y="88">CuO</text>
+<text x="16" y="104" class="cap">oxidační žíhání</text>
+<text x="206" y="88">Mg + K₂CO₃</text>
+<text x="206" y="104" class="cap">redukční žíhání</text>
+<path class="ar" d="M40 112 V130" marker-end="url(#jak-o1-a)"/>
+<path class="ar" d="M230 112 V126" marker-end="url(#jak-o1-a)"/>
+<text x="16" y="150">C → CO₂</text>
+<circle cx="24" cy="168" r="7" fill="${AC_COL.bila}" stroke="var(--line)"/>
+<text x="38" y="172" class="cap">barytová voda: BaCO₃</text>
+<text x="16" y="202">H → H₂O</text>
+<text x="16" y="220" class="cap">kapky vody na stěně</text>
+<line class="b d" x1="16" y1="238" x2="180" y2="238"/>
+<text x="16" y="262">O: jód hnědý</text>
+<text x="16" y="280" class="cap">bez žíhání, ne s N, S, I</text>
+<text x="206" y="144">výluh</text>
+<text x="206" y="172">N → CN⁻</text>
+<circle cx="214" cy="190" r="7" fill="${AC_COL.tmmodra}" stroke="var(--line)"/>
+<text x="228" y="194" class="cap">FeSO₄ + HCl</text>
+<text x="206" y="222">S → S²⁻</text>
+<circle cx="214" cy="240" r="7" fill="${AC_COL.malinova}" stroke="var(--line)"/>
+<text x="228" y="244" class="cap">nitroprusid</text>
+<text x="206" y="272">X → X⁻</text>
+<text x="206" y="290" class="cap">AgNO₃, CHCl₃, CaCl₂</text>
+</svg>` },
+  o2: { r: ['Zkoušky jdou v pevném pořadí: voda, ether, 5% HCl, 5% NaOH, 5% NaHCO₃, dusík a síra, koncentrovaná H₂SO₄.',
+    'Co se rozpustí ve vodě, rozdělí ether: S1 se v něm rozpustí, S2 ne.',
+    'Louh rozpustí kyseliny silné i slabé, soda jen ty silnější: s NaHCO₃ je to A1, bez něj A2. Rozpustí-li se látka i v HCl, je amfoterní (A1B, A2B).',
+    'Rozpustnost jen v HCl prozradí zásadu, třídu B (aminy, alkaloidy).',
+    'Co se nerozpustí nikde, třídí dusík a síra (M) a pak koncentrovaná H₂SO₄: reaguje N, nereaguje I.',
+    'Kladný výsledek je jen čirý roztok za studena. Zbytek látky nebo zákal počítej jako záporný.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 300" role="img" aria-label="Dělicí schéma tříd rozpustnosti: voda, pak ether S1 nebo S2. Ve vodě ne: HCl dá B, NaOH a NaHCO₃ dají A1 nebo A2, dusík nebo síra M, koncentrovaná kyselina sírová N, jinak I.">
+<defs><marker id="jak-o2-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="lobe" x="10" y="8" width="124" height="30" rx="8"/>
+<text x="72" y="28" text-anchor="middle">voda?</text>
+<path class="ar" d="M134 23 H170" marker-end="url(#jak-o2-a)"/>
+<text x="140" y="17" class="cap">ano</text>
+<text x="178" y="21">ether: S1 / S2</text>
+<text x="178" y="37" class="cap">rozpustí se S1, nerozpustí S2</text>
+<path class="ar" d="M72 38 V60" marker-end="url(#jak-o2-a)"/>
+<text x="80" y="53" class="cap">ne</text>
+<rect class="lobe" x="10" y="62" width="124" height="30" rx="8"/>
+<text x="72" y="82" text-anchor="middle">5% HCl?</text>
+<path class="ar" d="M134 77 H170" marker-end="url(#jak-o2-a)"/>
+<text x="140" y="71" class="cap">ano</text>
+<text x="178" y="75">B</text>
+<text x="178" y="91" class="cap">i v NaOH? amfoterní A1B, A2B</text>
+<path class="ar" d="M72 92 V114" marker-end="url(#jak-o2-a)"/>
+<text x="80" y="107" class="cap">ne</text>
+<rect class="lobe" x="10" y="116" width="124" height="30" rx="8"/>
+<text x="72" y="136" text-anchor="middle">5% NaOH?</text>
+<path class="ar" d="M134 131 H170" marker-end="url(#jak-o2-a)"/>
+<text x="140" y="125" class="cap">ano</text>
+<text x="178" y="129">NaHCO₃: A1 / A2</text>
+<text x="178" y="145" class="cap">rozpustí se A1, nerozpustí A2</text>
+<path class="ar" d="M72 146 V168" marker-end="url(#jak-o2-a)"/>
+<text x="80" y="161" class="cap">ne</text>
+<rect class="lobe" x="10" y="170" width="124" height="30" rx="8"/>
+<text x="72" y="190" text-anchor="middle">N nebo S?</text>
+<path class="ar" d="M134 185 H170" marker-end="url(#jak-o2-a)"/>
+<text x="140" y="179" class="cap">ano</text>
+<text x="178" y="183">M</text>
+<text x="178" y="199" class="cap">nitro-, azosloučeniny, sulfony</text>
+<path class="ar" d="M72 200 V222" marker-end="url(#jak-o2-a)"/>
+<text x="80" y="215" class="cap">ne</text>
+<rect class="lobe" x="10" y="224" width="124" height="30" rx="8"/>
+<text x="72" y="244" text-anchor="middle">konc. H₂SO₄?</text>
+<path class="ar" d="M134 239 H170" marker-end="url(#jak-o2-a)"/>
+<text x="140" y="233" class="cap">ano</text>
+<text x="178" y="237">N</text>
+<text x="178" y="253" class="cap">reaguje: alkoholy, alkeny, estery</text>
+<path class="ar" d="M72 254 V276" marker-end="url(#jak-o2-a)"/>
+<text x="80" y="269" class="cap">ne</text>
+<text x="72" y="292" text-anchor="middle">I</text>
+<text x="178" y="292" class="cap">nereaguje: uhlovodíky, diarylethery</text>
+</svg>` },
+  o3: { r: ['Ethanolický AgNO₃ seřadí halogenidy podle reaktivity: reaktivní srazí za studena, běžné halogenalkany za tepla, aryl- a vinylhalogenidy vůbec.',
+    'Typ alkoholu ukáže Lucasovo činidlo podle doby do zákalu. Primární od sekundárního rozliší i oxidace dichromanem a Schiff v destilátu.',
+    'Fenol dá modrou skvrnu s FeCl₃ a K₃[Fe(CN)₆] a azobarvivo s diazotovanou kyselinou sulfanilovou.',
+    'Polyol odbarví malinový roztok tetraboritanu s fenolftaleinem.',
+    'Karbonyl potvrdí 2,4-DNPH. Aldehyd navíc vyloučí stříbrné zrcadlo s Tollensem a zfialoví se Schiffem, keton nic z toho.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 204" role="img" aria-label="Lucasovo činidlo na časové ose: terciární alkohol se zakalí hned, sekundární za 2 až 5 minut, primární vůbec.">
+<defs><marker id="jak-o3-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<text x="195" y="18" text-anchor="middle">Lucasovo činidlo (ZnCl₂ + HCl)</text>
+<g transform="translate(0 16)">
+<path d="M49 30 V78 Q49 92 60 92 Q71 92 71 78 V30" fill="${AC_COL.bila}" stroke="var(--line)" stroke-width="1.5"/><circle cx="55" cy="50" r="2" fill="var(--muted)"/><circle cx="64" cy="58" r="2" fill="var(--muted)"/><circle cx="58" cy="68" r="2" fill="var(--muted)"/><circle cx="66" cy="74" r="2" fill="var(--muted)"/><circle cx="54" cy="80" r="2" fill="var(--muted)"/><circle cx="62" cy="44" r="2" fill="var(--muted)"/><line class="b" x1="46" y1="30" x2="74" y2="30"/>
+<path d="M179 30 V78 Q179 92 190 92 Q201 92 201 78 V30" fill="${AC_COL.bila}" stroke="var(--line)" stroke-width="1.5"/><circle cx="185" cy="50" r="2" fill="var(--muted)"/><circle cx="194" cy="58" r="2" fill="var(--muted)"/><circle cx="188" cy="68" r="2" fill="var(--muted)"/><circle cx="196" cy="74" r="2" fill="var(--muted)"/><circle cx="184" cy="80" r="2" fill="var(--muted)"/><circle cx="192" cy="44" r="2" fill="var(--muted)"/><line class="b" x1="176" y1="30" x2="204" y2="30"/>
+<path d="M319 30 V78 Q319 92 330 92 Q341 92 341 78 V30" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/><line class="b" x1="316" y1="30" x2="344" y2="30"/>
+<path class="ar" d="M20 106 H372" marker-end="url(#jak-o3-a)"/>
+<text x="372" y="98" class="cap" text-anchor="end">čas</text>
+<line class="b" x1="60" y1="100" x2="60" y2="112"/>
+<text x="60" y="128" class="cap" text-anchor="middle">hned</text>
+<text x="60" y="148" text-anchor="middle">terciární</text>
+<line class="b" x1="190" y1="100" x2="190" y2="112"/>
+<text x="190" y="128" class="cap" text-anchor="middle">2–5 min</text>
+<text x="190" y="148" text-anchor="middle">sekundární</text>
+<line class="b" x1="330" y1="100" x2="330" y2="112"/>
+<text x="330" y="128" class="cap" text-anchor="middle">vůbec</text>
+<text x="330" y="148" text-anchor="middle">primární</text>
+<text x="195" y="176" class="cap" text-anchor="middle">Čím stálejší karbokation, tím dřív se zakalí.</text>
+</g>
+</svg>` },
+  o4: { r: ['Karboxylovou kyselinu dokážeš hydroxamovou reakcí až po převedení na acylchlorid (SOCl₂). Estery, anhydridy, laktony a amidy reagují rovnou.',
+    'Stříbrnou ani vápenatou sůl kyseliny nevysrážíš bez neutralizace na pH 7–8.',
+    'Ester prozradí hydrolýza: v louhu s fenolftaleinem po zahřátí zmizí růžová.',
+    'Kyselina dusitá třídí aminy: 1° alifatický uvolní N₂, 1° aromatický dá s 2-naftolem azobarvivo, 2° žlutý nitrosamin a 3° nic.',
+    'Amid povařený s 20% NaOH uvolní NH₃ a vlhký papírek nad ním zmodrá.',
+    'Nitroskupinu zredukuj zinkem v HCl na amin a dokaž ho jako amin. Nitrososkupinu ukáže Liebermannova reakce.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 250" role="img" aria-label="Kyselina dusitá třídí aminy: primární alifatický uvolní dusík, primární aromatický dá po kopulaci s 2-naftolem oranžové azobarvivo, sekundární alifatický žlutý nitrosamin, terciární nic.">
+<defs><marker id="jak-o4-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<text x="16" y="22">+ NaNO₂ a HCl</text>
+<text x="150" y="22" class="cap">(kyselina dusitá)</text>
+<text x="16" y="62">1° alifatický</text>
+<text x="16" y="79" class="cap">primární</text>
+<path class="ar" d="M166 57 H198" marker-end="url(#jak-o4-a)"/>
+<text x="206" y="62">bublinky N₂</text>
+<text x="206" y="79" class="cap">unikne dusík</text>
+<text x="16" y="116">1° aromatický</text>
+<text x="16" y="133" class="cap">za chladu, pak 2-naftol</text>
+<path class="ar" d="M166 111 H198" marker-end="url(#jak-o4-a)"/>
+<circle cx="214" cy="111" r="7" fill="${AC_COL.oranzova}" stroke="var(--line)"/>
+<text x="228" y="116">azobarvivo</text>
+<text x="228" y="133" class="cap">oranžové až červené</text>
+<text x="16" y="170">2° alifatický</text>
+<text x="16" y="187" class="cap">sekundární</text>
+<path class="ar" d="M166 165 H198" marker-end="url(#jak-o4-a)"/>
+<circle cx="214" cy="165" r="7" fill="${AC_COL.zluta}" stroke="var(--line)"/>
+<text x="228" y="170">nitrosamin</text>
+<text x="228" y="187" class="cap">žlutý</text>
+<text x="16" y="224">3° amin</text>
+<text x="16" y="241" class="cap">terciární</text>
+<path class="ar" d="M166 219 H198" marker-end="url(#jak-o4-a)"/>
+<text x="206" y="224">nic</text>
+<text x="206" y="241" class="cap">žádná změna</text>
+</svg>` },
+  f1: { r: ['Do protokolu píšeš teplotu, kdy vznikne tavenina. Poslední krystal zmizí asi o 2–3 °C výš.',
+    'Nízká a široká teplota tání znamená nečistou látku. Vyšší než tabulková ji nečistota neudělá, pak máš jinou látku.',
+    'Kapilára má průměr 1–1,5 mm a 2–4 mm látky. Hřeješ 4–6 °C za minutu, u teploty tání 1–2 °C.',
+    'Index lomu kapalin s teplotou klesá, proto n<sub>D</sub><sup>20</sup> měř v termostatu. Abbého refraktometr pracuje s mezním úhlem úplného odrazu.',
+    'Polarimetr svítí sodíkovou výbojkou. Analyzátor nastav na stejně šedé pole, úhel odečti na obou stranách a zprůměruj. Plus znamená doprava.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 242" role="img" aria-label="Kruhový polarimetr: světlo sodíkové výbojky projde polarizátorem, kyvetou se vzorkem, která stočí rovinu o úhel alfa, a analyzátorem do oka. Analyzátor se nastaví tak, aby obě poloviny zorného pole byly stejně šedé.">
+<defs><marker id="jak-f1-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<circle class="lobe" cx="28" cy="70" r="12"/>
+<line class="b" x1="28" y1="50" x2="28" y2="54"/>
+<line class="b" x1="28" y1="86" x2="28" y2="90"/>
+<line class="b" x1="8" y1="70" x2="12" y2="70"/>
+<text x="28" y="112" class="cap" text-anchor="middle">sodíková</text>
+<text x="28" y="126" class="cap" text-anchor="middle">výbojka</text>
+<path class="ar" d="M42 70 H322" marker-end="url(#jak-f1-a)"/>
+<rect x="92" y="46" width="8" height="48" rx="2" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<text x="96" y="112" class="cap" text-anchor="middle">polarizátor</text>
+<rect x="266" y="46" width="8" height="48" rx="2" fill="var(--accent-soft)" stroke="var(--accent)"/>
+<text x="270" y="112" class="cap" text-anchor="middle">analyzátor</text>
+<rect class="lobe" x="140" y="54" width="86" height="32" rx="4"/>
+<text x="183" y="112" class="cap" text-anchor="middle">kyveta</text>
+<text x="183" y="126" class="cap" text-anchor="middle">se vzorkem</text>
+<path class="ar" d="M154 40 Q183 22 212 40" marker-end="url(#jak-f1-a)"/>
+<text x="183" y="18" class="cap" text-anchor="middle">stočí rovinu o α</text>
+<path class="b" d="M334 70 Q352 56 370 70 Q352 84 334 70 Z"/><circle cx="352" cy="70" r="5" fill="var(--muted)"/>
+<text x="352" y="112" class="cap" text-anchor="middle">oko</text>
+<line class="b d" x1="16" y1="140" x2="374" y2="140"/>
+<text x="195" y="158" class="cap" text-anchor="middle">zorné pole v okuláru</text>
+<path d="M110 152 A24 24 0 0 0 110 200 Z" fill="var(--muted)" opacity="0.95"/><path d="M110 152 A24 24 0 0 1 110 200 Z" fill="var(--muted)" opacity="0.12"/><circle class="b" cx="110" cy="176" r="24"/>
+<text x="110" y="218" class="cap" text-anchor="middle">poloviny se liší:</text>
+<text x="110" y="232" class="cap" text-anchor="middle">otáčej analyzátorem</text>
+<path d="M280 152 A24 24 0 0 0 280 200 Z" fill="var(--muted)" opacity="0.5"/><path d="M280 152 A24 24 0 0 1 280 200 Z" fill="var(--muted)" opacity="0.5"/><circle class="b" cx="280" cy="176" r="24"/>
+<text x="280" y="218" class="cap" text-anchor="middle">stejně šedé:</text>
+<text x="280" y="232" class="cap" text-anchor="middle">odečti na obou stranách</text>
+</svg>` },
+  f2: { r: ['Silná kyselina: pH = −log c. Silná zásada: nejdřív pOH = −log c, pak pH = 14 − pOH.',
+    'Slabá kyselina disociuje jen zčásti, proto pH = ½(pKa − log c). Pro 0,1 mol/l kyseliny octové vyjde 2,88.',
+    'Potenciál skleněné elektrody s pH lineárně klesá, asi o 59 mV na jednotku při 25 °C.',
+    'Kalibruj dvěma pufry: v pH 7 nastavíš OFFSET, v pH 4 nebo 10 SLOPE. Mezi nimi elektrodu opláchni a osuš.',
+    'Ve vzorci [α] = 1000·α/(l·c) dosazuješ c v g/l a l v dm. Výsledek porovnej s tabulkou cukrů: glukosa asi +53°, sacharosa +67°, fruktosa −92°.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 250" role="img" aria-label="Kalibrační přímka pH metru: potenciál E klesá s pH lineárně. Pufr pH 7 nastaví posun (OFFSET), pufr pH 4 nebo 10 sklon (SLOPE), asi 59 mV na jednotku pH.">
+<defs><marker id="jak-f2-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<path class="ar" d="M50 220 H372" marker-end="url(#jak-f2-a)"/>
+<path class="ar" d="M50 220 V26" marker-end="url(#jak-f2-a)"/>
+<text x="58" y="34">E</text>
+<text x="370" y="212" text-anchor="end">pH</text>
+<line class="b" x1="50" y1="216" x2="50" y2="224"/>
+<text x="50" y="238" class="cap" text-anchor="middle">0</text>
+<line class="b" x1="138.4" y1="216" x2="138.4" y2="224"/>
+<text x="138.4" y="238" class="cap" text-anchor="middle">4</text>
+<line class="b" x1="204.70000000000002" y1="216" x2="204.70000000000002" y2="224"/>
+<text x="204.70000000000002" y="238" class="cap" text-anchor="middle">7</text>
+<line class="b" x1="271" y1="216" x2="271" y2="224"/>
+<text x="271" y="238" class="cap" text-anchor="middle">10</text>
+<line class="b" x1="359.40000000000003" y1="216" x2="359.40000000000003" y2="224"/>
+<text x="359.40000000000003" y="238" class="cap" text-anchor="middle">14</text>
+<line class="b pk" x1="50" y1="40" x2="359.40000000000003" y2="200.01999999999998"/>
+<circle cx="138.4" cy="85.7" r="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="204.7" cy="120.0" r="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+<circle cx="271.0" cy="154.3" r="5" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+<line class="b d" x1="204.70000000000002" y1="126.00999999999999" x2="204.70000000000002" y2="214"/>
+<text x="196" y="150" text-anchor="end">1. pufr pH 7</text>
+<text x="196" y="166" class="cap" text-anchor="end">OFFSET: posun přímky</text>
+<text x="152" y="58">2. pufr pH 4 nebo 10</text>
+<text x="152" y="74" class="cap">SLOPE: sklon přímky</text>
+<text x="372" y="108" class="cap" text-anchor="end">sklon asi 59 mV</text>
+<text x="372" y="122" class="cap" text-anchor="end">na 1 pH při 25 °C</text>
+</svg>` },
+  u1: { r: ['UV-VIS je 190–900 nm. Absorbují v něm chromofory, skupiny s násobnými vazbami.',
+    'Energie přechodů roste od n → π* přes π → π* a n → σ* po σ → σ*.',
+    'A = −log T: když projde 10 % světla, A = 1, když 1 %, A = 2.',
+    'Absorbance roste přímo úměrně s koncentrací i s tloušťkou kyvety (A = ε·d·c, c v mol/l).',
+    'Nejdřív změř blank a měř jen do absorbance 2. Když vyjde víc, vzorek zřeď.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 256" role="img" aria-label="Energetické hladiny a elektronové přechody: sigma na sigma hvězdička je nejdelší šipka a potřebuje nejvíc energie, pak n na sigma hvězdička, pí na pí hvězdička a nejkratší n na pí hvězdička.">
+<defs><marker id="jak-u1-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<line class="b d" x1="64" y1="30" x2="330" y2="30"/>
+<text x="40" y="35" text-anchor="middle">σ*</text>
+<line class="b d" x1="64" y1="70" x2="330" y2="70"/>
+<text x="40" y="75" text-anchor="middle">π*</text>
+<line class="b" x1="64" y1="128" x2="330" y2="128"/>
+<text x="40" y="133" text-anchor="middle">n</text>
+<line class="b" x1="64" y1="160" x2="330" y2="160"/>
+<text x="40" y="165" text-anchor="middle">π</text>
+<line class="b" x1="64" y1="200" x2="330" y2="200"/>
+<text x="40" y="205" text-anchor="middle">σ</text>
+<path class="ar" d="M110 200 V33" marker-end="url(#jak-u1-a)"/>
+<text x="110" y="226" class="cap" text-anchor="middle">σ → σ*</text>
+<path class="ar" d="M170 128 V33" marker-end="url(#jak-u1-a)"/>
+<text x="170" y="226" class="cap" text-anchor="middle">n → σ*</text>
+<path class="ar" d="M230 160 V73" marker-end="url(#jak-u1-a)"/>
+<text x="230" y="226" class="cap" text-anchor="middle">π → π*</text>
+<path class="ar" d="M290 128 V73" marker-end="url(#jak-u1-a)"/>
+<text x="290" y="226" class="cap" text-anchor="middle">n → π*</text>
+<path class="ar" d="M366 214 V26" marker-end="url(#jak-u1-a)"/>
+<text x="358" y="40" class="cap" text-anchor="end">E</text>
+<text x="110" y="246" class="cap" text-anchor="middle">nejvíc energie</text>
+<text x="290" y="246" class="cap" text-anchor="middle">nejméně energie</text>
+</svg>` },
+  u2: { r: ['Neznámou kyselinu určíš tak, že její spektrum porovnáš se spektry standardů. Maxima a minima přesně najdou nulové body 1. derivace.',
+    'Indikátor změní barvu, protože se s pH změní konjugace a absorpční maximum se posune.',
+    'Přechody od kyselé strany: methyloranž 3,1–4,4, methylčerveň 4,4–6,2, lakmus 5,0–8,0, bromthymolová modř 6,0–7,6, fenolftalein 8,2–10,0, thymolftalein 9,3–10,5.',
+    'V kyselém jsou červené methyloranž, methylčerveň i lakmus, bromthymolová modř je žlutá a ftaleiny jsou bezbarvé.',
+    'Univerzální papírek: červená kolem pH 1, žlutá 5–6, zelená 8–9, tmavě modrá 13–14.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 300" role="img" aria-label="Absorpční spektrum indikátoru: kyselá a zásaditá forma mají maximum jinde, se změnou pH se maximum posune. Pod tím první derivace spektra, jejíž nulový bod leží přesně pod maximem.">
+<defs><marker id="jak-u2-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<path class="ar" d="M40 196 H372" marker-end="url(#jak-u2-a)"/>
+<path class="ar" d="M40 196 V24" marker-end="url(#jak-u2-a)"/>
+<text x="48" y="32">A</text>
+<text x="372" y="214" class="cap" text-anchor="end">vlnová délka</text>
+<path class="b" d="M50 196 C110 196 112 70 140 70 C168 70 170 196 230 196"/>
+<path class="b pk" d="M180 196 C238 196 238 92 266 92 C294 92 296 196 350 196"/>
+<text x="108" y="60" text-anchor="end">kyselá forma</text>
+<text x="290" y="84">zásaditá</text>
+<path class="ar" d="M148 62 Q206 36 258 82" marker-end="url(#jak-u2-a)"/>
+<text x="204" y="34" class="cap" text-anchor="middle">pH roste: posun maxima</text>
+<line class="b d" x1="140" y1="76" x2="140" y2="286"/>
+<line class="b d" x1="50" y1="260" x2="236" y2="260"/>
+<path class="b" d="M50 260 C92 260 100 232 116 232 C132 232 136 260 140 260 C144 260 148 288 164 288 C180 288 190 260 232 260"/>
+<circle cx="140" cy="260" r="4" fill="var(--pink)"/>
+<text x="240" y="256" class="cap">1. derivace: nulový bod</text>
+<text x="240" y="272" class="cap">ukáže přesné maximum</text>
+<text x="16" y="232" class="cap">1. der.</text>
+</svg>` },
+  r1: { r: ['IČ oblasti od nejvyšší energie: NIR 12 800–4000, MIR 4000–200, FIR 200–5 cm⁻¹. Organické látky určuješ v MIR.',
+    'Vlnočet v cm⁻¹ dostaneš jako 10 000 děleno vlnovou délkou v µm. Vyšší vlnočet nese víc energie.',
+    'Pás dá jen vibrace, při které se mění dipólový moment.',
+    'FT-IR měří interferometrem: dělič paprsků, pevné a pohyblivé zrcadlo, jehož polohu hlídá He-Ne laser. Zdrojem je žhavený karbid křemíku.',
+    'Před vzorkem změř pozadí (vodní pára a CO₂). Přístroj nech pod napětím, optika z KBr a NaCl saje vlhkost.',
+    'Transmise (KBr tableta, kyveta) ukáže celý vzorek, ATR jen povrch přitlačený na krystal, asi 1 µm.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 330" role="img" aria-label="Interferometr FT-IR: záření ze žhaveného karbidu křemíku rozdělí dělič paprsků na pevné a pohyblivé zrcadlo, polohu pohyblivého hlídá He-Ne laser. Složené záření projde vzorkem do detektoru.">
+<defs><marker id="jak-r1-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<circle class="lobe" cx="30" cy="150" r="12"/>
+<text x="30" y="180" class="cap" text-anchor="middle">zdroj</text>
+<text x="30" y="194" class="cap" text-anchor="middle">SiC</text>
+<line class="b pk" x1="42" y1="150" x2="296" y2="150"/>
+<line class="b pk" x1="170" y1="150" x2="170" y2="44"/>
+<line class="b" x1="148" y1="172" x2="192" y2="128"/>
+<text x="198" y="180" class="cap">dělič paprsků</text>
+<line class="b" x1="136" y1="40" x2="204" y2="40" stroke-width="4"/>
+<text x="212" y="44" class="cap">pevné zrcadlo</text>
+<line class="b" x1="300" y1="118" x2="300" y2="182" stroke-width="4"/>
+<path class="ar" d="M276 100 H330" marker-end="url(#jak-r1-a)" marker-start="url(#jak-r1-a)"/>
+<text x="304" y="86" class="cap" text-anchor="middle">pohyblivé zrcadlo</text>
+<text x="318" y="206" class="cap" text-anchor="middle">polohu hlídá</text>
+<text x="318" y="220" class="cap" text-anchor="middle">He-Ne laser</text>
+<path class="ar" d="M170 156 V236" marker-end="url(#jak-r1-a)"/>
+<rect class="lobe" x="140" y="240" width="60" height="14" rx="3"/>
+<text x="208" y="252" class="cap">vzorek</text>
+<path class="ar" d="M170 256 V272" marker-end="url(#jak-r1-a)"/>
+<rect x="150" y="276" width="40" height="18" rx="3" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"/>
+<text x="198" y="290" class="cap">detektor</text>
+<text x="195" y="320" class="cap" text-anchor="middle">Nejsilnější signál: obě zrcadla stejně daleko od děliče.</text>
+</svg>` },
+  r2: { r: ['Spektrum čti zleva: nad 3000 O–H, N–H a =C–H, pod 3000 C–H alkanů, 2300–2000 trojné vazby, kolem 1700 karbonyl, pod 1500 C–O a C–N.',
+    'Karbonyl podle vlnočtu: ester 1735, aldehyd 1725, keton 1715, kyselina 1710, amid 1650 cm⁻¹.',
+    'Typ karbonylu potvrď druhým pásem: aldehyd C–H 2850–2700, kyselina široký O–H 3300–2500, ester O=C–O 1300–1100, amid N–H.',
+    'O–H s vodíkovými můstky dá silný široký pás 3400–3200, volný O–H ostrý pás 3650–3590 cm⁻¹.',
+    'N–H má primární amin 3500–3300 a sekundární kolem 3500 cm⁻¹, terciární žádný. Nitroskupina má dva silné pásy, 1550 a 1370.'],
+    pic: () => `<svg class="jpic" viewBox="0 0 390 300" role="img" aria-label="Jak poznat typ karbonylu v IČ spektru: k pásu C=O kolem 1700 hledej druhý pás. C–H 2850 až 2700 aldehyd, široký O–H 3300 až 2500 kyselina, O=C–O 1300 až 1100 ester, N–H nad 3100 amid, nic z toho keton.">
+<defs><marker id="jak-r2-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<text x="16" y="22">Silný pás kolem 1700 cm⁻¹ = C=O.</text>
+<text x="16" y="40" class="cap">Pak hledej druhý pás:</text>
+<text x="16" y="74">C–H 2850–2700</text>
+<text x="16" y="90" class="cap">slabý</text>
+<path class="ar" d="M196 69 H236" marker-end="url(#jak-r2-a)"/>
+<text x="246" y="74">aldehyd</text>
+<text x="246" y="90" class="cap">~1725 cm⁻¹</text>
+<text x="16" y="122">O–H 3300–2500</text>
+<text x="16" y="138" class="cap">velmi široký</text>
+<path class="ar" d="M196 117 H236" marker-end="url(#jak-r2-a)"/>
+<text x="246" y="122">kyselina</text>
+<text x="246" y="138" class="cap">~1710 cm⁻¹</text>
+<text x="16" y="170">O=C–O 1300–1100</text>
+<text x="16" y="186" class="cap">silný</text>
+<path class="ar" d="M196 165 H236" marker-end="url(#jak-r2-a)"/>
+<text x="246" y="170">ester</text>
+<text x="246" y="186" class="cap">~1735 cm⁻¹</text>
+<text x="16" y="218">N–H nad 3100</text>
+<text x="16" y="234" class="cap">a C=O nízko</text>
+<path class="ar" d="M196 213 H236" marker-end="url(#jak-r2-a)"/>
+<text x="246" y="218">amid</text>
+<text x="246" y="234" class="cap">~1650 cm⁻¹</text>
+<text x="16" y="266">nic z toho</text>
+<text x="16" y="282" class="cap">jen samotný C=O</text>
+<path class="ar" d="M196 261 H236" marker-end="url(#jak-r2-a)"/>
+<text x="246" y="266">keton</text>
+<text x="246" y="282" class="cap">~1715 cm⁻¹</text>
+</svg>` },
 };
 function acJak(L, have) {
   const txt = String(have).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), nov = t => !txt.includes(String(t).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
