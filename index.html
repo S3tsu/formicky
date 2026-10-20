@@ -757,8 +757,6 @@ body.sheet-file .sheet{position:static}
 #webBox p{margin:0 0 10px}
 .ver-foot{margin:0;padding:8px 16px 18px;text-align:center;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
 #webBox .ver{align-self:center;font-size:.85rem;color:var(--muted)}
-.moved{background:var(--foam);color:var(--ink);border-bottom:2px solid var(--pink);padding:12px 16px;display:grid;gap:4px;font-size:.92rem;line-height:1.4}
-.moved a{color:var(--pink-ink)}
 
 /* Herna na úvodní stránce, Neznámá látka, Album, výzvy */
 .hn-hub{margin-top:18px}
@@ -28147,7 +28145,7 @@ const pointer = (x, y, a) => {
 };
 
 /* hlava: šedivé vlasy, kulaté brýle, šedivé vousy; look = posun zorniček, o = otevřenější oči */
-/* šedivá ofina a vousy kolem pusy (Setsu vybral 2026-10-17) */
+/* šedivá ofina a vousy kolem pusy */
 const STYLE = { hair: 'ofina', beard: 'kolem' };
 const HAIR = {};
 const HAIRF = { ofina: `<path class="grey" d="M56 54 C54 36 76 24 100 24 C124 24 146 36 144 54 L137 49 L131 57 L123 48 L115 57 L107 48 L100 57 L93 48 L85 57 L77 48 L69 57 L63 49 Z"/>` };
@@ -28817,9 +28815,6 @@ function nameDiag(g, typed) {
 }
 
 /* ===== Tahák k tisku ===== */
-let DL = null;
-const STANDALONE = !(window.claude && window.claude.use);   // mimo claude.ai (vlastní hosting): stahuje se obyčejně
-try { if (window.claude && claude.use) claude.use('downloads').then(x => { DL = x; const b = $('#shDl'); if (b) b.hidden = !DL; }).catch(() => {}); } catch (e) { /* bez stahování */ }
 function sheetHTML(opt) {
   const t = TOPIC_BY[S.topic], setOk = x => S.set === 'all' || x.set === S.set, famOk2 = k => !S.fams || S.fams.includes(k);
   const setLbl = S.set === 'base' ? (S.topic === 'fg' ? 'z přehledu' : 'z přednášky') : S.set === 'extra' ? 'nové podobné' : 'vše';
@@ -28849,7 +28844,7 @@ function openSheet() {
       <label class="switch"><input type="checkbox" data-sh="rx"${o.rx ? ' checked' : ''}> Reakce</label>
       <label class="switch"><input type="checkbox" data-sh="tips"${o.tips ? ' checked' : ''}> Pomůcky a tabulky</label>
       <span class="sp"></span>
-      <button type="button" class="btn primary" id="shPrint">Tisk / PDF</button><button type="button" class="btn" id="shDl"${DL || STANDALONE ? '' : ' hidden'}>Stáhnout</button><button type="button" class="btn" id="shClose">Zavřít</button>
+      <button type="button" class="btn primary" id="shPrint">Tisk / PDF</button><button type="button" class="btn" id="shDl">Stáhnout</button><button type="button" class="btn" id="shClose">Zavřít</button>
       <p class="aside">Bere ohled na zvolenou sadu a okruhy. Když se tisk neotevře, použij Stáhnout a vytiskni stažený soubor.</p></div>
     <div class="sh-page" id="shPage">${sheetHTML(o)}</div>`;
   box.hidden = false; document.body.classList.add('sheet-open'); window.scrollTo(0, 0);
@@ -28864,15 +28859,11 @@ document.addEventListener('click', async e => {
   if (b.id === 'sheetBtn') return openSheet();
   if (b.id === 'shClose') { $('#sheet').hidden = true; modalOff($('#sheet'), true); document.body.classList.remove('sheet-open'); const s = $('#sheetBtn'); if (s) s.focus(); return; }
   if (b.id === 'shPrint') { try { window.print(); } catch (er) { /* tisk zakázaný */ } return; }
-  if (b.id === 'shDl' && (DL || STANDALONE)) {
+  if (b.id === 'shDl') {
     const css = [...document.querySelectorAll('style')].map(s => s.textContent).join('\n');
     const doc = `<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tahák – ${esc(TOPIC_BY[S.topic].label)}</title><style>${css}\n:root{color-scheme:light}body{background:#fff}</style></head><body class="sheet-file"><div class="sheet"><div class="sh-page">${$('#shPage').innerHTML}</div></div></body></html>`;
-    const old = b.textContent;
     const fname = 'tahak-' + deacc(TOPIC_BY[S.topic].label).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.html';
-    if (!DL) { const url = URL.createObjectURL(new Blob([doc], { type: 'text/html' })), a = document.createElement('a'); a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000); return; }
-    try { await DL.save({ filename: fname, data: doc }); b.textContent = 'Uloženo'; }
-    catch (er) { b.textContent = er && er.code === 'declined' ? old : 'Nejde uložit'; if (er && ['unavailable', 'not_granted', 'capability_disabled', 'capability_removed'].includes(er.code)) b.hidden = true; }
-    setTimeout(() => { b.textContent = old; }, 2500);
+    const url = URL.createObjectURL(new Blob([doc], { type: 'text/html' })), a = document.createElement('a'); a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
   }
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#sheet') && !$('#sheet').hidden) { const c = $('#shClose'); if (c) c.click(); } });
@@ -29997,25 +29988,19 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   window.addEventListener('resize', () => { if (viewer && !document.getElementById('m3d').hidden) { viewer.resize(); viewer.render(); } });
 })();
 /* ===== Vlastní web (GitHub Pages): hlášení chyb, instalace do telefonu, offline, anonymní statistiky ===== */
-/* V artifactu na claude.ai se nic z toho nezapne (STANDALONE je false). */
 const WEB = {
   form: 'https://docs.google.com/forms/d/e/1FAIpQLSdefXGfOdIMNJJK31zCA00S9jhzKvVYepcgndDwrFaQcjrCfQ/formResponse',
   entry: 'entry.1456317184',  // pole „Hlášení“
   gc: 's3tsu'    // kód GoatCounter (https://<kód>.goatcounter.com); při změně kódu nebo formuláře upravit i Content-Security-Policy v hlavičce
 };
-const WEB_ON = STANDALONE && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai$/.test(location.hostname);
+const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610191957';
+const FH_VER = '202610200942';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
 
 (function () {
-  if (!STANDALONE) {   // stará verze v Claude: odkaz na nový web
-    document.body.insertAdjacentHTML('afterbegin', `<div class="moved"><b>Formičky se přestěhovaly na nový web: <a href="https://s3tsu.github.io/formicky/" target="_blank" rel="noopener">s3tsu.github.io/formicky</a></b>
-      <span>Funguje bez účtu, jde nainstalovat do telefonu a funguje i offline. Tahle verze se už nebude aktualizovat. Pokrok si přeneseš takhle: tady dole na úvodní stránce v „Záloha pokroku“ vytvoř kód, zkopíruj ho a na novém webu ho vlož do „Načíst kód“.</span></div>`);
-    return;
-  }
   if (!WEB_ON) return;
 
   /* --- statistiky (GoatCounter: bez cookies, bez osobních údajů) --- */
@@ -32063,7 +32048,7 @@ const FH_OL = (() => {
         + sec('3. Organokovová činidla a amidy', `${tbl(['Acylchlorid +', 'Produkt'], [['R′MgX (nadbytek)', 'terciární alkohol, keton se izolovat nedá'], ['R′₂CuLi (Gilman)', 'keton']])}
         <p>Amid je nejstálejší derivát, hydrolyzuje se až za tepla v kyselině nebo zásadě. <b>LiAlH₄ redukuje amid na amin</b>, C=O se změní na CH₂.</p>
         <p class="aside">Názvy: ethyl-ethanoát (ethyl-acetát), ethanoylchlorid, N-methylpropanamid. Laktam je cyklický amid, lakton cyklický ester.</p>`),
-      /* pomůcky místo bloku Meme (Setsu 2026-10-19: použitelnější a přehlednější) */
+      /* pomůcky místo bloku Meme */
       aid: () => sec('Pomůcky na zapamatování', `${FH_LES.ord({ q: 'deriváty podle reaktivity.', top: 'nejreaktivnější', bottom: 'nejstálejší', items: [['acylchlorid', 'odstupuje Cl⁻'], ['anhydrid', 'odstupuje RCOO⁻'], ['ester', 'odstupuje RO⁻'], ['amid', 'odstupuje NH₂⁻']] })}
         ${FH_LES.w.fds()}
         ${FH_LES.w.fdh()}
