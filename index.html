@@ -16059,6 +16059,9 @@ function registerTopic(T) {
     aldolProp: 'C!; 0-C!@-30; 1-C!@30; 2-O@90:h1; 2-C!@-30; 4-C!@-90; 4-C!@30; 6=O@90; 6-H@-30',
     hmButanal: 'C!; 0-C!@30; 1-O@90:h1; 1-C!@-30; 3-C!@-90; 3-C!@30; 5=O@90; 5-H@-30',
     hPentanal: 'C!; 0-C!@-30; 1-C!@30; 2-O@90:h1; 2-C!@-30; 4-C!@30; 5=O@90; 5-H@-30',
+    pentenal: 'C!; 0-C!@-30; 1-C!@30; 2=C!@-30; 3-C!@30; 4=O@90; 4-H@-30',
+    meButenal: 'C!; 0-C!@30; 1=C!@-30; 2-C!@30; 3=O@90; 3-H@-30; 2-C!@-90',
+    mePentenal: 'C!; 0-C!@-30; 1-C!@30; 2=C!@-30; 3-C!@30; 4=O@90; 4-H@-30; 3-C!@-90',
     benzaldehyd: RING + '; 2-C!@30; 6=O@90; 6-H@-30 | 5-0',
     dba: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8=O@90; 8-C!@-30; 10=C!@30; 11-C!@-30; 12=C!@30; 13-C!@-30; 14=C!@-90; 15-C!@-150; 16=C!@150 | 5-0 17-12',
     benzalaceton: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8=O@90; 8-C!@-30 | 5-0',
@@ -16227,6 +16230,7 @@ function registerTopic(T) {
     fenylpropenal2: RING + '; 2-C!@30; 6=C!@90; 6-C!@-30; 8=O@-90; 8-H@30 | 5-0',
     benzylalkohol: RING + '; 2-C!@30; 6-O@-30:h1 | 5-0',
     butenal3: 'C!; 0=C!@30; 1-C!@-30; 2-C!@30; 3=O@90; 3-H@-30',
+    mePent3enal: 'C!; 0-C!@-30; 1=C!@30; 2-C!@-30; 3-C!@30; 4=O@90; 4-H@-30; 3-C!@-90',
     krotonova: 'C!; 0-C!@30; 1=C!@-30; 2-C!@30; 3=O@90; 3-O@-30:h1',
     meCP3: PENT + '; 0=O@90; 2-C!@-54 | 4-0',
     meCPol: PENT + '; 0-O@50:h1; 0-C!@130 | 4-0',
@@ -16545,6 +16549,9 @@ function registerTopic(T) {
       ['base', 'ad', '3-hydroxy-2-methylpentanal', M.aldolProp, { tip: 'Aldol propanalu: methyl na C2 je zbytek α-uhlíku enolátu.' }],
       ['base', 'ad', '3-hydroxy-2-methylbutanal', M.hmButanal, { tip: 'Smíšený aldol: enolát propanalu + acetaldehyd.' }],
       ['base', 'ad', '3-hydroxypentanal', M.hPentanal, { tip: 'Smíšený aldol: enolát acetaldehydu + propanal.' }],
+      ['base', 'ad', 'pent-2-enal', M.pentenal, { tip: 'Smíšená aldolová kondenzace: enolát acetaldehydu + propanal, pak odštěpení vody.' }],
+      ['base', 'ad', '2-methylbut-2-enal', M.meButenal, { tip: 'Smíšená aldolová kondenzace: enolát propanalu + acetaldehyd, pak odštěpení vody. Methyl na C2 přinesl enolát.' }],
+      ['base', 'ad', '2-methylpent-2-enal', M.mePentenal, { tip: 'Aldolová kondenzace dvou propanalů.' }],
       ['base', 'ad', 'benzaldehyd', M.benzaldehyd, { alts: ['benzenkarbaldehyd'], tip: 'Nemá α-H, takže je jen akceptor. Ideální partner pro smíšenou aldolizaci.' }],
       ['base', 'ad', 'dibenzalaceton', M.dba, { par: '1,5-difenylpenta-1,4-dien-3-on', alts: ['dibenzylidenaceton'], tip: 'Aceton zkondenzovaný na obou stranách s benzaldehydem (NaOH).' }],
       ['base', 'ad', '4-hydroxy-4-fenylbutan-2-on', M.hydroxyBzAc, { tip: 'První aldol na cestě k dibenzalacetonu: enolát acetonu + benzaldehyd.' }],
@@ -16889,6 +16896,17 @@ function registerTopic(T) {
           { via: 'enolát CH₃CH₂CHO\n+ CH₃CHO', to: [PFN('3-hydroxy-2-methylbutanal')], t: 'Enolát propanalu + acetaldehyd: 3-hydroxy-2-methylbutanal. Methyl na C2 přinesl enolát propanalu.' },
           { via: 'enolát CH₃CH₂CHO\n+ CH₃CH₂CHO', to: [PFN('3-hydroxy-2-methylpentanal')], t: 'Enolát propanalu + propanal: 3-hydroxy-2-methylpentanal.' }
         ] },
+      { id: 'a45', set: 'base', fam: 'ad', title: 'Smíšená aldolová kondenzace acetaldehydu a propanalu', prompt: 'Co všechno vznikne po odštěpení vody?', from: [PFN('acetaldehyd'), PFN('propanal')], reag: 'báze, zahřátí (−H₂O)', to: [PFN('but-2-enal'), PFN('pent-2-enal'), PFN('2-methylbut-2-enal'), PFN('2-methylpent-2-enal')],
+        wrong: [[PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')], [PFN('but-2-enal'), PFN('2-methylbut-2-enal'), PFN('2-methylpent-2-enal'), PM(W.butenal3)],
+          [PFN('but-2-enal'), PFN('pent-2-enal'), PFN('2-methylbut-2-enal'), PM(W.mePent3enal)]], noReag: 1,
+        why: 'Nejdřív vzniknou čtyři aldoly (2 donory × 2 akceptory). Všechny mají H na α-uhlíku, takže každý odštěpí vodu a dá konjugovaný enal: C=C mezi α a β uhlíkem.',
+        steps: [
+          { via: 'báze', to: [PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')], t: 'Smíšená aldolizace: oba aldehydy jsou donor i akceptor, vzniknou čtyři aldoly.' },
+          { via: '−H₂O (E1cB)', to: [PFN('but-2-enal')], t: '3-Hydroxybutanal odštěpí vodu: but-2-enal (krotonaldehyd).' },
+          { via: '−H₂O (E1cB)', to: [PFN('pent-2-enal')], t: '3-Hydroxypentanal odštěpí vodu: pent-2-enal.' },
+          { via: '−H₂O (E1cB)', to: [PFN('2-methylbut-2-enal')], t: '3-Hydroxy-2-methylbutanal odštěpí vodu: 2-methylbut-2-enal. Methyl zůstane na α-uhlíku.' },
+          { via: '−H₂O (E1cB)', to: [PFN('2-methylpent-2-enal')], t: '3-Hydroxy-2-methylpentanal odštěpí vodu: 2-methylpent-2-enal.' }
+        ] },
       { id: 'a34', set: 'base', fam: 'ad', title: 'Intramolekulárně z 1,4-diketonu', from: [PFN('hexan-2,5-dion')], reag: 'NaOH, ethanol', to: [PFN('3-methylcyklopent-2-en-1-on'), PT('H₂O')],
         wrong: [[PM(W.cyklopropen)], [PFN('3-methylcyklohex-2-en-1-on')], [PM(W.meCPenon2)]], wrongReag: ['1. LiAlH₄\n2. H₃O⁺', 'Br₂, CH₃COOH', 'NaOEt, pak CH₃I'],
         why: 'Enolát koncového CH₃ napadne druhé C=O a uzavře pětičlenný kruh. Cesta přes tříčlenný kruh (cyklopropen) je moc napjatá.',
@@ -17205,6 +17223,8 @@ function registerTopic(T) {
         ['benzaldehyd nemá α-H, je jen akceptor', 'aceton nemá α-H', 'benzaldehyd je silnější báze', 'NaOH reaguje jen s benzaldehydem'], 'Donorem může být jen aceton, a ten zkondenzuje na obou methylech.', 'q31'],
       ['base', 'ad', 'Dibenzalaceton krok za krokem', 'Aceton + benzaldehyd, NaOH. Co vznikne po první aldolové kondenzaci (po odštěpení první vody)?',
         [PFN('4-fenylbut-3-en-2-on'), PFN('4-hydroxy-4-fenylbutan-2-on'), PFN('5-hydroxy-1,5-difenylpent-1-en-3-on'), PFN('dibenzalaceton')], 'Benzalaceton. Jeho druhý methyl pak dá s dalším benzaldehydem druhý aldol a po odštěpení vody dibenzalaceton.', 'q50'],
+      ['base', 'ad', 'Smíšená aldolová kondenzace', 'Který enal vznikne odštěpením vody z 3-hydroxy-2-methylbutanalu (enolát propanalu + acetaldehyd)?',
+        [PFN('2-methylbut-2-enal'), PFN('pent-2-enal'), PFN('but-2-enal'), PFN('2-methylpent-2-enal')], 'Voda odejde z β-OH a α-H, C=C vznikne mezi C2 a C3. Methyl na C2 zůstane.', 'q51'],
       ['base', 'ad', 'Velikost kruhu', 'Jaký kruh vznikne intramolekulární aldolovou kondenzací hexan-2,5-dionu (1,4-diketon)?',
         ['pětičlenný¦ (3-methylcyklopent-2-enon)', 'šestičlenný', 'tříčlenný', 'čtyřčlenný'], '1,4-diketon → 5-kruh, 1,5-diketon → 6-kruh. Tříčlenný kruh by byl moc napjatý.', 'q32'],
       ['base', 'ad', 'Retrosyntéza', 'Z čeho připravíš aldolovou kondenzací konjugovaný enon?',
@@ -32114,7 +32134,7 @@ const FH_OL = (() => {
       goal: 'Po lekci předpovíš produkt aldolizace, smíšené aldolizace, aldolové kondenzace, Claisenovy a Dieckmannovy kondenzace i Michaelovy adice a víš, jak je spojí Robinsonova anelace.',
       recall: 'Vybav si z lekce 1, co je enolát. Tipni si, co se stane, když enolát narazí na C=O jiné molekuly.',
       tail: 'Vrať se k tipu ze začátku. Enolát se aduje na C=O a vznikne nová vazba C–C: aldol. Co jsi nevěděla, zopakuješ zítra.',
-      q: ['t18_q25', 't18_q26', 't18_q27', 't18_q28', 't18_q29', 't18_q30', 't18_q31', 't18_q50', 't18_q32', 't18_q34', 't18_q35', 't18_q36', 't18_q37', 't18_q40'],
+      q: ['t18_q25', 't18_q26', 't18_q27', 't18_q28', 't18_q29', 't18_q30', 't18_q31', 't18_q50', 't18_q51', 't18_q32', 't18_q34', 't18_q35', 't18_q36', 't18_q37', 't18_q40'],
       beda: 'Donor a akceptor: enolát přinese elektrony, karbonyl je přijme. Benzaldehyd nemá α-H, a tak může být jen akceptor, žádné zmatky ve směsi.',
       aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Která reakce to je?</b>', opts: ['aldolizace', 'aldolová kondenzace', 'Claisenova kondenzace', 'Dieckmannova reakce', 'Michaelova adice', 'Robinsonova anelace'], items: [
           ['enolát + aldehyd → β-hydroxyaldehyd', 'aldolizace', 'Aldol = ALDehyd + alkohOL v jedné molekule.'],
@@ -32136,7 +32156,11 @@ const FH_OL = (() => {
           return `<p>Když mají α-H <b>oba</b> partneři, každý může být donor (enolát) i akceptor (C=O). Ze dvou aldehydů tak vzniknou <b>čtyři aldoly</b>: 2 donory × 2 akceptory.</p>
         ${schemeHTML({ from: [P('acetaldehyd'), P('propanal')], reag: 'báze', to: [P('aldol'), P('3-hydroxypentanal'), P('3-hydroxy-2-methylbutanal'), P('3-hydroxy-2-methylpentanal')] })}
         ${FH_LES.w.pair({ head: '<b>Spoj dvojice:</b> který donor a který akceptor dá který aldol?', pairs: [['enolát acetaldehydu + acetaldehyd', '3-hydroxybutanal'], ['enolát acetaldehydu + propanal', '3-hydroxypentanal'], ['enolát propanalu + acetaldehyd', '3-hydroxy-2-methylbutanal'], ['enolát propanalu + propanal', '3-hydroxy-2-methylpentanal']] })}
-        <p class="aside">Methyl na C2 přinesl vždy enolát propanalu. Slajd končí u čtyř aldolů. Při zahřátí by každý z nich ještě odštěpil vodu (všechny mají α-H) a ze směsi by byly čtyři enaly.</p>
+        <p class="aside">Methyl na C2 přinesl vždy enolát propanalu.</p>
+        <p>Při zahřátí každý ze čtyř aldolů ještě <b>odštěpí vodu</b> (všechny mají H na α-uhlíku). Smíšená aldolová kondenzace tak končí čtyřmi konjugovanými enaly:</p>
+        ${schemeHTML({ from: [P('acetaldehyd'), P('propanal')], reag: 'báze, zahřátí (−H₂O)', to: [P('but-2-enal'), P('pent-2-enal'), P('2-methylbut-2-enal'), P('2-methylpent-2-enal')] })}
+        ${FH_LES.w.pair({ head: '<b>Spoj dvojice:</b> který enal vznikne z kterého aldolu?', pairs: [['3-hydroxybutanal', 'but-2-enal'], ['3-hydroxypentanal', 'pent-2-enal'], ['3-hydroxy-2-methylbutanal', '2-methylbut-2-enal'], ['3-hydroxy-2-methylpentanal', '2-methylpent-2-enal']] })}
+        <p class="aside">Slajd ukazuje jen čtyři aldoly, enaly jsou krok navíc (odštěpení vody jako u ostatních aldolových kondenzací).</p>
         <p>Čistá smíšená aldolová kondenzace potřebuje partnera <b>bez α-H</b>. Benzaldehyd je jen akceptor, aceton jen donor. S NaOH aceton zkondenzuje na obou methylech a cestou vzniknou čtyři produkty: aldol, benzalaceton, druhý aldol a nakonec dibenzalaceton.</p>
         ${FH_LES.ord({ q: 'produkty v pořadí, jak vznikají při přípravě dibenzalacetonu.', top: 'první', bottom: 'poslední', items: [['4-hydroxy-4-fenylbutan-2-on', 'první aldol: enolát acetonu + benzaldehyd'], ['benzalaceton', 'odštěpení vody (E1cB)'], ['5-hydroxy-1,5-difenylpent-1-en-3-on', 'druhý aldol: enolát benzalacetonu + benzaldehyd'], ['dibenzalaceton', 'druhé odštěpení vody']] })}
         ${dba ? schemeHTML({ from: dba.from, reag: dba.reag, to: dba.to }) + stepsHTML(dba) : ''}`;
