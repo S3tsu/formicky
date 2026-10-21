@@ -16062,6 +16062,8 @@ function registerTopic(T) {
     benzaldehyd: RING + '; 2-C!@30; 6=O@90; 6-H@-30 | 5-0',
     dba: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8=O@90; 8-C!@-30; 10=C!@30; 11-C!@-30; 12=C!@30; 13-C!@-30; 14=C!@-90; 15-C!@-150; 16=C!@150 | 5-0 17-12',
     benzalaceton: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8=O@90; 8-C!@-30 | 5-0',
+    hydroxyBzAc: RING + '; 2-C!@30; 6-O@90:h1; 6-C!@-30; 8-C!@30; 9=O@90; 9-C!@-30 | 5-0',
+    aldolDba: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8=O@90; 8-C!@-30; 10-C!@30; 11-O@90:h1; 11-C!@-30; 13=C!@30; 14-C!@-30; 15=C!@-90; 16-C!@-150; 17=C!@150 | 5-0 18-13',
     meButanon: 'C!; 0-C!@30; 1=O@90; 1-C!@-30; 3-C!@30; 3-C!@-90',
     aldolRetro: 'C!; 0-C!@30; 1=O@90; 1-C!@-30; 3-C!@-50; 3-C!@-130; 3-C!@30; 6-O@100:h1; 6-C!@-30; 6-C!@35',
     aldolDMP: 'C!; 0-C!@30; 1=O@90; 1-C!@-30; 3-C!@-90; 3-C!@30; 5-O@100:h1; 5-C!@20; 5-C!@-50',
@@ -16325,7 +16327,10 @@ function registerTopic(T) {
     knoevAlkoxid: CYC6 + '; 2-C!@30; 6-C!@90; 7=O@30; 7-C!@150; 6-C!@-30; 10=O@-90; 10-O@30; 12-C!@-30; 13-C!@30; 2-O@-30:- | 5-0',
     knoevAldol: CYC6 + '; 2-C!@30; 6-C!@90; 7=O@30; 7-C!@150; 6-C!@-30; 10=O@-90; 10-O@30; 12-C!@-30; 13-C!@30; 2-O@-30:h1 | 5-0',
     alkoxidBzAc: RING + '; 2-C!@30; 6-O@90:-; 6-C!@-30; 8-C!@30; 9=O@90; 9-C!@-30 | 5-0',
-    hydroxyBzAc: RING + '; 2-C!@30; 6-O@90:h1; 6-C!@-30; 8-C!@30; 9=O@90; 9-C!@-30 | 5-0',
+    enolatHydroxyBzAc: RING + '; 2-C!@30; 6-O@90:h1; 6-C!@-30; 8=C!@30; 9-O@90:-; 9-C!@-30 | 5-0',
+    enolatBzAc: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8-O@90:-; 8=C!@-30 | 5-0',
+    alkoxidDba: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8=O@90; 8-C!@-30; 10-C!@30; 11-O@90:-; 11-C!@-30; 13=C!@30; 14-C!@-30; 15=C!@-90; 16-C!@-150; 17=C!@150 | 5-0 18-13',
+    enolatAldolDba: RING + '; 2-C!@30; 6=C!@-30; 7-C!@30; 8-O@90:-; 8=C!@-30; 10-C!@30; 11-O@90:h1; 11-C!@-30; 13=C!@30; 14-C!@-30; 15=C!@-90; 16-C!@-150; 17=C!@150 | 5-0 18-13',
     enolatHexandion: 'C!; 0=C!@30; 1-O@90:-; 1-C!@-30; 3-C!@30; 4-C!@-30; 5=O@-90; 5-C!@30',
     alkoxidCP: PENT + '; 0=O@90; 2-C!@0; 2-O@-110:- | 4-0',
     hydroxyCP: PENT + '; 0=O@90; 2-C!@0; 2-O@-110:h1 | 4-0',
@@ -16542,6 +16547,8 @@ function registerTopic(T) {
       ['base', 'ad', '3-hydroxypentanal', M.hPentanal, { tip: 'Smíšený aldol: enolát acetaldehydu + propanal.' }],
       ['base', 'ad', 'benzaldehyd', M.benzaldehyd, { alts: ['benzenkarbaldehyd'], tip: 'Nemá α-H, takže je jen akceptor. Ideální partner pro smíšenou aldolizaci.' }],
       ['base', 'ad', 'dibenzalaceton', M.dba, { par: '1,5-difenylpenta-1,4-dien-3-on', alts: ['dibenzylidenaceton'], tip: 'Aceton zkondenzovaný na obou stranách s benzaldehydem (NaOH).' }],
+      ['base', 'ad', '4-hydroxy-4-fenylbutan-2-on', M.hydroxyBzAc, { tip: 'První aldol na cestě k dibenzalacetonu: enolát acetonu + benzaldehyd.' }],
+      ['base', 'ad', '5-hydroxy-1,5-difenylpent-1-en-3-on', M.aldolDba, { tip: 'Druhý aldol na cestě k dibenzalacetonu: enolát benzalacetonu + benzaldehyd.' }],
       ['base', 'ad', '4-fenylbut-3-en-2-on', M.benzalaceton, { par: 'benzalaceton', alts: ['benzylidenaceton'], tip: 'Meziprodukt na cestě k dibenzalacetonu: jen jedna strana acetonu zkondenzovaná.' }],
       ['base', 'ad', '3-methylbutan-2-on', M.meButanon, { alts: ['isopropyl(methyl)keton', 'methylisopropylketon'], tip: 'Na slajdu o retrosyntéze: jeho α-CH se aduje na aceton.' }],
       ['base', 'ad', '4-hydroxy-3,3,4-trimethylpentan-2-on', M.aldolRetro, { tip: 'Aldol z acetonu (akceptor) a 3-methylbutan-2-onu (donor).' }],
@@ -16858,13 +16865,29 @@ function registerTopic(T) {
         ] },
       { id: 'a33', set: 'base', fam: 'ad', title: 'Příprava dibenzalacetonu', from: [PFN('benzaldehyd'), PFN('aceton')], reag: 'NaOH (2 ekv. benzaldehydu)', to: [PFN('dibenzalaceton')],
         wrong: [[PM(W.benzylalkohol), PT('PhCOO⁻')], [PFN('4-hydroxy-4-methylpentan-2-on')], [PFN('4-fenylbut-3-en-2-on')]], noReag: 1,
-        why: 'Benzaldehyd nemá α-H, je jen akceptor. Aceton se deprotonuje na obou methylech a dvakrát zkondenzuje (pKa acetonu 19,3, vody 16).',
+        why: 'Benzaldehyd nemá α-H, je jen akceptor. Aceton se deprotonuje na obou methylech a zkondenzuje dvakrát: aldol → benzalaceton → druhý aldol → dibenzalaceton (pKa acetonu 19,3, vody 16).',
         steps: [
-          { via: 'NaOH', to: [PM(ST.enolatAcetonu)], t: 'Hydroxid odtrhne α-H acetonu (pKa 19,3 proti 16 vody, takže jen trochu enolátu).' },
+          { via: 'NaOH', to: [PM(ST.enolatAcetonu), PT('H₂O')], t: 'Hydroxid odtrhne α-H acetonu. pKa acetonu je 19,3 a vody 16, takže vznikne jen trochu enolátu.' },
           { via: 'PhCHO', to: [PM(ST.alkoxidBzAc)], t: 'Enolát se aduje na C=O benzaldehydu. Benzaldehyd nemá α-H, je jen akceptor.' },
-          { via: 'H₂O', to: [PM(ST.hydroxyBzAc), PT('⁻OH')], t: 'Protonace dá β-hydroxyketon.' },
-          { via: '⁻OH, −H₂O (E1cB)', to: [PFN('4-fenylbut-3-en-2-on')], t: 'Přes enolát se odštěpí voda a vznikne benzalaceton s C=C konjugovanou s jádrem i s C=O.' },
-          { via: 'NaOH, PhCHO\n−H₂O', to: [PFN('dibenzalaceton'), PT('H₂O')], t: 'Druhý methyl se stejně deprotonuje, aduje na druhý benzaldehyd a odštěpí vodu.' }
+          { via: 'H₂O', to: [PFN('4-hydroxy-4-fenylbutan-2-on'), PT('⁻OH')], t: '1. produkt: alkoxid vezme proton z vody a vznikne první aldol (β-hydroxyketon).' },
+          { via: '⁻OH', to: [PM(ST.enolatHydroxyBzAc), PT('H₂O')], t: 'Hydroxid odtrhne α-H mezi C=O a C–OH. Vznikne enolát aldolu.' },
+          { via: '−⁻OH (E1cB)', to: [PFN('4-fenylbut-3-en-2-on'), PT('⁻OH')], t: '2. produkt: enolát vytlačí sousední ⁻OH a vznikne benzalaceton. C=C je konjugovaná s jádrem i s C=O.' },
+          { via: '⁻OH', to: [PM(ST.enolatBzAc), PT('H₂O')], t: 'Druhý methyl benzalacetonu má pořád kyselé α-H. Hydroxid ho odtrhne a vznikne nový enolát.' },
+          { via: 'PhCHO', to: [PM(ST.alkoxidDba)], t: 'Enolát se aduje na C=O druhé molekuly benzaldehydu. Vznikne alkoxid.' },
+          { via: 'H₂O', to: [PFN('5-hydroxy-1,5-difenylpent-1-en-3-on'), PT('⁻OH')], t: '3. produkt: protonace dá druhý aldol.' },
+          { via: '⁻OH', to: [PM(ST.enolatAldolDba), PT('H₂O')], t: 'Hydroxid odtrhne α-H mezi C=O a C–OH. Vznikne enolát druhého aldolu.' },
+          { via: '−⁻OH (E1cB)', to: [PFN('dibenzalaceton'), PT('⁻OH')], t: '4. produkt: odejde ⁻OH a vznikne dibenzalaceton. Konjugace přes celou molekulu táhne rovnováhu k produktu.' }
+        ] },
+      { id: 'a44', set: 'base', fam: 'ad', title: 'Smíšená aldolizace acetaldehydu a propanalu', prompt: 'Co všechno vznikne?', from: [PFN('acetaldehyd'), PFN('propanal')], reag: 'báze', to: [PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')],
+        wrong: [[PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PM(W.hydroxyhexanal3)], [PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylpentanal'), PM(W.hydroxybutanal2)],
+          [PFN('aldol'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal'), PM(W.mePentandiol13)]], noReag: 1,
+        why: 'Oba aldehydy mají α-H, takže každý může být donor (enolát) i akceptor (C=O). 2 donory × 2 akceptory = 4 aldoly. Proto se smíšená aldolizace dělá s partnerem bez α-H.',
+        steps: [
+          { via: 'báze', to: [PM(ST.enolatAcetaldehyd), PM(ST.enolatPropanal)], t: 'Báze odtrhne α-H z obou aldehydů. Vzniknou dva různé enoláty (donory) a nezreagované aldehydy zůstanou jako akceptory.' },
+          { via: 'enolát CH₃CHO\n+ CH₃CHO', to: [PFN('aldol')], t: 'Enolát acetaldehydu + acetaldehyd: 3-hydroxybutanal (aldol).' },
+          { via: 'enolát CH₃CHO\n+ CH₃CH₂CHO', to: [PFN('3-hydroxypentanal')], t: 'Enolát acetaldehydu + propanal: 3-hydroxypentanal. Ethyl u C–OH přinesl akceptor propanal.' },
+          { via: 'enolát CH₃CH₂CHO\n+ CH₃CHO', to: [PFN('3-hydroxy-2-methylbutanal')], t: 'Enolát propanalu + acetaldehyd: 3-hydroxy-2-methylbutanal. Methyl na C2 přinesl enolát propanalu.' },
+          { via: 'enolát CH₃CH₂CHO\n+ CH₃CH₂CHO', to: [PFN('3-hydroxy-2-methylpentanal')], t: 'Enolát propanalu + propanal: 3-hydroxy-2-methylpentanal.' }
         ] },
       { id: 'a34', set: 'base', fam: 'ad', title: 'Intramolekulárně z 1,4-diketonu', from: [PFN('hexan-2,5-dion')], reag: 'NaOH, ethanol', to: [PFN('3-methylcyklopent-2-en-1-on'), PT('H₂O')],
         wrong: [[PM(W.cyklopropen)], [PFN('3-methylcyklohex-2-en-1-on')], [PM(W.meCPenon2)]], wrongReag: ['1. LiAlH₄\n2. H₃O⁺', 'Br₂, CH₃COOH', 'NaOEt, pak CH₃I'],
@@ -17180,6 +17203,8 @@ function registerTopic(T) {
         [PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylpentanal'), PFN('aldol')], 'Methyl na C2 pochází z enolátu propanalu, CH₃–CH(OH)– z acetaldehydu.', 'q30'],
       ['base', 'ad', 'Benzaldehyd v aldolizaci', 'Proč benzaldehyd s acetonem dá čistě dibenzalaceton a ne směs?',
         ['benzaldehyd nemá α-H, je jen akceptor', 'aceton nemá α-H', 'benzaldehyd je silnější báze', 'NaOH reaguje jen s benzaldehydem'], 'Donorem může být jen aceton, a ten zkondenzuje na obou methylech.', 'q31'],
+      ['base', 'ad', 'Dibenzalaceton krok za krokem', 'Aceton + benzaldehyd, NaOH. Co vznikne po první aldolové kondenzaci (po odštěpení první vody)?',
+        [PFN('4-fenylbut-3-en-2-on'), PFN('4-hydroxy-4-fenylbutan-2-on'), PFN('5-hydroxy-1,5-difenylpent-1-en-3-on'), PFN('dibenzalaceton')], 'Benzalaceton. Jeho druhý methyl pak dá s dalším benzaldehydem druhý aldol a po odštěpení vody dibenzalaceton.', 'q50'],
       ['base', 'ad', 'Velikost kruhu', 'Jaký kruh vznikne intramolekulární aldolovou kondenzací hexan-2,5-dionu (1,4-diketon)?',
         ['pětičlenný¦ (3-methylcyklopent-2-enon)', 'šestičlenný', 'tříčlenný', 'čtyřčlenný'], '1,4-diketon → 5-kruh, 1,5-diketon → 6-kruh. Tříčlenný kruh by byl moc napjatý.', 'q32'],
       ['base', 'ad', 'Retrosyntéza', 'Z čeho připravíš aldolovou kondenzací konjugovaný enon?',
@@ -32086,10 +32111,10 @@ const FH_OL = (() => {
         ${tbl(['Syntéza', 'Z R–X vznikne'], [['malonesterová (NaOEt)', 'karboxylová kyselina R–CH₂–COOH'], ['acetoacetátová (NaOEt)', 'methylketon R–CH₂–CO–CH₃']])}
         <p class="ac-les-trap"><b>Pozor:</b> obě syntézy končí dekarboxylací. CO₂ při zahřátí snadno ztrácejí jen malonové kyseliny a β-ketokyseliny.</p>`) },
     { id: 't18b', topic: 't18', mem: [4, 5, 6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Aldolizace, Claisen a Michael',
-      goal: 'Po lekci předpovíš produkt aldolizace, aldolové kondenzace, Claisenovy a Dieckmannovy kondenzace i Michaelovy adice a víš, jak je spojí Robinsonova anelace.',
+      goal: 'Po lekci předpovíš produkt aldolizace, smíšené aldolizace, aldolové kondenzace, Claisenovy a Dieckmannovy kondenzace i Michaelovy adice a víš, jak je spojí Robinsonova anelace.',
       recall: 'Vybav si z lekce 1, co je enolát. Tipni si, co se stane, když enolát narazí na C=O jiné molekuly.',
       tail: 'Vrať se k tipu ze začátku. Enolát se aduje na C=O a vznikne nová vazba C–C: aldol. Co jsi nevěděla, zopakuješ zítra.',
-      q: ['t18_q25', 't18_q26', 't18_q27', 't18_q28', 't18_q29', 't18_q31', 't18_q32', 't18_q34', 't18_q35', 't18_q36', 't18_q37', 't18_q40'],
+      q: ['t18_q25', 't18_q26', 't18_q27', 't18_q28', 't18_q29', 't18_q30', 't18_q31', 't18_q50', 't18_q32', 't18_q34', 't18_q35', 't18_q36', 't18_q37', 't18_q40'],
       beda: 'Donor a akceptor: enolát přinese elektrony, karbonyl je přijme. Benzaldehyd nemá α-H, a tak může být jen akceptor, žádné zmatky ve směsi.',
       aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Která reakce to je?</b>', opts: ['aldolizace', 'aldolová kondenzace', 'Claisenova kondenzace', 'Dieckmannova reakce', 'Michaelova adice', 'Robinsonova anelace'], items: [
           ['enolát + aldehyd → β-hydroxyaldehyd', 'aldolizace', 'Aldol = ALDehyd + alkohOL v jedné molekule.'],
@@ -32104,10 +32129,20 @@ const FH_OL = (() => {
           '<b>Kruh je o jeden větší než druhé číslo.</b> 1,4-diketon dá pětičlenný, 1,5-diketon šestičlenný kruh.',
           '<b>Claisen končí kyselinou.</b> β-Ketoester je v zásaditém prostředí hned deprotonovaný, proto se na konci okyselí H₃O⁺.'])}`),
       body: () => sec('1. Aldolizace', `<p>Enolát jedné molekuly (donor) se aduje na C=O druhé (akceptor) a vznikne <b>β-hydroxyaldehyd nebo β-hydroxyketon</b>. Je to rovnováha: u aldehydů výhodná, u ketonů ne (aceton jen asi 5 %).</p>
-        <p><b>Aldolová kondenzace</b>: aldol odštěpí vodu a vznikne konjugovaný enon, to posune rovnováhu. Intramolekulárně dá 1,4-diketon pětičlenný a 1,5-diketon šestičlenný kruh.</p>
-        <p class="aside">Smíšená aldolizace dvou aldehydů s α-H dá čtyři produkty. Čistá je, když jeden partner α-H nemá (benzaldehyd).</p>`)
-        + sec('2. Claisenova kondenzace', `<p>U esteru po adici enolátu <b>odstoupí alkoxid</b> a vznikne <b>β-ketoester</b>. V zásaditém prostředí je hned deprotonovaný, proto se nakonec okyselí H₃O⁺. <b>Dieckmannova reakce</b> je intramolekulární Claisen diesteru a dá cyklický β-ketoester.</p>`)
-        + sec('3. Michaelova adice a Robinsonova anelace', `<p>Nukleofil se aduje na <b>β-uhlík</b> α,β-nenasyceného karbonylu (1,4-adice) a vznikne 1,5-dikarbonylová sloučenina. Ve Storkově reakci je nukleofilem enamin z ketonu a sekundárního aminu.</p>
+        <p><b>Aldolová kondenzace</b>: aldol odštěpí vodu a vznikne konjugovaný enon, to posune rovnováhu. Intramolekulárně dá 1,4-diketon pětičlenný a 1,5-diketon šestičlenný kruh.</p>`)
+        + sec('2. Smíšená aldolizace a aldolová kondenzace', (() => {
+          /* acetaldehyd + propanal: čtyři aldoly; aceton + benzaldehyd: čtyři produkty cestou k dibenzalacetonu (karta a33 s celým mechanismem) */
+          const P = n => ({ id: 't18_' + norm(n) }), dba = REACTIONS.find(r => r.topic === 't18' && r.id === 'a33');
+          return `<p>Když mají α-H <b>oba</b> partneři, každý může být donor (enolát) i akceptor (C=O). Ze dvou aldehydů tak vzniknou <b>čtyři aldoly</b>: 2 donory × 2 akceptory.</p>
+        ${schemeHTML({ from: [P('acetaldehyd'), P('propanal')], reag: 'báze', to: [P('aldol'), P('3-hydroxypentanal'), P('3-hydroxy-2-methylbutanal'), P('3-hydroxy-2-methylpentanal')] })}
+        ${FH_LES.w.pair({ head: '<b>Spoj dvojice:</b> který donor a který akceptor dá který aldol?', pairs: [['enolát acetaldehydu + acetaldehyd', '3-hydroxybutanal'], ['enolát acetaldehydu + propanal', '3-hydroxypentanal'], ['enolát propanalu + acetaldehyd', '3-hydroxy-2-methylbutanal'], ['enolát propanalu + propanal', '3-hydroxy-2-methylpentanal']] })}
+        <p class="aside">Methyl na C2 přinesl vždy enolát propanalu. Slajd končí u čtyř aldolů. Při zahřátí by každý z nich ještě odštěpil vodu (všechny mají α-H) a ze směsi by byly čtyři enaly.</p>
+        <p>Čistá smíšená aldolová kondenzace potřebuje partnera <b>bez α-H</b>. Benzaldehyd je jen akceptor, aceton jen donor. S NaOH aceton zkondenzuje na obou methylech a cestou vzniknou čtyři produkty: aldol, benzalaceton, druhý aldol a nakonec dibenzalaceton.</p>
+        ${FH_LES.ord({ q: 'produkty v pořadí, jak vznikají při přípravě dibenzalacetonu.', top: 'první', bottom: 'poslední', items: [['4-hydroxy-4-fenylbutan-2-on', 'první aldol: enolát acetonu + benzaldehyd'], ['benzalaceton', 'odštěpení vody (E1cB)'], ['5-hydroxy-1,5-difenylpent-1-en-3-on', 'druhý aldol: enolát benzalacetonu + benzaldehyd'], ['dibenzalaceton', 'druhé odštěpení vody']] })}
+        ${dba ? schemeHTML({ from: dba.from, reag: dba.reag, to: dba.to }) + stepsHTML(dba) : ''}`;
+        })())
+        + sec('3. Claisenova kondenzace', `<p>U esteru po adici enolátu <b>odstoupí alkoxid</b> a vznikne <b>β-ketoester</b>. V zásaditém prostředí je hned deprotonovaný, proto se nakonec okyselí H₃O⁺. <b>Dieckmannova reakce</b> je intramolekulární Claisen diesteru a dá cyklický β-ketoester.</p>`)
+        + sec('4. Michaelova adice a Robinsonova anelace', `<p>Nukleofil se aduje na <b>β-uhlík</b> α,β-nenasyceného karbonylu (1,4-adice) a vznikne 1,5-dikarbonylová sloučenina. Ve Storkově reakci je nukleofilem enamin z ketonu a sekundárního aminu.</p>
         <p><b>Robinsonova anelace</b> = Michaelova adice + intramolekulární aldolová kondenzace, výsledkem je nový šestičlenný kruh s enonem.</p>`) },
     { id: 't19a', topic: 't19', mem: [0, 1, 2, 10, 11, 12], n: 1, min: 5, t: 'Aminy: bazicita a příprava',
       goal: 'Po lekci rozlišíš primární, sekundární a terciární amin, seřadíš aminy podle bazicity a vybereš vhodnou cestu k čistému aminu.',
