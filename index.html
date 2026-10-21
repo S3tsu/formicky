@@ -16869,14 +16869,14 @@ function registerTopic(T) {
         steps: [
           { via: 'NaOH', to: [PM(ST.enolatAcetonu), PT('H₂O')], t: 'Hydroxid odtrhne α-H acetonu. pKa acetonu je 19,3 a vody 16, takže vznikne jen trochu enolátu.' },
           { via: 'PhCHO', to: [PM(ST.alkoxidBzAc)], t: 'Enolát se aduje na C=O benzaldehydu. Benzaldehyd nemá α-H, je jen akceptor.' },
-          { via: 'H₂O', to: [PFN('4-hydroxy-4-fenylbutan-2-on'), PT('⁻OH')], t: '1. produkt: alkoxid vezme proton z vody a vznikne první aldol (β-hydroxyketon).' },
+          { via: 'H₂O', to: [PFN('4-hydroxy-4-fenylbutan-2-on'), PT('⁻OH')], t: 'První produkt: alkoxid vezme proton z vody a vznikne první aldol (β-hydroxyketon).' },
           { via: '⁻OH', to: [PM(ST.enolatHydroxyBzAc), PT('H₂O')], t: 'Hydroxid odtrhne α-H mezi C=O a C–OH. Vznikne enolát aldolu.' },
-          { via: '−⁻OH (E1cB)', to: [PFN('4-fenylbut-3-en-2-on'), PT('⁻OH')], t: '2. produkt: enolát vytlačí sousední ⁻OH a vznikne benzalaceton. C=C je konjugovaná s jádrem i s C=O.' },
+          { via: '−⁻OH (E1cB)', to: [PFN('4-fenylbut-3-en-2-on'), PT('⁻OH')], t: 'Druhý produkt: enolát vytlačí sousední ⁻OH a vznikne benzalaceton. C=C je konjugovaná s jádrem i s C=O.' },
           { via: '⁻OH', to: [PM(ST.enolatBzAc), PT('H₂O')], t: 'Druhý methyl benzalacetonu má pořád kyselé α-H. Hydroxid ho odtrhne a vznikne nový enolát.' },
           { via: 'PhCHO', to: [PM(ST.alkoxidDba)], t: 'Enolát se aduje na C=O druhé molekuly benzaldehydu. Vznikne alkoxid.' },
-          { via: 'H₂O', to: [PFN('5-hydroxy-1,5-difenylpent-1-en-3-on'), PT('⁻OH')], t: '3. produkt: protonace dá druhý aldol.' },
+          { via: 'H₂O', to: [PFN('5-hydroxy-1,5-difenylpent-1-en-3-on'), PT('⁻OH')], t: 'Třetí produkt: protonace dá druhý aldol.' },
           { via: '⁻OH', to: [PM(ST.enolatAldolDba), PT('H₂O')], t: 'Hydroxid odtrhne α-H mezi C=O a C–OH. Vznikne enolát druhého aldolu.' },
-          { via: '−⁻OH (E1cB)', to: [PFN('dibenzalaceton'), PT('⁻OH')], t: '4. produkt: odejde ⁻OH a vznikne dibenzalaceton. Konjugace přes celou molekulu táhne rovnováhu k produktu.' }
+          { via: '−⁻OH (E1cB)', to: [PFN('dibenzalaceton'), PT('⁻OH')], t: 'Čtvrtý produkt: odejde ⁻OH a vznikne dibenzalaceton. Konjugace přes celou molekulu táhne rovnováhu k produktu.' }
         ] },
       { id: 'a44', set: 'base', fam: 'ad', title: 'Smíšená aldolizace acetaldehydu a propanalu', prompt: 'Co všechno vznikne?', from: [PFN('acetaldehyd'), PFN('propanal')], reag: 'báze', to: [PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')],
         wrong: [[PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PM(W.hydroxyhexanal3)], [PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylpentanal'), PM(W.hydroxybutanal2)],
