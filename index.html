@@ -16902,10 +16902,10 @@ function registerTopic(T) {
         why: 'Nejdřív vzniknou čtyři aldoly (2 donory × 2 akceptory). Všechny mají H na α-uhlíku, takže každý odštěpí vodu a dá konjugovaný enal: C=C mezi α a β uhlíkem.',
         steps: [
           { via: 'báze', to: [PFN('aldol'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')], t: 'Smíšená aldolizace: oba aldehydy jsou donor i akceptor, vzniknou čtyři aldoly.' },
-          { via: '−H₂O (E1cB)', to: [PFN('but-2-enal')], t: '3-Hydroxybutanal odštěpí vodu: but-2-enal (krotonaldehyd).' },
-          { via: '−H₂O (E1cB)', to: [PFN('pent-2-enal')], t: '3-Hydroxypentanal odštěpí vodu: pent-2-enal.' },
-          { via: '−H₂O (E1cB)', to: [PFN('2-methylbut-2-enal')], t: '3-Hydroxy-2-methylbutanal odštěpí vodu: 2-methylbut-2-enal. Methyl zůstane na α-uhlíku.' },
-          { via: '−H₂O (E1cB)', to: [PFN('2-methylpent-2-enal')], t: '3-Hydroxy-2-methylpentanal odštěpí vodu: 2-methylpent-2-enal.' }
+          { via: '3-hydroxybutanal\n−H₂O (E1cB)', to: [PFN('but-2-enal'), PFN('3-hydroxypentanal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')], t: '3-Hydroxybutanal odštěpí vodu: but-2-enal (krotonaldehyd). Ostatní aldoly zatím zůstávají.' },
+          { via: '3-hydroxypentanal\n−H₂O (E1cB)', to: [PFN('but-2-enal'), PFN('pent-2-enal'), PFN('3-hydroxy-2-methylbutanal'), PFN('3-hydroxy-2-methylpentanal')], t: '3-Hydroxypentanal odštěpí vodu: pent-2-enal.' },
+          { via: '3-hydroxy-2-methylbutanal\n−H₂O (E1cB)', to: [PFN('but-2-enal'), PFN('pent-2-enal'), PFN('2-methylbut-2-enal'), PFN('3-hydroxy-2-methylpentanal')], t: '3-Hydroxy-2-methylbutanal odštěpí vodu: 2-methylbut-2-enal. Methyl zůstane na α-uhlíku.' },
+          { via: '3-hydroxy-2-methylpentanal\n−H₂O (E1cB)', to: [PFN('but-2-enal'), PFN('pent-2-enal'), PFN('2-methylbut-2-enal'), PFN('2-methylpent-2-enal')], t: '3-Hydroxy-2-methylpentanal odštěpí vodu: 2-methylpent-2-enal. Ze směsi jsou teď čtyři enaly.' }
         ] },
       { id: 'a34', set: 'base', fam: 'ad', title: 'Intramolekulárně z 1,4-diketonu', from: [PFN('hexan-2,5-dion')], reag: 'NaOH, ethanol', to: [PFN('3-methylcyklopent-2-en-1-on'), PT('H₂O')],
         wrong: [[PM(W.cyklopropen)], [PFN('3-methylcyklohex-2-en-1-on')], [PM(W.meCPenon2)]], wrongReag: ['1. LiAlH₄\n2. H₃O⁺', 'Br₂, CH₃COOH', 'NaOEt, pak CH₃I'],
