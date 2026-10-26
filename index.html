@@ -1497,6 +1497,25 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ci-row .n{color:var(--muted)}
 .ci-row .s{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:640px){.ci-row{grid-template-columns:1fr auto}.ci-row .p,.ci-row .n{grid-column:1/-1}.ci-row .s{grid-row:1;grid-column:2}}
+.ci-deg{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:8px}
+.ci-deg h3{margin:0;font:700 1.02rem/1.25 var(--f-display)}
+.ci-deg>p{margin:0;color:var(--muted);font-size:.9rem}
+.ci-dr{display:grid;grid-template-columns:minmax(0,1.1fr) repeat(3,minmax(0,1fr));gap:4px 14px;padding-top:8px;border-top:1px solid var(--line);font-size:.93rem;align-items:start}
+.ci-dr.hd{font:700 .8rem var(--f-body);color:var(--muted);letter-spacing:.03em;border-top:0;padding-top:0}
+.ci-dr .r{font-family:var(--f-chem);font-weight:700;white-space:pre-line}
+.ci-dr .k{display:none;font:700 .72rem/1 var(--f-body);color:var(--accent);margin-right:6px}
+@media (max-width:640px){.ci-dr{grid-template-columns:minmax(0,1fr)}.ci-dr.hd{display:none}.ci-dr .k{display:inline}}
+.ci-jr-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.ci-jr-bar input{flex:1 1 220px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
+.ci-jr-bar span{color:var(--muted);font-size:.88rem}
+.ci-jr-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:10px;align-items:start}
+.ci-jr{gap:6px}
+.ci-jr h3{margin:0;font:700 1.05rem/1.25 var(--f-display)}
+.ci-jr .ex{font-size:.8rem;color:var(--muted);font-weight:600;margin-top:6px}
+.ci-jr .aside{color:var(--muted);font-size:.88rem}
+.ci-sheet table{border-collapse:collapse;width:100%;margin-bottom:10px;font-size:12px}
+.ci-sheet th,.ci-sheet td{border:1px solid #e7d9dc;padding:3px 5px;text-align:left;vertical-align:top}
+.ci-sheet th{background:#fbf3f5}
 .ci-pav{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
 .ci-pav svg{display:block;width:100%;min-width:700px;height:auto}
 .ci-mol line,.ci-mol polygon{stroke:var(--ink)}
@@ -1849,6 +1868,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
     <div class="seg" id="ciSeg" role="group" aria-label="Zobrazení">
       <button type="button" data-v="web">Přehled</button>
       <button type="button" data-v="list">List papíru</button>
+      <button type="button" data-v="jr">Jmenné reakce</button>
     </div>
     <button type="button" class="btn sm" id="ciPrint" hidden>Tisk / PDF</button>
   </div>
@@ -36414,7 +36434,15 @@ if (/^#analyticka/.test(location.hash)) show();
       ['X₂, hν', 'z alkanu', 'radikálová halogenace (P3, P9)', 'Př PS', 'R-', 1],
       ['NBS, hν, CCl₄', 'z alkenu (allylová poloha)', 'allylová bromace (P9/10)', 'Př Sem', 'R-=', 1]] }
   ] },
-  { id: 'alkoholy', label: 'Alkoholy', short: 'alkohol', center: 'R--OH', groups: [
+  { id: 'alkoholy', label: 'Alkoholy', short: 'alkohol', center: 'R--OH', deg: { t: 'Činidlo', d: 'Primární alkohol má OH na uhlíku s jedním dalším uhlíkem, sekundární se dvěma, terciární se třemi. Stejné činidlo pak dá různé produkty nebo reaguje jinak rychle.', rows: [
+    ['PCC, CH₂Cl₂', 'aldehyd', 'keton', 'nereaguje (na C–OH není H)'],
+    ['CrO₃, H₃O⁺ (KMnO₄)', 'karboxylová kyselina (přes aldehyd)', 'keton', 'nereaguje'],
+    ['HCl, HBr, HI', 'pomalu, SN2', 'SN1 i SN2, možné přesmyky', 'rychle už za studena, SN1'],
+    ['Lucasovo činidlo (HCl, ZnCl₂)', 'zákal nevznikne', 'zákal asi za 5 minut', 'zákal hned'],
+    ['SOCl₂ nebo PBr₃', 'dobře, SN2', 'dobře, SN2 s inverzí', 'nevhodné, raději HX'],
+    ['H₂SO₄, teplo (dehydratace)', 'nejtěžší, vysoká teplota (E2)', 'mírnější teplota (E1)', 'nejsnáz, nejnižší teplota (E1)'],
+    ['příprava z karbonylu redukcí\n(NaBH₄, LiAlH₄)', 'z aldehydu, kyseliny nebo esteru', 'z ketonu', 'redukcí nevznikne'],
+    ['příprava Grignardem\n(R′MgX, pak H₃O⁺)', 'z formaldehydu nebo ethylenoxidu', 'z aldehydu', 'z ketonu nebo esteru']] }, groups: [
     { t: 'Kyselost: vznik alkoholátu', d: 'Alkoholy jsou slabé kyseliny (pKa 16–18), deprotonuje je silná báze.', rows: [
       ['Na (K), nebo NaH (THF)', 'alkoholát', 'uvolní se H₂ (P13)', 'Př PS Sem', 'R--O⁻ + Na⁺']] },
     { t: 'Náhrada OH (na halogenalkan a tosylát)', d: 'OH je špatně odstupující skupina, proto se protonuje nebo převede na lepší.', rows: [
@@ -36719,7 +36747,14 @@ if (/^#analyticka/.test(location.hash)) show();
       ['1. NH₂OH 2. Ac₂O', 'z aldehydu', 'oxim aldehydu se dehydratuje (P19)', 'Př Sem', 'R-=O', 1],
       ['CuCN (KCN)', 'z arendiazoniové soli', 'Sandmeyerova reakce (P19)', 'Př PS', 'Ar:1=N₂⁺', 1]] }
   ] },
-  { id: 'aminy', label: 'Aminy', short: 'amin', center: 'R--NH₂', groups: [
+  { id: 'aminy', label: 'Aminy', short: 'amin', center: 'R--NH₂', deg: { t: 'Činidlo', d: 'Primární amin má na dusíku jeden uhlík (R–NH₂), sekundární dva (R₂NH), terciární tři (R₃N). Kolik vodíků na dusíku zbývá, rozhoduje o produktu.', rows: [
+    ['HNO₂ (NaNO₂, HCl, 0–5 °C)', 'arylamin: diazoniová sůl; alkylamin: N₂ + alkohol a alken', 'N-nitrosamin (žlutý olej)', 'alkylamin jen sůl; arylamin nitrosace jádra do para'],
+    ['RCOCl nebo (RCO)₂O, pyridin', 'N-substituovaný amid', 'N,N-disubstituovaný amid', 'nereaguje (na N není H)'],
+    ['PhSO₂Cl, NaOH (Hinsberg)', 'sulfonamid, rozpustí se v NaOH', 'sulfonamid, v NaOH nerozpustný', 'nereaguje'],
+    ['aldehyd nebo keton, H⁺', 'imin', 'enamin', 'nereaguje'],
+    ['R′X (SN2)', 'sekundární amin, dál směs', 'terciární amin', 'kvarterní amoniová sůl'],
+    ['bazicita ve vodě (alkylaminy)', 'střední', 'nejvyšší', 'nižší (horší solvatace)'],
+    ['příprava', 'Gabriel, azid, redukce nitrilu, amidu nebo nitroskupiny, Hofmann', 'reduktivní aminace z 1° aminu, redukce N-substituovaného amidu', 'reduktivní aminace z 2° aminu, redukce N,N-disubstituovaného amidu']] }, groups: [
     { t: 'Bazicita', d: 'Volný elektronový pár dusíku přijme proton.', rows: [
       ['HCl (H₃O⁺)', 'amonná sůl', 'sůl je rozpustná ve vodě, NaOH uvolní amin zpět (P19)', 'Př PS', 'R--NH₃⁺ + Cl⁻']] },
     { t: 'Acylace a sulfonace', d: '', rows: [
@@ -36807,6 +36842,64 @@ if (/^#analyticka/.test(location.hash)) show();
     { t: 'Příprava fosgenu (šipka dovnitř)', prep: 1, d: '', rows: [
       ['CO + Cl₂, hν (aktivní uhlí)', 'z CO a chloru', 'průmyslová výroba, fosgen je velmi jedovatý (P29)', 'Př PS', 'CO + Cl₂', 1]] }
   ] }
+  ];
+
+  /* jmenné reakce: [název, karty 'téma:id' z REACTIONS, poznámka] */
+  const JR = [
+    ['Arndtova–Eistertova syntéza', ['t19:a67'], 'Prodloužení kyseliny o jeden uhlík přes diazoketon a Wolffův přesmyk (P19).'],
+    ['Baeyerova–Villigerova oxidace', ['fd:d18'], 'Keton na ester, cyklický keton na lakton (P15, P17).'],
+    ['Beckmannův přesmyk', ['t19:a61'], 'Oxim ketonu na amid, z cyklohexanon-oximu kaprolaktam (P19).'],
+    ['Bischlerova–Napieralského syntéza', ['t22:a32'], 'Isochinoliny z N-acyl-β-fenethylaminů (P22).'],
+    ['Buchwaldova–Hartwigova reakce', ['t20:a41'], 'Vazba C–N z arylhalogenidu a aminu, Pd katalýza (P20).'],
+    ['Cannizzarova reakce', ['t15:a47'], 'Aldehyd bez α-H v koncentrovaném louhu: kyselina + alkohol (P15).'],
+    ['Claisenova kondenzace', ['t18:a36', 't18:a37'], 'Dva estery dají β-ketoester (P18).'],
+    ['Claisenův přesmyk', ['t23:a27'], 'Allyl(aryl)ether zahřátím na o-allylfenol, [3,3] (P14, P23).'],
+    ['Copeho přesmyk', ['t23:a30', 't23:x10'], '[3,3]-sigmatropní přesmyk 1,5-dienu (P23).'],
+    ['Coreyho–Chaykovského reakce', ['t15:a41'], 'Sírový ylid s ketonem dá epoxid (P15).'],
+    ['Curtiův přesmyk', ['t19:a15'], 'Acylazid přes isokyanát na amin (P19, P29).'],
+    ['Čičibabinova reakce', ['t22:a28'], 'Aminace pyridinu amidem sodným (P22).'],
+    ['Dieckmannova kondenzace', ['t18:a38'], 'Claisenova kondenzace uvnitř jedné molekuly, cyklický β-ketoester (P18).'],
+    ['Dielsova–Alderova reakce', ['t23:a17', 't23:x4'], 'Dien + dienofil, šestičlenný kruh v jednom kroku (P11, P23).'],
+    ['Edmanovo odbourávání', ['t25:x7'], 'Postupné odštěpování N-koncové aminokyseliny fenylisothiokyanátem (P25).'],
+    ['Finkelsteinova reakce', ['t09:x9'], 'Výměna halogenu za jod v acetonu (P9).'],
+    ['Fischerova esterifikace', ['fd:d16'], 'Kyselina + alkohol, kysele katalyzováno, vratné (P17).'],
+    ['Fischerova syntéza indolu', ['t22:a18'], 'Fenylhydrazon v kyselém prostředí na indol (P22).'],
+    ['Friedelova–Craftsova acylace', ['fd:d3'], 'Acylchlorid + AlCl₃, aryl keton bez přesmyku (P12, P17).'],
+    ['Friedelova–Craftsova alkylace', ['t12:a9'], 'Halogenalkan + AlCl₃, karbokation se může přesmyknout (P12).'],
+    ['Gabrielova syntéza', ['t19:a9', 't19:a10'], 'Čistý primární amin přes ftalimid (P19).'],
+    ['Grignardova reakce', ['t13:a16'], 'Organohořečnaté činidlo s karbonylem dá alkohol (P13, P15, P20).'],
+    ['Hantzschova syntéza', ['t22:a20'], 'Dihydropyridiny z aldehydu, β-ketoesteru a amoniaku (P22).'],
+    ['Hellova–Volhardova–Zelinského reakce', ['t18:a6'], 'α-Bromace kyseliny přes acylbromid (P18).'],
+    ['Henryho reakce', ['t19:a52'], 'Nitroaldolová reakce nitroalkanu s aldehydem (P19).'],
+    ['Hiyamova reakce', ['t20:a44'], 'Cross-coupling organokřemičitých sloučenin, Pd a fluorid (P20).'],
+    ['Hofmannova eliminace', ['t19:a21'], 'Kvarterní amoniový hydroxid zahřátím na méně substituovaný alken (P19).'],
+    ['Hofmannovo odbourávání', ['t19:a13'], 'Amid + Br₂, NaOH na amin o jeden uhlík kratší (P19).'],
+    ['Huisgenova cykloadice', ['t23:a22'], 'Azid + alkyn na triazol, 1,3-dipolární cykloadice (P23).'],
+    ['Jurjevova reakce', ['t22:a6', 't22:a7'], 'Přeměna furanu na pyrrol nebo thiofen (P22).'],
+    ['Kilianiho–Fischerova syntéza', ['t24:a19'], 'Prodloužení řetězce aldosy o jeden uhlík (P24).'],
+    ['Koenigsova–Knorrova reakce', ['t24:a10'], 'Glykosidová vazba z glykosylhalogenidu a Ag₂O (P24).'],
+    ['Kolbeho–Schmittova reakce', ['ck:r9'], 'Fenolát + CO₂ na kyselinu salicylovou (P16).'],
+    ['Kumadova reakce', ['t20:a36'], 'Cross-coupling Grignardova činidla, Ni katalýza (P20).'],
+    ['Lossenovo odbourávání', ['t19:a16'], 'Hydroxamová kyselina přes isokyanát na amin (P19).'],
+    ['Michaelova adice', ['t18:a40'], 'Enolát se aduje 1,4 na α,β-nenasycený karbonyl (P18).'],
+    ['Mizorokiho–Heckova reakce', ['t20:a38'], 'Arylhalogenid + alken, Pd katalýza (P20).'],
+    ['Negishiho reakce', ['t20:a43'], 'Cross-coupling organozinečnatých sloučenin (P20).'],
+    ['Paalova–Knorrova syntéza', ['t22:a8', 't22:a9'], '1,4-Dikarbonyl na pyrrol nebo furan (P22).'],
+    ['Reformatského reakce', ['t20:a32'], 'α-Bromester + Zn + karbonyl na β-hydroxyester (P20).'],
+    ['Reimerova–Tiemannova reakce', ['t15:a9'], 'Fenol + CHCl₃ v louhu na salicylaldehyd (P15).'],
+    ['Robinsonova anelace', ['t18:a43'], 'Michaelova adice a aldolová kondenzace, nový cyklohexenon (P18).'],
+    ['Sandmeyerova reakce', ['t19:a41'], 'Diazoniová sůl + CuX na arylhalogenid nebo nitril (P19).'],
+    ['Simmonsova–Smithova reakce', ['t20:a31'], 'Alken + CH₂I₂, Zn(Cu) na cyklopropan (P6, P20).'],
+    ['Skraupova syntéza', ['t22:a30'], 'Chinolin z anilinu a glycerolu (P22).'],
+    ['Sonogashirova reakce', ['t20:a37'], 'Arylhalogenid + terminální alkyn, Pd a Cu (P20).'],
+    ['Stilleho reakce', ['t20:a42'], 'Cross-coupling organocíničitých sloučenin (P20).'],
+    ['Storkova enaminová reakce', ['t18:a42'], 'Enamin jako nukleofil místo enolátu (P18).'],
+    ['Suzukiho–Miyaurova reakce', ['t20:a35'], 'Arylhalogenid + boronová kyselina, Pd a báze (P20).'],
+    ['Williamsonova syntéza etherů', ['t09:x10'], 'Alkoholát + primární halogenalkan, SN2 (P9, P14).'],
+    ['Wittigova reakce', ['t15:a44'], 'Fosfoniový ylid vymění C=O za C=C (P15).'],
+    ['Wohlovo odbourávání', ['t24:a22'], 'Zkrácení aldosy o jeden uhlík (P24).'],
+    ['Wolffova–Kižněrova redukce', ['t15:a25'], 'C=O na CH₂ přes hydrazon v zásaditém prostředí (P15).'],
+    ['Wöhlerova syntéza močoviny', ['t01:a1'], 'Kyanatan amonný zahřátím na močovinu (P1).']
   ];
 
   /* --- vzorce v délkách vazby: a = atomy {x, y, l}, b = vazby [i, j, typ], typ 1/2/3 --- */
@@ -36943,7 +37036,7 @@ if (/^#analyticka/.test(location.hash)) show();
   };
 
   let cur = CH[0].id, view = 'web';
-  try { const v = JSON.parse(localStorage.getItem('fg-ci') || '{}'); if (CH.some(c => c.id === v.ch)) cur = v.ch; if (v.view === 'list') view = 'list'; } catch (e) { /* výchozí */ }
+  try { const v = JSON.parse(localStorage.getItem('fg-ci') || '{}'); if (CH.some(c => c.id === v.ch)) cur = v.ch; if (v.view === 'list' || v.view === 'jr') view = v.view; } catch (e) { /* výchozí */ }
   const keep = () => { try { localStorage.setItem('fg-ci', JSON.stringify({ ch: cur, view })); } catch (e) { /* nevadí */ } };
   const src = t => t.split(' ').map(s => `<span class="ci-src${s === '+' ? ' add' : ''}">${s}</span>`).join('');
   const render = () => {
@@ -36951,16 +37044,37 @@ if (/^#analyticka/.test(location.hash)) show();
     $c('#ciChips').innerHTML = CH.map(c => `<button type="button" data-ci="${c.id}" aria-pressed="${c.id === cur}">${c.label}</button>`).join('');
     $c('#ciSeg').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === view));
     $c('#ciPrint').hidden = view !== 'list';
+    $c('#ciChips').hidden = view === 'jr';
+    if (view === 'jr') { renderJR(); return; }
     if (view === 'list') {
-      $c('#ciView').innerHTML = `<div class="ci-sheet"><h2>${ch.label}: činidla</h2><p class="sub">Organická chemie · FormičkyHub · v${typeof FH_VER !== 'undefined' ? FH_VER : ''}</p><div class="cols">${ch.groups.map(g => `<div class="b${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><ul>${g.rows.map(r => `<li><b>${r[0].replace(/\n/g, ' ')}</b> → ${r[1]} <i>· ${r[2]}</i></li>`).join('')}</ul></div>`).join('')}</div><div class="pv">${spider(ch, 'l')}</div></div>`;
+      $c('#ciView').innerHTML = `<div class="ci-sheet"><h2>${ch.label}: činidla</h2><p class="sub">Organická chemie · FormičkyHub · v${typeof FH_VER !== 'undefined' ? FH_VER : ''}</p>${ch.deg ? `<table><tr><th>${ch.deg.t}</th><th>primární (1°)</th><th>sekundární (2°)</th><th>terciární (3°)</th></tr>${ch.deg.rows.map(r => `<tr><td><b>${r[0].replace(/\n/g, ' ')}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}</table>` : ''}<div class="cols">${ch.groups.map(g => `<div class="b${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><ul>${g.rows.map(r => `<li><b>${r[0].replace(/\n/g, ' ')}</b> → ${r[1]} <i>· ${r[2]}</i></li>`).join('')}</ul></div>`).join('')}</div><div class="pv">${spider(ch, 'l')}</div></div>`;
       return;
     }
     $c('#ciView').innerHTML = `<div class="ci-legend"><span><span class="ci-src">Př</span> přednáška (P6/45 = přednáška 6, slajd 45)</span><span><span class="ci-src">PS</span> pracovní sešit</span><span><span class="ci-src">Sem</span> semináře</span><span><span class="ci-src add">+</span> doplněno z obecné chemie</span></div>
+      ${ch.deg ? `<section class="ci-deg"><h3>Primární, sekundární, terciární</h3><p>${ch.deg.d}</p><div class="ci-dr hd" aria-hidden="true"><span>${ch.deg.t}</span><span>primární (1°)</span><span>sekundární (2°)</span><span>terciární (3°)</span></div>${ch.deg.rows.map(r => `<div class="ci-dr"><span class="r">${r[0]}</span>${[1, 2, 3].map(k => `<span><b class="k">${k}°</b>${r[k]}</span>`).join('')}</div>`).join('')}</section>` : ''}
       ${ch.groups.map(g => `<section class="ci-grp${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><p>${g.d}</p>${g.rows.map(r => `<div class="ci-row"><span class="r">${r[0]}</span><span class="p">→ ${r[1]}</span><span class="n">${r[2]}</span><span class="s">${src(r[3])}</span></div>`).join('')}</section>`).join('')}
       <h2 class="fam-h">Pavouček: ${ch.label}</h2>
       <p class="hint" style="margin:0;color:var(--muted)">Růžové šipky vedou ven (reakce), tyrkysové dovnitř (příprava). Na šipkách jsou všechna činidla z tabulky výše, „nebo“ odděluje jiné cesty ke stejnému produktu. Na telefonu pavouček posuneš prstem do strany.</p>
       <div class="ci-pav">${spider(ch, 'w')}</div>`;
   };
+  /* --- jmenné reakce: karty s mechanismem z lekcí organické chemie (REACTIONS), mechanismus se rozklikne --- */
+  const rxBy = k => REACTIONS.find(r => r.topic + ':' + r.id === k);
+  const jrKey = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  let jrQ = '';
+  const renderJR = () => {
+    const items = JR.map(([n, refs, note]) => ({ n, note, rs: refs.map(rxBy).filter(Boolean) })).filter(x => x.rs.length)
+      .sort((a, b) => a.n.localeCompare(b.n, 'cs'));
+    $c('#ciView').innerHTML = `<div class="ci-jr-bar"><input type="search" id="ciJrQ" placeholder="Hledat reakci, např. Wittig" aria-label="Hledat jmennou reakci" value="${esc(jrQ)}"><span id="ciJrN"></span></div>
+      <p class="hint" style="margin:0;color:var(--muted)">U každé reakce vidíš výchozí látky, činidlo a produkt. Mechanismus otevřeš pod schématem („Postup a meziprodukty“).</p>
+      <div class="ci-jr-list">${items.map(x => `<article class="rx ci-jr" data-q="${esc(jrKey(x.n + ' ' + x.rs.map(r => r.reag + ' ' + r.title).join(' ')))}"><h3>${x.n}</h3>${x.note ? `<p class="aside">${x.note}</p>` : ''}${x.rs.map((r, i) => `${x.rs.length > 1 ? `<div class="ex">${i ? 'Další příklad' : 'Příklad'}: ${esc(r.title)}</div>` : ''}${schemeHTML({ from: r.from, reag: r.reag, to: r.to })}<p class="aside">${esc(r.why)}</p>${stepsHTML(r)}`).join('')}</article>`).join('')}</div>`;
+    filterJR();
+  };
+  const filterJR = () => {
+    const q = jrKey(jrQ.trim()); let n = 0;
+    $c('#ciView').querySelectorAll('.ci-jr').forEach(a => { const ok = !q || a.dataset.q.includes(q); a.hidden = !ok; n += ok; });
+    const s = $c('#ciJrN'); if (s) s.textContent = `${n} ${n === 1 ? 'reakce' : n > 1 && n < 5 ? 'reakce' : 'reakcí'}`;
+  };
+  document.addEventListener('input', e => { if (e.target.id === 'ciJrQ') { jrQ = e.target.value; filterJR(); } });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-ci]'); if (b) { cur = b.dataset.ci; keep(); render(); return; }
     const v = e.target.closest('#ciSeg [data-v]'); if (v) { view = v.dataset.v; keep(); render(); return; }
