@@ -36263,101 +36263,355 @@ if (/^#analyticka/.test(location.hash)) show();
 /* ===== Činidla podle funkčních skupin (samostatná sekce #cinidla) ===== */
 (function () {
   const $c = s => document.querySelector(s);
-  /* zdroje: Př = přednáška (P6/45 = přednáška 6, slajd 45), PS = pracovní sešit, Sem = obrázky ze seminářů, + = doplněno z obecné chemie */
-  const CH = [{
-    id: 'alkeny', label: 'Alkeny', center: 'alken',
-    groups: [
-      { t: 'Hydrogenace (redukce C=C)', d: 'Vodík se přidá na oba uhlíky z jedné strany (syn).', rows: [
-        ['H₂, Pd/C\n(H₂, PtO₂ – Adamsův kat.)', 'alkan', 'syn-adice na povrchu kovu (P6/45)', 'Př PS Sem']] },
-      { t: 'Adice halogenovodíku (hydrohalogenace)', d: 'Přes karbokation, takže pozor na přesmyky.', rows: [
-        ['HCl nebo HBr, ether', 'halogenalkan', 'Markovnikov: X na víc substituovaný uhlík (P6/21–23)', 'Př PS Sem'],
-        ['KI, H₃PO₄', 'jodalkan', 'HI vzniká přímo ve směsi (P6/21)', 'Př'],
-        ['HBr, ROOR (peroxidy)', 'bromalkan', 'anti-Markovnikov, radikálová, jen s HBr; v přednáškách není', 'Sem +']] },
-      { t: 'Halogenace', d: 'Přes cyklický bromoniový ion, proto anti.', rows: [
-        ['Br₂ nebo Cl₂\n(CH₂Cl₂)', 'vicinální dihalogenid', 'anti-adice, trans produkt (P6/32–34)', 'Př PS Sem']] },
-      { t: 'Tvorba halohydrinu', d: 'Voda otevře bromoniový ion z víc substituované strany.', rows: [
-        ['X₂, H₂O\n(Br₂ nebo Cl₂)', 'halohydrin + HX', 'OH na víc substituovaný uhlík, anti (P6/34)', 'Př PS Sem'],
-        ['NBS, H₂O, DMSO', 'bromhydrin', 'totéž, NBS je pohodlnější zdroj Br₂', '+']] },
-      { t: 'Hydratace (adice vody)', d: 'Tři cesty k alkoholu, liší se regioselektivitou.', rows: [
-        ['H₂O, H₃PO₄, 250 °C\n(obecně H–A, H₂O)', 'alkohol', 'Markovnikov, přes karbokation, přesmyky (P6/36–37)', 'Př Sem'],
-        ['1. Hg(OAc)₂, H₂O, THF\n2. NaBH₄', 'alkohol', 'hydroxymerkurace: Markovnikov bez přesmyku (P6/40)', 'Př PS Sem'],
-        ['1. BH₃, THF\n2. H₂O₂, ⁻OH, H₂O', 'alkohol', 'hydroborace: anti-Markovnikov, syn-adice H a OH (P6/39–40)', 'Př PS Sem']] },
-      { t: 'Oxidace bez štěpení vazby', d: 'Z C=C vznikne epoxid nebo 1,2-diol.', rows: [
-        ['mCPBA (RCOOOH),\nCH₂Cl₂, 25 °C', 'epoxid', 'stereospecifická, konfigurace alkenu zůstane (P14/12)', 'Př PS Sem'],
-        ['1. Cl₂, H₂O\n2. NaOH, H₂O', 'epoxid', 'přes chlorhydrin (P14/13)', 'Př'],
-        ['1. mCPBA\n2. H₃O⁺', 'trans-1,2-diol', 'voda otevře epoxid zezadu, anti (P14/14)', 'Př PS'],
-        ['1. OsO₄, pyridin\n2. NaHSO₃, H₂O', 'cis-1,2-diol', 'syn přes cyklický osmiát (P6/47)', 'Př PS Sem'],
-        ['KMnO₄ zředěný,\nchladný, ⁻OH', 'cis-1,2-diol', 'syn; v kyselém prostředí už štěpí; v přednáškách není', '+']] },
-      { t: 'Oxidační štěpení C=C', d: 'Dvojná vazba se rozpůlí a na obou koncích vznikne C=O.', rows: [
-        ['1. O₃, CH₂Cl₂, −78 °C\n2. Zn, AcOH, H₂O', 'aldehydy a ketony', 'ozonolýza (P6/48); v seminářích i 2. (CH₃)₂S', 'Př PS Sem'],
-        ['KMnO₄, H₃O⁺', 'ketony a karboxylové kyseliny', '=CH₂ skončí jako CO₂ (P6/49)', 'Př Sem'],
-        ['HIO₄ na 1,2-diol', 'aldehydy a ketony', 'štěpí diol, ne přímo alken (P6/47)', 'Př']] },
-      { t: 'Cyklopropanace (adice karbenu)', d: 'Karben se přidá na obě strany C=C najednou.', rows: [
-        ['CH₂I₂, Zn(Cu)', 'cyklopropan', 'Simmonsova–Smithova reakce, karbenoid (P6/44)', 'Př PS Sem'],
-        ['CHCl₃, KOH', '1,1-dichlorcyklopropan', 'přes dichlorkarben :CCl₂ (P6/43)', 'Př PS Sem']] },
-      { t: 'Allylová substituce (radikálová)', d: 'C=C zůstane, brom jde na sousední uhlík.', rows: [
-        ['NBS, hν, CCl₄', 'allylbromid', 'vzniká směs, allylový radikál je delokalizovaný (P9/10)', 'Př PS Sem']] },
-      { t: 'Příprava alkenů (šipky dovnitř)', prep: 1, d: 'Odkud se alken bere.', rows: [
-        ['H₂SO₄, H₂O, THF, 50 °C\n(H₃O⁺, THF)', 'z alkoholu', 'dehydratace E1, Zajcev (P6/31, P13/23)', 'Př Sem'],
-        ['POCl₃ (pyridin)', 'z alkoholu', 'dehydratace (P15/35); pyridin doplněn', 'Př +'],
-        ['KOH, CH₃CH₂OH\n(EtONa, EtOH)', 'z halogenalkanu', 'dehydrohalogenace E2, Zajcev (P6/31, P9/55–69)', 'Př Sem'],
-        ['(CH₃)₃COK (t-BuOK)', 'z halogenalkanu', 'objemná báze, méně substituovaný alken (P9/67)', 'Př Sem'],
-        ['H₂, Lindlarův kat.\n(Pd/BaCO₃, Pb(OAc)₂, chinolin)', 'z alkynu', 'cis-alken (P7/18); v literatuře častěji Pd/CaCO₃', 'Př Sem'],
-        ['Li (Na), NH₃ (l)', 'z alkynu', 'trans-alken (P7/20)', 'Př Sem'],
-        ['Ph₃P⁺–CH₂⁻, THF (Wittig)', 'z aldehydu nebo ketonu', 'C=O se změní na C=C (P15/33–35)', 'Př'],
-        ['CF₃COOH, 0 °C', 'z terc-butyletheru', 'štěpení etheru na 2-methylpropen (P14/9)', 'Př'],
-        ['850–900 °C', 'z alkanů', 'krakování v průmyslu (P6/3)', 'Př']] }
-    ],
-    /* pavouček: [činidla (| = nový řádek), vzorec, popisek, 1 = šipka dovnitř] */
-    spokes: [
-      ['H₂, Pd/C|nebo H₂, PtO₂', 'alkan', 'alkan · syn'],
-      ['HCl nebo HBr, ether|nebo KI, H₃PO₄', 'hx', 'Markovnikov'],
-      ['HBr, ROOR (+)', 'roor', 'anti-Markovnikov, radikálová'],
-      ['Br₂ nebo Cl₂ (CH₂Cl₂)', 'x2', '1,2-dihalogenid · anti'],
-      ['X₂, H₂O|nebo NBS, H₂O, DMSO (+)', 'halohydrin', 'halohydrin · anti'],
-      ['H₂O, H₃PO₄, 250 °C', 'olM', 'alkohol · Markovnikov, přesmyky'],
-      ['1. Hg(OAc)₂, H₂O, THF|2. NaBH₄', 'olM', 'alkohol · Markovnikov, bez přesmyku'],
-      ['1. BH₃, THF|2. H₂O₂, ⁻OH', 'olA', 'alkohol · anti-Markovnikov, syn'],
-      ['mCPBA, CH₂Cl₂|nebo 1. Cl₂, H₂O 2. NaOH', 'epox', 'epoxid'],
-      ['1. OsO₄, pyridin 2. NaHSO₃|nebo KMnO₄ chladný, ⁻OH (+)|nebo 1. mCPBA 2. H₃O⁺', 'diol', '1,2-diol · syn, z mCPBA anti'],
-      ['1. O₃, CH₂Cl₂, −78 °C|2. Zn, AcOH, H₂O|nebo 1. OsO₄ 2. HIO₄', 'ozon', 'aldehyd + formaldehyd'],
-      ['KMnO₄, H₃O⁺', 'acid', 'kyselina + CO₂'],
-      ['CH₂I₂, Zn(Cu)', 'cp', 'cyklopropan'],
-      ['CHCl₃, KOH', 'ccl2', '1,1-dichlorcyklopropan'],
-      ['NBS, hν, CCl₄', 'allyl', 'allylbromid'],
-      ['850–900 °C', 'inAlk', 'krakování', 1],
-      ['Ph₃P⁺–CH₂⁻, THF', 'inAld', 'aldehyd (Wittig)', 1],
-      ['H₂, Lindlar → cis|Li, NH₃ → trans', 'inYn', 'alkyn', 1],
-      ['KOH, EtOH|nebo EtONa, EtOH|nebo t-BuOK', 'inBr', 'halogenalkan (E2)', 1],
-      ['H₂SO₄, H₂O, THF|nebo POCl₃, pyridin', 'inOl', 'alkohol (dehydratace)', 1]
-    ]
-  }];
+  /* Kapitoly. Řádek: [činidla (\n = další krok), produkt, poznámka, zdroje, vzorec produktu pro pavouček, 1 = šipka dovnitř (příprava)].
+     Řádky se stejným vzorcem se v pavoučkovi spojí na jednu šipku („nebo“), takže pavouček ukáže všechna činidla z tabulky.
+     Zdroje: Př = přednáška (P6/45 = přednáška 6, slajd 45; jen „P9“ = podle lekce na webu, slajd se ještě ověří),
+     PS = pracovní sešit, Sem = obrázky ze seminářů, + = doplněno z obecné chemie (v přednáškách není). */
+  const CH = [
+  { id: 'alkany', label: 'Alkany a cykloalkany', short: 'alkan', center: 'R-H', groups: [
+    { t: 'Radikálová substituce', d: 'Jediné, co alkany ochotně dělají. Řetězová reakce přes radikály, vzniká směs produktů.', rows: [
+      ['Cl₂, hν (nebo teplo)', 'chloralkan', 'málo selektivní, i polychlorace (P3)', 'Př PS', 'R-Cl'],
+      ['Br₂, hν', 'bromalkan', 'selektivní: přednostně terciární H (P3)', 'Př PS', 'R-Br'],
+      ['HNO₃, 400 °C (NO₂)', 'nitroalkan', 'radikálová nitrace, štěpí i C–C (P3)', 'Př PS', 'R-NO₂'],
+      ['Cl₂, SO₂, hν', 'alkansulfonylchlorid', 'sulfochlorace (P3)', 'Př PS', 'R-SO₂Cl'],
+      ['O₂, SO₂, hν', 'alkansulfonová kyselina', 'sulfoxidace (P3)', 'Př PS', 'R-SO₃H']] },
+    { t: 'Oxidace a štěpení', d: 'Za drsných podmínek.', rows: [
+      ['O₂, zapálení', 'CO₂ + H₂O', 'hoření (P3)', 'Př', 'CO₂ + H₂O'],
+      ['850–900 °C', 'alkeny + H₂', 'krakování (P6/3)', 'Př', 'alkeny + H₂']] },
+    { t: 'Otevření malých kruhů', d: 'Cyklopropan a cyklobutan mají napětí, které reakcí uvolní.', rows: [
+      ['H₂, Ni, teplo', 'propan', 'cyklopropan se hydrogenací otevře', 'PS +', 'propan'],
+      ['Br₂ (HBr)', '1,3-dibrompropan', 'adice s otevřením kruhu', 'PS +', 'Br----Br']] },
+    { t: 'Příprava alkanů (šipky dovnitř)', prep: 1, d: 'Odkud se alkan bere.', rows: [
+      ['H₂, Pd/C (Pt, PtO₂)', 'z alkenu nebo alkynu', 'hydrogenace (P6/45, P7)', 'Př PS Sem', 'R-=', 1],
+      ['1. Mg, ether\n2. H₂O (D₂O)', 'z halogenalkanu', 'Grignardovo činidlo se protonuje (s D₂O vznikne R–D) (P9, P20)', 'Př Sem', 'R-X', 1],
+      ['Zn, H⁺ (LiAlH₄)', 'z halogenalkanu', 'redukce C–X', '+', 'R-X', 1],
+      ['R′₂CuLi, ether', 'z halogenalkanu', 'Coreyova–Houseova reakce, prodlouží řetězec (P20)', 'Př', 'R-X', 1],
+      ['H₂NNH₂, KOH, teplo', 'z ketonu nebo aldehydu', 'Wolffova–Kižněrova redukce C=O na CH₂ (P15)', 'Př Sem', 'R-(=O)-', 1],
+      ['Zn(Hg), HCl', 'z ketonu nebo aldehydu', 'Clemmensenova redukce', '+', 'R-(=O)-', 1],
+      ['H₂, Ra-Ni', 'z thiolu, sulfidu, dithiolanu', 'odsíření (P14)', 'Př Sem', 'R-SH', 1]] }
+  ] },
+  { id: 'alkeny', label: 'Alkeny', short: 'alken', center: 'R-=', groups: [
+    { t: 'Hydrogenace (redukce C=C)', d: 'Vodík se přidá na oba uhlíky z jedné strany (syn).', rows: [
+      ['H₂, Pd/C\n(H₂, PtO₂ – Adamsův kat.)', 'alkan', 'syn-adice na povrchu kovu (P6/45)', 'Př PS Sem', 'R--']] },
+    { t: 'Adice halogenovodíku (hydrohalogenace)', d: 'Přes karbokation, takže pozor na přesmyky.', rows: [
+      ['HCl nebo HBr, ether', 'halogenalkan', 'Markovnikov: X na víc substituovaný uhlík (P6/21–23)', 'Př PS Sem', 'R-(X)-'],
+      ['KI, H₃PO₄', 'jodalkan', 'HI vzniká přímo ve směsi (P6/21)', 'Př', 'R-(X)-'],
+      ['HBr, ROOR (peroxidy)', 'bromalkan', 'anti-Markovnikov, radikálová, jen s HBr; v přednáškách není', 'Sem +', 'R---Br']] },
+    { t: 'Halogenace', d: 'Přes cyklický bromoniový ion, proto anti.', rows: [
+      ['Br₂ nebo Cl₂ (CH₂Cl₂)', 'vicinální dihalogenid', 'anti-adice, trans produkt (P6/32–34)', 'Př PS Sem', 'R-(X)--X']] },
+    { t: 'Tvorba halohydrinu', d: 'Voda otevře bromoniový ion z víc substituované strany.', rows: [
+      ['X₂, H₂O (Br₂ nebo Cl₂)', 'halohydrin', 'OH na víc substituovaný uhlík, anti (P6/34)', 'Př PS Sem', 'R-(OH)--X'],
+      ['NBS, H₂O, DMSO', 'bromhydrin', 'totéž, NBS je pohodlnější zdroj Br₂', '+', 'R-(OH)--X']] },
+    { t: 'Hydratace a alkoxylace', d: 'Cesty k alkoholu a etheru, liší se regioselektivitou.', rows: [
+      ['H₂O, H₃PO₄, 250 °C\n(obecně H–A, H₂O)', 'alkohol', 'Markovnikov, přes karbokation, přesmyky (P6/36–37)', 'Př Sem', 'R-(OH)-'],
+      ['1. Hg(OAc)₂, H₂O, THF\n2. NaBH₄', 'alkohol', 'hydroxymerkurace: Markovnikov bez přesmyku (P6/40)', 'Př PS Sem', 'R-(OH)-'],
+      ['1. Hg(OAc)₂, CH₃OH\n2. NaBH₄', 'ether', 'alkoxymerkurace; s CH₃OH vznikne methylether (P14)', 'Př Sem', 'R-(OCH₃)-'],
+      ['1. BH₃, THF\n2. H₂O₂, ⁻OH, H₂O', 'alkohol', 'hydroborace: anti-Markovnikov, syn-adice H a OH (P6/39–40)', 'Př PS Sem', 'R---OH']] },
+    { t: 'Oxidace bez štěpení vazby', d: 'Z C=C vznikne epoxid nebo 1,2-diol.', rows: [
+      ['mCPBA (RCOOOH), CH₂Cl₂', 'epoxid', 'stereospecifická, konfigurace alkenu zůstane (P14/12)', 'Př PS Sem', 'epox'],
+      ['1. Cl₂, H₂O\n2. NaOH, H₂O', 'epoxid', 'přes chlorhydrin (P14/13)', 'Př', 'epox'],
+      ['1. mCPBA\n2. H₃O⁺', 'trans-1,2-diol', 'voda otevře epoxid zezadu, anti (P14/14)', 'Př PS', 'R-(OH)--OH'],
+      ['1. OsO₄, pyridin\n2. NaHSO₃, H₂O', 'cis-1,2-diol', 'syn přes cyklický osmiát (P6/47)', 'Př PS Sem', 'R-(OH)--OH'],
+      ['KMnO₄ zředěný, chladný, ⁻OH', 'cis-1,2-diol', 'syn; v kyselém prostředí už štěpí; v přednáškách není', '+', 'R-(OH)--OH']] },
+    { t: 'Oxidační štěpení C=C', d: 'Dvojná vazba se rozpůlí a na obou koncích vznikne C=O.', rows: [
+      ['1. O₃, CH₂Cl₂, −78 °C\n2. Zn, AcOH, H₂O', 'aldehydy a ketony', 'ozonolýza (P6/48)', 'Př PS Sem', 'R-=O + H₂C=O'],
+      ['1. O₃\n2. (CH₃)₂S (DMS)', 'aldehydy a ketony', 'jiná redukce ozonidu, v seminářích', 'Sem', 'R-=O + H₂C=O'],
+      ['1. OsO₄\n2. HIO₄', 'aldehydy a ketony', 'HIO₄ štěpí 1,2-diol (P6/47)', 'Př', 'R-=O + H₂C=O'],
+      ['KMnO₄, H₃O⁺', 'ketony a karboxylové kyseliny', '=CH₂ skončí jako CO₂ (P6/49)', 'Př Sem', 'R-(=O)-OH + CO₂']] },
+    { t: 'Cyklopropanace (adice karbenu)', d: 'Karben se přidá na obě strany C=C najednou.', rows: [
+      ['CH₂I₂, Zn(Cu)', 'cyklopropan', 'Simmonsova–Smithova reakce, karbenoid (P6/44)', 'Př PS Sem', 'cp'],
+      ['CHCl₃, KOH', '1,1-dichlorcyklopropan', 'přes dichlorkarben :CCl₂ (P6/43)', 'Př PS Sem', 'cx2'],
+      ['CHBr₃, KOH', '1,1-dibromcyklopropan', 'totéž s dibromkarbenem', 'Sem', 'cx2']] },
+    { t: 'Allylová substituce (radikálová)', d: 'C=C zůstane, halogen jde na sousední uhlík.', rows: [
+      ['NBS, hν, CCl₄', 'allylbromid', 'vzniká směs, allylový radikál je delokalizovaný (P9/10)', 'Př PS Sem', 'allyl'],
+      ['Br₂ (Cl₂), hν', 'allylhalogenid', 'za nízké koncentrace halogenu', 'Sem', 'allyl']] },
+    { t: 'Příprava alkenů (šipky dovnitř)', prep: 1, d: 'Odkud se alken bere.', rows: [
+      ['H₂SO₄, H₂O, THF, 50 °C\n(H₃O⁺, THF; H₃PO₄, teplo)', 'z alkoholu', 'dehydratace E1, Zajcev (P6/31, P13/23)', 'Př PS Sem', 'R---OH', 1],
+      ['POCl₃ (pyridin)', 'z alkoholu', 'dehydratace (P15/35); pyridin doplněn', 'Př +', 'R---OH', 1],
+      ['KOH, CH₃CH₂OH\n(EtONa, EtOH)', 'z halogenalkanu', 'dehydrohalogenace E2, Zajcev (P6/31, P9/55–69)', 'Př Sem', 'R---Br', 1],
+      ['(CH₃)₃COK (t-BuOK)', 'z halogenalkanu', 'objemná báze, méně substituovaný alken (P9/67)', 'Př Sem', 'R---Br', 1],
+      ['H₂, Lindlarův kat.\n(Pd/BaCO₃, Pb(OAc)₂, chinolin)', 'z alkynu', 'cis-alken (P7/18); v literatuře častěji Pd/CaCO₃', 'Př Sem', 'R-#', 1],
+      ['Li (Na), NH₃ (l)', 'z alkynu', 'trans-alken (P7/20)', 'Př Sem', 'R-#', 1],
+      ['Ph₃P⁺–CH₂⁻, THF', 'z aldehydu nebo ketonu', 'Wittigova reakce: C=O se změní na C=C (P15/33–35)', 'Př', 'R-=O', 1],
+      ['CF₃COOH, 0 °C', 'z terc-butyletheru', 'štěpení etheru na 2-methylpropen (P14/9)', 'Př Sem', 'Me₃C-O-R', 1],
+      ['850–900 °C', 'z alkanů', 'krakování v průmyslu (P6/3)', 'Př', 'alkany', 1]] }
+  ] },
+  { id: 'alkyny', label: 'Alkyny', short: 'alkyn', center: 'R-#', groups: [
+    { t: 'Hydrogenace', d: 'Podle katalyzátoru se zastaví u alkenu, nebo dojde až k alkanu.', rows: [
+      ['H₂ (2 ekv.), Pd/C', 'alkan', 'úplná hydrogenace (P7/18)', 'Př PS Sem', 'R--'],
+      ['H₂, Lindlarův kat.\n(Pd/BaCO₃, Pb(OAc)₂, chinolin)', 'cis-alken', 'syn-adice, zastaví se u alkenu (P7/18); v literatuře Pd/CaCO₃', 'Př PS Sem', 'R-='],
+      ['Li (Na), NH₃ (l)', 'trans-alken', 'redukce alkalickým kovem (P7/20)', 'Př PS Sem', 'R-=']] },
+    { t: 'Adice halogenovodíku a halogenu', d: 'Jako u alkenů, jen dvakrát: po 1 ekv. vznikne halogenalken.', rows: [
+      ['HBr (1 ekv.)\n(HCl, CH₃COOH)', 'halogenalken', 'Markovnikov (P7)', 'Př PS', 'R-(X)=', ],
+      ['2 HBr (nadbytek)', 'geminální dihalogenid', 'oba X na stejný uhlík (P7)', 'Př PS', 'R-(X)(X)-'],
+      ['Br₂ (1 ekv.), CH₂Cl₂', '1,2-dibromalken', 'anti, převážně E (P7)', 'Př PS', 'R-(Br)=-Br'],
+      ['2 Br₂ (nadbytek)', 'tetrabromalkan', 'adice dvakrát (P7)', 'Př', 'R-(Br)(Br)-(Br)(Br)']] },
+    { t: 'Hydratace', d: 'Vznikne enol, který se hned přesmykne na karbonyl (tautomerie).', rows: [
+      ['H₂O, H₂SO₄, HgSO₄', 'methylketon', 'Markovnikov, přes enol (P7)', 'Př PS Sem', 'R-(=O)-'],
+      ['1. BH₃, THF\n2. H₂O₂, NaOH, H₂O', 'aldehyd', 'anti-Markovnikov; u terminálního alkynu aldehyd (P7)', 'Př PS Sem', 'R--=O']] },
+    { t: 'Oxidační štěpení', d: 'Trojná vazba se rozštěpí na dvě karboxylové kyseliny.', rows: [
+      ['KMnO₄ nebo 1. O₃ 2. H₂O', 'karboxylové kyseliny', 'terminální C skončí jako CO₂ (P7)', 'Př PS', 'R-(=O)-OH + CO₂']] },
+    { t: 'Kyselost a alkylace acetylidu', d: 'Terminální alkyn (pKa 25) se deprotonuje silnou bází a acetylid je nukleofil.', rows: [
+      ['NaNH₂ (BuLi, NaH)', 'acetylid', 'deprotonace terminálního alkynu (P7)', 'Př PS Sem', 'R-#C⁻ + Na⁺'],
+      ['1. NaNH₂\n2. R′–Br (primární)', 'vnitřní alkyn', 'SN2, prodloužení řetězce; sekundární R–X dá eliminaci (P7)', 'Př PS Sem', 'R-#-R′'],
+      ['CH₃MgBr (R–MgX)', 'alkynylmagnesiumhalogenid', 'acidobazická reakce, uvolní se alkan (Sem)', 'Sem', 'R-#-MgX'],
+      ['1. NaNH₂\n2. aldehyd/keton\n3. H₃O⁺', 'propargylalkohol', 'acetylid se aduje na C=O', 'Sem +', 'R-#-(OH)-R′']] },
+    { t: 'Příprava alkynů (šipky dovnitř)', prep: 1, d: 'Z dihalogenidů dvojí eliminací.', rows: [
+      ['2 KOH, ethanol (teplo)\nnebo 2 NaNH₂', 'z vicinálního nebo geminálního dihalogenidu', 'dvě E2 za sebou (P7)', 'Př PS', 'R-(Br)--Br', 1],
+      ['1. 3 NaNH₂\n2. H₃O⁺', 'z dihalogenidu (terminální alkyn)', 'třetí ekvivalent odtrhne H z terminálního alkynu, kyselina ho vrátí (P7)', 'Př', 'R-(Br)--Br', 1],
+      ['1. NaNH₂ 2. R–X', 'z acetylenu', 'alkylace acetylidu (P7)', 'Př', 'H-#-H', 1]] }
+  ] },
+  { id: 'dieny', label: 'Konjugované dieny', short: 'dien', center: '=-=', groups: [
+    { t: 'Elektrofilní adice: 1,2 nebo 1,4', d: 'Allylový karbokation je delokalizovaný, proto dva produkty.', rows: [
+      ['HBr, 0 °C (nízká teplota)', '1,2-adukt', 'kinetický produkt (P11)', 'Př PS', '-(Br)-='],
+      ['HBr, 40 °C (vyšší teplota)', '1,4-adukt', 'termodynamický produkt (P11)', 'Př PS', '-=--Br'],
+      ['Br₂, 25 °C', 'dibromalkeny (1,2 a 1,4)', 'směs, při vyšší teplotě víc 1,4 (P11)', 'Př', 'Br--=--Br'],
+      ['HCl, ether (HCl nadbytek)', 'chloralkeny (dichloralkany)', 'stejný princip (P11)', 'Př', '-(Cl)-=']] },
+    { t: 'Dielsova–Alderova reakce', d: 'Dien + dienofil (alken s akceptorem) dá šestičlenný kruh v jednom kroku.', rows: [
+      ['dienofil (např. propenal, maleinanhydrid), zahřívání', 'cyklohexen', '[4+2] cykloadice, s-cis dien, endo pravidlo (P11, P23)', 'Př PS', 'DA']] },
+    { t: 'Další reakce', d: '', rows: [
+      ['H₂, Pd/C (2 H₂)', 'alken / alkan', 'hydrogenace (P11)', 'Př', '---'],
+      ['Zieglerův–Nattův katalyzátor', 'polymer (kaučuk)', 'polymerace dienů (P11)', 'Př', 'polymer'],
+      ['NBS, CCl₄', 'allylbromid', 'allylová bromace (P11)', 'Př', 'R-(Br)-=']] },
+    { t: 'Příprava dienů (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['K⁺ ⁻OC(CH₃)₃, HOC(CH₃)₃', 'z allylhalogenidu (eliminace)', 'E2 z allylového halogenidu (P11)', 'Př', 'Br---=', 1],
+      ['600 °C, katalyzátor (Al₂O₃)', 'z butanu nebo butenu', 'dehydrogenace v průmyslu (P11)', 'Př', 'butan', 1]] }
+  ] },
+  { id: 'halogenalkany', label: 'Halogenalkany', short: 'halogenalkan', center: 'R--X', groups: [
+    { t: 'Nukleofilní substituce (SN2, SN1)', d: 'Nukleofil nahradí halogen. Primární SN2 (inverze), terciární SN1 (racemizace). SN2 rády polární aprotická rozpouštědla (DMSO, DMF, aceton).', rows: [
+      ['NaOH nebo KOH, H₂O (⁻OH)', 'alkohol', 'SN2 u primárních (P9)', 'Př PS Sem', 'R--OH'],
+      ['H₂O (Ag₂O, H₂O)', 'alkohol', 'SN1 u terciárních, solvolýza (P9)', 'Př Sem', 'R--OH'],
+      ['R′O⁻ Na⁺ (CH₃ONa, EtONa)', 'ether', 'Williamsonova syntéza, jen primární R–X, jinak E2 (P9, P14)', 'Př PS Sem', 'R--O-R′'],
+      ['CH₃COONa, DMF\n(RCOOH, K₂CO₃)', 'ester', 'karboxylát jako nukleofil (P9)', 'Př Sem', 'R--O-(=O)-R′'],
+      ['NaCN nebo KCN, DMSO', 'nitril', 'prodloužení řetězce o 1 C (P9, P16)', 'Př PS Sem', 'R--C≡N'],
+      ['NaN₃, DMF (DMSO, HMPA)', 'alkylazid', 'azid se pak redukuje na amin (P9, P19)', 'Př Sem', 'R--N₃'],
+      ['NaSH (HS⁻)', 'thiol', 'nadbytek, jinak vzniká sulfid (P9, P14)', 'Př PS Sem', 'R--SH'],
+      ['1. thiomočovina\n2. NaOH, H₂O', 'thiol', 'přes isothiouroniovou sůl, bez sulfidu (PS kap. 10)', 'PS Sem', 'R--SH'],
+      ['R′S⁻ Na⁺ (CH₃SNa)', 'sulfid', 'thiolát je výborný nukleofil (P9)', 'Př PS Sem', 'R--S-R′'],
+      ['R′₂S (sulfid)', 'sulfoniová sůl', 'S-alkylace', 'Sem', 'R--S⁺(R′)-R′'],
+      ['NaI, aceton', 'jodalkan', 'Finkelsteinova reakce, NaCl/NaBr se vysráží (P9)', 'Př Sem', 'R--I'],
+      ['NH₃ (nadbytek)', 'amin', 'směs aminů, lepší Gabriel nebo azid (P9, P19)', 'Př', 'R--NH₂'],
+      ['1. ftalimid draselný, DMF\n2. ⁻OH, H₂O', 'primární amin', 'Gabrielova syntéza (P19)', 'Př', 'R--NH₂'],
+      ['R′C≡C⁻ Na⁺', 'alkyn', 'alkylace acetylidu (P7)', 'Př PS', 'R--#-R′'],
+      ['R′₂CuLi, ether', 'alkan', 'Coreyova–Houseova reakce (P20)', 'Př', 'R--R′'],
+      ['benzen, AlCl₃ (FeCl₃, AlBr₃)', 'alkylbenzen', 'Friedelova–Craftsova alkylace, pozor na přesmyk (P12)', 'Př PS Sem', 'R--Ph']] },
+    { t: 'Eliminace (E2, E1)', d: 'Silná báze odtrhne β-H. Zajcev: víc substituovaný alken; objemná báze: Hofmann.', rows: [
+      ['KOH, ethanol, teplo\n(EtONa, EtOH)', 'alken', 'E2, Zajcev (P9)', 'Př PS Sem', 'R-='],
+      ['(CH₃)₃COK, (CH₃)₃COH', 'alken', 'E2, objemná báze: méně substituovaný alken (P9/67)', 'Př PS Sem', 'R-='],
+      ['EtOH nebo H₂O, teplo', 'alken', 'E1 u terciárních, doprovází SN1 (P9/63)', 'Př PS Sem', 'R-=']] },
+    { t: 'Organokovová činidla', d: 'Uhlík se z δ+ změní na δ− (nukleofil a silná báze).', rows: [
+      ['Mg, ether (THF)', 'Grignardovo činidlo', 'R–MgX (P9, P20)', 'Př Sem', 'R--MgX'],
+      ['2 Li, pentan', 'organolithná sloučenina', 'R–Li (P20)', 'Př', 'R--Li'],
+      ['1. 2 Li\n2. CuI', 'Gilmanovo činidlo', 'R₂CuLi (P20)', 'Př', 'R₂CuLi'],
+      ['1. Mg, ether\n2. H₂O (D₂O)', 'alkan', 'protonace Grignardu (s D₂O R–D) (P20)', 'Př Sem', 'R--H']] },
+    { t: 'Příprava halogenalkanů (šipky dovnitř)', prep: 1, d: 'Hlavně z alkoholů a alkenů.', rows: [
+      ['HCl, HBr nebo HI (teplo)', 'z alkoholu', 'terciární SN1 (přesmyky), primární SN2 (P9, P13)', 'Př PS Sem', 'R--OH', 1],
+      ['SOCl₂, pyridin', 'z alkoholu', 'chlorid, SN2 s inverzí; bez pyridinu retence (P9, P13)', 'Př PS Sem', 'R--OH', 1],
+      ['PBr₃, ether', 'z alkoholu', 'bromid, SN2 (P9, P13)', 'Př PS Sem', 'R--OH', 1],
+      ['PCl₅ (PCl₃)', 'z alkoholu', 'chlorid (P9)', 'Př PS Sem', 'R--OH', 1],
+      ['1. TsCl, pyridin\n2. NaX', 'z alkoholu', 'tosylát odstupuje lépe než OH (P9)', 'Př Sem', 'R--OH', 1],
+      ['HX nebo X₂', 'z alkenu', 'adice (viz Alkeny)', 'Př PS Sem', 'R-=', 1],
+      ['X₂, hν', 'z alkanu', 'radikálová halogenace (P3, P9)', 'Př PS', 'R-', 1],
+      ['NBS, hν, CCl₄', 'z alkenu (allylová poloha)', 'allylová bromace (P9/10)', 'Př Sem', 'R-=', 1]] }
+  ] },
+  { id: 'alkoholy', label: 'Alkoholy', short: 'alkohol', center: 'R--OH', groups: [
+    { t: 'Kyselost: vznik alkoholátu', d: 'Alkoholy jsou slabé kyseliny (pKa 16–18), deprotonuje je silná báze.', rows: [
+      ['Na (K), nebo NaH (THF)', 'alkoholát', 'uvolní se H₂ (P13)', 'Př PS Sem', 'R--O⁻ + Na⁺']] },
+    { t: 'Náhrada OH (na halogenalkan a tosylát)', d: 'OH je špatně odstupující skupina, proto se protonuje nebo převede na lepší.', rows: [
+      ['HCl, HBr, HI', 'halogenalkan', 'terciární snadno (SN1), primární pomalu (P13)', 'Př PS Sem', 'R--X'],
+      ['SOCl₂, pyridin', 'chloralkan', 'SN2 s inverzí; SOCl₂ bez pyridinu retence (P13)', 'Př PS Sem', 'R--X'],
+      ['PBr₃ (PCl₃, PCl₅)', 'bromalkan, chloralkan', 'SN2 (P13)', 'Př PS Sem', 'R--X'],
+      ['TsCl, pyridin (Et₃N)', 'tosylát', 'konfigurace se nemění, tosylát pak SN2 nebo E2; TsCl není chlorační činidlo (P13)', 'Př Sem', 'R--OTs']] },
+    { t: 'Dehydratace', d: 'Kyselina a teplo, Zajcev, přesmyky karbokationtu.', rows: [
+      ['H₂SO₄ nebo H₃PO₄, teplo', 'alken', 'E1, terciární nejsnáz (P13)', 'Př PS Sem', 'R-='],
+      ['POCl₃, pyridin, 0 °C', 'alken', 'E2, bez přesmyku (P13)', 'Př', 'R-='],
+      ['H₂SO₄, 140 °C (primární)', 'ether', 'symetrický ether ze dvou molekul (P14)', 'Př PS', 'R--O--R']] },
+    { t: 'Oxidace', d: 'Primární → aldehyd → kyselina, sekundární → keton, terciární nereagují.', rows: [
+      ['PCC, CH₂Cl₂', 'aldehyd (z primárního)', 'mírné činidlo, zastaví se u aldehydu (P13)', 'Př PS Sem', 'R-=O'],
+      ['CrO₃, H₃O⁺, aceton (Jones)\nnebo Na₂Cr₂O₇, H₂SO₄', 'karboxylová kyselina (z primárního)', 'silné oxidovadlo, až na maximální stupeň (P13)', 'Př PS Sem', 'R-(=O)-OH'],
+      ['CrO₃, H₃O⁺ nebo PCC', 'keton (ze sekundárního)', '(P13)', 'Př PS Sem', 'R-(=O)-R′']] },
+    { t: 'Ethery, estery, acetaly', d: 'Alkohol jako nukleofil.', rows: [
+      ['1. NaH\n2. R′–X (primární)', 'ether', 'Williamsonova syntéza (P14)', 'Př PS Sem', 'R--O-R′'],
+      ['R′COOH, H⁺ (kat.), teplo', 'ester', 'Fischerova esterifikace, rovnováha (P16)', 'Př PS', 'R--O-(=O)-R′'],
+      ['R′COCl (anhydrid), pyridin', 'ester', 'acylace, rychlá a úplná (P17)', 'Př Sem', 'R--O-(=O)-R′'],
+      ['aldehyd nebo keton, H⁺', 'acetal (ketal)', 'dvě molekuly alkoholu, chrání C=O (P15)', 'Př Sem', 'R-(OR′)-OR′']] },
+    { t: 'Příprava alkoholů (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['H₂O, H₂SO₄ nebo\n1. Hg(OAc)₂, H₂O 2. NaBH₄', 'z alkenu (Markovnikov)', '(P6, P13)', 'Př PS Sem', 'R-=', 1],
+      ['1. BH₃, THF\n2. H₂O₂, ⁻OH', 'z alkenu (anti-Markovnikov)', '(P6, P13)', 'Př PS Sem', 'R-=', 1],
+      ['NaBH₄, EtOH (pak H₃O⁺)', 'z aldehydu nebo ketonu', 'redukuje jen aldehydy a ketony (P13, P15)', 'Př PS Sem', 'R-=O', 1],
+      ['1. LiAlH₄, ether\n2. H₃O⁺', 'z aldehydu, ketonu, esteru, kyseliny', 'silné redukční činidlo (P13, P16, P17)', 'Př PS Sem', 'R-(=O)-OR′', 1],
+      ['1. R′MgBr, ether\n2. H₃O⁺', 'z aldehydu nebo ketonu', 'formaldehyd → primární, aldehyd → sekundární, keton → terciární (P13, P20)', 'Př PS Sem', 'R′-=O', 1],
+      ['1. 2 R′MgBr\n2. H₃O⁺', 'z esteru (terciární alkohol)', 'Grignard se aduje dvakrát (P13, P17)', 'Př Sem', 'R-(=O)-OR′', 1],
+      ['1. R′MgBr (R′Li)\n2. H₃O⁺', 'z epoxidu', 'alkohol o 2 C delší (P14, P20)', 'Př Sem', 'epoxC', 1],
+      ['NaOH, H₂O (H₂O u terciárních)', 'z halogenalkanu', 'SN2 / SN1 (P9)', 'Př PS Sem', 'R--X', 1]] }
+  ] },
+  { id: 'fenoly', label: 'Fenoly', short: 'fenol', center: 'Ar:1=OH', groups: [
+    { t: 'Kyselost', d: 'Fenoly (pKa 10) jsou kyselejší než alkoholy, stačí NaOH.', rows: [
+      ['NaOH, H₂O', 'fenolát', 'fenoxidový ion je stabilizovaný konjugací (P13)', 'Př PS', 'Ar:1=O⁻ Na⁺']] },
+    { t: 'Reakce na kyslíku', d: 'Ve slabě bazickém prostředí bez Lewisovy kyseliny.', rows: [
+      ['CH₃I, NaOH (K₂CO₃)\nnebo 1. NaH 2. R–X', 'arylalkylether (anisol)', 'O-alkylace (P13, P14)', 'Př PS Sem', 'Ar:1=OR'],
+      ['1. NaH\n2. epoxid 3. H₃O⁺', '2-fenoxyethanol', 'fenolát otevře epoxid', 'Sem', 'Ar:1=OCH₂CH₂OH'],
+      ['CH₃COCl, Et₃N (pyridin)\nnebo (CH₃CO)₂O', 'arylester (fenylacetát)', 'O-acylace (P13, P17)', 'Př PS Sem', 'Ar:1=OCOCH₃'],
+      ['TsCl, pyridin', 'aryltosylát', '(Sem)', 'Sem', 'Ar:1=OTs'],
+      ['1. NaH 2. allylbromid\n3. zahřátí (250 °C)', '2-allylfenol', 'Claisenův přesmyk (P14)', 'Př Sem', 'Ar:1=OH,2=CH₂CH=CH₂']] },
+    { t: 'SEAr na jádře', d: 'OH silně aktivuje a diriguje do o- a p-polohy.', rows: [
+      ['Br₂, H₂O', '2,4,6-tribromfenol', 'tak aktivní jádro, že reaguje bez katalyzátoru', 'PS +', 'Ar:1=OH,2=Br,4=Br,6=Br'],
+      ['Br₂ (CH₂Cl₂, nízká teplota)', 'o- a p-bromfenol', 'monobromace; v semináři s AlBr₃, ten u fenolu není potřeba', 'Sem', 'Ar:1=OH,4=Br'],
+      ['HNO₃ (zřed.) nebo HNO₃, H₂SO₄', 'o- a p-nitrofenol', '(P12, P13)', 'Př Sem', 'Ar:1=OH,4=NO₂'],
+      ['SO₃, H₂SO₄', 'hydroxybenzensulfonová kyselina', '(P13)', 'Př', 'Ar:1=OH,4=SO₃H'],
+      ['1. CO₂, NaOH (tlak)\n2. H₃O⁺', 'kyselina salicylová', 'Kolbeho–Schmittova reakce (P16)', 'Př', 'Ar:1=OH,2=COOH']] },
+    { t: 'Oxidace', d: '', rows: [
+      ['Na₂Cr₂O₇, H₂SO₄\n(Fremyho sůl, KMnO₄)', 'p-benzochinon', '(P13; KMnO₄ v semináři)', 'Př PS Sem', 'chinon'],
+      ['1. Na₂Cr₂O₇\n2. SnCl₂, H₃O⁺', 'hydrochinon', 'chinon se zpět redukuje (P13)', 'Př Sem', 'Ar:1=OH,4=OH']] },
+    { t: 'Příprava fenolů (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['1. O₂\n2. H₃O⁺', 'z kumenu (isopropylbenzenu)', 'kumenový proces, vedlejší produkt aceton (P13)', 'Př Sem', 'Ar:1=CH(CH₃)₂', 1],
+      ['NaOH (KOH), 300 °C, pak H₃O⁺', 'z benzensulfonové kyseliny', 'alkalické tavení (P13)', 'Př Sem', 'Ar:1=SO₃H', 1],
+      ['NaOH, 340 °C, 18 MPa', 'z chlorbenzenu', 'SNAr přes benzyn (P12)', 'Př PS', 'Ar:1=Cl', 1],
+      ['H₂O, teplo\n(Cu₂O, Cu(NO₃)₂, H₂O)', 'z arendiazoniové soli', '(P19)', 'Př', 'Ar:1=N₂⁺', 1],
+      ['HBr (HI), teplo', 'z arylalkyletheru', 'vzniká fenol a halogenalkan, ne halogenbenzen (P14)', 'Př Sem', 'Ar:1=OCH₂CH₃', 1],
+      ['CF₃COOH', 'z terc-butylaryletheru', 'odchází 2-methylpropen (P14)', 'Př Sem', 'Ar:1=OC(CH₃)₃', 1]] }
+  ] },
+  { id: 'ethery', label: 'Ethery', short: 'ether', center: 'R-O-R′', groups: [
+    { t: 'Štěpení etherů', d: 'Ethery jsou málo reaktivní, štěpí je silné kyseliny.', rows: [
+      ['HBr nebo HI (nadbytek), teplo', 'halogenalkan + alkohol', 'SN2 u primárních, SN1 u terciárních (P14)', 'Př PS Sem', 'R-X + R′-OH'],
+      ['CF₃COOH, 0 °C', 'alken + alkohol', 'terc-butylether, E1 (P14/9)', 'Př Sem', 'R-OH + alken']] },
+    { t: 'Další reakce', d: '', rows: [
+      ['250 °C (allylarylether)', '2-allylfenol', 'Claisenův přesmyk (P14)', 'Př Sem', 'Ar:1=OH,2=CH₂CH=CH₂'],
+      ['O₂ (vzduch, světlo)', 'hydroperoxid', 'stáním vznikají výbušné peroxidy', '+', 'R-O-(OOH)-']] },
+    { t: 'Příprava etherů (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['1. NaH (Na)\n2. R′–X (primární)', 'z alkoholu', 'Williamsonova syntéza; sekundární a terciární R′X dají E2 (P14)', 'Př PS Sem', 'R-OH', 1],
+      ['Ag₂O, CH₃I', 'z alkoholu (sacharidy)', 'mírná varianta (P14)', 'Př', 'R-OH', 1],
+      ['H₂SO₄, 140 °C', 'ze dvou primárních alkoholů', 'symetrický ether (P14)', 'Př PS', 'R-OH', 1],
+      ['1. (CF₃COO)₂Hg, R′OH\n2. NaBH₄', 'z alkenu', 'alkoxymerkurace, Markovnikov (P14)', 'Př Sem', 'R-=', 1]] }
+  ] },
+  { id: 'epoxidy', label: 'Epoxidy', short: 'epoxid', center: 'epoxC', groups: [
+    { t: 'Otevření v kyselém prostředí', d: 'Protonovaný epoxid: nukleofil jde spíš na víc substituovaný uhlík (u terciárních), vždy anti.', rows: [
+      ['H₃O⁺ (zřed. kyselina)', 'trans-1,2-diol', '(P14)', 'Př PS', 'R-(OH)--OH'],
+      ['HX (HBr, HCl, HI)', 'halohydrin', 'u terciárního C jde X na terciární (P14)', 'Př Sem', 'R-(OH)--X']] },
+    { t: 'Otevření v bazickém prostředí (SN2)', d: 'Nukleofil jde na méně substituovaný uhlík.', rows: [
+      ['NaOH, H₂O, 100 °C', '1,2-diol', '(P14)', 'Př Sem', 'R-(OH)--OH'],
+      ['R′O⁻ Na⁺ (CH₃ONa, PhONa)', 'hydroxyether', '(P14)', 'Př Sem', 'R-(OH)--OR′'],
+      ['1. R′MgBr (R′Li)\n2. H₃O⁺', 'alkohol', 'C–C vazba, alkohol o 2 C delší (P14, P20)', 'Př Sem', 'R-(OH)--R′'],
+      ['1. NaCN (KCN)\n2. H₃O⁺', 'β-hydroxynitril', '(Sem)', 'Sem', 'R-(OH)--C≡N'],
+      ['1. NaI (KI)\n2. H₃O⁺', 'jodhydrin', '(Sem)', 'Sem', 'R-(OH)--I'],
+      ['1. R′SNa\n2. H₂O', 'β-hydroxysulfid', '(Sem)', 'Sem', 'R-(OH)--SR′'],
+      ['NH₃ (amin)', 'aminoalkohol', '(P14, P19)', 'Př', 'R-(OH)--NH₂'],
+      ['1. LiAlH₄\n2. H₃O⁺', 'alkohol', 'hydrid jde na méně substituovaný C (P14)', 'Př', 'R-(OH)-']] },
+    { t: 'Příprava epoxidů (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['mCPBA (RCOOOH), CH₂Cl₂, 25 °C', 'z alkenu', 'stereospecifická (P14/12)', 'Př PS Sem', 'R-=', 1],
+      ['O₂, Ag₂O, 300 °C', 'z ethenu', 'průmyslová výroba ethylenoxidu (P14/12)', 'Př', 'R-=', 1],
+      ['1. X₂, H₂O\n2. NaOH', 'z alkenu přes halohydrin', 'vnitřní SN2 (P14/13)', 'Př Sem', 'R-=', 1],
+      ['NaOH, teplo', 'z halohydrinu', '(P14, Sem)', 'Př Sem', 'R-(OH)--X', 1],
+      ['(CH₃)₃S⁺ I⁻, NaOH (KOH)', 'z aldehydu nebo ketonu', 'sulfoniový ylid (Coreyova–Chajkovského reakce)', 'Sem', 'R-=O', 1]] }
+  ] },
+  { id: 'thioly', label: 'Thioly a sulfidy', short: 'thiol', center: 'R-SH', groups: [
+    { t: 'Kyselost a alkylace', d: 'Thioly jsou kyselejší než alkoholy, thiolát je silný nukleofil.', rows: [
+      ['NaH (NaOH, KH)', 'thiolát', '(P14)', 'Př PS Sem', 'R-S⁻ + Na⁺'],
+      ['1. NaH\n2. R′–X (R′OTs)', 'sulfid', 'SN2 (P14)', 'Př PS Sem', 'R-S-R′']] },
+    { t: 'Oxidace síry', d: 'Thiol → disulfid; sulfid → sulfoxid → sulfon; thiol až na sulfonovou kyselinu.', rows: [
+      ['Br₂ nebo I₂ (O₂)', 'disulfid', 'mírná oxidace (P14)', 'Př PS Sem', 'R-S-S-R'],
+      ['1. NaH, R′X\n2. H₂O₂', 'sulfoxid', 'H₂O₂ zoxiduje sulfid jednou (P14)', 'Př PS Sem', 'R-S(=O)-R′'],
+      ['1. NaH, R′X\n2. RCOOOH (AcOOH, mCPBA)', 'sulfon', 'peroxykyselina až na sulfon (P14)', 'Př PS Sem', 'R-S(=O)(=O)-R′'],
+      ['mCPBA (HNO₃, KMnO₄)', 'sulfonová kyselina', 'thiol se oxiduje úplně (Sem)', 'Sem', 'R-S(=O)(=O)-OH'],
+      ['1. AcOOH (AcO₂H)\n2. PCl₃ (SOCl₂)', 'sulfonylchlorid', '(Sem)', 'Sem', 'R-S(=O)(=O)-Cl'],
+      ['1. NaH, CH₃I\n2. CH₃I', 'sulfoniová sůl', 'sulfid se alkyluje na síře (P14)', 'Př Sem', 'R-S⁺(CH₃)-CH₃']] },
+    { t: 'Odsíření', d: '', rows: [
+      ['H₂, Ra-Ni (Raneyův nikl)', 'alkan', 'C–S → C–H (P14)', 'Př Sem', 'R-H']] },
+    { t: 'Příprava thiolů (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['NaSH (Na⁺ ⁻SH)', 'z halogenalkanu', 'SN2, nadbytek (P14)', 'Př PS', 'R-X', 1],
+      ['1. thiomočovina\n2. NaOH, H₂O 3. H₃O⁺', 'z halogenalkanu', 'bez vedlejšího sulfidu (PS)', 'PS Sem', 'R-X', 1],
+      ['1. K₂S\n2. H₃O⁺', 'z halogenalkanu', '(Sem)', 'Sem', 'R-X', 1],
+      ['Zn, H⁺ (HCl, AcOH)', 'z disulfidu', 'redukce S–S (P14)', 'Př Sem', 'R-S-S-R', 1],
+      ['Zn, AcOH', 'ze sulfonylchloridu', 'redukce (Sem)', 'Sem', 'R-S(=O)(=O)-Cl', 1]] }
+  ] },
+  { id: 'areny', label: 'Areny (benzen)', short: 'benzen', center: 'Ar:', groups: [
+    { t: 'Elektrofilní aromatická substituce (SEAr)', d: 'Elektrofil nahradí H, aromaticita zůstane. Potřebuje katalyzátor. Substituenty I. řádu (alkyl, OH, OR, NH₂, halogeny) dirigují o-/p-, II. řádu (NO₂, COOH, CHO, COR, SO₃H, CN) do m-.', rows: [
+      ['Br₂, FeBr₃ (Fe)\nnebo Cl₂, FeCl₃ (AlCl₃)', 'halogenbenzen', 'halogenace (P12)', 'Př PS Sem', 'Ar:1=X'],
+      ['I₂, CuCl₂ (CuI)', 'jodbenzen', 'jod potřebuje oxidovadlo (P12)', 'Př Sem', 'Ar:1=X'],
+      ['HNO₃, H₂SO₄', 'nitrobenzen', 'nitrace, elektrofil NO₂⁺ (P12)', 'Př PS Sem', 'Ar:1=NO₂'],
+      ['SO₃, H₂SO₄ (oleum)', 'benzensulfonová kyselina', 'sulfonace, vratná (P12)', 'Př PS Sem', 'Ar:1=SO₃H'],
+      ['R–Cl, AlCl₃ (ZnCl₂, FeCl₃)\nnebo alken, H⁺', 'alkylbenzen', 'Friedelova–Craftsova alkylace: přesmyky, polyalkylace, ne u deaktivovaných jader (P12)', 'Př PS Sem', 'Ar:1=R'],
+      ['RCOCl, AlCl₃\n(anhydrid, AlCl₃)', 'aryl keton', 'Friedelova–Craftsova acylace, bez přesmyku (P12, P17)', 'Př PS Sem', 'Ar:1=COR']] },
+    { t: 'Dvoukrokové cesty (postranní řetězec)', d: 'Řetězec na jádře se dá dál upravit.', rows: [
+      ['1. RCOCl, AlCl₃\n2. H₂, Pd/C', 'alkylbenzen bez přesmyku', 'acylace + redukce C=O (P12)', 'Př', 'Ar:1=CH₂R'],
+      ['1. CH₃Cl, AlCl₃\n2. KMnO₄, H₂O, teplo', 'kyselina benzoová', 'alkyl s benzylovým H se oxiduje na COOH (P12, P16)', 'Př PS Sem', 'Ar:1=COOH'],
+      ['1. CH₃Cl, AlCl₃\n2. NBS, (PhCO₂)₂, CCl₄', 'benzylbromid', 'radikálová bromace v benzylové poloze (P12)', 'Př Sem', 'Ar:1=CH₂Br'],
+      ['1. HNO₃, H₂SO₄\n2. Fe (Sn), HCl nebo H₂, Pd', 'anilin', 'redukce nitroskupiny (P19)', 'Př Sem', 'Ar:1=NH₂'],
+      ['1. Cl₂, FeCl₃\n2. NaOH, 340 °C, 18 MPa', 'fenol', 'SNAr přes benzyn (P12)', 'Př PS', 'Ar:1=OH']] },
+    { t: 'Redukce jádra', d: '', rows: [
+      ['H₂, Pt (Rh/C), vysoký tlak', 'cyklohexan', 'aromát se hydrogenuje jen za drsných podmínek (P12)', 'Př Sem', 'cyhex']] },
+    { t: 'Zpět na benzen (šipky dovnitř)', prep: 1, d: '', rows: [
+      ['H₃O⁺ (zřed. H₂SO₄), teplo', 'z benzensulfonové kyseliny', 'desulfonace, sulfonace je vratná', '+', 'Ar:1=SO₃H', 1],
+      ['H₃PO₂', 'z arendiazoniové soli', 'N₂⁺ se nahradí H (P19)', 'Př', 'Ar:1=N₂⁺', 1]] }
+  ] }
+  ];
 
   /* --- vzorce v délkách vazby: a = atomy {x, y, l}, b = vazby [i, j, typ], typ 1/2/3 --- */
-  const rc = dbl => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: 1.732, y: 0 }], b: [[0, 1, 1], [1, 2, dbl ? 2 : 1]] });
+  const ring6 = () => ({ a: [[0, -1], [.866, -.5], [.866, .5], [0, 1], [-.866, .5], [-.866, -.5]].map(([x, y]) => ({ x, y })), b: [0, 1, 2, 3, 4, 5].map(k => [k, (k + 1) % 6, 1]) });
   const add = (m, from, x, y, l, t) => { m.a.push({ x, y, l }); m.b.push([from, m.a.length - 1, t || 1]); return m.a.length - 1; };
+  /* vzorce, které řetězcem nenapíšeš (kruhy); ostatní kreslí chain() */
   const MOL = {
-    alken: () => rc(true),
-    alkan: () => rc(),
-    hx: () => { const m = rc(); add(m, 1, .866, -1.5, 'X'); return m; },
-    roor: () => { const m = rc(); add(m, 2, 2.598, -.5, 'Br'); return m; },
-    x2: () => { const m = rc(); add(m, 1, .866, -1.5, 'X'); add(m, 2, 2.598, -.5, 'X'); return m; },
-    halohydrin: () => { const m = rc(); add(m, 1, .866, -1.5, 'OH'); add(m, 2, 2.598, -.5, 'X'); return m; },
-    olM: () => { const m = rc(); add(m, 1, .866, -1.5, 'OH'); return m; },
-    olA: () => { const m = rc(); add(m, 2, 2.598, -.5, 'OH'); return m; },
-    epox: () => { const m = rc(); const o = add(m, 1, 1.732, -1, 'O'); m.b.push([2, o, 1]); return m; },
-    diol: () => { const m = rc(); add(m, 1, .866, -1.5, 'OH'); add(m, 2, 2.598, -.5, 'OH'); return m; },
-    ozon: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: 1.732, y: 0, l: 'O' }, { x: 3.3, y: -.25, l: '+ H₂C=O' }], b: [[0, 1, 1], [1, 2, 2]] }),
-    acid: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: .866, y: -1.5, l: 'O' }, { x: 1.732, y: 0, l: 'OH' }, { x: 3.1, y: -.25, l: '+ CO₂' }], b: [[0, 1, 1], [1, 2, 2], [1, 3, 1]] }),
-    cp: () => { const m = rc(); const c = add(m, 1, 1.732, -1); m.b.push([2, c, 1]); return m; },
-    ccl2: () => { const m = rc(); const c = add(m, 1, 1.732, -1); m.b.push([2, c, 1]); add(m, c, 1.3, -1.9, 'Cl'); add(m, c, 2.6, -1.5, 'Cl'); return m; },
-    allyl: () => ({ a: [{ x: 0, y: 0, l: 'R′' }, { x: .866, y: -.5 }, { x: .866, y: -1.5, l: 'Br' }, { x: 1.732, y: 0 }, { x: 2.598, y: -.5 }], b: [[0, 1, 1], [1, 2, 1], [1, 3, 1], [3, 4, 2]] }),
-    inOl: () => { const m = rc(); add(m, 2, 2.598, -.5, 'OH'); return m; },
-    inBr: () => { const m = rc(); add(m, 2, 2.598, -.5, 'Br'); return m; },
-    inYn: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: 1, y: 0 }, { x: 2, y: 0 }], b: [[0, 1, 1], [1, 2, 3]] }),
-    inAld: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: 1.732, y: 0, l: 'O' }], b: [[0, 1, 1], [1, 2, 2]] }),
-    inAlk: () => ({ a: [{ x: 0, y: 0, l: 'alkany C₄ a víc' }], b: [] })
+    epox: () => { const m = chain('R--'); const o = add(m, 1, 1.732, -1, 'O'); m.b.push([2, o, 1]); return m; },
+    cp: () => { const m = chain('R--'); const c = add(m, 1, 1.732, -1); m.b.push([2, c, 1]); return m; },
+    cx2: () => { const m = MOL.cp(); add(m, 3, 1.3, -1.9, 'X'); add(m, 3, 2.6, -1.5, 'X'); return m; },
+    allyl: () => chain('R′-(Br)-='),
+    epoxC: () => MOL.epox(),
+    cyhex: () => ring6(),
+    chinon: () => { const m = ring6(); m.b[1][2] = 2; m.b[4][2] = 2; add(m, 0, 0, -2, 'O', 2); add(m, 3, 0, 2, 'O', 2); return m; },
+    DA: () => { const m = ring6(); m.b[1][2] = 2; add(m, 4, -1.73, 1, 'CHO'); return m; }
   };
+  /* zápis řetězce: atomy oddělené vazbou - = #, prázdný atom = uhlík, (…) = substituent, (=O) dvojnou vazbou,
+     „ + “ odděluje víc látek vedle sebe; př. 'R-(=O)-OH', 'R-(OH)-', 'R-#-' */
+  const chain = spec => {
+    const a = [], b = [];
+    let x0 = 0;
+    spec.split(' + ').forEach((part, pi) => {
+      if (pi) { a.push({ x: x0 + .55, y: -.25, l: '+' }); x0 += 1.1; }
+      const tok = [''], st = a.length;   // rozdělí na atomy a vazby, ale ne uvnitř závorek
+      let dep = 0;
+      for (const c of part) { if (c === '(') dep++; if (c === ')') dep--; if (!dep && '-=#'.includes(c)) tok.push(c, ''); else tok[tok.length - 1] += c; }
+      let x = x0, y = 0, th = -30, n = 0, prevBond = '';
+      const atoms = [];
+      for (let k = 0; k < tok.length; k += 2) {
+        const t = tok[k], bond = tok[k + 1] || '';
+        const subs = [...t.matchAll(/\(([^()]*)\)/g)].map(m => m[1]), lab = t.replace(/\([^()]*\)/g, '');
+        atoms.push({ x, y, l: lab, subs, bond });
+        if (!bond) break;
+        if (bond === '#' || prevBond === '#') th = 0; else th = n % 2 ? 30 : -30;
+        if (prevBond === '#' && bond !== '#') th = 0;
+        x += Math.cos(th * Math.PI / 180); y += Math.sin(th * Math.PI / 180); n++; prevBond = bond;
+      }
+      atoms.forEach((t, i) => {
+        a.push({ x: t.x, y: t.y, l: t.l });
+        if (i) b.push([a.length - 2 - 0, a.length - 1, { '-': 1, '=': 2, '#': 3 }[atoms[i - 1].bond]]);
+      });
+      // indexy: atomy části začínají na st, substituenty se přidají za ně
+      atoms.forEach((t, i) => {
+        if (!t.subs.length) return;
+        const p = atoms[i], q = atoms[i - 1], r = atoms[i + 1];
+        let ox = 0, oy = 0;
+        if (q) { const dx = p.x - q.x, dy = p.y - q.y, L = Math.hypot(dx, dy); ox += dx / L; oy += dy / L; }
+        if (r) { const dx = p.x - r.x, dy = p.y - r.y, L = Math.hypot(dx, dy); ox += dx / L; oy += dy / L; }
+        let L = Math.hypot(ox, oy); if (L < .01) { ox = 0; oy = -1; L = 1; }
+        ox /= L; oy /= L;
+        const angs = t.subs.length === 1 ? [0] : [-38, 38];
+        t.subs.forEach((s, k) => {
+          const g = angs[k] * Math.PI / 180, ux = ox * Math.cos(g) - oy * Math.sin(g), uy = ox * Math.sin(g) + oy * Math.cos(g);
+          const dbl = s[0] === '=';
+          a.push({ x: p.x + ux, y: p.y + uy, l: dbl ? s.slice(1) : s });
+          b.push([st + i, a.length - 1, dbl ? 2 : 1]);
+        });
+      });
+      x0 = Math.max(...a.slice(st).map(p => p.x)) + .4;
+    });
+    return { a, b };
+  };
+  const arene = k => {   // 'Ar:1=OH,4=NO₂': benzen, poloha 1 nahoře, po směru hodinových ručiček
+    const m = ring6(); m.b.forEach((b, i) => { b[2] = i % 2 ? 1 : 2; });
+    k.slice(3).split(',').filter(Boolean).forEach(t => { const j = t.indexOf('='), v = +t.slice(0, j) - 1, q = m.a[v]; add(m, v, q.x * 2, q.y * 2, t.slice(j + 1)); });
+    return m;
+  };
+  const mol = k => (MOL[k] ? MOL[k]() : k.startsWith('Ar:') ? arene(k) : chain(k));
   const S = 40;
   const drawMol = (m, cx, cy) => {
     const xs = m.a.map(p => p.x), ys = m.a.map(p => p.y);
@@ -36379,24 +36633,44 @@ if (/^#analyticka/.test(location.hash)) show();
     return s;
   };
   const spider = (ch, id) => {
-    const W = 1640, H = 1400, cx = W / 2, cy = H / 2, R0 = 125, RX = 670, RY = 570, n = ch.spokes.length;
+    const sp = [];   // řádky se stejným produktem a směrem → jedna šipka
+    ch.groups.forEach(g => g.rows.forEach(r => {
+      const k = (r[5] ? 'in:' : 'out:') + r[4], o = sp.find(x => x.k === k), lines = r[0].split('\n');
+      if (o) { o.l.push(...lines.map((t, i) => (i ? '' : 'nebo ') + t)); if (!o.cap.split(' / ').includes(r[1])) o.cap += ' / ' + r[1]; } else sp.push({ k, l: lines, f: r[4], cap: r[1], inw: r[5] });
+    }));
+    sp.sort((x, y) => (x.inw ? 1 : 0) - (y.inw ? 1 : 0));
+    const W = 1800, H = 1520, cx = W / 2, cy = H / 2, R0 = 125, RX = 760, RY = 640, n = sp.length, boxes = [];
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pavouček: ${ch.label}, ${n} reakcí kolem výchozí látky">
       <defs><marker id="ciO${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 10,5 0,10z" style="fill:var(--pink)"/></marker>
       <marker id="ciI${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 10,5 0,10z" style="fill:var(--accent)"/></marker></defs>
       <circle cx="${cx}" cy="${cy}" r="${R0}" style="fill:var(--foam);stroke:var(--pink)" stroke-width="2"/>`;
-    s += drawMol(MOL[ch.center](), cx, cy - 12) + `<text class="ci-cap" x="${cx}" y="${cy + 58}" text-anchor="middle">${ch.label.toLowerCase().replace(/y$/, '')}</text>`;
-    ch.spokes.forEach((p, i) => {
+    s += drawMol(mol(ch.center), cx, cy - 12) + `<text class="ci-cap" x="${cx}" y="${cy + 58}" text-anchor="middle">${ch.short}</text>`;
+    sp.forEach((p, i) => {
       const an = (-90 + i * 360 / n) * Math.PI / 180, ux = Math.cos(an), uy = Math.sin(an);
       const ex = (RX - 170) * ux, ey = (RY - 110) * uy, el = Math.hypot(ex, ey);
       const x0 = cx + ux * (R0 + 8), y0 = cy + uy * (R0 + 8), x1 = cx + ex, y1 = cy + ey;
-      s += p[3] ? `<line class="ar-i" x1="${x1}" y1="${y1}" x2="${x0}" y2="${y0}" stroke-width="2.2" marker-end="url(#ciI${id})"/>`
+      s += p.inw ? `<line class="ar-i" x1="${x1}" y1="${y1}" x2="${x0}" y2="${y0}" stroke-width="2.2" marker-end="url(#ciI${id})"/>`
                 : `<line class="ar-o" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke-width="2.2" marker-end="url(#ciO${id})"/>`;
-      /* sousední šipky střídají vzdálenost popisku, aby se činidla nepřekrývala */
-      const r = R0 + (el - R0) * (i % 2 ? 0.78 : 0.46), ln = p[0].split('|');
-      const lx = cx + ux * r, ly = cy + uy * r - (ln.length - 1) * 10 + 6;
+      /* popisek činidel: první místo na šipce, kde se nepřekryje s už položenými popisky */
+      const ln = p.l, bw = Math.max(...ln.map(t => t.length)) * 10.6 + 14, bh = ln.length * 20 + 8;
+      let best = null;
+      for (let f = 0.3; f <= 1.0; f += 0.035) {
+        const r = R0 + (el - R0) * f, bx = cx + ux * r, by = cy + uy * r;
+        const ov = boxes.reduce((t, q) => t + Math.max(0, Math.min(bx + bw / 2, q[0] + q[2] / 2) - Math.max(bx - bw / 2, q[0] - q[2] / 2)) * Math.max(0, Math.min(by + bh / 2, q[1] + q[3] / 2) - Math.max(by - bh / 2, q[1] - q[3] / 2)), 0)
+          + (Math.hypot(bx - cx, by - cy) - Math.hypot(bw, bh) / 2 < R0 + 6 ? 1e5 : 0);
+        if (!best || ov < best.ov - 1) best = { ov, bx, by };
+        if (!ov) break;
+      }
+      boxes.push([best.bx, best.by, bw, bh]);
+      const lx = best.bx, ly = best.by - (ln.length - 1) * 10 + 6;
       ln.forEach((t, k) => { s += `<text class="ci-rg" x="${lx}" y="${ly + k * 20}" text-anchor="middle">${t}</text>`; });
       const px = cx + RX * ux, py = cy + RY * uy;
-      s += drawMol(MOL[p[1]](), px, py - 12) + `<text class="ci-cap" x="${px}" y="${py + 56}" text-anchor="middle">${p[2]}</text>`;
+      const m = mol(p.f), ys = m.a.map(q => q.y), xs = m.a.map(q => q.x), hh = (Math.max(...ys) - Math.min(...ys)) / 2 * S;
+      const cap = [], words = p.cap.split(' ');   // popisek zalomený po ~30 znacích
+      words.forEach(w => { const l = cap.length - 1; if (l >= 0 && (cap[l] + ' ' + w).length <= 30) cap[l] += ' ' + w; else cap.push(w); });
+      const hw = Math.max((Math.max(...xs) - Math.min(...xs)) / 2 * S + 20, Math.max(...cap.map(t => t.length)) * 4.6);
+      const qx = Math.min(W - hw - 8, Math.max(hw + 8, px));   // nic nevyčnívá z obrázku
+      s += drawMol(m, qx, py - 12) + cap.map((t, k) => `<text class="ci-cap" x="${qx}" y="${py - 12 + hh + 32 + k * 19}" text-anchor="middle">${t}</text>`).join('');
     });
     return s + '</svg>';
   };
@@ -36416,8 +36690,8 @@ if (/^#analyticka/.test(location.hash)) show();
     }
     $c('#ciView').innerHTML = `<div class="ci-legend"><span><span class="ci-src">Př</span> přednáška (P6/45 = přednáška 6, slajd 45)</span><span><span class="ci-src">PS</span> pracovní sešit</span><span><span class="ci-src">Sem</span> semináře</span><span><span class="ci-src add">+</span> doplněno z obecné chemie</span></div>
       ${ch.groups.map(g => `<section class="ci-grp${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><p>${g.d}</p>${g.rows.map(r => `<div class="ci-row"><span class="r">${r[0]}</span><span class="p">→ ${r[1]}</span><span class="n">${r[2]}</span><span class="s">${src(r[3])}</span></div>`).join('')}</section>`).join('')}
-      <h2 class="fam-h">Pavouček: ${ch.label.toLowerCase()}</h2>
-      <p class="hint" style="margin:0;color:var(--muted)">Růžové šipky vedou ven (reakce), tyrkysové dovnitř (příprava). Na šipce jsou všechna činidla k tomu produktu, „nebo“ odděluje jiné cesty. Na telefonu pavouček posuneš prstem do strany.</p>
+      <h2 class="fam-h">Pavouček: ${ch.label}</h2>
+      <p class="hint" style="margin:0;color:var(--muted)">Růžové šipky vedou ven (reakce), tyrkysové dovnitř (příprava). Na šipkách jsou všechna činidla z tabulky výše, „nebo“ odděluje jiné cesty ke stejnému produktu. Na telefonu pavouček posuneš prstem do strany.</p>
       <div class="ci-pav">${spider(ch, 'w')}</div>`;
   };
   document.addEventListener('click', e => {
