@@ -27,12 +27,12 @@ async function strana(o = {}, init, arg) {
   p.on('console', m => { if (m.type() === 'error' && !/goatcounter|docs\.google|ERR_FAILED/.test(m.text())) err.push(m.text()); if (m.type() === 'warning' && /Lekce|Analytika:/.test(m.text())) err.push(m.text()); });
   return { ctx, p, err };
 }
-const viditelne = p => p.evaluate(() => ['hub', 'appOC', 'appAC'].some(id => { const x = document.getElementById(id); return x && !x.hidden; }));
+const viditelne = p => p.evaluate(() => ['hub', 'appOC', 'appAC', 'appCI'].some(id => { const x = document.getElementById(id); return x && !x.hidden; }));
 
 // 2. Hlavní stránky na mobilu i počítači, světlý i tmavý režim
 for (const [w, h] of [[375, 812], [1280, 900]]) for (const sc of ['light', 'dark']) {
   const { ctx, p, err } = await strana({ viewport: { width: w, height: h }, colorScheme: sc });
-  for (const hsh of ['', '#organicka', '#analyticka', '#analyticka-lekce', '#test', '#navod']) {
+  for (const hsh of ['', '#organicka', '#analyticka', '#analyticka-lekce', '#test', '#navod', '#cinidla']) {
     await p.goto(U + hsh); await p.waitForTimeout(1200);
     if (!(await viditelne(p))) fail(`${w} px ${sc} ${hsh || 'úvod'}: nic se nezobrazilo`);
     if (await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) fail(`${w} px ${sc} ${hsh || 'úvod'}: stránka přetéká do strany`);

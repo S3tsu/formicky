@@ -431,6 +431,7 @@ kbd{font:600 .8rem/1 var(--f-body);border:1px solid var(--line);border-bottom-wi
 .subj .ico{width:34px;height:34px;color:var(--accent)}
 /* rychlý vstup do předmětů hned pod logem, ať je předmět vidět bez posouvání; plné dlaždice zůstávají níž */
 .subj-quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:-4px 0 4px}
+@media (min-width:560px){.subj-quick{grid-template-columns:repeat(3,1fr)}}
 .subj-quick a{display:flex;align-items:center;gap:8px;min-height:48px;padding:8px 12px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .95rem/1.2 var(--f-display);text-decoration:none}
 .subj-quick a:hover{border-color:var(--accent)}
 .subj-quick .ico{width:26px;height:26px;flex:none;color:var(--accent);stroke-width:2.6}
@@ -1478,6 +1479,57 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   .app .tbar{top:46px}
   .ac-ion-card,#acDet,.ac-sec{scroll-margin-top:56px}
 }
+/* ===== Činidla podle funkčních skupin ===== */
+.subj-quick .c .ico{color:var(--el-s)}
+.ci-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ci-chips button{min-height:40px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .92rem var(--f-body);cursor:pointer}
+.ci-chips button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.ci-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ci-legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.82rem;color:var(--muted)}
+.ci-src{display:inline-block;font:600 .7rem/1 var(--f-body);letter-spacing:.03em;border:1px solid var(--line);border-radius:5px;padding:3px 5px;color:var(--muted);white-space:nowrap}
+.ci-src.add{border-style:dashed}
+.ci-grp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:8px}
+.ci-grp>p{margin:0;color:var(--muted);font-size:.9rem}
+.ci-grp h3{margin:0;font:700 1.02rem/1.25 var(--f-display)}
+.ci-grp.prep{border-color:var(--accent)}
+.ci-row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1.3fr) auto;gap:4px 14px;padding-top:8px;border-top:1px solid var(--line);font-size:.93rem;align-items:start}
+.ci-row .r{font-family:var(--f-chem);font-weight:700;white-space:pre-line}
+.ci-row .n{color:var(--muted)}
+.ci-row .s{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:640px){.ci-row{grid-template-columns:1fr auto}.ci-row .p,.ci-row .n{grid-column:1/-1}.ci-row .s{grid-row:1;grid-column:2}}
+.ci-pav{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.ci-pav svg{display:block;width:100%;min-width:760px;height:auto}
+.ci-mol line,.ci-mol polygon{stroke:var(--ink)}
+.ci-mol polygon{fill:var(--ink)}
+.ci-cap{font:600 16px var(--f-body);fill:var(--muted)}
+.ci-rg{font:700 17px var(--f-chem);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:7px;stroke-linejoin:round}
+.ci-at{font:700 17px var(--f-chem);fill:var(--ink)}
+.ci-at.o{fill:var(--el-o)}.ci-at.x{fill:var(--el-x)}
+.ci-sheet{background:#fff;color:#1d1620;border-radius:4px;box-shadow:var(--shadow);padding:24px 26px;font-size:12.5px;line-height:1.35;overflow-x:auto}
+.ci-sheet h2{margin:0;font:800 1.35rem var(--f-display)}
+.ci-sheet .sub{margin:0 0 10px;color:#6c5e6e}
+.ci-sheet .cols{columns:2 280px;column-gap:22px}
+.ci-sheet .b{break-inside:avoid;margin-bottom:9px}
+.ci-sheet h3{margin:0 0 3px;font:700 .95rem var(--f-display);border-bottom:1.5px solid #d23a70;padding-bottom:1px}
+.ci-sheet .b.prep h3{border-color:#0b6870}
+.ci-sheet ul{margin:0;padding:0;list-style:none}
+.ci-sheet li{padding:1px 0}
+.ci-sheet li b{font-family:var(--f-chem)}
+.ci-sheet li i{color:#6c5e6e;font-style:normal}
+.ci-sheet .pv{margin-top:10px;border-top:1px solid #e7d9dc;padding-top:8px}
+.ci-sheet svg{width:100%;height:auto;display:block}
+.ci-sheet .ci-mol line,.ci-sheet .ci-mol polygon{stroke:#1d1620}.ci-sheet .ci-mol polygon{fill:#1d1620}
+.ci-sheet .ci-rg{fill:#1d1620;stroke:#fff}.ci-sheet .ci-at{fill:#1d1620}.ci-sheet .ci-at.o{fill:#d3261d}.ci-sheet .ci-at.x{fill:#b35400}.ci-sheet .ci-cap{fill:#6c5e6e}
+.ci-sheet .ar-o{stroke:#d23a70}.ci-sheet .ar-i{stroke:#0b6870}
+.ar-o{stroke:var(--pink)}.ar-i{stroke:var(--accent)}
+@media print{
+  body.ci-print>*:not(#appCI){display:none!important}
+  body.ci-print #appCI>*:not(#ciView){display:none!important}
+  body.ci-print #ciView>*:not(.ci-sheet){display:none!important}
+  body.ci-print{background:#fff}
+  body.ci-print .ci-sheet{box-shadow:none;padding:0;overflow:visible}
+}
+#ciView{display:grid;gap:14px}
 </style>
 </head><body>
 <div class="boot" id="boot" role="status"><b>Formičky<span>hub</span></b><i aria-hidden="true"></i><span>Načítám látky a otázky…</span></div>
@@ -1494,6 +1546,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   <nav class="subj-quick" aria-label="Předměty">
     <a href="#organicka" class="o"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M19 6h10M21 6v13L10 39a3 3 0 0 0 2.7 4.4h22.6A3 3 0 0 0 38 39L27 19V6"/><path d="M14.5 31h19"/></svg><span>Organická chemie</span></a>
     <a href="#analyticka" class="a"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h20M18 6v30a6 6 0 0 0 12 0V6"/><path d="M18 24h12"/><circle cx="22" cy="32" r="1.6"/><circle cx="26.5" cy="28.5" r="1.3"/></svg><span>Analytická chemie</span></a>
+    <a href="#cinidla" class="c"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="6"/><path d="M24 18V5M24 30v13M18 24H5M30 24h13M19.8 19.8 10.6 10.6M28.2 28.2l9.2 9.2M28.2 19.8l9.2-9.2M19.8 28.2l-9.2 9.2"/><path d="M20.5 8.5 24 5l3.5 3.5M39.5 20.5 43 24l-3.5 3.5"/></svg><span>Činidla a pavoučci</span></a>
   </nav>
 
   <section class="today" id="today" aria-labelledby="todayH"></section>
@@ -1784,6 +1837,22 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
       <button type="button" class="link" id="mascotNext">Další pomůcka</button>
     </div>
   </footer>
+</div>
+<div class="app" id="appCI" hidden>
+  <div class="backrow"><a class="back" href="#">← FormičkyHub</a><span class="br-r"><a class="back help" href="#navod">Jak to funguje?</a><button type="button" class="thm" data-thm title="Přepnout světlý / tmavý režim" aria-label="Přepnout světlý nebo tmavý režim"><svg viewBox="0 0 32 32" aria-hidden="true"><g class="bz"><polygon points="16.00,8.80 22.24,12.40 22.24,19.60 16.00,23.20 9.76,19.60 9.76,12.40"/><line x1="16.54" y1="11.31" x2="19.79" y2="13.19"/><line x1="19.79" y1="18.81" x2="16.54" y2="20.69"/><line x1="11.67" y1="17.88" x2="11.67" y2="14.12"/></g><g class="rays"><line x1="16.00" y1="6.60" x2="16.00" y2="2.50"/><line x1="24.14" y1="11.30" x2="27.69" y2="9.25"/><line x1="24.14" y1="20.70" x2="27.69" y2="22.75"/><line x1="16.00" y1="25.40" x2="16.00" y2="29.50"/><line x1="7.86" y1="20.70" x2="4.31" y2="22.75"/><line x1="7.86" y1="11.30" x2="4.31" y2="9.25"/></g></svg></button></span></div>
+  <header class="top">
+    <h1>Činidla a pavoučci</h1>
+    <p>Činidla ke každé funkční skupině seřazená podle toho, co dělají. Na konci kapitoly je pavouček se všemi činidly a jde si to vytisknout jako jeden list.</p>
+  </header>
+  <div class="ci-chips" id="ciChips" role="group" aria-label="Kapitola"></div>
+  <div class="ci-bar">
+    <div class="seg" id="ciSeg" role="group" aria-label="Zobrazení">
+      <button type="button" data-v="web">Přehled</button>
+      <button type="button" data-v="list">List papíru</button>
+    </div>
+    <button type="button" class="btn sm" id="ciPrint" hidden>Tisk / PDF</button>
+  </div>
+  <main id="ciView"></main>
 </div>
 <p class="ver-foot" id="verFoot"></p>
 <script>
@@ -29722,6 +29791,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 /* ===== Rozcestník FormičkyHub: předměty + Béďova zajímavost ===== */
 (function () {
   const ICON = {
+    spider: '<svg class="ico" viewBox="0 0 48 48"><circle cx="24" cy="24" r="6"/><path d="M24 18V5M24 30v13M18 24H5M30 24h13M19.8 19.8 10.6 10.6M28.2 28.2l9.2 9.2M28.2 19.8l9.2-9.2M19.8 28.2l-9.2 9.2"/><path d="M20.5 8.5 24 5l3.5 3.5M39.5 20.5 43 24l-3.5 3.5"/></svg>',
     pill: '<svg class="ico" viewBox="0 0 48 48"><rect x="6" y="17" width="36" height="14" rx="7" transform="rotate(-35 24 24)"/><line x1="18.3" y1="15.8" x2="29.7" y2="32.2"/></svg>',
     flask: '<svg class="ico" viewBox="0 0 48 48"><path d="M19 6h10M21 6v13L10 39a3 3 0 0 0 2.7 4.4h22.6A3 3 0 0 0 38 39L27 19V6"/><path d="M14.5 31h19"/></svg>',
     body: '<svg class="ico" viewBox="0 0 48 48"><path d="M24 41S8 31.5 8 19.5A8.5 8.5 0 0 1 24 15a8.5 8.5 0 0 1 16 4.5C40 31.5 24 41 24 41z"/><path d="M12 24h7l3-5 4 10 3-5h7"/></svg>',
@@ -29912,6 +29982,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   $('#subjects').innerHTML = `
     <a class="subj" href="#organicka">${ICON.flask}<b>Organická chemie</b><span>${TOPICS.filter(t => t.id !== 'fg').length} přednášek a funkční skupiny: ${nM} látek, ${nQ} otázek, kreslení vzorců a test nanečisto.</span><span class="go">Otevřít →</span></a>
     <a class="subj" href="#analyticka">${ICON.tube}<b>Analytická chemie</b><span>Důkazy kationtů a aniontů, organická analýza, fyzikální vlastnosti, UV-VIS a IČ: kartičky, taháky, výpočty a hry.</span><span class="go">Otevřít →</span></a>
+    <a class="subj" href="#cinidla">${ICON.spider}<b>Činidla a pavoučci</b><span>Činidla ke každé funkční skupině podle toho, co dělají, list papíru k vytištění a pavouček ke každé kapitole.</span><span class="go">Otevřít →</span></a>
     <div class="subj soon" aria-disabled="true">${ICON.book}<b>Další předmět</b><span>Tady přibudou další předměty.</span><span class="go">Brzy</span></div>`;
 
   const APP = new Set(['organicka', 'nove', 'prehled', 'kresleni', 'studium', 'test'].concat(TOPICS.map(t => t.hash).filter(Boolean)));
@@ -29926,9 +29997,9 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
   };
   const route = () => {
     const bt = $('#boot'); if (bt) bt.remove();
-    const h = (location.hash || '').replace('#', ''), app = APP.has(h), ac = /^analyticka/.test(h);
-    $('#hub').hidden = app || ac; $('#appOC').hidden = !app; $('#appAC').hidden = !ac;
-    document.title = app ? 'Organická chemie · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : 'FormičkyHub';
+    const h = (location.hash || '').replace('#', ''), app = APP.has(h), ac = /^analyticka/.test(h), ci = /^cinidla/.test(h);
+    $('#hub').hidden = app || ac || ci; $('#appOC').hidden = !app; $('#appAC').hidden = !ac; $('#appCI').hidden = !ci;
+    document.title = app ? 'Organická chemie · FormičkyHub' : ac ? 'Analytická chemie · FormičkyHub' : ci ? 'Činidla a pavoučci · FormičkyHub' : 'FormičkyHub';
     if (ac && window.FH_AC) FH_AC.show();
     if (app) { try { refresh(); deep(h); } catch (e) { /* vykreslí se při další akci */ } }
     $('#hub').classList.toggle('guide', h === 'navod');
@@ -36186,6 +36257,179 @@ try { if (typeof renderToday === 'function') renderToday(); } catch (e) { /* nic
 try { const g = document.getElementById('hnHubG'); if (g && window.FH_HERNA) FH_HERNA(); } catch (e) { /* nic */ }
 try { if (window.FH_FACT) FH_FACT(); } catch (e) { /* nic */ }
 if (/^#analyticka/.test(location.hash)) show();
+})();
+</script>
+<script>
+/* ===== Činidla podle funkčních skupin (samostatná sekce #cinidla) ===== */
+(function () {
+  const $c = s => document.querySelector(s);
+  /* zdroje: Př = přednáška (P6/45 = přednáška 6, slajd 45), PS = pracovní sešit, Sem = obrázky ze seminářů, + = doplněno z obecné chemie */
+  const CH = [{
+    id: 'alkeny', label: 'Alkeny', center: 'alken',
+    groups: [
+      { t: 'Hydrogenace (redukce C=C)', d: 'Vodík se přidá na oba uhlíky z jedné strany (syn).', rows: [
+        ['H₂, Pd/C\n(H₂, PtO₂ – Adamsův kat.)', 'alkan', 'syn-adice na povrchu kovu (P6/45)', 'Př PS Sem']] },
+      { t: 'Adice halogenovodíku (hydrohalogenace)', d: 'Přes karbokation, takže pozor na přesmyky.', rows: [
+        ['HCl nebo HBr, ether', 'halogenalkan', 'Markovnikov: X na víc substituovaný uhlík (P6/21–23)', 'Př PS Sem'],
+        ['KI, H₃PO₄', 'jodalkan', 'HI vzniká přímo ve směsi (P6/21)', 'Př'],
+        ['HBr, ROOR (peroxidy)', 'bromalkan', 'anti-Markovnikov, radikálová, jen s HBr; v přednáškách není', 'Sem +']] },
+      { t: 'Halogenace', d: 'Přes cyklický bromoniový ion, proto anti.', rows: [
+        ['Br₂ nebo Cl₂\n(CH₂Cl₂)', 'vicinální dihalogenid', 'anti-adice, trans produkt (P6/32–34)', 'Př PS Sem']] },
+      { t: 'Tvorba halohydrinu', d: 'Voda otevře bromoniový ion z víc substituované strany.', rows: [
+        ['X₂, H₂O\n(Br₂ nebo Cl₂)', 'halohydrin + HX', 'OH na víc substituovaný uhlík, anti (P6/34)', 'Př PS Sem'],
+        ['NBS, H₂O, DMSO', 'bromhydrin', 'totéž, NBS je pohodlnější zdroj Br₂', '+']] },
+      { t: 'Hydratace (adice vody)', d: 'Tři cesty k alkoholu, liší se regioselektivitou.', rows: [
+        ['H₂O, H₃PO₄, 250 °C\n(obecně H–A, H₂O)', 'alkohol', 'Markovnikov, přes karbokation, přesmyky (P6/36–37)', 'Př Sem'],
+        ['1. Hg(OAc)₂, H₂O, THF\n2. NaBH₄', 'alkohol', 'hydroxymerkurace: Markovnikov bez přesmyku (P6/40)', 'Př PS Sem'],
+        ['1. BH₃, THF\n2. H₂O₂, ⁻OH, H₂O', 'alkohol', 'hydroborace: anti-Markovnikov, syn-adice H a OH (P6/39–40)', 'Př PS Sem']] },
+      { t: 'Oxidace bez štěpení vazby', d: 'Z C=C vznikne epoxid nebo 1,2-diol.', rows: [
+        ['mCPBA (RCOOOH),\nCH₂Cl₂, 25 °C', 'epoxid', 'stereospecifická, konfigurace alkenu zůstane (P14/12)', 'Př PS Sem'],
+        ['1. Cl₂, H₂O\n2. NaOH, H₂O', 'epoxid', 'přes chlorhydrin (P14/13)', 'Př'],
+        ['1. mCPBA\n2. H₃O⁺', 'trans-1,2-diol', 'voda otevře epoxid zezadu, anti (P14/14)', 'Př PS'],
+        ['1. OsO₄, pyridin\n2. NaHSO₃, H₂O', 'cis-1,2-diol', 'syn přes cyklický osmiát (P6/47)', 'Př PS Sem'],
+        ['KMnO₄ zředěný,\nchladný, ⁻OH', 'cis-1,2-diol', 'syn; v kyselém prostředí už štěpí; v přednáškách není', '+']] },
+      { t: 'Oxidační štěpení C=C', d: 'Dvojná vazba se rozpůlí a na obou koncích vznikne C=O.', rows: [
+        ['1. O₃, CH₂Cl₂, −78 °C\n2. Zn, AcOH, H₂O', 'aldehydy a ketony', 'ozonolýza (P6/48); v seminářích i 2. (CH₃)₂S', 'Př PS Sem'],
+        ['KMnO₄, H₃O⁺', 'ketony a karboxylové kyseliny', '=CH₂ skončí jako CO₂ (P6/49)', 'Př Sem'],
+        ['HIO₄ na 1,2-diol', 'aldehydy a ketony', 'štěpí diol, ne přímo alken (P6/47)', 'Př']] },
+      { t: 'Cyklopropanace (adice karbenu)', d: 'Karben se přidá na obě strany C=C najednou.', rows: [
+        ['CH₂I₂, Zn(Cu)', 'cyklopropan', 'Simmonsova–Smithova reakce, karbenoid (P6/44)', 'Př PS Sem'],
+        ['CHCl₃, KOH', '1,1-dichlorcyklopropan', 'přes dichlorkarben :CCl₂ (P6/43)', 'Př PS Sem']] },
+      { t: 'Allylová substituce (radikálová)', d: 'C=C zůstane, brom jde na sousední uhlík.', rows: [
+        ['NBS, hν, CCl₄', 'allylbromid', 'vzniká směs, allylový radikál je delokalizovaný (P9/10)', 'Př PS Sem']] },
+      { t: 'Příprava alkenů (šipky dovnitř)', prep: 1, d: 'Odkud se alken bere.', rows: [
+        ['H₂SO₄, H₂O, THF, 50 °C\n(H₃O⁺, THF)', 'z alkoholu', 'dehydratace E1, Zajcev (P6/31, P13/23)', 'Př Sem'],
+        ['POCl₃ (pyridin)', 'z alkoholu', 'dehydratace (P15/35); pyridin doplněn', 'Př +'],
+        ['KOH, CH₃CH₂OH\n(EtONa, EtOH)', 'z halogenalkanu', 'dehydrohalogenace E2, Zajcev (P6/31, P9/55–69)', 'Př Sem'],
+        ['(CH₃)₃COK (t-BuOK)', 'z halogenalkanu', 'objemná báze, méně substituovaný alken (P9/67)', 'Př Sem'],
+        ['H₂, Lindlarův kat.\n(Pd/BaCO₃, Pb(OAc)₂, chinolin)', 'z alkynu', 'cis-alken (P7/18); v literatuře častěji Pd/CaCO₃', 'Př Sem'],
+        ['Li (Na), NH₃ (l)', 'z alkynu', 'trans-alken (P7/20)', 'Př Sem'],
+        ['Ph₃P⁺–CH₂⁻, THF (Wittig)', 'z aldehydu nebo ketonu', 'C=O se změní na C=C (P15/33–35)', 'Př'],
+        ['CF₃COOH, 0 °C', 'z terc-butyletheru', 'štěpení etheru na 2-methylpropen (P14/9)', 'Př'],
+        ['850–900 °C', 'z alkanů', 'krakování v průmyslu (P6/3)', 'Př']] }
+    ],
+    /* pavouček: [činidla (| = nový řádek), vzorec, popisek, 1 = šipka dovnitř] */
+    spokes: [
+      ['H₂, Pd/C|nebo H₂, PtO₂', 'alkan', 'alkan · syn'],
+      ['HCl nebo HBr, ether|nebo KI, H₃PO₄', 'hx', 'Markovnikov'],
+      ['HBr, ROOR (+)', 'roor', 'anti-Markovnikov, radikálová'],
+      ['Br₂ nebo Cl₂ (CH₂Cl₂)', 'x2', '1,2-dihalogenid · anti'],
+      ['X₂, H₂O|nebo NBS, H₂O, DMSO (+)', 'halohydrin', 'halohydrin · anti'],
+      ['H₂O, H₃PO₄, 250 °C', 'olM', 'alkohol · Markovnikov, přesmyky'],
+      ['1. Hg(OAc)₂, H₂O, THF|2. NaBH₄', 'olM', 'alkohol · Markovnikov, bez přesmyku'],
+      ['1. BH₃, THF|2. H₂O₂, ⁻OH', 'olA', 'alkohol · anti-Markovnikov, syn'],
+      ['mCPBA, CH₂Cl₂|nebo 1. Cl₂, H₂O 2. NaOH', 'epox', 'epoxid'],
+      ['1. OsO₄, pyridin 2. NaHSO₃|nebo KMnO₄ chladný, ⁻OH (+)|nebo 1. mCPBA 2. H₃O⁺', 'diol', '1,2-diol · syn, z mCPBA anti'],
+      ['1. O₃, CH₂Cl₂, −78 °C|2. Zn, AcOH, H₂O|nebo 1. OsO₄ 2. HIO₄', 'ozon', 'aldehyd + formaldehyd'],
+      ['KMnO₄, H₃O⁺', 'acid', 'kyselina + CO₂'],
+      ['CH₂I₂, Zn(Cu)', 'cp', 'cyklopropan'],
+      ['CHCl₃, KOH', 'ccl2', '1,1-dichlorcyklopropan'],
+      ['NBS, hν, CCl₄', 'allyl', 'allylbromid'],
+      ['850–900 °C', 'inAlk', 'krakování', 1],
+      ['Ph₃P⁺–CH₂⁻, THF', 'inAld', 'aldehyd (Wittig)', 1],
+      ['H₂, Lindlar → cis|Li, NH₃ → trans', 'inYn', 'alkyn', 1],
+      ['KOH, EtOH|nebo EtONa, EtOH|nebo t-BuOK', 'inBr', 'halogenalkan (E2)', 1],
+      ['H₂SO₄, H₂O, THF|nebo POCl₃, pyridin', 'inOl', 'alkohol (dehydratace)', 1]
+    ]
+  }];
+
+  /* --- vzorce v délkách vazby: a = atomy {x, y, l}, b = vazby [i, j, typ], typ 1/2/3 --- */
+  const rc = dbl => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: 1.732, y: 0 }], b: [[0, 1, 1], [1, 2, dbl ? 2 : 1]] });
+  const add = (m, from, x, y, l, t) => { m.a.push({ x, y, l }); m.b.push([from, m.a.length - 1, t || 1]); return m.a.length - 1; };
+  const MOL = {
+    alken: () => rc(true),
+    alkan: () => rc(),
+    hx: () => { const m = rc(); add(m, 1, .866, -1.5, 'X'); return m; },
+    roor: () => { const m = rc(); add(m, 2, 2.598, -.5, 'Br'); return m; },
+    x2: () => { const m = rc(); add(m, 1, .866, -1.5, 'X'); add(m, 2, 2.598, -.5, 'X'); return m; },
+    halohydrin: () => { const m = rc(); add(m, 1, .866, -1.5, 'OH'); add(m, 2, 2.598, -.5, 'X'); return m; },
+    olM: () => { const m = rc(); add(m, 1, .866, -1.5, 'OH'); return m; },
+    olA: () => { const m = rc(); add(m, 2, 2.598, -.5, 'OH'); return m; },
+    epox: () => { const m = rc(); const o = add(m, 1, 1.732, -1, 'O'); m.b.push([2, o, 1]); return m; },
+    diol: () => { const m = rc(); add(m, 1, .866, -1.5, 'OH'); add(m, 2, 2.598, -.5, 'OH'); return m; },
+    ozon: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: 1.732, y: 0, l: 'O' }, { x: 3.3, y: -.25, l: '+ H₂C=O' }], b: [[0, 1, 1], [1, 2, 2]] }),
+    acid: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: .866, y: -1.5, l: 'O' }, { x: 1.732, y: 0, l: 'OH' }, { x: 3.1, y: -.25, l: '+ CO₂' }], b: [[0, 1, 1], [1, 2, 2], [1, 3, 1]] }),
+    cp: () => { const m = rc(); const c = add(m, 1, 1.732, -1); m.b.push([2, c, 1]); return m; },
+    ccl2: () => { const m = rc(); const c = add(m, 1, 1.732, -1); m.b.push([2, c, 1]); add(m, c, 1.3, -1.9, 'Cl'); add(m, c, 2.6, -1.5, 'Cl'); return m; },
+    allyl: () => ({ a: [{ x: 0, y: 0, l: 'R′' }, { x: .866, y: -.5 }, { x: .866, y: -1.5, l: 'Br' }, { x: 1.732, y: 0 }, { x: 2.598, y: -.5 }], b: [[0, 1, 1], [1, 2, 1], [1, 3, 1], [3, 4, 2]] }),
+    inOl: () => { const m = rc(); add(m, 2, 2.598, -.5, 'OH'); return m; },
+    inBr: () => { const m = rc(); add(m, 2, 2.598, -.5, 'Br'); return m; },
+    inYn: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: 1, y: 0 }, { x: 2, y: 0 }], b: [[0, 1, 1], [1, 2, 3]] }),
+    inAld: () => ({ a: [{ x: 0, y: 0, l: 'R' }, { x: .866, y: -.5 }, { x: 1.732, y: 0, l: 'O' }], b: [[0, 1, 1], [1, 2, 2]] }),
+    inAlk: () => ({ a: [{ x: 0, y: 0, l: 'alkany C₄ a víc' }], b: [] })
+  };
+  const S = 40;
+  const drawMol = (m, cx, cy) => {
+    const xs = m.a.map(p => p.x), ys = m.a.map(p => p.y);
+    const ox = (Math.min(...xs) + Math.max(...xs)) / 2, oy = (Math.min(...ys) + Math.max(...ys)) / 2;
+    const P = i => [cx + (m.a[i].x - ox) * S, cy + (m.a[i].y - oy) * S];
+    let s = '<g class="ci-mol" fill="none" stroke-width="1.8" stroke-linecap="round">';
+    for (const [i, j, t] of m.b) {
+      let [x1, y1] = P(i), [x2, y2] = P(j);
+      const L0 = Math.hypot(x2 - x1, y2 - y1);
+      if (m.a[i].l) { const f = 11 / L0; x1 += (x2 - x1) * f; y1 += (y2 - y1) * f; }
+      if (m.a[j].l) { const f = 11 / L0; x2 -= (x2 - x1) * f; y2 -= (y2 - y1) * f; }
+      const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = -dy / L, ny = dx / L;
+      s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+      if (t === 3) s += `<line x1="${x1 + nx * 4.5}" y1="${y1 + ny * 4.5}" x2="${x2 + nx * 4.5}" y2="${y2 + ny * 4.5}"/><line x1="${x1 - nx * 4.5}" y1="${y1 - ny * 4.5}" x2="${x2 - nx * 4.5}" y2="${y2 - ny * 4.5}"/>`;
+      if (t === 2) { const k = (cx - (x1 + x2) / 2) * nx + (cy - (y1 + y2) / 2) * ny < 0 ? -4.5 : 4.5; s += `<line x1="${x1 + nx * k + dx * .12}" y1="${y1 + ny * k + dy * .12}" x2="${x2 + nx * k - dx * .12}" y2="${y2 + ny * k - dy * .12}"/>`; }
+    }
+    s += '</g>';
+    m.a.forEach((a, i) => { if (!a.l) return; const [x, y] = P(i), c = /O/.test(a.l) && !/\+/.test(a.l) ? ' o' : /^(Br|Cl|X|I)$/.test(a.l) ? ' x' : ''; s += `<text class="ci-at${c}" x="${x}" y="${y + 6}" text-anchor="middle">${a.l}</text>`; });
+    return s;
+  };
+  const spider = (ch, id) => {
+    const W = 1640, H = 1400, cx = W / 2, cy = H / 2, R0 = 125, RX = 670, RY = 570, n = ch.spokes.length;
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pavouček: ${ch.label}, ${n} reakcí kolem výchozí látky">
+      <defs><marker id="ciO${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 10,5 0,10z" style="fill:var(--pink)"/></marker>
+      <marker id="ciI${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 10,5 0,10z" style="fill:var(--accent)"/></marker></defs>
+      <circle cx="${cx}" cy="${cy}" r="${R0}" style="fill:var(--foam);stroke:var(--pink)" stroke-width="2"/>`;
+    s += drawMol(MOL[ch.center](), cx, cy - 12) + `<text class="ci-cap" x="${cx}" y="${cy + 58}" text-anchor="middle">${ch.label.toLowerCase().replace(/y$/, '')}</text>`;
+    ch.spokes.forEach((p, i) => {
+      const an = (-90 + i * 360 / n) * Math.PI / 180, ux = Math.cos(an), uy = Math.sin(an);
+      const ex = (RX - 170) * ux, ey = (RY - 110) * uy, el = Math.hypot(ex, ey);
+      const x0 = cx + ux * (R0 + 8), y0 = cy + uy * (R0 + 8), x1 = cx + ex, y1 = cy + ey;
+      s += p[3] ? `<line class="ar-i" x1="${x1}" y1="${y1}" x2="${x0}" y2="${y0}" stroke-width="2.2" marker-end="url(#ciI${id})"/>`
+                : `<line class="ar-o" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke-width="2.2" marker-end="url(#ciO${id})"/>`;
+      /* sousední šipky střídají vzdálenost popisku, aby se činidla nepřekrývala */
+      const r = R0 + (el - R0) * (i % 2 ? 0.78 : 0.46), ln = p[0].split('|');
+      const lx = cx + ux * r, ly = cy + uy * r - (ln.length - 1) * 10 + 6;
+      ln.forEach((t, k) => { s += `<text class="ci-rg" x="${lx}" y="${ly + k * 20}" text-anchor="middle">${t}</text>`; });
+      const px = cx + RX * ux, py = cy + RY * uy;
+      s += drawMol(MOL[p[1]](), px, py - 12) + `<text class="ci-cap" x="${px}" y="${py + 56}" text-anchor="middle">${p[2]}</text>`;
+    });
+    return s + '</svg>';
+  };
+
+  let cur = CH[0].id, view = 'web';
+  try { const v = JSON.parse(localStorage.getItem('fg-ci') || '{}'); if (CH.some(c => c.id === v.ch)) cur = v.ch; if (v.view === 'list') view = 'list'; } catch (e) { /* výchozí */ }
+  const keep = () => { try { localStorage.setItem('fg-ci', JSON.stringify({ ch: cur, view })); } catch (e) { /* nevadí */ } };
+  const src = t => t.split(' ').map(s => `<span class="ci-src${s === '+' ? ' add' : ''}">${s}</span>`).join('');
+  const render = () => {
+    const ch = CH.find(c => c.id === cur);
+    $c('#ciChips').innerHTML = CH.map(c => `<button type="button" data-ci="${c.id}" aria-pressed="${c.id === cur}">${c.label}</button>`).join('');
+    $c('#ciSeg').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === view));
+    $c('#ciPrint').hidden = view !== 'list';
+    if (view === 'list') {
+      $c('#ciView').innerHTML = `<div class="ci-sheet"><h2>${ch.label}: činidla</h2><p class="sub">Organická chemie · FormičkyHub · v${typeof FH_VER !== 'undefined' ? FH_VER : ''}</p><div class="cols">${ch.groups.map(g => `<div class="b${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><ul>${g.rows.map(r => `<li><b>${r[0].replace(/\n/g, ' ')}</b> → ${r[1]} <i>· ${r[2]}</i></li>`).join('')}</ul></div>`).join('')}</div><div class="pv">${spider(ch, 'l')}</div></div>`;
+      return;
+    }
+    $c('#ciView').innerHTML = `<div class="ci-legend"><span><span class="ci-src">Př</span> přednáška (P6/45 = přednáška 6, slajd 45)</span><span><span class="ci-src">PS</span> pracovní sešit</span><span><span class="ci-src">Sem</span> semináře</span><span><span class="ci-src add">+</span> doplněno z obecné chemie</span></div>
+      ${ch.groups.map(g => `<section class="ci-grp${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><p>${g.d}</p>${g.rows.map(r => `<div class="ci-row"><span class="r">${r[0]}</span><span class="p">→ ${r[1]}</span><span class="n">${r[2]}</span><span class="s">${src(r[3])}</span></div>`).join('')}</section>`).join('')}
+      <h2 class="fam-h">Pavouček: ${ch.label.toLowerCase()}</h2>
+      <p class="hint" style="margin:0;color:var(--muted)">Růžové šipky vedou ven (reakce), tyrkysové dovnitř (příprava). Na šipce jsou všechna činidla k tomu produktu, „nebo“ odděluje jiné cesty. Na telefonu pavouček posuneš prstem do strany.</p>
+      <div class="ci-pav">${spider(ch, 'w')}</div>`;
+  };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-ci]'); if (b) { cur = b.dataset.ci; keep(); render(); return; }
+    const v = e.target.closest('#ciSeg [data-v]'); if (v) { view = v.dataset.v; keep(); render(); return; }
+    if (e.target.closest('#ciPrint')) { document.body.classList.add('ci-print'); window.print(); }
+  });
+  window.addEventListener('afterprint', () => document.body.classList.remove('ci-print'));
+  const show = () => { if (/^#cinidla/.test(location.hash)) render(); };
+  window.addEventListener('hashchange', show);
+  window.FH_CI = { show, CH };
+  show();
 })();
 </script>
 </body></html>
