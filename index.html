@@ -537,6 +537,9 @@ body.m3d-open{overflow:hidden}
 .rarr svg line{stroke:var(--ink);stroke-width:1.6} .rarr svg path{fill:var(--ink)}
 .rxmap .aside{margin:2px 0 0}
 .anim{margin:8px 0 2px;font-size:.88rem;line-height:1.4}
+.hint{margin:10px 0 0;border:1px dashed var(--line);border-radius:12px;padding:0 12px}
+.hint summary{cursor:pointer;color:var(--accent);font-weight:600;min-height:44px;display:flex;align-items:center;font-size:.95rem}
+.hint p{margin:0 0 12px;font-size:.92rem;line-height:1.45}
 .anim a{color:var(--accent);font-weight:600}
 .anim span{color:var(--muted);font-size:.8rem;margin-left:4px}
 .q-name span{white-space:normal;overflow-wrap:anywhere}
@@ -27137,7 +27140,7 @@ function qBody(g, order, selId) {
 }
 function renderQuestion(g) {
   if (!Q.opts) Q.opts = shuffle([0, 1, 2, 3]);
-  view.innerHTML = `<div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span></div>${qBody(g, Q.opts)}<div class="fbwrap" id="fb" aria-live="polite"></div></div>`;
+  view.innerHTML = `<div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span></div>${qBody(g, Q.opts)}${hintHTML(g)}<div class="fbwrap" id="fb" aria-live="polite"></div></div>`;
 }
 function answerQuestion(btn) {
   const g = Q.cur, k = +btn.dataset.id.slice(1), ok = k === 0;
@@ -27149,6 +27152,16 @@ function answerQuestion(btn) {
   const not = !ok && g.not && g.not[k - 1] ? `<p class="aside"><b>Proč ne ${LTR[Q.opts.indexOf(k)]}:</b> ${esc(g.not[k - 1])}</p>` : '';
   finishName(ok, `<p><b>${ok ? 'Správně' + full + '.' : 'Správně je ' + LTR[Q.opts.indexOf(0)] + full + '.'}</b></p>${not}<p class="aside">${esc(g.why)}</p>` + stepsHTML(g.rx) + tipLine(g));
 }
+/* Nápovědy a „Proč ne“ vygenerované předem (napovedy.json, načte se na pozadí): h = nápověda před odpovědí, n = proč ne u špatných možností 1–3 */
+let NAP = null;
+function loadNap() {
+  if (NAP) return; NAP = {};
+  fetch('napovedy.json?v=' + FH_VER).then(r => r.ok ? r.json() : {}).then(j => {
+    for (const id in j) { const g = BYID[id], x = j[id]; if (!g) continue; if (x.h) g.hint = x.h; if (!g.not && x.n && x.n.length === 3) g.not = x.n; }
+  }).catch(() => {});
+}
+setTimeout(loadNap, 1200);
+function hintHTML(g) { return g.hint ? `<details class="hint"><summary>Nápověda</summary><p>${esc(g.hint)}</p></details>` : ''; }
 function chainWhy(g) {
   return chainHTML(g, true) + g.chain.path.map((r, i) => `<p class="aside"><b>${i + 1}. ${esc(r.title)}:</b> ${esc(r.why || '')}</p>`).join('');
 }
@@ -32773,7 +32786,7 @@ const FH_OL = (() => {
         <div class="row"><button type="button" class="btn primary" id="olNext" ${ATT}="lnext">${O.i + 1 < n ? 'Další' : 'Dokončit lekci'}</button></div>`;
     }
     return `<div class="progress"><span class="cnt">${O.i + 1} / ${n}</span><span class="bar"><i style="width:${100 * O.i / n}%"></i></span><span class="cnt">${O.ok} ✓</span></div>
-      <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}<div class="fbwrap">${fb}</div></div>`;
+      <div class="card"><div class="card-head"><span class="eyebrow">${esc(famName(g))}</span>${SR[g.id] ? '' : '<span class="ac-new">nová</span>'}</div>${body}${done ? '' : hintHTML(g)}<div class="fbwrap">${fb}</div></div>`;
   }
   /* lekce se zapíše hned po poslední odpovědi, ne až na závěrečné obrazovce */
   function saveRec() { const L = BY[O.open]; if (O.saved || !L) return; OP[L.id] = FH_LES.rec(OP[L.id], O.deck.length, O.ok, today()); store.set('fg-les', OP); O.saved = true; FH_LES.runSet('o', null); }

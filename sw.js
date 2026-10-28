@@ -10,8 +10,8 @@ self.addEventListener('install', e => {
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('fh-') && k !== CORE && k !== RT).map(k => caches.delete(k))))
-    // z runtime mezipaměti pryč: m3d.json starší verze, dřívější písma z Googlu a 3Dmol z CDN, starší kopie knihovny
-    .then(() => caches.open(RT)).then(c => c.keys().then(rs => Promise.all(rs.filter(r => { const u = new URL(r.url); return u.origin !== location.origin || (/\/m3d\.json$/.test(u.pathname) && u.search !== '?v=' + VER) || (/\/lib\//.test(u.pathname) && !u.pathname.endsWith(LIB)); }).map(r => c.delete(r)))))
+    // z runtime mezipaměti pryč: m3d.json a napovedy.json starší verze, dřívější písma z Googlu a 3Dmol z CDN, starší kopie knihovny
+    .then(() => caches.open(RT)).then(c => c.keys().then(rs => Promise.all(rs.filter(r => { const u = new URL(r.url); return u.origin !== location.origin || (/\/(m3d|napovedy)\.json$/.test(u.pathname) && u.search !== '?v=' + VER) || (/\/lib\//.test(u.pathname) && !u.pathname.endsWith(LIB)); }).map(r => c.delete(r)))))
     .then(() => self.clients.claim()));
 });
 const LIB = '/lib/3Dmol-2.4.2-min.js';
@@ -41,7 +41,7 @@ self.addEventListener('fetch', e => {
     })());
     return;
   }
-  const lazy = u.origin === location.origin && (u.pathname.endsWith('/m3d.json') || u.pathname.endsWith(LIB));
+  const lazy = u.origin === location.origin && (u.pathname.endsWith('/m3d.json') || u.pathname.endsWith('/napovedy.json') || u.pathname.endsWith(LIB));
   if (u.origin === location.origin && !lazy) {
     e.respondWith(caches.match(r).then(m => m || fetch(r)));
     return;
