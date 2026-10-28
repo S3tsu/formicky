@@ -10734,7 +10734,7 @@ function registerTopic(T) {
         ['E2 potřebuje silnou bázi a ethanol jí není.', 'SN2 na terciárním uhlíku neproběhne, ether tu vzniká přes karbokation.', 'E1 tu probíhá, ale jen jako menšinová cesta vedle SN1.'], 'q51'],
       ['base', 'sou', 'Sekundární a azid', '2-Brombutan s NaN₃ v DMSO. Jaký mechanismus převládne?', ['SN2', 'E2', 'SN1', 'E1'], 'Sekundární substrát a aniontový nukleofil, který není silnou bází (azid patří mezi silné a nebazické). Diagram vede k SN2 a aprotické DMSO ji ještě podpoří.',
         ['E2 by převládla se silnou bází, třeba s ethoxidem. Azid silná báze není.', 'SN1 chce slabý neutrální nukleofil a protické rozpouštědlo. Tady je silný aniont v DMSO.', 'E1 jde přes karbokation, a ten v DMSO se silným nukleofilem nevznikne.'], 'q52'],
-      ['base', 'sou', 'Sekundární a voda', 'Sekundární halogenid s vodou, bez další báze. Kam ho pošle rozhodovací diagram?', ['SN1', 'SN2', 'E2', 'E1'], 'Sekundární substrát, nukleofil není aniont a nejde o alkohol s H₂SO₄: diagram končí u SN1. Voda je slabý nukleofil a jako protické rozpouštědlo stabilizuje karbokation.',
+      ['base', 'sou', 'Sekundární a voda', 'Sekundární halogenid s vodou, bez další báze. Kam ho pošle rozhodovací diagram?', ['SN1', 'SN2', 'E2', 'E1'], 'Sekundární substrát, nukleofil není aniont a nejde o alkohol s H₂SO₄: diagram končí u SN1. Voda je slabý nukleofil a jako protické rozpouštědlo stabilizuje karbokation. Tabulka na slajdu 66 9. přednášky ale u sekundárních uvádí SN1 hlavně pro allyl- a benzylhalogenidy, běžné sekundární reagují s vodou pomalu a smíšeně.',
         ['SN2 u sekundárního substrátu chce aniontový nukleofil, který není silnou bází.', 'E2 potřebuje silnou bázi a voda je slabá.', 'E1 diagram volí pro alkohol s H₂SO₄ nebo H₃PO₄.'], 'q53'],
       ['base', 'sou', 'Primární a ethoxid', '1-Brombutan s ethoxidem sodným. Co převládne podle rozhodovacího diagramu?', ['SN2', 'E2', 'SN1', 'E1'], 'Primární substrát, ne allylový ani benzylový, a ethoxid není stericky bráněná báze. Diagram vede k SN2 a vznikne ether (Williamsonova syntéza).',
         ['E2 u primárního substrátu převládne jen se silnou a objemnou bází (t-BuOK, LDA).', 'SN1 u primárního substrátu nejde, primární karbokation je příliš nestabilní. Výjimkou jsou allylové a benzylové.', 'E1 jde přes karbokation, a ten z obyčejného primárního bromidu nevznikne.'], 'q54'],
@@ -12457,7 +12457,7 @@ function registerTopic(T) {
           { via: '−H⁺', to: [PN('1-chlor-4-nitrobenzen'), PN('1-chlor-2-nitrobenzen'), PT('64 : 35 (meta 1 %)')], t: 'Odtržení H⁺. Obdobně z ataku ortho vznikne 35 % 1-chlor-2-nitrobenzenu.' }] },
       { id: 'a15', set: 'base', fam: 'ef', title: 'Chlorace benzaldehydu', from: [PN('benzaldehyd')], reag: 'Cl₂, FeCl₃', to: [PN('3-chlorbenzaldehyd')],
         wrong: [[PN('p-chlorbenzaldehyd')], [PM(I.clBenzoyl)], [PN('2-chlorbenzaldehyd')]], wrongReag: ['Cl₂, hν', 'SOCl₂', 'HCl, ZnCl₂'],
-        why: 'CHO deaktivuje a orientuje meta. Po ataku o/p by jedna struktura měla + na uhlíku vedle karbonylu nesoucího δ+ (nejméně stabilní). Meta 72 %, ortho 19 %, para 9 %.',
+        why: 'CHO deaktivuje a orientuje meta. Po ataku o/p by jedna struktura měla + na uhlíku vedle karbonylu nesoucího δ+ (nejméně stabilní). Meta 72 %, ortho 19 %, para 9 % (slajd 36; tabulka na slajdu 27 uvádí stejná čísla u nitrace).',
         steps: [
           { via: 'Cl₂ + FeCl₃', to: [PT('Cl₃Fe⁻···Cl⁺')], t: 'Vznik elektrofilního chloru.' },
           { via: 'atak meta', to: [PM(I.sigBzCl)], t: 'Po ataku meta je kladný náboj na třech uhlících, nikdy na uhlíku s CHO.' },
@@ -12636,7 +12636,7 @@ function registerTopic(T) {
           { via: '−H⁺', to: [PN('3-nitrobenzaldehyd')], t: 'Odtržení H⁺.' }] },
       { id: 'x18', set: 'extra', fam: 'ef', title: 'Nitrace methyl-benzoátu', from: [PN('methyl-benzoát')], reag: 'HNO₃, H₂SO₄', to: [PN('methyl-3-nitrobenzoát')],
         wrong: [[PM(I.meNitroBenzoat4)], [PM(I.meNitroBenzoat2)], [PM(I.nitroBenzoovaW)]], noReag: 1,
-        why: 'Ester orientuje meta (ortho 28, meta 66, para 6 %), stejně jako v doplňku s chlorem.',
+        why: 'Ester orientuje meta (při nitraci methyl-benzoátu ortho 28, meta 66, para 6 %, tabulka na slajdu 27).',
         steps: [
           { via: 'HNO₃ + H₂SO₄', to: [PN('nitroniový ion'), PT('H₂O')], t: 'Vznik NO₂⁺.' },
           { via: 'atak meta', to: [PM(I.sigEstNO2)], t: 'Kladný náboj na třech uhlících, nikdy na uhlíku nesoucím ester.' },
@@ -21387,7 +21387,7 @@ function registerTopic(T) {
         ] },
       { id: 'a14', set: 'base', fam: 's5', title: 'Oxim nitrofurfuralu', from: [PN('5-nitrofuran-2-karbaldehyd')], reag: 'H₂N–OH', to: [PN('nitrofuroxim')],
         wrong: [[PM(M.nitrofuranhydrazon)], [PM(M.nitrofurannitril)], [PM(M.aminofurfural)]], wrongReag: ['H₂N–NH₂', 'NH₃', 'HNO₃, Ac₂O'],
-        why: 'Hydroxylamin reaguje s aldehydem na oxim CH=N–OH. Nitroskupina zůstane.',
+        why: 'Hydroxylamin reaguje s aldehydem na oxim CH=N–OH. Nitroskupina zůstane. Slajd ho jmenuje „nitrofuroxim“, mezinárodní název léčiva je nifuroxim.',
         steps: [
           { via: 'H₂N–OH, přenos H⁺', to: [PM(I.oximKarbinol)], t: 'Dusík hydroxylaminu napadne uhlík CHO. Po přenosu protonu vznikne karbinolamin.' },
           { via: 'H⁺, −H₂O', to: [PN('nitrofuroxim'), PT('H₂O')], t: 'Protonovaná OH odejde jako voda a vznikne dvojná vazba C=N, oxim. Nitroskupina se nemění.' }
@@ -24424,7 +24424,7 @@ function registerTopic(T) {
         'Hexokinasa (glukosa i fruktosa) a ADH (ethanol i methanol) mají relativní specificitu. Papain štěpí mnoho peptidových vazeb.', 'q43'],
       ['base', 'en', 'Amylasa', 'Co platí o amylase v lidském zažívacím traktu?',
         ['Hydrolyzuje jen škrob¦, celulosu ne', 'Hydrolyzuje škrob i celulosu', 'Štěpí peptidové vazby', 'Oxiduje glukosu pomocí NAD⁺'],
-        'Je specifická pro jediný substrát. Slajd píše „na glukosu“, ve skutečnosti α-amylasa štěpí škrob hlavně na maltosu a dextriny, glukosu uvolní až maltasa. Méně specifický je papain (212 aminokyselin), hydrolyzuje mnoho druhů peptidových vazeb.', 'q44'],
+        'Je specifická pro jediný substrát. Slajd uvádí jen škrob (α-amylasa ve skutečnosti štěpí i glykogen) a píše „na glukosu“, ve skutečnosti α-amylasa štěpí škrob hlavně na maltosu a dextriny, glukosu uvolní až maltasa. Méně specifický je papain (212 aminokyselin), hydrolyzuje mnoho druhů peptidových vazeb.', 'q44'],
       ['base', 'en', 'Mechanismus', 'Jaké je pořadí kroků enzymové katalýzy?',
         ['E + S ⇌ ES ⇌ EP ⇌ E + P', 'E + P ⇌ EP ⇌ ES ⇌ E + S', 'E + S → E–P → S + P', 'S → P, enzym se spotřebuje'],
         'Substrát se naváže do aktivního místa (enzym-substrátový komplex), přemění se na produkt a ten se uvolní. Enzym se nemění.', 'q45'],
@@ -32909,7 +32909,7 @@ const AC_ION = [
     H2S: R(2, 'cerna', 'černá sraženina', 'HgS + Hg⁰'), NH4HS: R(2, 'cerna', 'černá sraženina', 'HgS + Hg⁰'),
     NaOH: R(2, 'sedocerna', 'šedočerná sraženina', 'Hg⁰ + HgO', { n: 'Rtuťné ionty v zásaditém prostředí dismutují na Hg²⁺ a černou elementární rtuť.' }),
     NH3: R(2, 'sedocerna', 'šedočerná sraženina', 'Hg⁰ + bílá amidosůl', { n: 'Vzniká bílá amidosůl a zároveň černá elementární rtuť.' }),
-    KI: R(2, 'zlutozelena', 'žlutozelená sraženina, v nadbytku se rozpustí na žlutý roztok a vyloučí se černá rtuť', 'Hg₂I₂ → [HgI₄]²⁻ + Hg⁰', { x: 'zluta', xp: 'cerna' }),
+    KI: R(2, 'zlutozelena', 'žlutozelená sraženina, v nadbytku se rozpustí na žlutý roztok a vyloučí se černá rtuť', 'Hg₂I₂ → [HgI₄]²⁻ + Hg⁰', { x: 'zluta', xp: 'cerna', n: 'Žlutý roztok uvádí skriptum. Samotný [HgI₄]²⁻ je bezbarvý až nažloutlý.' }),
     AcO: R(2, 'bila', 'bílá sraženina', 'málo rozpustný octan rtuťný') } },
   { id: 'pb', c: 'k', f: 'Pb²⁺', nm: 'olovnatý kationt', r: {
     HCl: R(1, 'bila', 'bílá sraženina (neúplně)', 'PbCl₂', { n: 'PbCl₂ je relativně rozpustnější, nesráží se kvantitativně a v horké vodě se rozpustí.' }),
@@ -32987,7 +32987,7 @@ const AC_ION = [
   { id: 'mn', c: 'k', f: 'Mn²⁺', nm: 'manganatý kationt', r: {
     NH4HS: R(2, 'telova', 'tělově růžová sraženina', 'MnS'),
     NaOH: R(2, 'bila', 'bílá sraženina, na vzduchu hnědne až černá', 'Mn(OH)₂ → MnO₂', { p2: 'tmhneda', n: 'Oxidace vzdušným kyslíkem.' }),
-    NH3: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Mn(OH)₂ → [Mn(NH₃)₆]²⁺', { x: '' }) } },
+    NH3: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Mn(OH)₂ → [Mn(NH₃)₆]²⁺', { x: '', n: 'Takhle to uvádí skriptum. V obecné chemii se Mn(OH)₂ v amoniaku skoro nerozpouští a na vzduchu hnědne.' }) } },
   { id: 'zn', c: 'k', f: 'Zn²⁺', nm: 'zinečnatý kationt', r: {
     H2S: R(1, 'bila', 'bílá sraženina (neúplně)', 'ZnS'), NH4HS: R(2, 'bila', 'bílá sraženina', 'ZnS'),
     NaOH: R(2, 'bila', 'bílá sraženina, v nadbytku se rozpustí na bezbarvý roztok', 'Zn(OH)₂ → zinečnatan [Zn(OH)₄]²⁻', { x: '' }),
@@ -33435,7 +33435,7 @@ const AC_TH = [
   ['k_mgnh4', 'ka', 'Proč Mg²⁺ s alkalickým hydroxidem někdy nedá sraženinu?', 'Mg(OH)₂ se v přítomnosti NH₄⁺ nesráží', ['Mg²⁺ tvoří s hydroxidem amminkomplex', 'Mg(OH)₂ je amfoterní a rozpustí se', 'Mg²⁺ se hydroxidem redukuje'], 'Na⁺, K⁺, NH₄⁺ a Mg²⁺ skupinová činidla nesráží. Mg²⁺ dá sraženinu jen v silně zásaditém prostředí bez NH₄⁺.', null, 'k'],
   ['k_octan', 'ka', 'Proč octan sodný sráží Bi³⁺ a Sb³⁺?', 'mírně zásadité pH octanu vyvolá jejich hydrolýzu', ['tvoří s nimi nerozpustné octany', 'oxiduje je na vyšší oxidační stupeň', 'tvoří s nimi barevné acetátokomplexy'], 'Octan sodný je sůl slabé kyseliny a silné zásady. Bi³⁺, Sb³⁺ (a cín) hydrolyzují už v mírně zásaditém prostředí, někdy stačí zředit vodou. Před přidáním činidla se pevným NaCl vysráží a odfiltrují chloridy. Barevné acetátokomplexy dává Cr³⁺ a Fe³⁺.', null, 'k'],
   ['k_bihydr', 'ka', 'Jak se potlačí hydrolýza solí Bi³⁺?', 'okyselením pod pH 2', ['přidáním octanu sodného', 'povařením roztoku', 'zředěním vodou'], 'Okyseluje se kyselinou se stejným aniontem. Jinak vznikají bílé nerozpustné oxidosoli. Antimonité kationty hydrolyzují podobně.', null, 'k'],
-  ['k_plamen', 'ka', 'Jak se připraví platinový drátek na plamenovou zkoušku?', 'žíhá se a noří do konc. HNO₃, dokud nebarví plamen', ['opláchne se vodou a osuší', 'namočí se do roztoku NaCl', 'ponoří se do koncentrovaného amoniaku'], 'Pak se na očko nanese vzorek (nejlépe tuhý odparek) a sleduje se barva v prvních vteřinách. Pracuje se v digestoři.', null, 'k'],
+  ['k_plamen', 'ka', 'Jak se připraví platinový drátek na plamenovou zkoušku?', 'žíhá se a noří do konc. HNO₃, dokud nebarví plamen', ['opláchne se vodou a osuší', 'namočí se do roztoku NaCl', 'ponoří se do koncentrovaného amoniaku'], 'Pak se na očko nanese vzorek (nejlépe tuhý odparek) a sleduje se barva v prvních vteřinách. Pracuje se v digestoři. HNO₃ uvádí skriptum, jinde se drátek častěji čistí v konc. HCl.', null, 'k'],
   ['k_co', 'ka', 'Jakou barvu mají bezvodé soli Co²⁺?', 'modrou', ['růžovou', 'zelenou', 'bílou'], 'Hydratované Co²⁺ jsou růžové, bezvodé modré. Proto skvrna s konc. HCl po vysušení zmodrá (Co[CoCl₄]).', null, 'k'],
   ['k_cu', 'ka', 'Jakou barvu mají bezvodé soli Cu²⁺?', 'bílou', ['modrou', 'zelenou', 'růžovou'], 'Měďnaté roztoky jsou kvůli hydrataci modré, modrozelené nebo zelené. Bezvodé Ni²⁺ soli jsou bezbarvé, hydratované jasně zelené.', null, 'k'],
   ['k_cr', 'ka', 'Jakou barvu mají hydratované ionty Cr³⁺?', 'fialovou', ['žlutou', 'oranžovou', 'bezbarvou'], 'V komplexech se sírany a chlorid zezelenají. Žlutý je až chroman CrO₄²⁻ po oxidaci, oranžový dichroman.', null, 'k'],
@@ -33574,7 +33574,7 @@ const AC_TH = [
   ['i_ps', 'ir', 'Čím se podle Českého lékopisu kontroluje IČ spektrometr?', 'polystyrenovou fólií', ['čistou KBr tabletou', 'fólií z PVC', 'spektrem vzduchu'], 'Standardní spektrum polystyrenu má pásy třeba při 3026, 2849, 1601, 1028 a 907 cm⁻¹.'],
   ['i_int', 'ir', 'Kdy dá interferometr na detektoru nejvyšší signál?', 'když jsou obě zrcadla stejně daleko od děliče', ['při největším rozdílu drah', 'jen při zakrytém pohyblivém zrcadle', 'když He-Ne laser nesvítí'], 'Paprsky se pak skládají konstruktivně (zesílí se). Při nestejné vzdálenosti interferují destruktivně a signál klesá.'],
   ['i_disp', 'ir', 'Čím se ve starších disperzních IČ přístrojích oddělovaly vlnové délky?', 'hranolem nebo mřížkou', ['interferometrem', 'He-Ne laserem', 'ATR krystalem'], 'Dnes se běžně používají interferometrické přístroje s Fourierovou transformací.'],
-  ['i_terc', 'ir', 'Proč terciární amin nemá v IČ spektru pás N–H?', 'na dusíku nemá žádný vodík', ['pás leží v tichém pásmu', 'překryje se s C=O', 'vibrace N–H nemění dipól'], 'Primární amin a amid: N–H 3500–3300 cm⁻¹, sekundární kolem 3500 cm⁻¹ (střední), terciární žádný.'],
+  ['i_terc', 'ir', 'Proč terciární amin nemá v IČ spektru pás N–H?', 'na dusíku nemá žádný vodík', ['pás leží v tichém pásmu', 'překryje se s C=O', 'vibrace N–H nemění dipól'], 'Primární amin a amid: N–H 3500–3300 cm⁻¹, sekundární kolem 3500 cm⁻¹ (střední, podle tabulky ve skriptu; v literatuře spíš 3350–3310 cm⁻¹), terciární žádný.'],
 ];
 
 /* ===== Analytická chemie: kartičky, taháky a hry pro cvičení 3–6 ===== */
