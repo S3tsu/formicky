@@ -30180,7 +30180,7 @@ window.addEventListener('hashchange', () => { renderStats(); renderDay(); render
 const WEB = {
   form: 'https://docs.google.com/forms/d/e/1FAIpQLSdefXGfOdIMNJJK31zCA00S9jhzKvVYepcgndDwrFaQcjrCfQ/formResponse',
   entry: 'entry.1456317184',  // pole „Hlášení“
-  ai: 'https://formicky-ai.s3tsu.workers.dev',   // mezičlánek „Vysvětli mi to jinak“ (Cloudflare Worker s klíčem k Claude API); '' = vypnuto; při změně upravit CSP connect-src
+  ai: '',   // mezičlánek „Vysvětli mi to jinak“ (Cloudflare Worker s klíčem k Claude API); '' = vypnuto; při změně upravit CSP connect-src
   gc: 's3tsu'    // kód GoatCounter (https://<kód>.goatcounter.com); při změně kódu nebo formuláře upravit i Content-Security-Policy v hlavičce
 };
 const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
