@@ -30131,7 +30131,7 @@ const WEB = {
 };
 const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610281303';
+const FH_VER = '202610281323';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
