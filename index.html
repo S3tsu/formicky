@@ -16050,6 +16050,7 @@ function registerTopic(T) {
       ['base', 'na', 'Grignard a karbonyly', 'Jaký alkohol vznikne z aldehydu (ne formaldehydu) a Grignardova činidla po H₃O⁺?', ['sekundární', 'primární', 'terciární', 'žádný, vznikne alkan'], 'Formaldehyd dá primární, jiný aldehyd sekundární, keton terciární alkohol.', 'q23'],
       // ----- am
       ['base', 'am', 'Imin vs. enamin', 'Proč sekundární amin dává s ketonem enamin, a ne imin?', ['na dusíku iminiového iontu není H¦, proton proto odejde z α-uhlíku', 'sekundární amin se na C=O neaduje', 'sekundární amin je silnější kyselina', 'enamin vzniká jen z aldehydů'], 'Imin vzniká odtržením H z dusíku. R₂N⁺=C už H nemá, takže se odtrhne H ze sousedního uhlíku a vznikne C=C–NR₂.', 'q24'],
+      ['base', 'am', 'Enamin bez α-vodíku', 'Proč benzaldehyd se sekundárním aminem nedá enamin?', ['nemá α-vodík¦, který by po vzniku iminiového iontu odešel', 'sekundární amin se na aldehydy neaduje', 'benzaldehyd je příliš slabý elektrofil', 'enamin vzniká jen z primárních aminů'], 'Enamin vzniká odtržením H z uhlíku vedle C=N⁺. Benzaldehyd (stejně jako formaldehyd) α-vodík nemá, proto enamin nevznikne.', 'q52'],
       ['base', 'am', 'Optimální pH', 'Při jakém pH je tvorba iminů a oximů nejrychlejší?', ['kolem pH 4–5', 'kolem pH 1', 'kolem pH 7', 'kolem pH 12'], 'Je potřeba kyselina k protonaci OH v hemiaminalu, ale ne tolik, aby se protonoval amin.', 'q25'],
       ['base', 'am', 'Příliš kyselé', 'Proč tvorba oximu v silně kyselém prostředí vázne?', ['NH₂OH se protonuje na H₃N⁺OH a není nukleofilní', 'kyselina redukuje keton na alkohol', 'kyselina oxiduje hydroxylamin na dusík', 'v kyselině se C=O nemůže protonovat'], 'Slajd: H₂NOH + HA → H₃N⁺OH, „není nukleofilní“. Rychlost proto s klesajícím pH nejdřív roste, pak klesá.', 'q26'],
       ['base', 'am', 'Wolff–Kižněr', 'Co udělá Wolffova–Kižněrova reakce (H₂NNH₂, KOH) s karbonylovou skupinou?', ['změní C=O na CH₂', 'změní C=O na CH–OH', 'změní C=O na CH–NH₂', 'změní C=O na C=CH₂'], 'Přes hydrazon a diimin se uvolní N₂. Z ketonu vznikne CH₂, z aldehydu CH₃.', 'q27'],
@@ -18088,6 +18089,9 @@ function registerTopic(T) {
       // ---------- base: dz ----------
       ['base', 'dz', 'kyselina glutamová', M.glutamova, { par: 'kyselina 2-aminopentandiová', alts: ['glutamová kyselina', 'kyselina 2-aminoglutarová'], tip: 'Primární alifatický amin. S HNO₂ ztratí N₂ a vznikne lakton.' }],
       ['base', 'dz', 'kyselina 5-oxotetrahydrofuran-2-karboxylová', M.oxoTHF, { alts: ['kyselina 5-oxooxolan-2-karboxylová'], tip: 'Lakton: karbokation po odchodu N₂ zachytí vlastní COOH skupina.' }],
+      ['base', 'dz', 'propan-1-ol', 'C!; 0-C!@30; 1-C!@-30; 2-O@30:h1', { alts: ['n-propanol', 'propanol', '1-propanol'], tip: 'Z propylaminu s HNO₂: karbokation zachytí vodu bez přesmyku.' }],
+      ['base', 'dz', 'propan-2-ol', 'C!; 0-C!@-30; 1-C!@30; 1-O@90:h1', { alts: ['isopropylalkohol', 'isopropanol', '2-propanol'], tip: 'Z propylaminu s HNO₂: primární karbokation se hydridovým posunem změní na sekundární.' }],
+      ['base', 'dz', 'propen', 'C!; 0-C!@30; 1=C!@-30', { alts: ['propylen'], tip: 'Z propylaminu s HNO₂: karbokation odštěpí H⁺ (eliminace).' }],
       ['base', 'dz', 'benzendiazonium-hydrogensulfát', M.PhN2, { alts: ['benzendiazonium hydrogensulfát', 'benzendiazoniumhydrogensulfát', 'fenyldiazonium-hydrogensulfát'], tip: 'Arendiazoniová sůl z anilinu (NaNO₂, H₂SO₄). Ar–N≡N⁺.' }],
       ['base', 'dz', 'benzen', M.benzen, { tip: 'ArN₂⁺ + H₃PO₂ → ArH: aminoskupina se tak dá úplně odstranit.' }],
       ['base', 'dz', 'fenol', M.fenol, { alts: ['hydroxybenzen', 'benzenol'], tip: 'ArN₂⁺ + Cu₂O, Cu(NO₃)₂, H₂O → ArOH.' }],
@@ -18444,6 +18448,12 @@ function registerTopic(T) {
           { via: '−N₂', to: [PM(IM.gluKation), PT('N₂')], t: 'Alifatická diazoniová sůl je nestálá a hned ztratí N₂. Zbyde karbokation.' },
           { via: 'COOH (C5), −H⁺', to: [PN('kyselina 5-oxotetrahydrofuran-2-karboxylová')], t: 'Karbokation zachytí kyslík vzdálenější COOH, po odštěpení H⁺ se uzavře pětičlenný lakton.' }
         ] },
+      { id: 'a68', set: 'base', fam: 'dz', title: 'Primární alifatický amin + HNO₂: osud karbokationtu', from: [PN('propylamin')], reag: 'NaNO₂, HCl (HNO₂)', to: [PN('propan-1-ol'), PN('propan-2-ol'), PN('propen'), PT('N₂')],
+        wrong: [[PT('stálá propyldiazoniová sůl')], [PN('isopropylamin')], [PT('nereaguje')]], wrongReag: ['NaN₃, H₂O', 'H₂, Pd/C', 'CH₃I'],
+        why: 'Alifatická diazoniová sůl je nestálá a hned ztratí N₂. Karbokation pak zachytí nukleofil (voda dá alkohol), přesmykne se (propyl na isopropyl) nebo odštěpí H⁺ na alken. Vznikne směs, proto se reakce k přípravě nehodí.' },
+      { id: 'a69', set: 'base', fam: 'dz', title: 'Terciární amin + HNO₂', from: [PN('triethylamin')], reag: 'NaNO₂, HCl (HNO₂)', to: [PT('nereaguje')],
+        wrong: [[PN('N-nitrosodimethylamin')], [PN('diethylamin'), PT('N₂')], [PT('diazoniová sůl')]], noReag: 1,
+        why: 'Na dusíku terciárního aminu není vodík, takže po napadení NO⁺ nemůže odejít H⁺ a nitrosamin ani diazoniová sůl nevznikne. V kyselém roztoku se amin jen protonuje na amoniovou sůl.' },
       { id: 'a34', set: 'base', fam: 'dz', title: 'Sekundární amin + HNO₂', from: [PM(W.r2NH)], reag: 'NaNO₂, HCl (HNO₂)', to: [PM(W.r2NNO)],
         wrong: [[PM(W.rN2)], [PM(W.rOH)], [PT('nereaguje')]], wrongReag: ['NaN₃', 'H₂, Pd/C', 'CH₃I'],
         why: 'NO⁺ se naváže na dusík a odejde H⁺. Sekundární amin už nemá druhý H, proto se zastaví na N-nitrosaminu.',
@@ -19667,6 +19677,9 @@ function registerTopic(T) {
           { via: '(CH₃)₂CuLi', to: [PM(SX.hexanoylCu), PT('LiCl')], t: 'Kuprát nahradí Cl na acylu. Vznikne acyl-dimethylkuprát.' },
           { via: 'reduktivní eliminace', to: [PN('heptan-2-on'), PT('CH₃Cu')], t: 'Měď spojí acyl s methylem. Vznikne methylketon heptan-2-on.' }
         ] },
+      { id: 'a47', set: 'base', fam: 'cu', title: 'Ester a kuprát', from: [PN('methyl-benzoát'), PN('lithium-dimethylkuprát')], reag: 'ether', to: [PT('nereaguje')],
+        wrong: [[PN('acetofenon')], [PN('2-fenylpropan-2-ol')], [PN('benzaldehyd')]], noReag: 1,
+        why: 'Kupráty jsou málo reaktivní nukleofily. Z acylchloridu udělají keton, ale karboxylové kyseliny, estery, anhydridy ani amidy nenapadnou. Grignard by z esteru udělal terciární alkohol.' },
       // ---------- zinek ----------
       { id: 'a31', set: 'base', fam: 'zn', title: 'Simmonsova–Smithova reakce', from: [PN('cyklohexen')], reag: 'CH₂I₂, Zn(Cu)', to: [PN('bicyklo[4.1.0]heptan'), PT('ZnI₂')],
         wrong: [[PM(M.mecyhexan)], [PM(M.mecyhexen)], [PM(M.dijodcyhexan)]], wrongReag: ['CH₃I, Mg', 'CH₂=CH₂, Pd kat.', '(CH₃)₂CuLi'],
@@ -23615,6 +23628,24 @@ function registerTopic(T) {
           { via: 'úplná hydrolýza', to: [PN('D-glukosa')], t: 'Po rozštěpení všech glykosidových vazeb zbude jen D-glukosa (v roztoku cyklická i otevřená forma).' }
         ] },
 
+      { id: 'a24', set: 'base', fam: 'ro', title: 'Tollensova zkouška glukosy', from: [PN('D-glukosa')], reag: 'Ag₂O, NH₃, H₂O (Tollens)', to: [PN('D-glukonová kyselina'), PT('Ag (stříbrné zrcátko)')],
+        wrong: [[PN('D-glukarová kyselina')], [PN('D-glucitol')], [PN('D-fruktosa')]], wrongReag: ['NaBH₄', 'HNO₃, zahřívání', 'CH₃OH, HCl'],
+        why: 'Aldosa má v otevřené formě aldehyd. Tollensovo činidlo ho oxiduje na COOH (aldonová kyselina) a Ag⁺ se redukuje na stříbro. Cukr, který to dokáže, je redukující.' },
+      { id: 'a25', set: 'base', fam: 'ro', title: 'Fehlingova zkouška glukosy', from: [PN('D-glukosa')], reag: 'Cu²⁺, vínan, NaOH (Fehling)', to: [PN('D-glukonová kyselina'), PT('Cu₂O (červená sraženina)')],
+        wrong: [[PN('D-glukarová kyselina')], [PN('D-glucitol')], [PN('D-mannosa')]], wrongReag: ['NaBH₄', 'HNO₃, zahřívání', 'HCN'],
+        why: 'Stejně jako u Tollense se aldehyd oxiduje na COOH. Modrý Cu²⁺ se redukuje na červený Cu₂O.' },
+      { id: 'a26', set: 'base', fam: 'di', title: 'Sacharosa a Tollens', from: [PN('sacharosa')], reag: 'Ag₂O, NH₃, H₂O (Tollens)', to: [PT('nereaguje')],
+        wrong: [[PN('D-glukonová kyselina'), PT('Ag')], [PN('D-glukosa'), PN('D-fruktosa')], [PN('D-glucitol')]], noReag: 1,
+        why: 'Vazba (1→2) spojuje oba anomerní uhlíky, sacharose nezbyl volný hemiacetal a nemůže se otevřít na aldehyd. Neredukuje a nemutarotuje. Maltosa, cellobiosa a laktosa volný hemiacetal mají, redukují.' },
+      { id: 'a27', set: 'base', fam: 'di', title: 'Štěpení škrobu', from: [PT('škrob (amylosa)')], reag: 'amylasa', to: [PN('maltosa')],
+        wrong: [[PN('cellobiosa')], [PN('sacharosa')], [PN('laktosa')]], noReag: 1,
+        why: 'Amylasa štěpí vazby α(1→4) škrobu a vzniká maltosa. Při trávení ji další glykosidasy rozštěpí až na glukosu.' },
+      { id: 'a28', set: 'base', fam: 'di', title: 'Štěpení celulosy', from: [PT('celulosa')], reag: 'částečná hydrolýza', to: [PN('cellobiosa')],
+        wrong: [[PN('maltosa')], [PN('sacharosa')], [PN('laktosa')]], noReag: 1,
+        why: 'Celulosa má vazby β(1→4). Když se nerozštěpí všechny, vznikne disacharid cellobiosa. Úplná hydrolýza dá glukosu.' },
+      { id: 'a29', set: 'base', fam: 'di', title: 'Celulosa a amylasa', from: [PT('celulosa')], reag: 'amylasa', to: [PT('nereaguje')],
+        wrong: [[PN('D-glukosa')], [PN('maltosa')], [PN('cellobiosa')]], noReag: 1,
+        why: 'Enzym je specifický: amylasa štěpí jen α-glykosidové vazby. β(1→4) vazby celulosy nerozštěpí, proto celulosu člověk nestráví.' },
       // ===== extra =====
       { id: 'x1', set: 'extra', fam: 'ro', title: 'Redukce D-mannosy', from: [PN('D-mannosa')], reag: '1. NaBH₄\n2. H₂O', to: [PN('D-mannitol')],
         wrong: [[PN('D-glucitol')], [PN('D-glukonová kyselina')], [PN('galaktitol')]], wrongReag: ['Br₂, H₂O', 'HNO₃, zahřívání', 'NaOH, H₂O'],
@@ -25792,6 +25823,8 @@ function registerTopic(T) {
         { alts: ['isokyanatobenzen', 'fenyl-isokyanát'], tip: 'Ph–N=C=O. Arylisokyanát z anilinu a fosgenu.' }],
       ['base', 'ik', 'fenylisothiokyanát', RING + '; 2-N@30; 6=C@0; 7=S@0 | 5-0',
         { alts: ['isothiokyanatobenzen', 'fenyl-isothiokyanát', 'PITC'], tip: 'Ph–N=C=S. Edmanovo odbourávání: stanovení primární struktury peptidů.' }],
+      ['base', 'ik', 'N-methyl-N′-fenylthiomočovina', RING + '; 2-N@30:h1; 6-C!@-30; 7=S@-90; 7-N@30:h1; 9-C!@-30 | 5-0',
+        { alts: ['1-methyl-3-fenylthiomočovina', 'N-methyl-N\'-fenylthiomočovina'], tip: 'Fenylisothiokyanát + methylamin. Sirná obdoba disubstituované močoviny.' }],
 
       // --- DCC
       ['base', 'dc', 'dicyklohexylkarbodiimid', 'N; 0=C@0; 1=N@0; ' + cy(0, 180, 3) + '; ' + cy(2, 0, 9) + ' | 8-3 14-9',
@@ -26063,6 +26096,9 @@ function registerTopic(T) {
         ] },
 
       // --- dc
+      { id: 'a31', set: 'base', fam: 'ik', title: 'Isothiokyanát + amin', from: [PN('fenylisothiokyanát'), PM(DF.methylamin)], reag: '', to: [PN('N-methyl-N′-fenylthiomočovina')],
+        wrong: [[PN('N,N′-difenylmočovina')], [PN('methyl-N-fenylkarbamát')], [PN('thiomočovina')]], noReag: 1,
+        why: 'Isothiokyanáty reagují stejně jako isokyanáty, jen místo kyslíku nesou síru. Amin napadne prostřední uhlík N=C=S a vznikne thiomočovina, s alkoholem by vznikl thiokarbamát. Fenylisothiokyanát takto reaguje v Edmanově odbourávání.' },
       { id: 'a28', set: 'base', fam: 'dc', title: 'DCC: aktivace kyseliny', prompt: 'Jaký meziprodukt vznikne nejdřív?', from: [PN('dicyklohexylkarbodiimid'), PM(GEN.acid)], reag: '', to: [PM(M.acylisomocovina)],
         wrong: [[PM(GEN.accl)], [PM(GEN.anh)], [PM(M.acylmocovina)]], noReag: 1,
         why: 'Karboxylát se aduje na prostřední uhlík N=C=N, dusík se protonuje. Vznikne O-acylisomočovina, na kterou pak útočí nukleofil.',
@@ -30207,7 +30243,7 @@ const WEB = {
 };
 const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202611011513';
+const FH_VER = '202611011702';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
@@ -31092,6 +31128,10 @@ const FH_OL = (() => {
   const sec = (t, body) => `<section class="card ac-sec"><h3 class="fam-h">${t}</h3>${body}</section>`;
   const kap = a => `<ul class="ac-ul">${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
   const pom = h => sec('Pomůcky na zapamatování', h);
+  /* reakce, které slajdy uvádějí jen slovy: schéma z karty Procvičování (REACTIONS), ať je vidět i v lekci */
+  const rxs = (topic, ids) => `<div class="lx-rxs">${ids.map(id => { const r = REACTIONS.find(x => x.topic === topic && x.id === id);
+    if (!r) { console.warn('Lekce: reakce ' + topic + ':' + id + ' neexistuje'); return ''; }
+    return `<div class="sh-r lx-jak-rx"><b>${esc(r.title)}</b>${schemeHTML({ from: r.from, reag: r.reag, to: r.to })}</div>`; }).join('')}</div>`;
   /* --- interaktivní pomůcky ve výkladu (stav jen na stránce) --- */
   /* butan v Newmanově projekci: otáčí se zadní uhlík, energie z tabulky lekce; křivka mezi nimi je jen náčrt */
   const NW = [[0, 'synperiplanární', '19,0 kJ·mol⁻¹, nejvyšší'], [60, 'synklinální (gauche)', '4,0 kJ·mol⁻¹'], [120, 'antiklinální', '16,0 kJ·mol⁻¹'], [180, 'antiperiplanární', '0, nejstabilnější']];
@@ -32030,6 +32070,7 @@ const FH_OL = (() => {
         + sec('2. Kyselost', `${tbl(['Látka', 'pKa'], [['(CH₃)₃COH', '18,0'], ['ethanol', '16,0'], ['voda', '15,74'], ['methanol', '15,54'], ['fenol', '9,89'], ['p-nitrofenol', '7,15'], ['(CF₃)₃COH', '5,4']])}
         <p>Kyselost zvýší vše, co stabilizuje záporný náboj aniontu: fluor indukcí, u fenolu <b>rezonance do kruhu</b>, u p-nitrofenolu navíc nitroskupina. Donory (CH₃, NH₂) v para kyselost fenolu snižují.</p>`)
         + sec('3. Příprava alkoholů', `${tbl(['Cesta', 'Výsledek'], [['hydratace alkenu, hydroborace', 'viz alkeny, hydroborace syn a anti-Markovnikov'], ['NaBH₄', 'aldehydy a ketony → alkoholy'], ['LiAlH₄', 'i karboxylové kyseliny a estery → primární alkoholy, C=C zůstane'], ['RMgX + HCHO', 'primární alkohol o uhlík delší'], ['RMgX + jiný aldehyd / keton', 'sekundární / terciární alkohol']])}
+        ${rxs('t13', ['a20'])}
         <p class="ac-les-trap"><b>Pozor:</b> v Grignardově činidle je uhlík δ−, nukleofil a silná báze. Karboxylová kyselina ho proto hned zničí na alkan, místo aby se aduovala.</p>`) },
     { id: 't13b', topic: 't13', mem: [6, 7, 8, 9, 13, 14, 15], n: 2, min: 5, t: 'Reakce alkoholů a fenolů',
       goal: 'Po lekci víš, jak alkohol dehydratovat, převést na halogenid nebo tosylát (a co se děje s konfigurací), co dá oxidace a jak se vyrábí a používá fenol.',
@@ -32138,9 +32179,12 @@ const FH_OL = (() => {
       body: () => sec('1. Názvy', `${tbl(['Vaznost síry', 'Skupiny'], [['dvouvazná', 'thiol R–SH (předpona sulfanyl), sulfid R–S–R, disulfid, sulfenová kyselina R–S–OH'], ['čtyřvazná', 'sulfoxid R–S(O)–R, sulfinová kyselina R–S(O)OH'], ['šestivazná', 'sulfon R–SO₂–R, sulfonová kyselina R–SO₂OH, sulfonamid R–SO₂–NHR′']])}
         <p>CH₃S– je methylsulfanyl. Trialkylsulfonium je R₃S⁺.</p>`)
         + sec('2. Thioly a disulfidy', `<p>Thioly nepříjemně zapáchají už ve stopách. Připravují se přes <b>thiomočovinu</b>, protože s NaSH by vzniklý thiolát napadl další halogenalkan a vznikl by sulfid.</p>
-        <p>I₂ oxiduje thioly na <b>disulfid</b>, Zn/H⁺ ho redukuje zpět. Stejně se v bílkovinách spojují cysteiny na cystin, disulfidové můstky drží jejich strukturu.</p>`)
+        <p>I₂ oxiduje thioly na <b>disulfid</b>, Zn/H⁺ ho redukuje zpět. Stejně se v bílkovinách spojují cysteiny na cystin, disulfidové můstky drží jejich strukturu.</p>
+        ${rxs('t14', ['a30', 'a33'])}`)
         + sec('3. Sulfidy a ochrana karbonylu', `<p>Sulfid se oxiduje postupně: H₂O₂ → sulfoxid, CH₃COOOH → sulfon. Z trimethylsulfonia vzniká ylid (CH₃)₂S⁺–CH₂⁻.</p>
-        <p>Keton se dá <b>chránit</b> jako 1,3-dithiolan: LiAlH₄ pak redukuje jen ester. HgCl₂ vrátí keton, Raneyův nikl síru odstraní a z C=O zbude CH₂.</p>`) },
+        <p>Keton se dá <b>chránit</b> jako 1,3-dithiolan: LiAlH₄ pak redukuje jen ester. HgCl₂ vrátí keton, Raneyův nikl síru odstraní a z C=O zbude CH₂.</p>
+        <p>Sulfonylchlorid R–SO₂Cl se redukuje podle činidla na tři různé produkty:</p>
+        ${rxs('t14', ['a43', 'a44', 'a45'])}`) },
     { id: 't15a', topic: 't15', mem: [7, 10, 11, 12], n: 1, min: 5, t: 'Aldehydy a ketony: názvy, příprava a oxidace',
       goal: 'Po lekci pojmenuješ aldehyd a keton, víš, jak se připraví oxidací, ozonolýzou, redukcí esteru nebo z alkynu, a odlišíš aldehyd od ketonu oxidací.',
       recall: 'Tipni si, proč se aldehyd oxiduje snadno a keton skoro vůbec.',
@@ -32214,6 +32258,7 @@ const FH_OL = (() => {
         <p>Záporné nukleofily (⁻OH, H⁻, R⁻, ⁻CN) se adují přímo. Neutrální (H₂O, ROH, amin) potřebují <b>kyselou katalýzu</b>: protonace kyslíku zvýší elektrofilitu uhlíku.</p>`)
         + sec('2. C, H a O nukleofily', `${tbl(['Nukleofil', 'Produkt'], [['HCN (kat. ⁻CN)', 'kyanhydrin, nukleofilem je kyanid'], ['RMgX', 'formaldehyd → primární, aldehyd → sekundární, keton → terciární alkohol'], ['ROH, H⁺, odstraňování vody', 'hemiacetal → <b>acetal</b> (chránicí skupina: vydrží LiAlH₄, H₃O⁺ ji odstraní)'], ['Wittigův ylid Ph₃P=CHR', 'alken přesně na místě C=O, vedle vznikne Ph₃P=O']])}`)
         + sec('3. Dusíkaté nukleofily', `${tbl(['Činidlo', 'Produkt'], [['primární amin', 'imin (C=N)'], ['sekundární amin', 'enamin (na dusíku není H, odejde z α-uhlíku)'], ['NH₂OH', 'oxim'], ['H₂NNH₂, KOH (Wolff–Kižněr)', 'C=O → CH₂, uniká N₂']])}
+        <p>Enamin potřebuje <b>α-vodík</b>. Aldehyd nebo keton bez něj (benzaldehyd, formaldehyd) dá se sekundárním aminem iminiový ion, ale enamin z něj nevznikne.</p>
         <p class="ac-les-trap"><b>Pozor:</b> iminy a oximy vznikají nejrychleji kolem pH 4–5. V silně kyselém se amin protonuje a přestane být nukleofilem.</p>`) },
     { id: 'cka', topic: 'ck', mem: [1, 2, 3, 4, 5, 6, 8, 10, 11, 12], n: 1, min: 5, t: 'Karboxylové kyseliny a nitrily',
       goal: 'Po lekci vysvětlíš, proč jsou karboxylové kyseliny kyselé a jak jejich kyselost ovlivní substituenty, a víš, jak se kyselina připraví a co dělá nitril.',
@@ -32257,7 +32302,9 @@ const FH_OL = (() => {
       q: ['fq9', 'fq10', 'fq12', 'fq13', 'fq8', 'fq15', 'fq16', 'fq17', 'fq18', 'fq19', 'fq25', 'fq27'],
       beda: 'Grignard je nenasyta, na ester se vrhne dvakrát a skončí u terciárního alkoholu. Gilman se s acylchloridem zastaví u ketonu a DIBAH dovede ester jen k aldehydu.',
       body: () => sec('1. Acylchloridy a anhydridy', `<p>Acylchlorid (SOCl₂ z kyseliny) je nejreaktivnější: s vodou dá kyselinu, s alkoholem ester (pyridin vychytá HCl), s 2 NH₃ amid (druhý amoniak zachytí HCl). Anhydrid reaguje stejně, jen mírněji, a uvolní kyselinu.</p>
-        <p>Amid se nepřipravuje přímo z kyseliny a amoniaku, vznikla by jen amonná sůl. p-Aminofenol se acetanhydridem acyluje na dusíku (lepší nukleofil) a vznikne paracetamol.</p>`)
+        <p>Amid se nepřipravuje přímo z kyseliny a amoniaku, vznikla by jen amonná sůl.</p>
+        ${rxs('ck', ['n10'])}
+        <p>p-Aminofenol se acetanhydridem acyluje na dusíku (lepší nukleofil) a vznikne paracetamol.</p>`)
         + sec('2. Estery', `${tbl(['Reakce', 'Výsledek'], [['Fischerova esterifikace (H⁺)', 'rovnováha, štěpí se C–OH kyseliny a O–H alkoholu'], ['zmýdelnění (NaOH)', '<b>nevratné</b>, karboxylát s alkoholem nereaguje'], ['Baeyer–Villiger (MCPBA)', 'z ketonu ester, O jde k víc substituovanému uhlíku'], ['LiAlH₄', 'primární alkohol'], ['DIBAH, toluen', 'aldehyd'], ['2 RMgX', 'terciární alkohol']])}`)
         + sec('3. Organokovová činidla a amidy', `${tbl(['Acylchlorid +', 'Produkt'], [['R′MgX (nadbytek)', 'terciární alkohol, keton se izolovat nedá'], ['R′₂CuLi (Gilman)', 'keton']])}
         <p>Amid je nejstálejší derivát, hydrolyzuje se až za tepla v kyselině nebo zásadě. <b>LiAlH₄ redukuje amid na amin</b>, C=O se změní na CH₂.</p>
@@ -32401,6 +32448,7 @@ const FH_OL = (() => {
           '<b>Arndt–Eistert přidá uhlík, Wolff ubere N₂.</b> CH₂N₂ udělá z RCOCl diazoketon, Wolffův přesmyk z něj keten a voda kyselinu o uhlík delší.'])}`),
       body: () => sec('1. Reakce aminů', `<ul class="ac-ul"><li><b>Acylace</b> acylchloridem, pyridin vychytá HCl.</li><li><b>Hofmannova eliminace</b> kvarterní amoniové soli dá hlavně <b>méně</b> substituovaný alken (pent-1-en 94 %).</li><li>Anilin se před bromací nebo Friedel–Craftsem <b>acetyluje</b>: acetamidoskupina aktivuje méně (jen jedna substituce) a neváže AlCl₃.</li></ul>`)
         + sec('2. Kyselina dusitá a diazoniové soli', `<p>Elektrofilem je <b>nitrosoniový ion NO⁺</b>. Primární amin dá diazoniovou sůl, sekundární N-nitrosamin, terciární nereaguje.</p>
+        ${rxs('t19', ['a35', 'a68', 'a34', 'a69'])}
         ${tbl(['Diazoniová sůl', 'Co dělá'], [['alifatická', 'hned ztratí N₂ a vznikne karbokation'], ['aromatická + CuX (Sandmeyer)', 'Ar–X přes arylový radikál'], ['aromatická + fenol nebo N,N-dialkylanilin', 'azobarvivo (kopulace do para)']])}`)
         + sec('3. Nitro-, nitroso- a oximy', `<p>Nitroskupina má formální náboje N⁺ a O⁻. Nitrobenzen se redukuje postupně: nitrosobenzen → fenylhydroxylamin → <b>anilin</b>. Primární a sekundární nitrososloučeniny se přesmyknou na oximy. <b>Beckmannův přesmyk</b> oximu dá amid (z cyklohexanon-oximu kaprolaktam).</p>
         <p class="aside">Diazoketon Wolffovým přesmykem ztratí N₂ a dá keten, s vodou kyselinu o uhlík delší.</p>`)
@@ -32439,6 +32487,7 @@ const FH_OL = (() => {
           '<b>Nobelova cena 2010:</b> Heck, Negishi, Suzuki.'])}`),
       body: () => sec('1. Li, Mg a Cu', `<p>Uhlík na elektropozitivním kovu je <b>δ−</b>: nukleofil a silná báze. BuLi slouží hlavně jako velmi silná báze, z diisopropylaminu udělá LDA.</p>
         ${tbl(['Činidlo', 'Typické reakce'], [['R–MgX', 'C=O → alkohol, CO₂ → kyselina, oxiran → alkohol o 2 C delší, ester → terciární alkohol (2 ekv.)'], ['R₂CuLi (Gilman)', 'acylchlorid → keton, enon → <b>1,4-adice</b>'], ['Zn (Reformatskij)', 'α-halogenester + C=O → β-hydroxyester'], ['ICH₂ZnI (Simmons–Smith)', 'alken → cyklopropan']])}
+        ${rxs('t20', ['a15', 'a29', 'a47'])}
         <p class="ac-les-trap"><b>Pozor:</b> s kyselinou Grignard nereaguje adicí, odtrhne proton a zničí se na alkan.</p>`)
         + sec('2. Katalytický cyklus', `<p>Organokovové sloučeniny přechodných kovů mají kovalentnější vazbu a jsou stálejší. Cross-coupling R–X (elektrofil) + R′–M (nukleofil) jde dokola:</p>
         <ol class="ac-les-steps"><li><b>oxidativní adice</b> R–X na Pd⁰ (vznikne Pdᴵᴵ)</li><li><b>transmetalace</b> (R′ přejde z kovu M na Pd)</li><li><b>reduktivní eliminace</b> R–R′ a návrat Pd⁰</li></ol>
@@ -32612,10 +32661,12 @@ const FH_OL = (() => {
           '<b>Celulosa β, amylosa α.</b> Obě jsou (1→4) glukosa, amylopektin se navíc větví přes α(1→6).',
           '<b>Invertní cukr = glukosa + fruktosa</b> z hydrolýzy sacharosy.'])}`),
       body: () => sec('1. Glykosidy a redukující cukry', `<p><b>Glykosid</b> je acetal cukru: anomerní OH nahradí OR. Acetal se ve vodě sám neotevře, proto glykosid nemutarotuje ani neredukuje. Koenigs–Knorr (Ag₂O) dá díky acetylu na C2 β-glykosid.</p>
-        <p><b>Redukující</b> jsou cukry s volným hemiacetalem, tedy s aldehydem v otevřené formě. Pozitivní je i fruktosa, v zásaditém prostředí se přes endiol izomeruje na aldosu.</p>`)
+        <p><b>Redukující</b> jsou cukry s volným hemiacetalem, tedy s aldehydem v otevřené formě. Pozitivní je i fruktosa, v zásaditém prostředí se přes endiol izomeruje na aldosu.</p>
+        ${rxs('t24', ['a24', 'a25', 'a26'])}`)
         + sec('2. Reakce aldos', `${tbl(['Reakce', 'Produkt'], [['NaBH₄', 'alditol (D-glukosa → D-glucitol, sorbit)'], ['Br₂, H₂O', 'aldonová kyselina (COOH na C1)'], ['HNO₃', 'aldarová kyselina (COOH na obou koncích)'], ['Kiliani–Fischer (HCN)', 'o uhlík delší, dva C2 epimery'], ['Wohl', 'o uhlík kratší, C1 odejde jako HCN']])}`)
         + sec('3. Di- a polysacharidy', `${tbl(['Cukr', 'Složení a vazba', 'Redukuje'], [['maltosa', 'glukosa + glukosa, α(1→4)', 'ano'], ['cellobiosa', 'glukosa + glukosa, β(1→4)', 'ano'], ['laktosa', 'galaktosa + glukosa, β(1→4)', 'ano'], ['sacharosa', 'glukosa + fruktosa, (1→2)', '<b>ne</b>']])}
-        <p>Celulosa má vazby β(1→4), amylosa α(1→4). Škrob je amylosa (lineární) a amylopektin (rozvětvený).</p>`) },
+        <p>Celulosa má vazby β(1→4), amylosa α(1→4). Škrob je amylosa (lineární) a amylopektin (rozvětvený).</p>
+        ${rxs('t24', ['a27', 'a28', 'a29'])}`) },
     { id: 't25a', topic: 't25', mem: [0, 1, 2, 3, 10, 11, 12], n: 1, min: 5, t: 'Aminokyseliny',
       goal: 'Po lekci určíš konfiguraci L-aminokyseliny, vysvětlíš obojetný ion a izoelektrický bod a předpovíš, kam aminokyselina putuje při elektroforéze.',
       recall: 'Tipni si, jakou absolutní konfiguraci (R, nebo S) mají L-aminokyseliny.',
@@ -32707,6 +32758,7 @@ const FH_OL = (() => {
         <p>Mastné kyseliny mají nerozvětvený řetězec se <b>sudým</b> počtem uhlíků a dvojné vazby Z. Nejběžnější: palmitová, stearová, olejová (C18, jedna cis vazba na C9), linolová (2 vazby), linolenová (3), arachidonová (C20, 4).</p>
         <p>Cis dvojné vazby zalomí řetězec a sníží teplotu tání (stearová 69 °C, olejová 13 °C, linolová −12 °C), proto jsou oleje (víc nenasycených kyselin) kapalné. Olivový olej má asi 80 % kyseliny olejové.</p>`)
         + sec('2. Mýdla a detergenty', `<p>Mýdla jsou <b>sodné nebo draselné soli mastných kyselin</b>. Iontová hlava je hydrofilní, uhlovodíkový ocas lipofilní. V <b>micele</b> jsou ocasy uvnitř u mastnoty a hlavy venku ve vodě.</p>
+        ${rxs('t26', ['a2', 'n6'])}
         <p class="ac-les-trap"><b>Pozor:</b> v tvrdé vodě tvoří Ca²⁺ a Mg²⁺ s mýdlem nerozpustné soli. Syntetickému detergentu (sulfonát) to nevadí.</p>`)
         + sec('3. Fosfolipidy a membrána', `<p>Fosfolipidy jsou <b>diestery kyseliny fosforečné</b>: na jedné straně glycerol (nebo sfingosin), na druhé aminoalkohol. Ve fosfoacylglycerolu je na C1 nasycená a na C2 nenasycená kyselina.</p>
         <p>V membráně tvoří <b>lipidovou dvojvrstvu</b>: polární hlavy ven do vody, nepolární ocasy dovnitř. Sfingomyeliny stojí na sfingosinu.</p>`) },
@@ -32803,10 +32855,12 @@ const FH_OL = (() => {
       body: () => sec('1. Kyselina uhličitá a její deriváty', `<p>Uhlík je tu v oxidačním stupni IV jako v CO₂. Kyselina uhličitá (pKa 3,8 a 10,2; zdánlivá pKa₁ se započteným rozpuštěným CO₂ je 6,35, v krvi při 37 °C 6,1) i orthouhličitá v čistém stavu neexistují, víc OH na jednom uhlíku odštěpí vodu. <b>Monofunkční</b> deriváty se rozpadají na CO₂ a HX, <b>stálé</b> jsou až deriváty s oběma nahrazenými OH: fosgen, chlorformiáty, karbonáty, karbamáty, močovina.</p>
         <p class="aside">Urethan je ethyl-karbamát, guanidin diamid-imid kyseliny uhličité, semikarbazid hydrazid kyseliny karbamové.</p>`)
         + sec('2. Fosgen a močovina', `<p><b>Fosgen</b> (CO + Cl₂) je nejdostupnější derivát. Chová se jako dichlorid kyseliny: s alkoholy a aminy reaguje nukleofilní acylovou substitucí, s vodou dá HCl a CO₂, s primárním aminem a zahřátím isokyanát.</p>
-        <p><b>Močovina</b> je bazičtější než amidy, ale méně než aminy. Alkyluje se na kyslíku, Hofmannovým odbouráním dá hydrazin. S dialkylmalonátem (EtONa) uzavře kruh kyseliny barbiturové.</p>`)
+        <p><b>Močovina</b> je bazičtější než amidy, ale méně než aminy. Alkyluje se na kyslíku, Hofmannovým odbouráním dá hydrazin. S dialkylmalonátem (EtONa) uzavře kruh kyseliny barbiturové.</p>
+        ${rxs('t29', ['x8', 'x9', 'a22', 'x7'])}`)
         + sec('3. Isokyanáty a DCC', `<p>Isokyanát R–N=C=O je heterokumulen. Nukleofil útočí na <b>prostřední uhlík</b>:</p>
         ${tbl(['Isokyanát +', 'Produkt'], [['voda', 'karbamová kyselina → amin + CO₂'], ['alkohol', 'karbamát (urethan)'], ['amin', 'disubstituovaná močovina']])}
         <p>Vzniká Hofmannovým (z amidu), Curtiovým (z acylazidu) a Lossenovým odbouráváním (z hydroxamové kyseliny). Fenylisothiokyanát je činidlo Edmanova odbourávání.</p>
+        ${rxs('t29', ['x10', 'a25', 'a26', 'a27', 'a31'])}
         <p><b>DCC</b> je kondenzační činidlo: aktivuje karboxylovou kyselinu na O-acylisomočovinu a změní se na dicyklohexylmočovinu.</p>`) }
   ];
   /* memy k lekci: L.mem = indexy v MEMES[téma], bez něj všechny memy tématu */
