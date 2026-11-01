@@ -17939,7 +17939,8 @@ function registerTopic(T) {
         'Hofmannova eliminace: amin + CH₃I (nadbytek) → kvarterní jodid; Ag₂O, H₂O, zahřátí → alken + N(CH₃)₃ (E2).',
         'Hofmannova eliminace jde proti Zajcevovu pravidlu: vzniká méně substituovaný alken (pent-1-en 94 %, pent-2-en 6 %), protože báze bere méně bráněný vodík.',
         'Anilin s Br₂ ve vodě se bromuje rovnou na 2,4,6-tribromanilin. Pro jedinou substituci se NH₂ nejdřív acetyluje ((CH₃CO)₂O, pyridin), pak se substituuje a amid se hydrolyzuje (NaOH).',
-        'Přes acetanilid jde i Friedelova-Craftsova acylace (C₆H₅COCl, AlCl₃ → 4-aminobenzofenon) a chlorsulfonace (HOSO₂Cl, NH₃ → sulfanilamid).'],
+        'Přes acetanilid jde i Friedelova-Craftsova acylace (C₆H₅COCl, AlCl₃ → 4-aminobenzofenon) a chlorsulfonace (HOSO₂Cl, NH₃ → sulfanilamid).',
+        'Tetraalkylamoniové soli R₄N⁺X⁻ jsou katalyzátory fázového přenosu (samostudium, slajd 37): kation R₄N⁺ odnese aniont (CN⁻, OH⁻, MnO₄⁻) z vody do organické fáze, kde ho nic neobaluje a reaguje rychle. Pak se s odstupujícím aniontem vrátí do vody pro další.'],
       dz: ['Elektrofil je nitrosoniový ion NO⁺ z HNO₂ (NaNO₂ + kyselina), útočí na volný pár dusíku aminu.',
         'Primární aminy → diazoniové soli (diazotace). Alifatické jsou nestálé: hned odejde N₂ a zbude karbokation (substituce, přesmyk, eliminace).',
         'Sekundární aminy → N-nitrosaminy. Terciární aminy s HNO₂ nereagují (podle slajdu).',
@@ -17983,7 +17984,8 @@ function registerTopic(T) {
       ['kopulace', 'ArN₂⁺ + fenol nebo N,N-dialkylanilin → azosloučenina'],
       ['Henryho reakce', 'nitroaldolizace: nitroalkan + aldehyd, báze → β-nitroalkohol'],
       ['Beckmannův přesmyk', 'oxim + H₂SO₄ → amid (laktam)'],
-      ['Arndtova-Eistertova reakce', 'RCOCl + CH₂N₂, Wolffův přesmyk (keten), H₂O → RCH₂COOH']
+      ['Arndtova-Eistertova reakce', 'RCOCl + CH₂N₂, Wolffův přesmyk (keten), H₂O → RCH₂COOH'],
+      ['katalyzátor fázového přenosu', 'R₄N⁺X⁻ (třeba Bu₄N⁺Br⁻), převádí aniont z vodné fáze do organické']
     ],
     sheets: ['nz', 'bz'],
     tables: {
@@ -18938,6 +18940,18 @@ function registerTopic(T) {
         ['NHCOCH₃ aktivuje méně (jen jedna substituce) a neváže AlCl₃', 'NHCOCH₃ je meta řídící, brom vstoupí jen do polohy 3', 'acetylace zvýší bazicitu dusíku, aby lépe vázal AlCl₃', 'bez acetylace anilin s Br₂ ani s AlCl₃ nereaguje'], 'Anilin s Br₂ ve vodě dá hned 2,4,6-tribromanilin, s AlCl₃ tvoří komplex na dusíku.', 'q20'],
       ['base', 're', 'Fázový přenos', 'K čemu slouží tetraalkylamoniové soli (samostudium, slajd 37)?',
         ['jako katalyzátory fázového přenosu', 'jako silná redukční činidla', 'jako oxidační činidla', 'jako chránící skupiny pro alkoholy'], 'Kation R₄N⁺ převede aniont z vodné fáze do organické, kde reaguje.', 'q21'],
+      ['base', 're', 'Nahý aniont', 'Proč kyanid převedený tetrabutylamoniovou solí do organické fáze reaguje s 1-chloroktanem tak rychle?',
+        ['v organické fázi ho neobalují molekuly vody, je to silnější nukleofil', 'kation R₄N⁺ ho oxiduje na reaktivnější radikál', 'R₄N⁺ aktivuje halogenalkan jako Lewisova kyselina', 'v organické fázi je vyšší teplota než ve vodě'], 'Ve vodě drží aniont vodíkové vazby. Velký kation R₄N⁺ ho drží jen volně, aniont je „nahý“, stejně jako v DMSO nebo HMPA.', 'q50'],
+      ['base', 're', 'Proč kvarterní sůl', 'Proč je katalyzátorem fázového přenosu kvarterní sůl R₄N⁺, a ne protonovaný amin R₃NH⁺?',
+        ['R₄N⁺ nemá N–H, báze ho nedeprotonuje a náboj mu zůstane', 'R₄N⁺ je silnější báze než R₃NH⁺', 'R₃NH⁺ je pro průchod rozhraním příliš velký', 'R₄N⁺ s halogenalkanem sám reaguje a aktivuje ho'], 'Reakce často běží s NaOH. R₃NH⁺ by ztratil proton, z neutrálního aminu by už nebyl kation, který nese aniont.', 'q51'],
+      ['base', 're', 'Dost uhlíků', 'Která sůl poslouží nejlépe jako katalyzátor fázového přenosu?',
+        ['tetrabutylamonium-bromid', 'tetramethylamonium-chlorid', 'chlorid amonný', 'bromid sodný'], 'Kation potřebuje dost uhlíků, aby se rozpustil i v organické fázi. (CH₃)₄N⁺ zůstane ve vodě, NH₄⁺ a Na⁺ také.', 'q52'],
+      ['base', 're', 'Kolik katalyzátoru', 'Kolik tetraalkylamoniové soli je při fázovém přenosu potřeba?',
+        ['jen katalytické množství, R₄N⁺ se po reakci vrací do vody pro další aniont', 'stechiometrické, každý R₄N⁺ zůstane navázaný v produktu', 'velký nadbytek, protože se rozkládá už při laboratorní teplotě', 'žádné, stačí reakční směs pořádně míchat'], 'R₄N⁺ si po reakci vezme odstupující aniont (Cl⁻), vrátí se do vody a vymění ho za další nukleofil. Koloběh se opakuje.', 'q53'],
+      ['base', 're', 'Co se přenáší', 'Co převádí kation R₄N⁺ z vodné fáze do organické?',
+        ['aniont činidla jako iontový pár R₄N⁺Nu⁻', 'kation kovu Na⁺ nebo K⁺', 'molekuly vody kolem nukleofilu', 'organický substrát R–X do vody'], 'Na⁺ zůstane ve vodě. Do organické fáze jde dvojice R₄N⁺ a aniont (CN⁻, OH⁻, MnO₄⁻).', 'q54'],
+      ['base', 're', 'Fázový přenos a korunový ether', 'Co mají společného tetrabutylamoniová sůl a 18-crown-6 při oxidaci KMnO₄ v benzenu?',
+        ['obě dostanou iontové činidlo do benzenu', 'obě samy oxidují organický substrát', 'obě vážou aniont MnO₄⁻ do své dutiny', 'obě slouží jako polární aprotické rozpouštědlo'], 'Korunový ether obalí K⁺, R₄N⁺ nahradí K⁺ za kation s alkyly. V obou případech se MnO₄⁻ rozpustí v benzenu a zůstane v něm „nahý“.', 'q55'],
       // ---------- dz ----------
       ['base', 'dz', 'Elektrofil diazotace', 'Jaký elektrofil reaguje s dusíkem aminu při reakci s kyselinou dusitou?',
         ['nitrosoniový ion NO⁺', 'nitroniový ion NO₂⁺', 'diazoniový ion R–N₂⁺', 'hydroxidový ion'], 'NO⁺ vzniká z HNO₂ v kyselém prostředí.', 'q22'],
@@ -27052,7 +27066,15 @@ const JPIC = (() => {
       L(q[0], q[5]) + D(q[5], q[4]) + L(q[4], q[3]) + L(q[1], q[2]) + L(q[0], q[1], 'pk') + L(q[3], q[2], 'pk') +
       t(96, 142, 'dien (s-cis) + dienofil', 'cap', 'middle') + t(300, 142, 'cyklohexen', 'cap', 'middle') +
       t(195, 166, 'Růžově dvě nové σ vazby, dvojná vazba je teď uprostřed.', 'cap', 'middle')); };
-  return { t09sn2: sn2, t09sn1: sn1, t09e2: e2, t04ko, t04ch, t04mo, t08ci, t06ez, t06ea, t12ef, t15na, t23da };
+  /* fázový přenos: nahoře organická fáze, dole voda, Q⁺ vozí aniont tam a zpátky (není klíč rodiny, volá ho lekce t19b) */
+  const t19pt = () => svg('jpa-pt', 390, 215, 'Katalýza fázovým přenosem: ve vodě Q⁺ vymění chlorid za kyanid, iontový pár Q⁺CN⁻ přejde do organické fáze, tam kyanid nahradí chlor v R–Cl, Q⁺Cl⁻ se vrátí do vody',
+    t(8, 18, 'organická fáze', 'cap') + t(8, 186, 'vodná fáze', 'cap') + ln(0, 102, 390, 102, 'd') +
+    t(50, 60, 'Q⁺CN⁻', 'x', 'middle') + t(195, 60, '+ R–Cl → R–CN +', '', 'middle') + t(340, 60, 'Q⁺Cl⁻', '', 'middle') +
+    t(50, 150, 'Q⁺CN⁻', 'x', 'middle') + t(195, 150, '+ NaCl ← NaCN +', '', 'middle') + t(340, 150, 'Q⁺Cl⁻', '', 'middle') +
+    ar('M50 134 L50 72') + ar('M340 70 L340 132') +
+    t(60, 96, 'nese CN⁻ nahoru', 'cap') + t(330, 96, 'vrací Cl⁻ dolů', 'cap', 'end') +
+    t(195, 208, 'Q⁺ = R₄N⁺, třeba (C₄H₉)₄N⁺', 'cap', 'middle'));
+  return { t09sn2: sn2, t09sn1: sn1, t09e2: e2, t04ko, t04ch, t04mo, t08ci, t06ez, t06ea, t12ef, t15na, t23da, t19pt };
 })();
 function schemeHTML(sc, veil) {
   const side = parts => !parts ? '<div class="side"><span class="qbox">?</span></div>'
@@ -30185,7 +30207,7 @@ const WEB = {
 };
 const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202610282018';
+const FH_VER = '202611011510';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
@@ -31697,7 +31719,8 @@ const FH_OL = (() => {
           ['Odstupující skupina', 'čím stabilnější aniont, tím líp: TsO⁻ > I⁻ > Br⁻ > Cl⁻ ≫ F⁻', 'stejně. V kyselém prostředí odstoupí i protonovaná OH jako voda.'],
           ['Rozpouštědlo', 'polární aprotické (HMPA, CH₃CN, DMF, DMSO, aceton). Nukleofil zůstane „nahý“, nejpomaleji to jde v methanolu.', 'polární protické (voda, alkoholy). Stabilizuje karbokation, čím polárnější, tím rychleji.']]))
         + sec('3. Rychlý odhad', `<ul class="ac-ul"><li><b>Methyl a primární</b> → SN2.</li><li><b>Terciární</b> se slabým nukleofilem → SN1. SN2 tam nejde.</li><li><b>Sekundární</b> → rozhodne nukleofil a rozpouštědlo: silný aniont v DMSO → SN2, voda nebo alkohol → SN1.</li><li><b>Allylový a benzylový</b> se slabým nukleofilem → SN1, i když je primární.</li></ul>
-        <p class="ac-les-trap"><b>Pozor:</b> silná báze (OH⁻, RO⁻) a teplo táhnou reakci k eliminaci. Tu probereme v další lekci.</p>`) },
+        <p class="ac-les-trap"><b>Pozor:</b> silná báze (OH⁻, RO⁻) a teplo táhnou reakci k eliminaci. Tu probereme v další lekci.</p>
+        <p class="aside">Když je nukleofil ve vodě (NaCN) a halogenalkan v nepolárním rozpouštědle, pomůže katalyzátor fázového přenosu R₄N⁺X⁻. Odnese aniont do organické fáze, kde je „nahý“ jako v DMSO. Víc v lekci k 19. přednášce.</p>`) },
     { id: 't09b', topic: 't09', mem: [6, 7, 8, 13, 14, 15], n: 2, min: 5, t: 'E2, nebo E1?',
       goal: 'Po lekci odhadneš, kterým mechanismem eliminace poběží, který alken převládne a proč u E2 záleží na prostorovém uspořádání.',
       recall: 'Vybav si z lekce 1, čím se liší SN2 a SN1. Zkus si tipnout, co by mohlo platit pro E2 a E1.',
@@ -32076,7 +32099,8 @@ const FH_OL = (() => {
           '<b>Kyslík k fenylu přirostl.</b> Aryl–O se neštěpí, z aryl(alkyl)etheru je vždy fenol.',
           '<b>Kyselina hledá kation, zásada zadní vrátka.</b> V kyselině míří nukleofil k terciárnímu uhlíku, jinak k méně bráněnému. Bez kyseliny vždy k méně bráněnému.',
           '<b>x-crown-y: x atomů v kruhu, y kyslíků.</b> 18-crown-6 obalí K⁺ a draselná sůl se rozpustí i v nepolárním rozpouštědle.'])}`),
-      body: () => sec('1. Názvy a vlastnosti', `<p>Skupinový název: zbytky abecedně + ether, třeba ethyl(fenyl)ether, substitučně ethoxybenzen. Anisol je methoxybenzen, THF pětičlenný nasycený cyklický ether. Korunové ethery (18-crown-6 má 18 atomů a 6 kyslíků) obalí K⁺ a rozpustí draselné soli v nepolárním rozpouštědle.</p>`)
+      body: () => sec('1. Názvy a vlastnosti', `<p>Skupinový název: zbytky abecedně + ether, třeba ethyl(fenyl)ether, substitučně ethoxybenzen. Anisol je methoxybenzen, THF pětičlenný nasycený cyklický ether. Korunové ethery (18-crown-6 má 18 atomů a 6 kyslíků) obalí K⁺ a rozpustí draselné soli v nepolárním rozpouštědle.</p>
+        <p class="aside">Stejný cíl má katalyzátor fázového přenosu R₄N⁺X⁻ z 19. přednášky. Neobaluje K⁺, ale sám je velký kation s alkyly a aniont odnese do organické fáze místo něj.</p>`)
         + sec('2. Příprava', `${tbl(['Metoda', 'Podmínka'], [['Williamsonova syntéza (RO⁻ + R′X)', 'SN2, R′X methyl nebo primární, alkoxid z alkoholu a NaH'], ['alkoxymerkurace alkenu', 'Markovnikov, bez přesmyků'], ['kyselá kondenzace ethanolu', 'SN2 na protonovaném ethanolu']])}
         <p class="ac-les-trap"><b>Pozor:</b> methoxid s terciárním halogenidem dá jen alken (E2), ne ether.</p>`)
         + sec('3. Štěpení etherů a epoxidů', `<p>Ethery jsou málo reaktivní (proto rozpouštědla), štěpí je až HBr a HI:</p>
@@ -32347,7 +32371,7 @@ const FH_OL = (() => {
       goal: 'Po lekci víš, jak amin acylovat a eliminovat, co dá s kyselinou dusitou, k čemu jsou diazoniové soli a jak se redukuje nitroskupina.',
       recall: 'Vybav si z organické analýzy, jak kyselina dusitá odliší primární, sekundární a terciární amin.',
       tail: 'Vrať se k papíru ze začátku. Primární dá diazoniovou sůl, sekundární N-nitrosamin, terciární nic. Co jsi nevěděla, zopakuješ zítra.',
-      q: ['t19_q18', 't19_q19', 't19_q20', 't19_q22', 't19_q23', 't19_q24', 't19_q25', 't19_q26', 't19_q27', 't19_q30', 't19_q32', 't19_q37'],
+      q: ['t19_q18', 't19_q19', 't19_q20', 't19_q21', 't19_q22', 't19_q23', 't19_q24', 't19_q25', 't19_q26', 't19_q27', 't19_q30', 't19_q32', 't19_q37', 't19_q50', 't19_q51'],
       beda: 'Hofmannova eliminace je opak Zajceva: objemná skupina N(CH₃)₃⁺ nechá bázi sáhnout jen na nejméně bráněné β-vodíky (obvykle na CH₃), a vznikne méně substituovaný alken.',
       aid: () => pom(`${FH_LES.w.quiz({ head: '<b>Kyselina dusitá rozliší aminy.</b> Co vznikne?', opts: ['diazoniová sůl', 'N-nitrosamin', 'nereaguje'], items: [
           ['primární amin + HNO₂', 'diazoniová sůl', 'Elektrofilem je nitrosoniový ion NO⁺.'],
@@ -32363,7 +32387,15 @@ const FH_OL = (() => {
           ['ArN₂⁺ + fenol', 'azobarvivo', 'Kopulace jde do polohy para.'],
           ['ArN₂⁺ + N,N-dialkylanilin', 'azobarvivo', 'Kopulace jde do polohy para.']] })}
         ${FH_LES.ord({ q: 'jak postupně vzniká anilin redukcí nitrobenzenu.', top: 'začátek', bottom: 'konec', items: [['nitrobenzen', ''], ['nitrosobenzen', ''], ['fenylhydroxylamin', ''], ['anilin', '']] })}
-        ${kap(['<b>Hofmann hubne.</b> Hofmannova eliminace dá méně substituovaný alken (pent-1-en 94 %), Zajcev víc substituovaný.',
+        ${FH_LES.w.quiz({ head: '<b>Převeze aniont do organické fáze?</b> Katalyzátor fázového přenosu, nebo ne?', opts: ['ano', 'ne'], items: [
+          ['tetrabutylamonium-bromid (C₄H₉)₄N⁺Br⁻', 'ano', 'Kladný dusík, kolem 16 uhlíků. Rozpustí se ve vodě i v organické fázi.'],
+          ['benzyltriethylamonium-chlorid', 'ano', 'Kvarterní sůl s dost uhlíky, používá se s 50% NaOH.'],
+          ['methyltrioktylamonium-chlorid', 'ano', 'Tři oktyly, sůl se dobře rozpouští v organické fázi.'],
+          ['tetramethylamonium-chlorid (CH₃)₄N⁺Cl⁻', 'ne', 'Jen 4 uhlíky. Kation je moc malý a zůstane ve vodě.'],
+          ['triethylamonium-chlorid Et₃NH⁺Cl⁻', 'ne', 'Má N–H. NaOH ho deprotonuje na triethylamin a náboj zmizí.'],
+          ['chlorid sodný NaCl', 'ne', 'Na⁺ nemá žádné alkyly, do organické fáze nejde.']] })}
+        ${kap(['<b>R₄N⁺ je převozník.</b> Tam veze nukleofil (CN⁻), zpátky do vody odstupující aniont (Cl⁻). Proto ho stačí trocha.',
+          '<b>Hofmann hubne.</b> Hofmannova eliminace dá méně substituovaný alken (pent-1-en 94 %), Zajcev víc substituovaný.',
           '<b>Beckmann udělá z oximu amid.</b> Z cyklohexanon-oximu vznikne kaprolaktam.',
           '<b>Acetyl anilin zklidní.</b> Acetamidoskupina aktivuje kruh méně, substituuje se jen jednou a neváže AlCl₃.',
           '<b>Arndt–Eistert přidá uhlík, Wolff ubere N₂.</b> CH₂N₂ udělá z RCOCl diazoketon, Wolffův přesmyk z něj keten a voda kyselinu o uhlík delší.'])}`),
@@ -32371,7 +32403,14 @@ const FH_OL = (() => {
         + sec('2. Kyselina dusitá a diazoniové soli', `<p>Elektrofilem je <b>nitrosoniový ion NO⁺</b>. Primární amin dá diazoniovou sůl, sekundární N-nitrosamin, terciární nereaguje.</p>
         ${tbl(['Diazoniová sůl', 'Co dělá'], [['alifatická', 'hned ztratí N₂ a vznikne karbokation'], ['aromatická + CuX (Sandmeyer)', 'Ar–X přes arylový radikál'], ['aromatická + fenol nebo N,N-dialkylanilin', 'azobarvivo (kopulace do para)']])}`)
         + sec('3. Nitro-, nitroso- a oximy', `<p>Nitroskupina má formální náboje N⁺ a O⁻. Nitrobenzen se redukuje postupně: nitrosobenzen → fenylhydroxylamin → <b>anilin</b>. Primární a sekundární nitrososloučeniny se přesmyknou na oximy. <b>Beckmannův přesmyk</b> oximu dá amid (z cyklohexanon-oximu kaprolaktam).</p>
-        <p class="aside">Diazoketon Wolffovým přesmykem ztratí N₂ a dá keten, s vodou kyselinu o uhlík delší.</p>`) },
+        <p class="aside">Diazoketon Wolffovým přesmykem ztratí N₂ a dá keten, s vodou kyselinu o uhlík delší.</p>`)
+        + sec('4. Samostudium: fázový přenos', `<p>Iontové činidlo (NaCN, NaOH, KMnO₄) je rozpuštěné ve vodě, organický substrát (třeba 1-chloroktan) v nepolárním rozpouštědle. Fáze se nemísí, potkají se jen na rozhraní, a tak reakce skoro nejde.</p>
+        <p><b>Tetraalkylamoniová sůl</b> R₄N⁺X⁻ (zkráceně Q⁺X⁻) má kladný dusík obalený alkyly. Rozpustí se ve vodě i v organické fázi, vezme si z vody aniont a jako iontový pár Q⁺Nu⁻ ho odnese do organické fáze. Proto se jí říká <b>katalyzátor fázového přenosu</b>.</p>
+        ${JPIC.t19pt()}
+        ${FH_LES.ord({ q: 'jeden oběh katalyzátoru fázového přenosu.', top: 'první', bottom: 'poslední', items: [['ve vodě: Q⁺ vymění Cl⁻ za CN⁻', 'Q⁺Cl⁻ + NaCN'], ['Q⁺CN⁻ přejde do organické fáze', 'iontový pár'], ['nahý CN⁻ zaútočí na R–Cl (SN2)', 'vznikne R–CN'], ['Q⁺Cl⁻ se vrátí do vody', 'koloběh začne znovu']] })}
+        <ul class="ac-ul"><li>V organické fázi aniont neobalují molekuly vody. Je <b>„nahý“</b> a reaguje mnohem rychleji, stejně jako v DMSO nebo s 18-crown-6.</li><li>Musí to být <b>kvarterní</b> sůl: nemá N–H, takže ji NaOH nedeprotonuje. Protonovaný amin R₃NH⁺ by o náboj přišel.</li><li>Kation potřebuje <b>dost uhlíků</b>: (CH₃)₄N⁺ zůstane ve vodě, tetrabutyl-, benzyltriethyl- nebo methyltrioktylamoniová sůl se rozpustí i v organické fázi.</li><li>Použití: SN2 s CN⁻ nebo N₃⁻, Williamsonova syntéza etherů s NaOH, oxidace KMnO₄ v benzenu, dichlorkarben z CHCl₃ a 50% NaOH. Místo drahého suchého DMSO nebo DMF stačí voda a levná báze.</li></ul>
+        <p class="ac-les-trap"><b>Pozor:</b> při silném zahřátí s bází se katalyzátor sám rozkládá Hofmannovou eliminací na alken a terciární amin.</p>
+        <p class="aside">Slajd 37 uvádí jen nadpis a samostudium (str. 921–922). Výklad tady je podle obecné organické chemie.</p>`) },
     { id: 't20a', topic: 't20', mem: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], n: 1, min: 5, t: 'Organokovové sloučeniny a cross-coupling',
       goal: 'Po lekci víš, jak se chovají organolithné sloučeniny, Grignardova činidla a kupráty, a popíšeš katalytický cyklus cross-couplingu s pojmenovanými reakcemi.',
       recall: 'Tipni si, jaký parciální náboj má uhlík vázaný na lithium nebo hořčík.',
