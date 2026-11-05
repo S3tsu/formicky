@@ -845,6 +845,27 @@ body.sheet-file .sheet{position:static}
 .td-bar{flex:1 1 120px;max-width:220px;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
 .td-bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
 .td-day .dstreak{color:var(--pink-ink);font-weight:600}
+.dtier{display:inline-flex;align-items:center;padding:1px 8px;border-radius:999px;background:var(--pink-ink);color:var(--surface);font-weight:700;font-size:.78rem;white-space:nowrap}
+.td-day .dbest{font-size:.84rem}
+.wk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.wk h3{font:700 1.08rem/1.25 var(--f-display);margin:0}
+.wk p{margin:0;color:var(--muted);font-size:.9rem}
+.wk-bars{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:76px;margin-top:8px}
+.wk-bars i{display:block;min-height:2px;background:var(--accent);border-radius:5px 5px 0 0}
+.wk-bars i.top{background:var(--pink-ink)}
+.wk-bars i.z{background:var(--line)}
+.wk-bars .wk-goal{position:absolute;left:0;right:0;border-top:1.5px dashed var(--muted);opacity:.55}
+.wk-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:.74rem;color:var(--muted);text-align:center}
+.wk-days b{color:var(--ink);font-weight:600}
+.praise{position:fixed;z-index:980;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;width:min(460px,calc(100% - 24px));transform:translateX(-50%);display:flex;gap:12px;align-items:center;background:var(--surface);color:var(--ink);border:2px solid var(--accent);border-radius:18px;padding:10px 6px 10px 12px;box-shadow:0 12px 32px rgba(0,0,0,.22);animation:praiseIn .35s ease-out}
+.praise .pp{width:72px;height:72px;flex:none;display:grid;place-items:center}
+.praise .pp svg{width:100%;height:100%}
+.praise .pt{flex:1;min-width:0}
+.praise .pt b{display:block;font:700 1.12rem/1.2 var(--f-display);color:var(--pink-ink)}
+.praise .pt p{margin:3px 0 0;font-size:.9rem;line-height:1.35}
+.praise .px{flex:none;align-self:flex-start;width:44px;height:44px;border:0;background:none;color:var(--muted);font-size:1.4rem;line-height:1;cursor:pointer;border-radius:12px}
+@keyframes praiseIn{from{opacity:0;transform:translate(-50%,-14px)}to{opacity:1;transform:translate(-50%,0)}}
+@media (prefers-reduced-motion:reduce){.praise{animation:none}}
 .td-act{display:flex;gap:8px;flex-wrap:wrap}
 .td-act .btn{text-align:left;line-height:1.25}
 .td-act .btn small{display:block;font-weight:500;font-size:.8rem;opacity:.85}
@@ -1574,6 +1595,7 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
   </nav>
 
   <section class="today" id="today" aria-labelledby="todayH"></section>
+  <section class="wk" id="weekBox" aria-labelledby="wkH" hidden></section>
 
   <h2 class="fam-h">Předměty</h2>
   <div class="subjects" id="subjects"></div>
@@ -1695,9 +1717,10 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 
     <details class="g-item"><summary>Denní cíl a série</summary>
       <ul>
-        <li>Nahoře v Organické chemii je ukazatel <b>Dnes 12/20</b>: kolik odpovědí máš dnes za sebou z denního cíle. Počítá se každá odpověď ve všech režimech i v testu.</li>
-        <li><b>Série</b> jsou dny v řadě se splněným cílem. Když cíl splníš, Béďa se zaraduje.</li>
-        <li>Na úvodní stránce v „Tvoje učení“ je kalendář posledních 12 týdnů a nastavení cíle (10, 20, 30, 50 odpovědí, nebo vypnuto).</li>
+        <li>Nahoře v Organické i Analytické chemii je ukazatel <b>Dnes 12/20</b>: kolik odpovědí máš dnes za sebou z denního cíle. Počítá se každá odpověď ve všech režimech, v testu i v kvízech lekcí.</li>
+        <li><b>Série</b> jsou dny v řadě se splněným cílem. Když cíl splníš, zaraduje se Béďa (v organice), nebo Pazík (v analytice).</li>
+        <li>Když jedeš dál: při dvojnásobku, pětinásobku, desetinásobku a patnáctinásobku cíle a při 300 a 500 odpovědích tě maskot nahoře pochválí a v ukazateli přibude hvězdička (★ 5×). Když překonáš svůj nejlepší den, dostaneš pochvalu za nový osobní rekord.</li>
+        <li>Na úvodní stránce je karta <b>Tvůj týden</b> s odpověďmi za posledních 7 dní. V „Tvoje učení“ je kalendář posledních 12 týdnů a nastavení cíle (10 až 150 odpovědí, nebo vypnuto).</li>
       </ul></details>
 
     <details class="g-item"><summary>Herna: hry na procvičení</summary>
@@ -28732,15 +28755,28 @@ refresh();
 /* ===== Denní cíl a série (jen v tomhle prohlížeči) ===== */
 const DAILY = fhShape({ goal: 20, c: {} }, store.get('fg-daily', {}));
 const saveDaily = () => store.set('fg-daily', DAILY);
-const GOALS = [0, 10, 20, 30, 50];
+const GOALS = [0, 10, 20, 30, 50, 75, 100, 150];
 if (!GOALS.includes(DAILY.goal)) DAILY.goal = 20;
-function dailyTick() {
+const odpo = n => n === 1 ? 'odpověď' : n >= 2 && n <= 4 ? 'odpovědi' : 'odpovědí';
+const fmtN = n => n.toLocaleString('cs-CZ');
+/* nejlepší den kromě dneška (rekord, který se dnes překonává) */
+function dayBest(skip) { let b = 0; for (const d in DAILY.c) if (+d !== skip && DAILY.c[d] > b) b = DAILY.c[d]; return b; }
+/* milníky nad denním cílem: 2×, 5×, 10×, 15× cíle a k tomu 300 a 500 odpovědí; s vypnutým cílem se počítá od 20 */
+const praiseBase = () => DAILY.goal || 20;
+const milestones = () => { const g = praiseBase(); return [...new Set([2, 5, 10, 15].map(k => k * g).concat([300, 500]))]; };
+const recMin = () => Math.max(DAILY.goal, 20);     // rekord se slaví, až když nejlepší den byl aspoň tolik
+/* subj: 'o' organika (Béďa), 'a' analytika (Pazík) */
+function dailyTick(subj) {
   fhPersist();
-  const t = today(), before = DAILY.c[t] || 0;
-  DAILY.c[t] = before + 1;
+  const t = today(), before = DAILY.c[t] || 0, after = before + 1, best = dayBest(t);
+  DAILY.c[t] = after;
   Object.keys(DAILY.c).forEach(d => { if (+d < t - 400) delete DAILY.c[d]; });
   saveDaily();
-  renderDay(DAILY.goal && before < DAILY.goal && before + 1 >= DAILY.goal);
+  const hit = DAILY.goal && before < DAILY.goal && after >= DAILY.goal;
+  renderDay(hit, subj);
+  const rec = best >= recMin() && after === best + 1;
+  if (after > praiseBase() && milestones().includes(after)) praise('m', after, best, rec, subj);
+  else if (rec) praise('r', after, best, false, subj);
 }
 function streak() {
   const g = Math.max(1, +DAILY.goal || 1), t = today();
@@ -28755,15 +28791,70 @@ function bestStreak() {
   return best;
 }
 const dny = n => n === 1 ? 'den' : n >= 2 && n <= 4 ? 'dny' : 'dní';
-function renderDay(hit) {
+/* kolikrát je dnešek nad cílem (od dvojnásobku), jinak 0 */
+const dayTimes = n => DAILY.goal && n >= 2 * DAILY.goal ? Math.floor(n / DAILY.goal) : 0;
+const subjNow = () => { const ac = $('#appAC'); return ac && !ac.hidden ? 'a' : 'o'; };
+function mascotHype(subj) {
+  if (subj !== 'a') { if (typeof cheer === 'function') cheer(); return; }
+  const box = $('#acMascot'), pic = box && box.querySelector('.pzpic'); if (!pic) return;
+  pic.innerHTML = PAZIK.yay(5);
+  box.classList.remove('hype'); void box.offsetWidth; box.classList.add('hype');
+  clearTimeout(mascotHype.t); mascotHype.t = setTimeout(() => { box.classList.remove('hype'); pic.innerHTML = PAZIK.any(); }, 4000);
+}
+function renderDay(hit, subj) {
   ['#dayBox', '#acDayBox'].forEach(id => { const el = $(id); if (el) dayBoxFill(el, hit); });   // Organická i Analytická
-  if (hit && DAILY.goal && typeof cheer === 'function') cheer();
+  if (hit && DAILY.goal) mascotHype(subj || subjNow());
+}
+/* ===== Pochvala nad denním cílem: hláška maskota předmětu nahoře na pár sekund (Béďa v organice, Pazík v analytice) ===== */
+const PRAISE_SAY = {
+  o: ['Tohle tempo by zvládl jen katalyzátor. A ty.',
+    'Na mě moc rychlé. Jdu si pro další kafe.',
+    'Tohle si zapíšu do laboratorního deníku. Velkým písmem.',
+    'S takovou výtěžností by ti záviděla každá syntéza.',
+    'Jsem jen šestiúhelník, ale tohle je aromaticky stabilní výkon.',
+    'Brýle se mi zamlžily. Tolik odpovědí za jeden den!',
+    'Kdyby se za odpovědi rozdávaly elektrony, byla bys anion.',
+    'Test se tě už teď bojí.'],
+  a: ['Tolik odpovědí… já bych na to potřeboval… tři semestry.',
+    'Počkej… ještě jsem nedopočítal… tu minulou stovku.',
+    'Jsi rychlejší než srážení chloridu stříbrného.',
+    'Moje byreta… tolik dílků… nemá.',
+    'Hvězdičky v očích… mi už nestačí.',
+    'Tohle bych do protokolu zapsal… s vykřičníkem.',
+    'Kvalitativně i kvantitativně… potvrzeno. Jsi ve formě.',
+    'Na tohle… musím pomalu… zamrknout.']
+};
+let praiseT = 0, praiseLast = -1;
+function praisePic(subj) {
+  if (subj === 'a') return typeof PAZIK !== 'undefined' ? PAZIK.yay(5) : '';
+  const m = $('#mascot svg'); if (!m) return '';
+  const c = m.cloneNode(true);
+  ['role', 'aria-label', 'id'].forEach(a => c.removeAttribute(a));
+  c.setAttribute('aria-hidden', 'true');
+  return c.outerHTML;
+}
+function praise(kind, n, best, rec, subj) {
+  subj = subj || subjNow();
+  const L = PRAISE_SAY[subj];
+  let i = Math.floor(Math.random() * (L.length - 1)); if (i >= praiseLast) i++; praiseLast = i;
+  const g = praiseBase(), k = n / g, who = subj === 'a' ? 'Pazík' : 'Béďa';
+  const title = kind === 'r' ? `Nový osobní rekord: ${fmtN(n)}` : `${fmtN(n)} odpovědí za den!`;
+  const sub = kind === 'r' ? `Překonala jsi svůj nejlepší den (${fmtN(best)} ${odpo(best)}).`
+    : (DAILY.goal ? `To je ${Number.isInteger(k) ? k : Math.floor(k)}× denní cíl.` : '') + (rec ? ' A zároveň nový osobní rekord.' : '');
+  let el = $('#praise');
+  if (!el) { el = document.createElement('div'); el.id = 'praise'; el.className = 'praise'; el.setAttribute('role', 'status'); document.body.appendChild(el); }
+  el.innerHTML = `<div class="pp">${praisePic(subj)}</div><div class="pt"><b>${title}</b><p>${sub ? sub + ' ' : ''}${who}: „${L[i]}“</p></div><button type="button" class="px" aria-label="Zavřít pochvalu">×</button>`;
+  el.hidden = false; el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
+  el.querySelector('.px').onclick = () => { el.hidden = true; clearTimeout(praiseT); };
+  clearTimeout(praiseT); praiseT = setTimeout(() => { el.hidden = true; }, 6000);
+  mascotHype(subj);
 }
 function dayBoxFill(el, hit) {
   if (!DAILY.goal) { el.hidden = true; return; }
   const n = DAILY.c[today()] || 0, s = streak();
   el.hidden = false;
-  el.innerHTML = `<span class="dbar"><i style="width:${Math.min(100, 100 * n / DAILY.goal)}%"></i></span><span>Dnes <b>${n}</b>/${DAILY.goal}</span>${s ? `<span class="dstreak">série ${s} ${dny(s)}</span>` : ''}`;
+  const x = dayTimes(n);
+  el.innerHTML = `<span class="dbar"><i style="width:${Math.min(100, 100 * n / DAILY.goal)}%"></i></span><span>Dnes <b>${n}</b>/${DAILY.goal}</span>${s ? `<span class="dstreak">série ${s} ${dny(s)}</span>` : ''}${x ? `<span class="dtier" title="Dnes máš ${x}× denní cíl">★ ${x}×</span>` : ''}`;
   el.classList.toggle('done', n >= DAILY.goal);
   if (hit) { el.classList.add('hit'); setTimeout(() => el.classList.remove('hit'), 2200); }
 }
@@ -28797,6 +28888,26 @@ document.addEventListener('change', e => {
   DAILY.goal = +e.target.value; saveDaily(); renderStats(); renderDay(); renderToday();
 });
 
+/* ===== Úvod: Tvůj týden (posledních 7 dní, sloupce po dnech) ===== */
+const DAY_SHORT = ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'], DAY_FULL = ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'];
+const wday = d => new Date(d * 864e5).getUTCDay();
+function renderWeek() {
+  const box = $('#weekBox'); if (!box) return;
+  const t = today(), g = DAILY.goal, days = [];
+  for (let d = t - 6; d <= t; d++) days.push([d, DAILY.c[d] || 0]);
+  const sum = days.reduce((a, x) => a + x[1], 0);
+  if (!sum) { box.hidden = true; return; }
+  let prev = 0; for (let d = t - 13; d <= t - 7; d++) prev += DAILY.c[d] || 0;
+  const max = Math.max(...days.map(x => x[1])), top = days.filter(x => x[1] === max).pop(), met = g ? days.filter(x => x[1] >= g).length : 0;
+  const scale = Math.max(max, g || 0);
+  const name = d => d === t ? 'dnes' : d === t - 1 ? 'včera' : DAY_FULL[wday(d)];
+  const cmp = prev ? (sum > prev ? ` Předchozí týden ${fmtN(prev)}, teď máš víc.` : ` Předchozí týden ${fmtN(prev)}.`) : '';
+  box.hidden = false;
+  box.innerHTML = `<span class="eyebrow">Tvůj týden</span><h3 id="wkH">${fmtN(sum)} ${odpo(sum)} za posledních 7 dní</h3>
+    <p>Nejlepší den: ${name(top[0])} (${fmtN(max)}).${g ? ` Cíl jsi splnila ${met} ${met === 1 ? 'den' : met >= 2 && met <= 4 ? 'dny' : 'dní'} ze 7.` : ''}${cmp}</p>
+    <div class="wk-bars" role="img" aria-label="${days.map(([d, c]) => `${name(d)} ${c}`).join(', ')}">${days.map(([d, c]) => `<i class="${!c ? 'z' : d === top[0] ? 'top' : ''}" style="height:${c ? Math.max(4, 100 * c / scale) : 2}%"></i>`).join('')}${g && g <= scale ? `<span class="wk-goal" style="bottom:${100 * g / scale}%" title="denní cíl ${g}"></span>` : ''}</div>
+    <div class="wk-days" aria-hidden="true">${days.map(([d, c]) => `<span>${d === t ? '<b>dnes</b>' : DAY_SHORT[wday(d)]}<br>${c}</span>`).join('')}</div>`;
+}
 /* ===== Úvod: co dnes dělat (opakování, pokračování) a pokrok po tématech ===== */
 const karet = n => n === 1 ? 'kartu' : n >= 2 && n <= 4 ? 'karty' : 'karet';
 const MODE_NAME = { study: 'Studium', name: 'Pojmenuj', draw: 'Nakresli', test: 'Test', browse: 'Přehled' };
@@ -28838,10 +28949,15 @@ function renderToday() {
   const C = Object.assign({}, S, S.ret || {});            // „Pokračovat“ vrací tam, kde byla před opakováním
   let nxL = null; try { if (typeof FH_LES !== 'undefined') { nxL = FH_LES.next(); FH_LES.hub(); } } catch (e) { /* lekce ještě nejsou načtené */ }
   const cur = C.mixOn ? `Mix z ${C.mixT.length} ${C.mixT.length === 1 ? 'tématu' : 'témat'}` : (TOPIC_BY[C.topic] || TOPICS[0]).label;
-  const h = due ? `Na dnešek máš ${due} ${karet(due)} k opakování`
+  const bestOld = dayBest(today()), isRec = bestOld >= recMin() && n > bestOld, x = dayTimes(n), big = n >= 2 * praiseBase();
+  const h = isRec ? `${fmtN(n)} odpovědí dnes, to je tvůj rekord!`
+    : big && x >= 10 ? `${fmtN(n)} odpovědí dnes, ${x}× denní cíl. Klobouk dolů!`
+    : big ? `${fmtN(n)} odpovědí dnes${x ? `, ${x}× denní cíl` : ''}. Jen tak dál!`
+    : due ? `Na dnešek máš ${due} ${karet(due)} k opakování`
     : !started ? 'Vítej! Začni prvním tématem' : n && g && n >= g ? 'Dnešní cíl je splněný, jen tak dál' : 'Nic k opakování, pokračuj v novém';
+  const bestAll = Math.max(bestOld, n);
   box.innerHTML = `<span class="eyebrow">Dnes</span><h2 id="todayH">${h}</h2>
-    ${g ? `<div class="td-day"><span class="td-bar"><i style="width:${Math.min(100, 100 * n / g)}%"></i></span><span>Dnes <b>${n}</b> z ${g} odpovědí</span>${s ? `<span class="dstreak">série ${s} ${dny(s)}</span>` : ''}</div>` : ''}
+    ${g ? `<div class="td-day"><span class="td-bar"><i style="width:${Math.min(100, 100 * n / g)}%"></i></span><span>Dnes <b>${n}</b> z ${g} odpovědí</span>${s ? `<span class="dstreak">série ${s} ${dny(s)}</span>` : ''}${x ? `<span class="dtier">★ ${x}× cíl</span>` : ''}${bestAll > g ? `<span class="dbest">${isRec ? 'nový rekord' : `rekord ${fmtN(bestAll)}`}</span>` : ''}</div>` : ''}
     <div class="td-act">
       ${due ? `<button type="button" class="btn primary" data-td="due">Zopakovat ${due} ${karet(due)}<small>${dueT.length === 1 ? esc(TOPIC_BY[dueT[0]].label) : `z ${dueT.length} témat najednou`}</small></button>` : ''}
       <button type="button" class="btn${due ? '' : ' primary'}" data-td="go">${started ? 'Pokračovat' : 'Začít'}<small>${esc(cur)} · ${MODE_NAME[C.mode]}</small></button>
@@ -28857,6 +28973,7 @@ function renderToday() {
         <span class="tn">${r.done}/${r.all}</span><span class="tb"><i style="width:${r.all ? 100 * r.done / r.all : 0}%"></i></span>${r.due ? `<span class="due">${r.due} k opakování</span>` : ''}</button></li>`; }).join('')}</ol>
     </details>`;
   box._dueT = dueT; box._weakT = weakT;
+  renderWeek();
 }
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-td]'); if (!b) return;
@@ -34276,7 +34393,7 @@ function mark(id, ok) {   // posouvá se jen karta, která je na řadě; po chyb
   if (ok) { r.ok++; if (r.m === t) { r.b = 1; r.d = t + 1; } else if (r.d <= t) { r.b = Math.min(r.b + 1, 6); r.d = t + SRI[r.b]; } } else { r.bad++; r.b = 1; r.d = t; r.m = t; }
   r.x = ok ? 1 : 0;   // poslední odpověď, pro Slabá místa
   ST.r[id] = r; save();
-  try { if (typeof dailyTick === 'function') dailyTick(); } catch (e) { /* denní cíl je jen v organice */ }
+  try { if (typeof dailyTick === 'function') dailyTick('a'); } catch (e) { /* denní cíl je jen v organice */ }
 }
 /* Slabá místa jako v organice: karty, ve kterých se chybuje častěji, než se trefuje, nebo naposledy zkažené; nejvýš 40 nejhorších z vybraného cvičení */
 const acWeak = id => { const r = ST.r[id]; return r && r.bad && (r.bad * 2 >= r.ok || r.x === 0) ? Math.max(1, r.bad * 2 - r.ok + (r.x === 0 ? 2 : 0) + 1) : 0; };
