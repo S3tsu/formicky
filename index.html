@@ -27254,8 +27254,9 @@ function loadNap() {
 setTimeout(loadNap, 1200);
 function hintHTML(g) { return g.hint ? `<details class="hint"><summary>Nápověda</summary><p>${esc(g.hint)}</p></details>` : ''; }
 /* „Vysvětli mi to jinak“: po špatné odpovědi pošle otázku přes mezičlánek (WEB.ai) Claudovi. Jen otázky, jejichž možnosti jdou
-   napsat slovy (vzorce bez názvu Claude nevidí); bez signálu se tlačítko neukáže; nejvýš AI_DAY vysvětlení denně na zařízení. */
-const AI_DAY = 20;
+   napsat slovy (vzorce bez názvu Claude nevidí); bez signálu se tlačítko neukáže; na zařízení nejvýš 5 za 5 minut, 20 za hodinu a 60 za den
+   (brzda proti naklikávání; tvrdý strop je limit útraty v Claude Console, na IP hlídá ještě mezičlánek). */
+const AI_DAY = 60, AI_LIM = [[5, 5 * 60e3, '5min'], [20, 3600e3, 'hodina']];
 const aiPart = p => p.t || p.g || (p.id && BYID[p.id] && BYID[p.id].name) || '';
 const aiText = o => o.map(aiPart).join(' + ');
 const aiCount = p => { try { if (window.fhCount) fhCount(p, true); } catch (e) { /* nic */ } };   // jen počítadlo pro GoatCounter: téma, ne obsah
@@ -27266,9 +27267,17 @@ function aiBtn(g, k) {
 document.addEventListener('click', async e => {
   const b = e.target.closest('[data-ai]'); if (!b) return;
   const g = BYID[b.dataset.ai], k = +b.dataset.pick, box = b.parentNode; if (!g) return;
-  const day = today(), u = store.get('fg-ai', {});
+  const day = today(), now = Date.now(), u = store.get('fg-ai', {});
   if (u.d !== day) { u.d = day; u.n = 0; }
-  if (u.n >= AI_DAY) { box.innerHTML = `<p class="aside">Dnešních ${AI_DAY} vysvětlení je vyčerpaných. Zítra zase.</p>`; aiCount('ai-limit'); return; }
+  u.t = (Array.isArray(u.t) ? u.t : []).filter(x => now - x < 3600e3);
+  if (u.n >= AI_DAY) { box.innerHTML = `<p class="aside">Dnešních ${AI_DAY} vysvětlení je vyčerpaných. Zítra zase.</p>`; aiCount('ai-limit/den'); return; }
+  const lim = AI_LIM.find(([n, ms]) => u.t.filter(x => now - x < ms).length >= n);
+  if (lim) {
+    const [n, ms, nm] = lim, min = Math.max(1, Math.ceil((u.t.filter(x => now - x < ms)[0] + ms - now) / 60e3));
+    const old = box.querySelector('.ai-err'); if (old) old.remove();
+    box.insertAdjacentHTML('beforeend', `<p class="aside ai-err">Teď jich bylo hodně za sebou. Další vysvětlení půjde za ${min} min.</p>`);
+    aiCount('ai-limit/' + nm); return;
+  }
   b.disabled = true; b.textContent = 'Claude přemýšlí…';
   const old = box.querySelector('.ai-err'); if (old) old.remove();
   const rx = g.rx, q = rx ? `${rx.title}. ${g.prompt} Výchozí látky: ${aiText(rx.from)}. ${g.scheme && g.scheme.reag ? 'Činidlo: ' + g.scheme.reag : 'Produkt: ' + aiText(rx.to)}.` : g.prompt;
@@ -27277,7 +27286,7 @@ document.addEventListener('click', async e => {
       body: JSON.stringify({ topic: (TOPIC_BY[g.topic] || {}).label || '', q, opts: g.opts.map(aiText), picked: aiText(g.opts[k] || []), right: aiText(g.opts[0]) + (g.full ? ' (' + g.full + ')' : ''), why: g.why }) });
     const j = await r.json().catch(() => ({}));
     if (!j.text) throw new Error(j.error || 'mezičlánek neodpověděl');
-    u.n++; store.set('fg-ai', u); aiCount('ai/' + (g.topic || '?'));
+    u.n++; u.t.push(Date.now()); store.set('fg-ai', u); aiCount('ai/' + (g.topic || '?'));
     box.innerHTML = `<p class="aside"><b>Jinými slovy (Claude, může se splést):</b> ${esc(j.text)}</p>`;
   } catch (err) {
     b.disabled = false; b.textContent = 'Zkusit znovu';
@@ -30361,7 +30370,7 @@ const WEB = {
 };
 const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202611061547';
+const FH_VER = '202611061555';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
