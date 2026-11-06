@@ -542,6 +542,14 @@ body.m3d-open{overflow:hidden}
 .hint p{margin:0 0 12px;font-size:.92rem;line-height:1.45}
 .ai-box{margin-top:4px}
 .ai-box .aside{margin:8px 0 0}
+.lx-slovy{margin:14px 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.lx-slovy .ai-box{margin-top:8px;gap:8px}
+.sl-ver{margin-top:10px;padding:10px 12px;border-radius:10px;border-left:4px solid var(--line)}
+.sl-ver p{margin:0}
+.sl-ok{border-left-color:var(--ok, #2e8b57)}
+.sl-part{border-left-color:#d49a1e}
+.sl-bad{border-left-color:var(--bad, #c0392b)}
+.sl-who{color:var(--muted);font-size:.85em}
 .anim a{color:var(--accent);font-weight:600}
 .anim span{color:var(--muted);font-size:.8rem;margin-left:4px}
 .q-name span{white-space:normal;overflow-wrap:anywhere}
@@ -27248,50 +27256,57 @@ let NAP = null;
 function loadNap() {
   if (NAP) return; NAP = {};
   fetch('napovedy.json?v=' + FH_VER).then(r => r.ok ? r.json() : {}).then(j => {
-    for (const id in j) { const g = BYID[id], x = j[id]; if (!g) continue; if (x.h) g.hint = x.h; if (!g.not && x.n && x.n.length === 3) g.not = x.n; }
+    const ac = window.FH_NAPAC = window.FH_NAPAC || {}; for (const id in j) { const g = BYID[id], x = j[id]; if (id.startsWith('ac:') || id.startsWith('sl:')) { ac[id] = x; continue; } if (!g) continue; if (x.h) g.hint = x.h; if (!g.not && x.n && x.n.length === 3) g.not = x.n; }
   }).catch(() => {});
 }
 setTimeout(loadNap, 1200);
 function hintHTML(g) { return g.hint ? `<details class="hint"><summary>Nápověda</summary><p>${esc(g.hint)}</p></details>` : ''; }
-/* „Vysvětli mi to jinak“: po špatné odpovědi pošle otázku přes mezičlánek (WEB.ai) Claudovi. Jen otázky, jejichž možnosti jdou
-   napsat slovy (vzorce bez názvu Claude nevidí); bez signálu se tlačítko neukáže; na zařízení nejvýš 5 za 5 minut, 20 za hodinu a 60 za den
-   (brzda proti naklikávání; tvrdý strop je limit útraty v Claude Console, na IP hlídá ještě mezičlánek). */
+/* Claude přes mezičlánek (WEB.ai, Cloudflare Worker s klíčem). Tři funkce, každá má v GoatCounteru vlastní počítadlo (jen téma nebo lekce, ne obsah):
+   „Vysvětli mi to jinak“ po špatné odpovědi (ai/<téma>), zhodnocení poznámky „Než začneš“ (ai-lekce/<lekce>), „Vysvětli vlastními slovy“ (ai-slovy/<lekce>).
+   Funkci jde vypnout v mezičlánku (proměnná VYPNUTO); vypnutou si web pamatuje do konce dne a tlačítko neukazuje.
+   Limit je společný pro všechny tři: na zařízení nejvýš 5 za 5 minut, 20 za hodinu a 60 za den (brzda proti naklikávání; tvrdý strop je limit útraty
+   v Claude Console, na IP hlídá ještě mezičlánek). „Vysvětli jinak“ jen u otázek, jejichž možnosti jdou napsat slovy (vzorce bez názvu Claude nevidí). */
 const AI_DAY = 60, AI_LIM = [[5, 5 * 60e3, '5min'], [20, 3600e3, 'hodina']];
 const aiPart = p => p.t || p.g || (p.id && BYID[p.id] && BYID[p.id].name) || '';
 const aiText = o => o.map(aiPart).join(' + ');
 const aiCount = p => { try { if (window.fhCount) fhCount(p, true); } catch (e) { /* nic */ } };   // jen počítadlo pro GoatCounter: téma, ne obsah
+const aiOn = mode => WEB_ON && !!WEB.ai && navigator.onLine && (store.get('fg-aioff', {})[mode] !== today());
 function aiBtn(g, k) {
-  if (!WEB_ON || !WEB.ai || !navigator.onLine || !g.opts || g.opts.some(o => o.some(p => !aiPart(p)))) return '';
+  if (!aiOn('jinak') || !g.opts || g.opts.some(o => o.some(p => !aiPart(p)))) return '';
   return `<div class="ai-box"><button type="button" class="btn sm" data-ai="${esc(g.id)}" data-pick="${k}">Vysvětli mi to jinak</button></div>`;
+}
+/* jeden dotaz na mezičlánek: hlídá limit, tlačítko a chybu; vrátí odpověď ({ text, verdikt? }) nebo null */
+async function aiAsk(b, mode, body, count) {
+  const box = b.closest('.ai-box') || b.parentNode, day = today(), now = Date.now(), u = store.get('fg-ai', {});
+  const err = t => { const old = box.querySelector('.ai-err'); if (old) old.remove(); box.insertAdjacentHTML('beforeend', `<p class="aside ai-err">${t}</p>`); };
+  if (u.d !== day) { u.d = day; u.n = 0; }
+  u.t = (Array.isArray(u.t) ? u.t : []).filter(x => now - x < 3600e3);
+  if (u.n >= AI_DAY) { err(`Dnešních ${AI_DAY} odpovědí od Clauda je vyčerpaných. Zítra zase.`); aiCount('ai-limit/den'); return null; }
+  const lim = AI_LIM.find(([n, ms]) => u.t.filter(x => now - x < ms).length >= n);
+  if (lim) {
+    const [, ms, nm] = lim, min = Math.max(1, Math.ceil((u.t.filter(x => now - x < ms)[0] + ms - now) / 60e3));
+    err(`Teď jich bylo hodně za sebou. Další odpověď od Clauda půjde za ${min} min.`); aiCount('ai-limit/' + nm); return null;
+  }
+  const label = b.textContent; b.disabled = true; b.textContent = 'Claude přemýšlí…';
+  const old = box.querySelector('.ai-err'); if (old) old.remove();
+  try {
+    const r = await fetch(WEB.ai, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.assign({ mode }, body)) });
+    const j = await r.json().catch(() => ({}));
+    if (j.off) { const o = store.get('fg-aioff', {}); o[mode] = day; store.set('fg-aioff', o); b.remove(); err('Tahle funkce je teď vypnutá.'); return null; }
+    if (!j.text) throw new Error(j.error || 'mezičlánek neodpověděl');
+    u.n++; u.t.push(Date.now()); store.set('fg-ai', u); aiCount(count);
+    return j;
+  } catch (e) {
+    b.disabled = false; b.textContent = label === 'Claude přemýšlí…' ? 'Zkusit znovu' : label;
+    err('Nepodařilo se: ' + esc(e.message === 'Failed to fetch' ? 'bez spojení' : e.message)); return null;
+  }
 }
 document.addEventListener('click', async e => {
   const b = e.target.closest('[data-ai]'); if (!b) return;
   const g = BYID[b.dataset.ai], k = +b.dataset.pick, box = b.parentNode; if (!g) return;
-  const day = today(), now = Date.now(), u = store.get('fg-ai', {});
-  if (u.d !== day) { u.d = day; u.n = 0; }
-  u.t = (Array.isArray(u.t) ? u.t : []).filter(x => now - x < 3600e3);
-  if (u.n >= AI_DAY) { box.innerHTML = `<p class="aside">Dnešních ${AI_DAY} vysvětlení je vyčerpaných. Zítra zase.</p>`; aiCount('ai-limit/den'); return; }
-  const lim = AI_LIM.find(([n, ms]) => u.t.filter(x => now - x < ms).length >= n);
-  if (lim) {
-    const [n, ms, nm] = lim, min = Math.max(1, Math.ceil((u.t.filter(x => now - x < ms)[0] + ms - now) / 60e3));
-    const old = box.querySelector('.ai-err'); if (old) old.remove();
-    box.insertAdjacentHTML('beforeend', `<p class="aside ai-err">Teď jich bylo hodně za sebou. Další vysvětlení půjde za ${min} min.</p>`);
-    aiCount('ai-limit/' + nm); return;
-  }
-  b.disabled = true; b.textContent = 'Claude přemýšlí…';
-  const old = box.querySelector('.ai-err'); if (old) old.remove();
   const rx = g.rx, q = rx ? `${rx.title}. ${g.prompt} Výchozí látky: ${aiText(rx.from)}. ${g.scheme && g.scheme.reag ? 'Činidlo: ' + g.scheme.reag : 'Produkt: ' + aiText(rx.to)}.` : g.prompt;
-  try {
-    const r = await fetch(WEB.ai, { method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ topic: (TOPIC_BY[g.topic] || {}).label || '', q, opts: g.opts.map(aiText), picked: aiText(g.opts[k] || []), right: aiText(g.opts[0]) + (g.full ? ' (' + g.full + ')' : ''), why: g.why }) });
-    const j = await r.json().catch(() => ({}));
-    if (!j.text) throw new Error(j.error || 'mezičlánek neodpověděl');
-    u.n++; u.t.push(Date.now()); store.set('fg-ai', u); aiCount('ai/' + (g.topic || '?'));
-    box.innerHTML = `<p class="aside"><b>Jinými slovy (Claude, může se splést):</b> ${esc(j.text)}</p>`;
-  } catch (err) {
-    b.disabled = false; b.textContent = 'Zkusit znovu';
-    box.insertAdjacentHTML('beforeend', `<p class="aside ai-err">Nepodařilo se: ${esc(err.message === 'Failed to fetch' ? 'bez spojení' : err.message)}</p>`);
-  }
+  const j = await aiAsk(b, 'jinak', { topic: (TOPIC_BY[g.topic] || {}).label || '', q, opts: g.opts.map(aiText), picked: aiText(g.opts[k] || []), right: aiText(g.opts[0]) + (g.full ? ' (' + g.full + ')' : ''), why: g.why }, 'ai/' + (g.topic || '?'));
+  if (j) box.innerHTML = `<p class="aside"><b>Jinými slovy (Claude, může se splést):</b> ${esc(j.text)}</p>`;
 });
 function chainWhy(g) {
   return chainHTML(g, true) + g.chain.path.map((r, i) => `<p class="aside"><b>${i + 1}. ${esc(r.title)}:</b> ${esc(r.why || '')}</p>`).join('');
@@ -30693,11 +30708,55 @@ const FH_LES = (() => {
     const L = o.L;
     return `<div class="card ac-end"><span class="eyebrow">Lekce ${L.n} hotová</span><h2 class="q-name">${o.ok} z ${o.n} správně</h2>
     ${o.missed.length ? `<p class="eyebrow">Na tohle se podívej</p><ul class="ac-ul">${o.missed.map(t => `<li>${t}</li>`).join('')}</ul>` : '<p>Bez chyby, paráda.</p>'}
-    ${note(L.id) ? `<div class="lx-mine"><span class="eyebrow">Tvoje poznámka ze začátku</span><p>${xe(note(L.id)).replace(/\n/g, '<br>')}</p></div>` : ''}
+    ${note(L.id) ? `<div class="lx-mine"><span class="eyebrow">Tvoje poznámka ze začátku</span><p>${xe(note(L.id)).replace(/\n/g, '<br>')}</p>${aiNote(L)}</div>` : ''}
+    ${slovyHTML(L)}
     <p>${o.tail}</p>
     <p class="aside">${o.note}</p>
     <div class="row">${btn(o.att, 'lback', '', 'btn primary', 'Zpět na lekce')}${btn(o.att, 'lopen', L.id, 'btn', 'Projít výklad znovu')}${btn(o.att, 'lquiz', L.id, 'btn', 'Kvíz znovu')}</div></div>`;
   }
+  /* Claude zhodnotí poznámku „Než začneš“ podle textu lekce (ai-lekce/<lekce>) */
+  const AIL = {};
+  function aiNote(L) {
+    if (typeof aiOn !== 'function' || !aiOn('lekce') || note(L.id).trim().length < 8) return '';
+    AIL[L.id] = L;
+    return `<div class="ai-box"><button type="button" class="btn sm" data-ail="${xe(L.id)}">Co na to Claude?</button></div>`;
+  }
+  /* „Vysvětli vlastními slovy“: otázka ze napovedy.json (klíč „sl:<lekce>“: [{ q, vzor, body }]), střídají se po každém dokončení;
+     vzorovou odpověď jde ukázat vždy, kontrola Claudem (ai-slovy/<lekce>) jen se signálem a když funkce není vypnutá */
+  let SLN = {}; try { SLN = JSON.parse(localStorage.getItem('fg-slovy')) || {}; } catch (e) { /* od nuly */ }
+  const slQ = L => { const a = (window.FH_NAPAC || {})['sl:' + L.id]; return Array.isArray(a) && a.length ? a[(+SLN[L.id] || 0) % a.length] : null; };
+  const slNext = id => { SLN[id] = (+SLN[id] || 0) + 1; try { localStorage.setItem('fg-slovy', JSON.stringify(SLN)); } catch (e) { /* jen do zavření */ } };
+  function slovyHTML(L) {
+    const x = slQ(L); if (!x) return '';
+    AIL[L.id] = L;
+    const ai = typeof aiOn === 'function' && aiOn('slovy');
+    return `<div class="lx-slovy"><span class="eyebrow">Vysvětli vlastními slovy</span><p><b>${xe(x.q)}</b></p>
+      <textarea class="lx-note" data-sly="${xe(L.id)}" rows="3" maxlength="800" aria-label="Tvoje vysvětlení" placeholder="Napiš to jednou až třemi větami, jako bys to vysvětlovala spolužačce."></textarea>
+      <div class="ai-box row">${ai ? `<button type="button" class="btn sm primary" data-slc="${xe(L.id)}">Zkontrolovat s Claudem</button>` : ''}<button type="button" class="btn sm" data-slv="${xe(L.id)}">Ukázat vzorovou odpověď</button></div><div class="sl-out" aria-live="polite"></div></div>`;
+  }
+  const slVzor = x => `<p class="aside"><b>Vzorová odpověď:</b> ${xe(x.vzor)}</p>`;
+  document.addEventListener('click', async e => {
+    const v = e.target.closest('[data-slv]'), c = e.target.closest('[data-slc]'); if (!v && !c) return;
+    const id = (v || c).dataset.slv || (v || c).dataset.slc, L = AIL[id], x = L && slQ(L); if (!x) return;
+    const wrap = (v || c).closest('.lx-slovy'), out = wrap.querySelector('.sl-out'), ta = wrap.querySelector('[data-sly]');
+    if (v) { out.innerHTML = slVzor(x); v.remove(); if (!wrap.dataset.done) { wrap.dataset.done = 1; slNext(id); } return; }
+    const ans = ta.value.trim();
+    if (ans.length < 15) { out.innerHTML = '<p class="aside">Napiš aspoň jednu celou větu.</p>'; ta.focus(); return; }
+    const j = await aiAsk(c, 'slovy', { q: x.q, model: x.vzor, points: x.body, answer: ans }, 'ai-slovy/' + id);
+    if (!j) return;
+    const V = { ano: ['ok', 'Sedí to.'], castecne: ['part', 'Skoro.'], ne: ['bad', 'Ještě ne.'] }[j.verdikt] || ['part', ''];
+    out.innerHTML = `<div class="sl-ver sl-${V[0]}"><p><b>${V[1]}</b> ${xe(j.text)} <span class="sl-who">(Claude, může se splést)</span></p></div>${slVzor(x)}`;
+    c.remove(); const vb = wrap.querySelector('[data-slv]'); if (vb) vb.remove();
+    if (!wrap.dataset.done) { wrap.dataset.done = 1; slNext(id); }
+  });
+  const plain = h => String(h || '').replace(/<(script|style|svg)[\s\S]*?<\/\1>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+  document.addEventListener('click', async e => {
+    const b = e.target.closest('[data-ail]'); if (!b) return;
+    const L = AIL[b.dataset.ail]; if (!L) return;
+    let text = ''; try { text = plain(L.body()); } catch (er) { /* bez textu lekce */ }
+    const box = b.parentNode, j = await aiAsk(b, 'lekce', { lesson: `${L.n}. ${plain(L.t)}`, recall: plain(L.recall), note: note(L.id), text }, 'ai-lekce/' + L.id);
+    if (j) box.innerHTML = `<p class="aside"><b>Claude k tvé poznámce (může se splést):</b> ${xe(j.text)}</p>`;
+  });
   /* --- oživení výkladu: poznámka z hlavy, tabulky na zkoušení a „Seřaď“; stav drží stránka, po překreslení začíná znovu --- */
   const xe = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   /* poznámka z rámečku „Než začneš“: jen v tomhle prohlížeči, na konci lekce se ukáže vedle správných odpovědí */
@@ -34481,8 +34540,55 @@ function feedback(cd, ok) {
   } else {
     body = `<p>${cd.set.length ? `Správně: <b>${cd.set.map(i => ION[i].f).join(', ')}</b>` : 'Správně: žádný.'}</p>${cd.ex && cd.rk === 'NaOH' ? '<p class="aside">Vzniklé roztoky jsou bezbarvé, jen chromitan je zelený.</p>' : ''}${cd.rk === 'H2S' && cd.c === 'k' && !cd.ex ? '<p class="aside">Pozor na Fe³⁺: oxiduje sulfan a vznikne jen bílý zákal síry, ne sraženina sulfidu.</p>' : ''}`;
   }
-  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p></div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : whyAC(cd)}${acTipBox(bedaFor(cd), ok)}`;
+  const not = ok ? '' : acNot(cd);
+  return `<div class="fb ${ok ? 'ok' : 'bad'}"><p><b>${ok ? 'Správně!' : 'Tohle ne.'}</b></p>${not ? `<p class="aside"><b>Proč ne tvoje odpověď:</b> ${escA(not)}</p>` : ''}</div><div class="ac-ans">${pic}<div class="ac-ans-t">${body}</div></div>${ok ? '' : acAiBtn(cd, body, not)}${ok ? '' : whyAC(cd)}${acTipBox(bedaFor(cd), ok)}`;
 }
+/* „Proč ne“ u zvolené špatné možnosti: u reakcí iontů, testů, tříd rozpustnosti a indikátorů přímo z dat (komu ta možnost patří),
+   u teorie a výpočtů z napovedy.json (předpočítané přes Claude API, klíč „ac:<id karty>“: h = nápověda, n = { text možnosti: proč ne }) */
+const acNap = id => (window.FH_NAPAC || {})['ac:' + id] || null;
+function acHint(cd) {
+  const x = acNap(cd.id);
+  return x && x.h ? `<details class="hint"><summary>Nápověda</summary><p>${escA(x.h)}</p></details>` : '';
+}
+function acNot(cd) {
+  const o = Q.opts && Q.opts.find(x => x.picked && !x.ok); if (!o) return '';
+  const v = o.t, x = acNap(cd.id), r1 = cd.rk ? rg(cd.c, cd.rk)[1] : '';
+  if (x && x.n && x.n[v]) return x.n[v];
+  if (cd.t === 'obs') {
+    const w = ions(cd.c).filter(i => i.id !== cd.ion.id && (i.r[cd.rk] ? i.r[cd.rk].v : NONE) === v).map(i => i.f);
+    if (!w.length) return '';
+    return v === NONE ? `Bez viditelné změny s ${r1} zůstane třeba ${w.slice(0, 3).join(', ')}. ${cd.ion.f} ale reaguje.` : `Takhle s ${r1} reaguje ${w.slice(0, 4).join(', ')}.`;
+  }
+  const pi = (cd.t === 'ion' || cd.t === 'sel') ? ions(cd.c).find(i => i.f === v) : null;
+  if (cd.t === 'ion' && pi) { const rx = pi.r[cd.rk]; return rx ? `${pi.f} s ${r1}: ${rx.v}.` : `${pi.f} s ${r1} viditelně nereaguje.`; }
+  if (cd.t === 'sel' && pi) {
+    const xs = AC_SEL.filter(y => y.i === pi.id && y.k === cd.x.k), own = SELQ.find(y => y.i === pi.id && y.sp) || SELQ.find(y => y.i === pi.id);
+    return (xs.length ? `${pi.f} s tímhle činidlem: ${xs[0].v}.` : `${pi.f} se tímhle činidlem nedokazuje.`) + (own && !xs.length ? ` Jeho důkaz je třeba ${own.r} → ${own.v}.` : '');
+  }
+  if (cd.t === 'how' && o.x) return `${o.x.r} → ${o.x.v} je důkaz ${ION[o.x.i].f}.`;
+  const k = cd.id.split(':')[0];
+  if (k === 'ot') { const t = AC_OT.find(y => y[4] === v); return t ? `${t[4]} se dokazuje jinak: ${t[2]} → ${t[3]}.` : ''; }
+  if (k === 'oo') { const t = AC_OT.filter(y => y[3] === v).map(y => y[4]); return t.length ? `Takhle vypadá pozitivní důkaz: ${uniq(t).join(', ')}.` : ''; }
+  if (k === 'rs' || k === 'rp') { const t = AC_SOL.find(y => y[0] === v); return t ? `${t[0]}: ${t[1]}. Typicky ${t[2]}.` : ''; }
+  if (k === 'ur') { const t = AC_IND.filter(y => `${num(y[1], 1)}–${num(y[2], 1)}` === v).map(y => y[0]); return t.length ? `V rozmezí ${v} mění barvu ${t.join(', ')}.` : ''; }
+  return '';
+}
+/* „Vysvětli mi to jinak“ i v analytice: jen u otázek s jednou správnou možností; kontext aktuální karty drží ACAI */
+let ACAI = null;
+const acPlain = h => String(h || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+function acAiBtn(cd, body, not) {
+  if (typeof aiOn !== 'function' || !aiOn('jinak') || !Q.opts || cd.t === 'grp') return '';
+  const o = Q.opts.find(x => x.picked && !x.ok), r = Q.opts.find(x => x.ok); if (!o || !r) return '';
+  const h = qHead(cd);
+  ACAI = { topic: 'Analytická chemie, ' + (CHN[cd.ch || 'ka'] || ''), q: acPlain(`${String(h.eb).replace(/[?:]\s*$/, '')}: ${h.h}. ${h.sub || ''}`), opts: Q.opts.map(x => acPlain(x.t)), picked: acPlain(o.t), right: acPlain(r.t),
+    why: acPlain(body) + (not ? ' Proč ne: ' + not : ''), count: 'ai/ac-' + (cd.ch || 'ka') };
+  return '<div class="ai-box"><button type="button" class="btn sm" data-aiac="1">Vysvětli mi to jinak</button></div>';
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-aiac]'); if (!b || !ACAI) return;
+  const c = ACAI, box = b.parentNode, j = await aiAsk(b, 'jinak', { topic: c.topic, q: c.q, opts: c.opts, picked: c.picked, right: c.right, why: c.why }, c.count);
+  if (j) box.innerHTML = `<p class="aside"><b>Jinými slovy (Claude, může se splést):</b> ${escA(j.text)}</p>`;
+});
 /* „Proč?“ u špatné odpovědi: výklad z lekce, všechny reakce iontu nebo celá skupina s činidlem; u cvičení 3–6 odkaz na tahák (kolo se nepřeruší, v kvízu lekce chybí, ten by se odchodem zahodil) */
 function whyAC(cd) {
   const det = (sum, body) => `<details class="whymore"><summary><span class="why-q">Proč?</span> ${sum}</summary><div class="why-b">${body}</div></details>`;
@@ -34528,7 +34634,7 @@ function quizView() {
     ans = `<div class="opts${Q.done ? ' done' : ''}">${Q.opts.map((o, k) => `<button type="button" class="opt${Q.done ? (o.ok ? ' right' : o.picked ? ' wrong' : '') : ''}${o.chem ? ' ac-chem' : ''}" data-ac="opt" data-v="${k}"${Q.done ? ' disabled' : ''}><span class="ltr">${'ABCD'[k]}</span><span class="txt">${escA(o.t)}</span></button>`).join('')}</div>`;
   }
   return `${prog}<div class="card ac-q"><div class="card-head"><span class="eyebrow">${h.eb}</span>${ST.r[cd.id] ? '' : '<span class="ac-new">nová</span>'}</div>
-    <h2 class="q-name${h.long ? ' ac-long' : ''}">${escA(h.h)}</h2>${h.sub ? `<p class="ac-sub">${escA(h.sub)}</p>` : ''}${ans}
+    <h2 class="q-name${h.long ? ' ac-long' : ''}">${escA(h.h)}</h2>${h.sub ? `<p class="ac-sub">${escA(h.sub)}</p>` : ''}${Q.done ? '' : acHint(cd)}${ans}
     <div id="acFb">${Q.done ? Q.fb + `<div class="row"><button type="button" class="btn primary" id="acNext" data-ac="next">${Q.les && Q.i + 1 >= Q.deck.length ? 'Dokončit lekci' : 'Další'}</button></div>` : ''}</div></div>`;
 }
 function answer(ok, missText) {
