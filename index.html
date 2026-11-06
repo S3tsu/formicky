@@ -27258,6 +27258,7 @@ function hintHTML(g) { return g.hint ? `<details class="hint"><summary>Nápověd
 const AI_DAY = 20;
 const aiPart = p => p.t || p.g || (p.id && BYID[p.id] && BYID[p.id].name) || '';
 const aiText = o => o.map(aiPart).join(' + ');
+const aiCount = p => { try { if (window.fhCount) fhCount(p, true); } catch (e) { /* nic */ } };   // jen počítadlo pro GoatCounter: téma, ne obsah
 function aiBtn(g, k) {
   if (!WEB_ON || !WEB.ai || !navigator.onLine || !g.opts || g.opts.some(o => o.some(p => !aiPart(p)))) return '';
   return `<div class="ai-box"><button type="button" class="btn sm" data-ai="${esc(g.id)}" data-pick="${k}">Vysvětli mi to jinak</button></div>`;
@@ -27267,7 +27268,7 @@ document.addEventListener('click', async e => {
   const g = BYID[b.dataset.ai], k = +b.dataset.pick, box = b.parentNode; if (!g) return;
   const day = today(), u = store.get('fg-ai', {});
   if (u.d !== day) { u.d = day; u.n = 0; }
-  if (u.n >= AI_DAY) { box.innerHTML = `<p class="aside">Dnešních ${AI_DAY} vysvětlení je vyčerpaných. Zítra zase.</p>`; return; }
+  if (u.n >= AI_DAY) { box.innerHTML = `<p class="aside">Dnešních ${AI_DAY} vysvětlení je vyčerpaných. Zítra zase.</p>`; aiCount('ai-limit'); return; }
   b.disabled = true; b.textContent = 'Claude přemýšlí…';
   const old = box.querySelector('.ai-err'); if (old) old.remove();
   const rx = g.rx, q = rx ? `${rx.title}. ${g.prompt} Výchozí látky: ${aiText(rx.from)}. ${g.scheme && g.scheme.reag ? 'Činidlo: ' + g.scheme.reag : 'Produkt: ' + aiText(rx.to)}.` : g.prompt;
@@ -27276,7 +27277,7 @@ document.addEventListener('click', async e => {
       body: JSON.stringify({ topic: (TOPIC_BY[g.topic] || {}).label || '', q, opts: g.opts.map(aiText), picked: aiText(g.opts[k] || []), right: aiText(g.opts[0]) + (g.full ? ' (' + g.full + ')' : ''), why: g.why }) });
     const j = await r.json().catch(() => ({}));
     if (!j.text) throw new Error(j.error || 'mezičlánek neodpověděl');
-    u.n++; store.set('fg-ai', u);
+    u.n++; store.set('fg-ai', u); aiCount('ai/' + (g.topic || '?'));
     box.innerHTML = `<p class="aside"><b>Jinými slovy (Claude, může se splést):</b> ${esc(j.text)}</p>`;
   } catch (err) {
     b.disabled = false; b.textContent = 'Zkusit znovu';
@@ -30360,7 +30361,7 @@ const WEB = {
 };
 const WEB_ON = location.protocol === 'https:' || location.hostname === 'localhost';
 const REP_ON = WEB_ON && !!(WEB.form && WEB.entry);
-const FH_VER = '202611051323';
+const FH_VER = '202611061547';
 document.getElementById('verFoot').textContent = 'v' + FH_VER;   // číslo verze dole na stránce, mění se samo s každým nasazením
 
 function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-rep="card" title="Nahlásit chybu v této otázce">⚑ Nahlásit chybu</button>' : ''; }
@@ -30372,11 +30373,13 @@ function repBtn() { return REP_ON ? '<button type="button" class="btn rep" data-
   const gcQ = [];   // počty zavolané dřív, než se skript načte (třeba otevření výzvy), se pošlou po načtení
   const gcCount = (path, ev) => { try { if (window.goatcounter && goatcounter.count) goatcounter.count({ path, title: path, event: !!ev }); else if (gcQ.length < 20) gcQ.push([path, ev]); } catch (e) { /* nic */ } };
   const page = () => '/' + (location.hash.replace(/^#/, '').replace(/^vyzva=.*/, 'vyzva') || 'hub');
+  /* jednou za týden (od pondělí) za zařízení: odhad, kolik lidí web ten týden opravdu používá; nic dalšího se neposílá */
+  const weekly = () => { try { const w = Math.floor((today() + 3) / 7); if (store.get('fg-wk', 0) !== w) { store.set('fg-wk', w); gcCount('aktivni-tyden', true); } } catch (e) { /* nic */ } };
   if (WEB.gc) {
     window.goatcounter = { no_onload: true };
     const s = document.createElement('script'); s.async = true; s.src = 'count.js';   // vlastní kopie, ne skript z cizího serveru
     s.dataset.goatcounter = 'https://' + WEB.gc + '.goatcounter.com/count';
-    s.onload = () => { gcCount(page()); if (matchMedia('(display-mode: standalone)').matches) gcCount('aplikace-spustena', true); gcQ.splice(0).forEach(([p, ev]) => gcCount(p, ev)); };
+    s.onload = () => { gcCount(page()); if (matchMedia('(display-mode: standalone)').matches) gcCount('aplikace-spustena', true); gcQ.splice(0).forEach(([p, ev]) => gcCount(p, ev)); weekly(); };
     document.head.appendChild(s);
     let last = page();
     window.addEventListener('hashchange', () => { const p = page(); if (p !== last) { last = p; gcCount(p); } });
