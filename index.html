@@ -31075,7 +31075,7 @@ const FH_LES = (() => {
      CCX: [klíč, jméno, spolujméno, značka, barva, reagent R′, podmínky, co odpadne, produkt, rok, háček, ustálený háček?, poznámka] */
   const CCX = [
     ['suz', 'Suzuki', '–Miyaura', 'B', 'var(--el-x)', 'R′–B(OH)₂', 'Pd kat., báze', 'X–B(OH)₂', 'R–R′', 1979, 'Suzuki dělá motorky: modely <i>Bandit</i> a <i>Boulevard</i> začínají na <b>B</b>.', 1, 'Báze udělá z boronové kyseliny boronát, teprve ten předá R′ na Pd. Boronové kyseliny jsou stálé a málo toxické, proto je Suzuki ve výrobě léčiv nejčastější.'],
-    ['sti', 'Stille', '', 'Sn', 'var(--el-p)', 'R′–SnBu₃', 'Pd kat.', 'X–SnBu₃', 'R–R′', 1978, '<b>St</b>ille = <b>St</b>annum, latinsky cín (Sn).', 1, 'Stannany snesou skoro každou funkční skupinu, ale jsou toxické. Stille není Japonec, pracoval v USA.'],
+    ['sti', 'Stille', '', 'Sn', 'var(--el-p)', 'R′–SnBu₃', 'Pd kat.', 'X–SnBu₃', 'R–R′', 1978, '<b>St</b>ille = <b>St</b>annum, latinsky cín (Sn).', 1, 'Stannany snesou skoro každou funkční skupinu, ale jsou toxické.'],
     ['neg', 'Negishi', '', 'Zn', 'var(--accent)', 'R′–ZnX', 'Pd kat.', 'ZnX₂', 'R–R′', 1977, 'Rozlušti značku: <b>Z</b>i<b>n</b>ek = <b>Z</b>inek <b>N</b>egishiho.', 0, 'Zinek je reaktivnější než bor nebo cín, a tak zvládne i alkyly (R, R′ = alkyl, alkenyl, aryl).'],
     ['kum', 'Kumada', '–Tamao–Corriu', 'Mg', 'var(--el-m)', 'R′–MgX', 'NiCl₂(dppe)', 'MgX₂', 'R–R′', 1972, 'Ku<b>ma</b>da = <b>Ma</b>gnesium. Nejstarší coupling s nejstarším organokovovým činidlem (Grignard) a levným niklem.', 0, 'Grignard je silná báze a nukleofil, takže nesnese C=O ani kyselé H.'],
     ['hiy', 'Hiyama', '', 'Si', 'var(--el-s)', 'R′–SiY₃', 'Pd kat., TBAF', 'F–SiY₃', 'R–R′', 1988, '<i>Yama</i> je japonsky hora. Hora je ze skály a skála je z <b>křemíku</b>.', 0, 'Křemík miluje fluor (vazba Si–F je velmi pevná). TBAF dodá F⁻ a křemík tím aktivuje.'],
@@ -32736,17 +32736,12 @@ const FH_OL = (() => {
       beda: 'Cross-coupling je tanec ve třech krocích: oxidativní adice, transmetalace, reduktivní eliminace. A palladium se po tanci vrátí tam, kde začalo.',
       aid: () => pom(`${FH_LES.ord({ q: 'kroky cross-couplingu.', top: 'první krok', bottom: 'poslední krok', items: [['oxidativní adice R–X na Pd⁰', 'vznikne Pdᴵᴵ'], ['transmetalace', 'R′ přejde z kovu M na Pd'], ['reduktivní eliminace R–R′', 'vrátí se Pd⁰']] })}
         ${FH_LES.w.ccpt()}
-        ${FH_LES.w.quiz({ head: '<b>Kdo je Japonec?</b> Většina jmen je japonských. Když víš, které nejsou, zbytek už jen přiřadíš ke kovu.', opts: ['japonské jméno', 'není japonské'], items: [
-          ['Suzuki', 'japonské jméno', 'Akira Suzuki, Nobelova cena 2010. Spolujméno Miyaura je taky japonské.'],
-          ['Negishi', 'japonské jméno', 'Ei-ichi Negishi, Nobelova cena 2010 (pracoval v USA).'],
-          ['Kumada', 'japonské jméno', 'Makoto Kumada. Ze spolujmen je Tamao Japonec, Corriu Francouz.'],
-          ['Hiyama', 'japonské jméno', 'Tamejiro Hiyama.'],
-          ['Sonogashira', 'japonské jméno', 'Kenkichi Sonogashira.'],
-          ['Mizoroki', 'japonské jméno', 'Tsutomu Mizoroki popsal Heckovu reakci nezávisle, proto Mizoroki–Heck.'],
-          ['Corriu', 'není japonské', 'Robert Corriu byl Francouz (Kumada–Tamao–Corriu).'],
-          ['Heck', 'není japonské', 'Richard Heck, Američan, Nobelova cena 2010.'],
-          ['Stille', 'není japonské', 'John Stille, Američan. Stille = Stannum.'],
-          ['Buchwald–Hartwig', 'není japonské', 'Stephen Buchwald a John Hartwig, oba z USA.']] })}
+        ${FH_LES.w.quiz({ head: '<b>Celé jméno reakce.</b> V učebnicích se reakce často píšou i s druhým objevitelem. Ke které reakci patří tohle jméno?', opts: ['Suzuki', 'Kumada', 'Heck', 'Stille'], items: [
+          ['Miyaura', 'Suzuki', 'Suzukiho–Miyaurova reakce: boronová kyselina, Pd a báze.'],
+          ['Tamao', 'Kumada', 'Kumadova–Tamaova–Corriuova reakce: Grignard a nikl.'],
+          ['Corriu', 'Kumada', 'Kumadova–Tamaova–Corriuova reakce: Grignard a nikl.'],
+          ['Mizoroki', 'Heck', 'Mizorokiho–Heckova reakce: alken, Pd a báze.'],
+          ['Migita a Kosugi', 'Stille', 'Někdy Migitova–Kosugiho–Stilleho reakce: stannan a Pd.']] })}
         ${FH_LES.w.quiz({ head: '<b>Podle kovu poznáš reakci.</b> Která to je?', opts: ['Suzuki–Miyaura', 'Stille', 'Negishi', 'Kumada', 'Hiyama', 'Sonogashira', 'Buchwald–Hartwig'], items: [
           ['boronová kyselina R′–B(OH)₂, báze', 'Suzuki–Miyaura', 'Suzuki pracuje s boronovými kyselinami a boronáty.'],
           ['stannan R′–SnBu₃', 'Stille', 'Stille a stannan začínají na St.'],
