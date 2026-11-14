@@ -1461,6 +1461,33 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-fd-st.to rect{fill:color-mix(in srgb,var(--pink) 18%,var(--surface));stroke:var(--pink)}
 .lx-w .lx-fd-pic .lx-fd-n{font:700 12.5px var(--f-body);fill:var(--ink)}
 .lx-w .lx-fd-pic .lx-fd-lg{font:600 13px var(--f-chem);fill:var(--muted)}
+.lx-cc-pt{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.lx-cc-h{font-size:.7rem;color:var(--muted);text-align:center}
+.lx-cc-el{aspect-ratio:1;min-height:44px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 1.1rem/1 var(--f-display);color:var(--muted);opacity:.4;padding:2px;min-width:0}
+.lx-cc-el.on{opacity:1;color:var(--c);border-color:var(--c);cursor:pointer}
+.lx-cc-el.on b{font:800 1.3rem/1 var(--f-display)}
+.lx-cc-el small{font:500 .55rem/1.1 var(--f-body);margin-top:3px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lx-cc-el[aria-pressed="true"]{background:var(--c);color:var(--surface);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--c)}
+.lx-cc-alk{aspect-ratio:auto;flex-direction:row;gap:10px;padding:8px}
+.lx-cc-alk small{font-size:.8rem;margin:0}
+.lx-cc-det{border-left:4px solid var(--c);padding:8px 10px;background:var(--surface);border-radius:8px;display:flex;flex-direction:column;gap:6px}
+.lx-cc-det p{margin:0}
+.lx-cc-nm{font:800 1.25rem/1.2 var(--f-display)}.lx-cc-nm span{color:var(--muted);font-weight:600}.lx-cc-nm small{font:500 .8rem var(--f-body);color:var(--muted)}
+.lx-cc-eq{font:600 1rem var(--f-chem);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}.lx-cc-eq b{color:var(--c)}.lx-cc-eq small{font:400 .85rem var(--f-body);color:var(--muted)}
+.lx-cc-hk{font-size:.92rem}.lx-cc-hk b{color:var(--pink-ink)}
+.lx-cc-why{font-size:.88rem;color:var(--muted)}
+.lx-w svg.lx-cc-cyc{width:100%;max-width:420px;align-self:center}
+.lx-cc-ring{fill:none;stroke:var(--line);stroke-width:10}
+.lx-cc-ar{fill:none;stroke:var(--accent);stroke-width:3}.lx-cc-tm{stroke-width:4}.lx-cc-ah{fill:var(--accent)}
+.lx-cc-bx{fill:var(--surface);stroke:var(--line)}.lx-cc-pd{stroke:var(--accent)}.lx-cc-s2{fill:var(--foam);stroke-width:2}
+.lx-w .lx-cc-cyc text.lx-cc-k{font:600 13px var(--f-chem);fill:var(--ink)}
+.lx-w .lx-cc-cyc text.lx-cc-big{font-size:15px}
+.lx-w .lx-cc-cyc text.lx-cc-ok{font:700 13px var(--f-chem);fill:var(--ok)}
+.lx-w .lx-cc-cyc text.lx-cc-sym{font:800 24px var(--f-display)}
+.lx-cc-tl{list-style:none;margin:8px 0;padding:0 0 0 18px;border-left:3px solid var(--line)}
+.lx-cc-tl li{position:relative;margin:0 0 6px;font-size:.92rem}
+.lx-cc-tl li::before{content:"";position:absolute;left:-26px;top:5px;width:11px;height:11px;border-radius:50%;background:var(--c)}
+.lx-cc-tl span{display:inline-block;width:44px;color:var(--muted)}.lx-cc-tl b{font-family:var(--f-display)}
 .lx-w .lx-fd-pic .lx-fd-ax{font:11px var(--f-body);fill:var(--muted)}
 .lx-fd-arr{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:lx-draw .7s ease-out forwards}
 .lx-fd-arr.dn{stroke:var(--ok)} .lx-fd-arr.up{stroke:var(--bad);stroke-dasharray:6 5;animation:none}
@@ -31043,6 +31070,57 @@ const FH_LES = (() => {
   W.fds = () => box('fds', '<b>Schody reaktivity:</b> z kopce to jede samo, do kopce jen oklikou. Vyber, odkud a kam chceš jít.',
     `<div class="lx-chips"><span>Z:</span>${fdsChips('fdsa', 0)}</div><div class="lx-chips"><span>Na:</span>${fdsChips('fdsb', 3)}</div><div class="lx-out" aria-live="polite" data-a="0" data-b="3">${fdsOut(0, 3)}</div>`);
 
+  /* Cross-coupling: periodická tabulka přenašečů (W.ccpt) a katalytický cyklus s výměnou přenašeče (W.cccyk).
+     CCX: [klíč, jméno, spolujméno, značka, barva, reagent R′, podmínky, co odpadne, produkt, rok, háček, ustálený háček?, poznámka] */
+  const CCX = [
+    ['suz', 'Suzuki', '–Miyaura', 'B', 'var(--el-x)', 'R′–B(OH)₂', 'Pd kat., báze', 'X–B(OH)₂', 'R–R′', 1979, 'Suzuki dělá motorky: modely <i>Bandit</i> a <i>Boulevard</i> začínají na <b>B</b>.', 1, 'Báze udělá z boronové kyseliny boronát, teprve ten předá R′ na Pd. Boronové kyseliny jsou stálé a málo toxické, proto je Suzuki ve výrobě léčiv nejčastější.'],
+    ['sti', 'Stille', '', 'Sn', 'var(--el-p)', 'R′–SnBu₃', 'Pd kat.', 'X–SnBu₃', 'R–R′', 1978, '<b>St</b>ille = <b>St</b>annum, latinsky cín (Sn).', 1, 'Stannany snesou skoro každou funkční skupinu, ale jsou toxické. Stille není Japonec, pracoval v USA.'],
+    ['neg', 'Negishi', '', 'Zn', 'var(--accent)', 'R′–ZnX', 'Pd kat.', 'ZnX₂', 'R–R′', 1977, 'Rozlušti značku: <b>Z</b>i<b>n</b>ek = <b>Z</b>inek <b>N</b>egishiho.', 0, 'Zinek je reaktivnější než bor nebo cín, a tak zvládne i alkyly (R, R′ = alkyl, alkenyl, aryl).'],
+    ['kum', 'Kumada', '–Tamao–Corriu', 'Mg', 'var(--el-m)', 'R′–MgX', 'NiCl₂(dppe)', 'MgX₂', 'R–R′', 1972, 'Ku<b>ma</b>da = <b>Ma</b>gnesium. Nejstarší coupling s nejstarším organokovovým činidlem (Grignard) a levným niklem.', 0, 'Grignard je silná báze a nukleofil, takže nesnese C=O ani kyselé H.'],
+    ['hiy', 'Hiyama', '', 'Si', 'var(--el-s)', 'R′–SiY₃', 'Pd kat., TBAF', 'F–SiY₃', 'R–R′', 1988, '<i>Yama</i> je japonsky hora. Hora je ze skály a skála je z <b>křemíku</b>.', 0, 'Křemík miluje fluor (vazba Si–F je velmi pevná). TBAF dodá F⁻ a křemík tím aktivuje.'],
+    ['son', 'Sonogashira', '', 'Cu', 'var(--el-o)', 'H–C≡C–R′', 'Pd kat., CuI, báze', 'CuX', 'R–C≡C–R′', 1975, 'Nejdelší jméno připojí nejdelší rovnou tyč, lineární trojnou vazbu. Měď je tu jako drát.', 0, 'Měď s bází udělá z terminálního alkynu acetylid Cu–C≡C–R′, ten pak předá alkyn na Pd.'],
+    ['hec', 'Heck', 'Mizoroki–', 'C=C', 'var(--pink)', 'alken', 'Pd kat., báze (Ag⁺ nebo Tl⁺)', 'HX (s bází)', 'substituovaný alken', 1972, 'Heck <b>zahákne alken</b>: místo kovu přinese dvojnou vazbu.', 0, 'Bez transmetalace: alken se vloží do vazby Pd–R a syn-β-eliminace H vrátí dvojnou vazbu.'],
+    ['bh', 'Buchwald–Hartwig', '', 'N', 'var(--el-n)', 'H–NR′₂', 'Pd kat., ligand, báze', 'HX (s bází)', 'Ar–NR′₂', 1994, '<b>B–H</b> jako <b>b</b>áze a <b>H</b> na dusíku: amin musí mít N–H, báze ho odtrhne.', 0, 'Spojí aryl s dusíkem (nebo s O, S). Alternativa k SNAr, funguje i na neaktivovaných arylech.']];
+  const CCK = Object.fromEntries(CCX.map((x, i) => [x[0], i]));
+  /* mřížka: skupiny 2, 11, 12, 13, 14, 15 a periody 2 až 5 */
+  const CCPT = [['', '', '', 'suz', 'C', 'bh'], ['kum', '', '', 'Al', 'hiy', 'P'], ['', 'son', 'neg', 'Ga', 'Ge', 'As'], ['', '', '', 'In', 'sti', 'Sb']];
+  const ccName = x => `${x[2] && x[2].endsWith('–') ? `<span>${x[2]}</span>` : ''}${x[1]}${x[2] && !x[2].endsWith('–') ? `<span>${x[2]}</span>` : ''}`;
+  const ccDet = i => { const x = CCX[i];
+    return `<div class="lx-cc-det" style="--c:${x[4]}"><p class="lx-cc-nm">${ccName(x)} <small>${x[9]}</small></p>
+      <p class="lx-cc-eq">${x[0] === 'hec' ? 'R–X + alken' : x[0] === 'bh' ? 'Ar–X + H–NR′₂' : `R–X + <b>${x[5]}</b>`} → ${x[8]}<small>${x[6]}</small></p>
+      <p class="lx-cc-hk"><b>Háček${x[11] ? '' : ' (vlastní)'}:</b> ${x[10]}</p><p class="lx-cc-why">${x[12]}</p></div>`; };
+  W.ccpt = () => box('ccpt', '<b>Kde v tabulce sedí přenašeč?</b> Každá reakce se pozná podle prvku, který přinese druhý zbytek R′. Klepni na barevný prvek.',
+    `<div class="lx-cc-pt" role="group" aria-label="Výřez periodické tabulky, skupiny 2 a 11 až 15">${['2.', '11.', '12.', '13.', '14.', '15.'].map(h => `<span class="lx-cc-h" aria-hidden="true">${h}</span>`).join('')}${CCPT.flat().map(c => c in CCK
+      ? `<button type="button" class="lx-cc-el on" style="--c:${CCX[CCK[c]][4]}" data-lwa="ccel" data-v="${CCK[c]}" aria-pressed="${c === 'suz'}"><b>${CCX[CCK[c]][3]}</b><small>${CCX[CCK[c]][1].split('–')[0]}</small></button>`
+      : `<span class="lx-cc-el" aria-hidden="true">${c}</span>`).join('')}</div>
+    <button type="button" class="lx-cc-el lx-cc-alk on" style="--c:var(--pink)" data-lwa="ccel" data-v="${CCK.hec}" aria-pressed="false"><b>C=C</b><small>Heck: bez kovu, přinese alken</small></button>
+    <div class="lx-out" aria-live="polite">${ccDet(CCK.suz)}</div>`);
+  /* cyklus: Pd⁰ nahoře, oxidativní adice vpravo, krok 2 dole (mění se podle reakce), krok 3 vlevo */
+  const ccCyc = i => { const x = CCX[i], hec = x[0] === 'hec', bh = x[0] === 'bh', son = x[0] === 'son';
+    const s2 = hec ? ['2 inzerce alkenu', 'C=C', 'vloží se do Pd–R'] : bh ? ['2 amin + báze', 'H–NR′₂', 'báze odtrhne H⁺, odejde X⁻'] : ['2 transmetalace', son ? 'Cu–C≡C–R′' : x[5], 'odpadne ' + x[7]];
+    const mid = hec ? 'R–CH₂–CH(R′)–Pd–X' : bh ? 'Ar–Pdᴵᴵ–NR′₂' : 'R–Pdᴵᴵ–R′';
+    const s3 = hec ? ['3 syn-β-', 'eliminace H', 'alken ↑', 'H–Pd–X + báze → Pd⁰'] : ['3 reduktivní', 'eliminace', x[8] + ' ↑', ''];
+    const t = (xx, y, s, c, w) => `<text x="${xx}" y="${y}" text-anchor="middle" class="${c || ''}"${w ? ` font-weight="${w}"` : ''}>${s}</text>`;
+    return `<svg class="lx-cc-cyc" viewBox="0 0 340 300" role="img" aria-label="Katalytický cyklus: ${x[1]}. 1 oxidativní adice R–X na Pd⁰, ${s2[0].slice(2)}: ${s2[1]}, ${(s3[0] + ' ' + s3[1]).slice(2).replace('- ', '-')}, vznikne ${x[8]}.">
+      <defs><marker id="lxccA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="lx-cc-ah"/></marker></defs>
+      <circle cx="170" cy="150" r="88" class="lx-cc-ring"/>
+      <path d="M205 70 A88 88 0 0 1 255 170" class="lx-cc-ar" marker-end="url(#lxccA)"/>
+      <path d="M245 200 A88 88 0 0 1 100 210" class="lx-cc-ar lx-cc-tm" style="stroke:${x[4]}" marker-end="url(#lxccA)"/>
+      <path d="M85 180 A88 88 0 0 1 135 70" class="lx-cc-ar" marker-end="url(#lxccA)"/>
+      <rect x="128" y="44" width="84" height="30" rx="8" class="lx-cc-bx lx-cc-pd"/>${t(170, 64, 'Pd⁰L₂', 'lx-cc-k', 700)}
+      <rect x="232" y="166" width="100" height="30" rx="8" class="lx-cc-bx"/>${t(282, 186, (bh ? 'Ar' : 'R') + '–Pdᴵᴵ–X', 'lx-cc-k')}
+      <rect x="${hec ? 2 : 8}" y="166" width="${hec ? 150 : 100}" height="30" rx="8" class="lx-cc-bx"/>${t(hec ? 77 : 58, 186, mid, 'lx-cc-k')}
+      ${t(298, 100, '1 oxidativní')}${t(298, 114, 'adice')}${t(298, 136, '+ ' + (bh ? 'Ar' : 'R') + '–X', 'lx-cc-k', 700)}
+      ${t(44, 92, s3[0])}${t(44, 106, s3[1])}${t(44, 130, s3[2], 'lx-cc-ok', 700)}
+      <rect x="95" y="234" width="150" height="60" rx="10" class="lx-cc-bx lx-cc-s2" style="stroke:${x[4]}"/>
+      ${t(170, 250, s2[0].slice(2))}${t(170, 269, s2[1], 'lx-cc-k lx-cc-big', 700).replace('class="', `style="fill:${x[4]}" class="`)}${t(170, 286, s2[2], 'lx-cc-k')}
+      ${t(170, 152, x[3], 'lx-cc-sym', 700).replace('class="', `style="fill:${x[4]}" class="`)}${t(170, 172, x[1])}
+    </svg>${s3[3] ? `<p class="lx-end">Báze uzavře kruh: ${s3[3]}</p>` : ''}<p class="lx-cc-hk"><b>Háček${x[11] ? '' : ' (vlastní)'}:</b> ${x[10]}</p>`; };
+  W.cccyk = () => box('cccyk', '<b>Kolotoč palladia:</b> oxidativní adice a reduktivní eliminace jsou pořád stejné, mění se jen přenašeč v kroku 2. Vyber reakci.',
+    `<div class="lx-chips">${CCX.map((x, i) => `<button type="button" class="chip" data-lwa="ccrx" data-v="${i}" aria-pressed="${i === 0}">${x[1]}</button>`).join('')}</div><div class="lx-out" aria-live="polite">${ccCyc(0)}</div>`);
+  /* časová osa: rok, reakce, přenašeč */
+  W.ccosa = () => `<ol class="lx-cc-tl">${CCX.slice().sort((a, b) => a[9] - b[9] || (a[0] === 'kum' ? -1 : 1)).map(x => `<li style="--c:${x[4]}"><span>${x[9]}</span><b>${x[2] && x[2].endsWith('–') ? x[2] : ''}${x[1]}${x[2] && !x[2].endsWith('–') ? x[2] : ''}</b> · ${x[3] === 'C=C' ? 'alken' : x[3] === 'N' ? 'C–N' : x[0] === 'son' ? 'alkyn + Cu' : x[3]}</li>`).join('')}</ol>`;
+
   /* Kvíz k pomůckám: o = { head, opts, items: [[zadání, správná možnost, vysvětlení, vlastní možnosti?], …] }; zadání jdou v náhodném pořadí dokola */
   const QZ = {}; let qzN = 0;
   const mix = n => { const s = [...Array(n).keys()]; for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s[i], s[j]] = [s[j], s[i]]; } return s; };
@@ -31217,6 +31295,8 @@ const FH_LES = (() => {
     if (a === 'rotl') { o.dataset.l = v; press(); return wUpd(w); }
     if (a === 'fdsa' || a === 'fdsb') { o.dataset[a.slice(3)] = v; press(); o.innerHTML = fdsOut(+o.dataset.a, +o.dataset.b); if (typeof fhSay === 'function') fhSay(o.querySelector('p').textContent.trim()); return; }
     if (a === 'flp' || a === 'fln') return W.flameAct(w, a, v);
+    if (a === 'ccel') { press(); o.innerHTML = ccDet(+v); if (typeof fhSay === 'function') fhSay(o.textContent.trim()); return; }
+    if (a === 'ccrx') { press(); o.innerHTML = ccCyc(+v); if (typeof fhSay === 'function') fhSay(CCX[+v][1] + '. ' + o.querySelector('svg').getAttribute('aria-label')); return; }
     if (a === 'qzp' || a === 'qzn') return qzAct(w, a, v);
     if (a === 'osp' || a === 'osn') return osAct(w, a, v);
     if (a === 'prl' || a === 'prr' || a === 'pragain') return prAct(w, a, v);
@@ -32654,6 +32734,18 @@ const FH_OL = (() => {
       q: ['t20_q1', 't20_q4', 't20_q10', 't20_q14', 't20_q15', 't20_q18', 't20_q20', 't20_q23', 't20_q29', 't20_q31', 't20_q33', 't20_q35'],
       beda: 'Cross-coupling je tanec ve třech krocích: oxidativní adice, transmetalace, reduktivní eliminace. A palladium se po tanci vrátí tam, kde začalo.',
       aid: () => pom(`${FH_LES.ord({ q: 'kroky cross-couplingu.', top: 'první krok', bottom: 'poslední krok', items: [['oxidativní adice R–X na Pd⁰', 'vznikne Pdᴵᴵ'], ['transmetalace', 'R′ přejde z kovu M na Pd'], ['reduktivní eliminace R–R′', 'vrátí se Pd⁰']] })}
+        ${FH_LES.w.ccpt()}
+        ${FH_LES.w.quiz({ head: '<b>Kdo je Japonec?</b> Většina jmen je japonských. Když víš, které nejsou, zbytek už jen přiřadíš ke kovu.', opts: ['japonské jméno', 'není japonské'], items: [
+          ['Suzuki', 'japonské jméno', 'Akira Suzuki, Nobelova cena 2010. Spolujméno Miyaura je taky japonské.'],
+          ['Negishi', 'japonské jméno', 'Ei-ichi Negishi, Nobelova cena 2010 (pracoval v USA).'],
+          ['Kumada', 'japonské jméno', 'Makoto Kumada. Ze spolujmen je Tamao Japonec, Corriu Francouz.'],
+          ['Hiyama', 'japonské jméno', 'Tamejiro Hiyama.'],
+          ['Sonogashira', 'japonské jméno', 'Kenkichi Sonogashira.'],
+          ['Mizoroki', 'japonské jméno', 'Tsutomu Mizoroki popsal Heckovu reakci nezávisle, proto Mizoroki–Heck.'],
+          ['Corriu', 'není japonské', 'Robert Corriu byl Francouz (Kumada–Tamao–Corriu).'],
+          ['Heck', 'není japonské', 'Richard Heck, Američan, Nobelova cena 2010.'],
+          ['Stille', 'není japonské', 'John Stille, Američan. Stille = Stannum.'],
+          ['Buchwald–Hartwig', 'není japonské', 'Stephen Buchwald a John Hartwig, oba z USA.']] })}
         ${FH_LES.w.quiz({ head: '<b>Podle kovu poznáš reakci.</b> Která to je?', opts: ['Suzuki–Miyaura', 'Stille', 'Negishi', 'Kumada', 'Hiyama', 'Sonogashira', 'Buchwald–Hartwig'], items: [
           ['boronová kyselina R′–B(OH)₂, báze', 'Suzuki–Miyaura', 'Suzuki pracuje s boronovými kyselinami a boronáty.'],
           ['stannan R′–SnBu₃', 'Stille', 'Stille a stannan začínají na St.'],
@@ -32679,8 +32771,11 @@ const FH_OL = (() => {
         <p class="ac-les-trap"><b>Pozor:</b> s kyselinou Grignard nereaguje adicí, odtrhne proton a zničí se na alkan.</p>`)
         + sec('2. Katalytický cyklus', `<p>Organokovové sloučeniny přechodných kovů mají kovalentnější vazbu a jsou stálejší. Cross-coupling R–X (elektrofil) + R′–M (nukleofil) jde dokola:</p>
         <ol class="ac-les-steps"><li><b>oxidativní adice</b> R–X na Pd⁰ (vznikne Pdᴵᴵ)</li><li><b>transmetalace</b> (R′ přejde z kovu M na Pd)</li><li><b>reduktivní eliminace</b> R–R′ a návrat Pd⁰</li></ol>
-        <p>Heckova reakce má místo transmetalace inzerci alkenu a syn-β-eliminaci.</p>`)
+        <p>Heckova reakce má místo transmetalace inzerci alkenu a syn-β-eliminaci.</p>
+        ${FH_LES.w.cccyk()}`)
         + sec('3. Pojmenované reakce', `${tbl(['Reakce', 'Kovová složka'], [['Suzuki–Miyaura', 'boronové kyseliny a boronáty, báze'], ['Stille', 'stannan R–SnBu₃'], ['Negishi', 'organozinečnaté R–ZnX'], ['Kumada', 'Grignard, Ni katalyzátor'], ['Hiyama', 'organokřemík + TBAF'], ['Sonogashira', 'terminální alkyn, CuI a báze'], ['Buchwald–Hartwig', 'vazba aryl–N, O, S']])}
+        <p>Reakce podle roku objevu. Nejdřív přišly reaktivní Mg a Zn, pak mírnější Sn, B a Si, které snesou víc funkčních skupin:</p>
+        ${FH_LES.w.ccosa()}
         <p class="aside">Nobelova cena 2010: Heck, Negishi, Suzuki.</p>`) },
     { id: 't21a', topic: 't21', mem: [0, 1, 2, 3, 4, 5, 6, 8, 10, 11, 12], n: 1, min: 5, t: 'Heterocykly: názvy a epoxidy',
       goal: 'Po lekci víš, který názvoslovný systém se kdy používá, přečteš název kondenzovaného heterocyklu a předpovíš, kde a jak se otevře epoxid.',
