@@ -1466,7 +1466,8 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .lx-cc-el{aspect-ratio:1;min-height:44px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;font:700 1.1rem/1 var(--f-display);color:var(--muted);opacity:.4;padding:2px;min-width:0}
 .lx-cc-el.on{opacity:1;color:var(--c);border-color:var(--c);cursor:pointer}
 .lx-cc-el.on b{font:800 1.3rem/1 var(--f-display)}
-.lx-cc-el small{font:500 .55rem/1.1 var(--f-body);margin-top:3px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lx-cc-el small{font:500 .5rem/1.1 var(--f-body);letter-spacing:-.02em;margin-top:3px;max-width:100%;overflow:hidden;text-align:center;hyphens:manual}
+.lx-cc-alk small{letter-spacing:0}
 .lx-cc-el[aria-pressed="true"]{background:var(--c);color:var(--surface);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--c)}
 .lx-cc-alk{aspect-ratio:auto;flex-direction:row;gap:10px;padding:8px}
 .lx-cc-alk small{font-size:.8rem;margin:0}
@@ -31091,13 +31092,13 @@ const FH_LES = (() => {
       <p class="lx-cc-hk"><b>Háček${x[11] ? '' : ' (vlastní)'}:</b> ${x[10]}</p><p class="lx-cc-why">${x[12]}</p></div>`; };
   W.ccpt = () => box('ccpt', '<b>Kde v tabulce sedí přenašeč?</b> Každá reakce se pozná podle prvku, který přinese druhý zbytek R′. Klepni na barevný prvek.',
     `<div class="lx-cc-pt" role="group" aria-label="Výřez periodické tabulky, skupiny 2 a 11 až 15">${['2.', '11.', '12.', '13.', '14.', '15.'].map(h => `<span class="lx-cc-h" aria-hidden="true">${h}</span>`).join('')}${CCPT.flat().map(c => c in CCK
-      ? `<button type="button" class="lx-cc-el on" style="--c:${CCX[CCK[c]][4]}" data-lwa="ccel" data-v="${CCK[c]}" aria-pressed="${c === 'suz'}"><b>${CCX[CCK[c]][3]}</b><small>${CCX[CCK[c]][1].split('–')[0]}</small></button>`
+      ? `<button type="button" class="lx-cc-el on" style="--c:${CCX[CCK[c]][4]}" data-lwa="ccel" data-v="${CCK[c]}" aria-pressed="${c === 'suz'}"><b>${CCX[CCK[c]][3]}</b><small>${CCX[CCK[c]][1].split('–')[0].replace('Sonogashira', 'Sono&shy;gashira')}</small></button>`
       : `<span class="lx-cc-el" aria-hidden="true">${c}</span>`).join('')}</div>
     <button type="button" class="lx-cc-el lx-cc-alk on" style="--c:var(--pink)" data-lwa="ccel" data-v="${CCK.hec}" aria-pressed="false"><b>C=C</b><small>Heck: bez kovu, přinese alken</small></button>
     <div class="lx-out" aria-live="polite">${ccDet(CCK.suz)}</div>`);
   /* cyklus: Pd⁰ nahoře, oxidativní adice vpravo, krok 2 dole (mění se podle reakce), krok 3 vlevo */
   const ccCyc = i => { const x = CCX[i], hec = x[0] === 'hec', bh = x[0] === 'bh', son = x[0] === 'son';
-    const s2 = hec ? ['2 inzerce alkenu', 'C=C', 'vloží se do Pd–R'] : bh ? ['2 amin + báze', 'H–NR′₂', 'báze odtrhne H⁺, odejde X⁻'] : ['2 transmetalace', son ? 'Cu–C≡C–R′' : x[5], 'odpadne ' + x[7]];
+    const s2 = hec ? ['2 inzerce alkenu', 'C=C', 'vloží se do Pd–R'] : bh ? ['2 amin + báze', 'H–NR′₂', 'báze odtrhne HX'] : ['2 transmetalace', son ? 'Cu–C≡C–R′' : x[5], 'odpadne ' + x[7]];
     const mid = hec ? 'R–CH₂–CH(R′)–Pd–X' : bh ? 'Ar–Pdᴵᴵ–NR′₂' : 'R–Pdᴵᴵ–R′';
     const s3 = hec ? ['3 syn-β-', 'eliminace H', 'alken ↑', 'H–Pd–X + báze → Pd⁰'] : ['3 reduktivní', 'eliminace', x[8] + ' ↑', ''];
     const t = (xx, y, s, c, w) => `<text x="${xx}" y="${y}" text-anchor="middle" class="${c || ''}"${w ? ` font-weight="${w}"` : ''}>${s}</text>`;
@@ -31112,7 +31113,7 @@ const FH_LES = (() => {
       <rect x="${hec ? 2 : 8}" y="166" width="${hec ? 150 : 100}" height="30" rx="8" class="lx-cc-bx"/>${t(hec ? 77 : 58, 186, mid, 'lx-cc-k')}
       ${t(298, 100, '1 oxidativní')}${t(298, 114, 'adice')}${t(298, 136, '+ ' + (bh ? 'Ar' : 'R') + '–X', 'lx-cc-k', 700)}
       ${t(44, 92, s3[0])}${t(44, 106, s3[1])}${t(44, 130, s3[2], 'lx-cc-ok', 700)}
-      <rect x="95" y="234" width="150" height="60" rx="10" class="lx-cc-bx lx-cc-s2" style="stroke:${x[4]}"/>
+      <rect x="75" y="234" width="190" height="60" rx="10" class="lx-cc-bx lx-cc-s2" style="stroke:${x[4]}"/>
       ${t(170, 250, s2[0].slice(2))}${t(170, 269, s2[1], 'lx-cc-k lx-cc-big', 700).replace('class="', `style="fill:${x[4]}" class="`)}${t(170, 286, s2[2], 'lx-cc-k')}
       ${t(170, 152, x[3], 'lx-cc-sym', 700).replace('class="', `style="fill:${x[4]}" class="`)}${t(170, 172, x[1])}
     </svg>${s3[3] ? `<p class="lx-end">Báze uzavře kruh: ${s3[3]}</p>` : ''}<p class="lx-cc-hk"><b>Háček${x[11] ? '' : ' (vlastní)'}:</b> ${x[10]}</p>`; };
