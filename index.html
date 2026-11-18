@@ -1584,7 +1584,8 @@ body{background:linear-gradient(to bottom,transparent,var(--bg) 360px),var(--hex
 .ci-dr .r{font-family:var(--f-chem);font-weight:700;white-space:pre-line}
 .ci-dr.c2{grid-template-columns:minmax(0,1.1fr) repeat(2,minmax(0,1.4fr))}
 .ci-pav-h{margin:6px 0 0;font:700 1.02rem/1.25 var(--f-display)}
-.ci-sheet .pv h3{border:0;margin:0 0 2px}
+.ci-sheet .pv h3{border:0;margin:0 0 2px;break-after:avoid}
+.ci-sheet .pv{break-inside:avoid}
 .ci-dr .k{display:none;font:700 .72rem/1 var(--f-body);color:var(--accent);margin-right:6px}
 @media (max-width:640px){.ci-dr,.ci-dr.c2{grid-template-columns:minmax(0,1fr)}.ci-dr.hd{display:none}.ci-dr .k{display:inline}}
 .ci-jr-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
@@ -37435,35 +37436,38 @@ if (/^#analyticka/.test(location.hash)) show();
     deg: { t: 'Kruh', hd: 'Kam jde elektrofil a kam nukleofil', h: ['elektrofil (SE)', 'nukleofil (SN, Čičibabin)'], d: 'Pětičlenné heterocykly jsou na elektrony bohaté a substituují se snadno. Pyridin je chudý, dusík táhne elektrony k sobě. Podle toho, kam se dostane náboj meziproduktu, se pozná poloha.', rows: [
       ['pyrrol, furan, thiofen', 'poloha 2 (α), snadno, mírnými činidly; kation po ataku na C2 má tři rezonanční struktury, na C3 jen dvě (P22/13–14)', 'nereagují'],
       ['indol', 'poloha 3 (β), benzenový kruh zůstane aromatický (P22/21–23)', 'nereaguje'],
-      ['pyridin', 'poloha 3, jen drasticky (300–370 °C), při ataku na 2 a 4 by kladný náboj šel na dusík (P22/28–29)', 'polohy 2 a 4, záporný náboj se uloží na dusík; Čičibabin do polohy 2 (P22/30–33)'],
-      ['chinolin, isochinolin', 'benzenový kruh, polohy 5 a 8; pyridinový kruh je v H₂SO₄ protonovaný (P22/38)', 'pyridinový kruh (jako u pyridinu)']] },
+      ['pyridin', 'poloha 3, jen drasticky (220–370 °C), při ataku na 2 a 4 by kladný náboj šel na dusík (P22/28–29)', 'polohy 2 a 4, záporný náboj se uloží na dusík; Čičibabin do polohy 2 (P22/30–33)'],
+      ['chinolin, isochinolin', 'benzenový kruh, polohy 5 a 8; pyridinový kruh je v H₂SO₄ protonovaný (P22/38)', 'pyridinový kruh: chinolin C2 (C4), isochinolin C1']] },
     pav: [
-      { t: 'pyrrol, furan, thiofen', center: 'R5:X,,,,|1,3|', short: 'pyrrol, furan, thiofen (X = NH, O, S)' },
+      { t: 'pyrrol, furan, thiofen (X = NH, O, S)', center: 'R5:X,,,,|1,3|', short: 'pyrrol, furan, thiofen' },
       { t: 'indol', center: 'IND:', short: 'indol' },
       { t: 'pyridin', center: 'py:', short: 'pyridin' },
-      { t: 'chinolin a isochinolin', center: 'CHI:', short: 'chinolin (isochinolin)' }],
+      { t: 'chinolin a isochinolin', center: 'CHI:', short: 'chinolin (isochinolin)' },
+      { t: 'pyrazol a isoxazol', center: 'R-(=O)--(=O)-R', short: '1,3-diketon' }],
     groups: [
     { t: 'Elektrofilní substituce pyrrolu, furanu a thiofenu', pv: 0, d: 'Elektrofil jde do polohy 2. Kruhy jsou tak reaktivní, že stačí mírná činidla, silné kyseliny je rozkládají.', rows: [
-      ['Br₂, dioxan', '2-bromfuran', 'bez katalyzátoru a jen jednou (P22/13)', 'Př', 'R5:X,,,,|1,3|2=Br'],
-      ['HNO₃, acetanhydrid (acetylnitrát)', '2-nitropyrrol', 'nitrační směs by pyrrol zpolymerovala (P22/13–14)', 'Př', 'R5:X,,,,|1,3|2=NO₂'],
-      ['CH₃COCl, SnCl₄', '2-acetylthiofen', 'Friedelova–Craftsova acylace s mírnou Lewisovou kyselinou (P22/13)', 'Př', 'R5:X,,,,|1,3|2=COCH₃']] },
+      ['Br₂, dioxan', '2-bromfuran', 'bez katalyzátoru a jen jednou (P22/13)', 'Př', 'R5:O,,,,|1,3|2=Br'],
+      ['HNO₃, acetanhydrid (acetylnitrát)', '2-nitropyrrol', 'nitrační směs by pyrrol zpolymerovala (P22/13–14)', 'Př', 'R5:NH,,,,|1,3|2=NO₂'],
+      ['CH₃COCl, SnCl₄', '2-acetylthiofen', 'Friedelova–Craftsova acylace s mírnou Lewisovou kyselinou (P22/13)', 'Př', 'R5:S,,,,|1,3|2=COCH₃']] },
     { t: 'Furfural a jeho přeměny', pv: 0, d: 'Furfural (furan-2-karbaldehyd) se vyrábí z pentos. Poloha 2 je obsazená, elektrofil proto jde do polohy 5.', rows: [
-      ['Ag₂O (furfural)', 'kyselina furan-2-karboxylová', 'mírná oxidace, CHO na COOH, kruh zůstane (P22/3)', 'Př', 'R5:X,,,,|1,3|2=COOH'],
-      ['HNO₃, Ac₂O (furfural)', '5-nitrofuran-2-karbaldehyd', 'acetylnitrát, nitrace do polohy 5 (P22/15)', 'Př', 'R5:X,,,,|1,3|2=CHO,5=NO₂'],
-      ['1. HNO₃, Ac₂O\n2. H₂N–OH (furfural)', 'nitrofuroxim (oxim)', 'z aldehydu vznikne oxim CH=N–OH, nitroskupina zůstane; mezinárodně nifuroxim (P22/15)', 'Př', 'R5:X,,,,|1,3|2=CH=NOH,5=NO₂']] },
+      ['Ag₂O (furfural)', 'kyselina furan-2-karboxylová', 'mírná oxidace, CHO na COOH, kruh zůstane (P22/3)', 'Př', 'R5:O,,,,|1,3|2=COOH'],
+      ['HNO₃, Ac₂O (furfural)', '5-nitrofuran-2-karbaldehyd', 'acetylnitrát, nitrace do polohy 5 (P22/15)', 'Př', 'R5:O,,,,|1,3|2=CHO,5=NO₂'],
+      ['1. HNO₃, Ac₂O\n2. H₂N–OH (furfural)', 'nitrofuroxim (oxim)', 'z aldehydu vznikne oxim CH=N–OH, nitroskupina zůstane; mezinárodně nifuroxim (P22/15)', 'Př', 'R5:O,,,,|1,3|2=CH=NOH,5=NO₂']] },
     { t: 'Výměna heteroatomu a furan jako dien', pv: 0, d: 'Jurjevova reakce převádí kruhy mezi sebou. Furan je nejméně aromatický, proto umí i Dielsovu–Alderovu reakci.', rows: [
       ['NH₃, Al₂O₃, 450 °C (−H₂O)', 'pyrrol z furanu', 'Jurjevova reakce, vratná; s NH₃ jde i thiofen na pyrrol (P22/5)', 'Př', 'R5:NH,,,,|1,3|'],
       ['H₂S, Al₂O₃, 450 °C (−H₂O)', 'thiofen z furanu', 'Jurjevova reakce (P22/5)', 'Př', 'R5:S,,,,|1,3|'],
       ['maleimid, 25 °C\n(90 °C)', 'oxabicyklický adukt endo (exo)', 'furan jako dien: za 25 °C kineticky endo, za 90 °C stabilnější exo (P22/12, P23/43)', 'Př', 'oxnb']] },
-    { t: 'Příprava pětičlenných heterocyklů (šipky dovnitř)', pv: 0, prep: 1, d: 'Co činidlo přinese, to v kruhu zůstane: NH₃ dusík, hydrazin dva dusíky, hydroxylamin N i O.', rows: [
+    { t: 'Příprava pyrrolu, furanu a thiofenu (šipky dovnitř)', pv: 0, prep: 1, d: 'Co činidlo přinese, to v kruhu zůstane: NH₃ dusík, H⁺ nechá kyslík z karbonylu.', rows: [
       ['NH₃ (R′NH₂), −H₂O', 'pyrrol z 1,4-diketonu', 'Paalova–Knorrova syntéza; s primárním aminem N-substituovaný pyrrol, tak vzniká atorvastatin (P22/8–11)', 'Př', 'R-(=O)---(=O)-R', 1],
       ['H⁺, −H₂O', 'furan z 1,4-diketonu', 'Paalova–Knorrova syntéza bez dusíku (P22/8)', 'Př', 'R-(=O)---(=O)-R', 1],
-      ['H₂N–NH₂ (C₆H₅NHNH₂)', 'pyrazol z 1,3-diketonu', 'každý dusík kondenzuje s jednou C=O; s fenylhydrazinem 1-fenylpyrazol (P22/16, 18)', 'Př', 'R-(=O)--(=O)-R', 1],
-      ['NH₂OH', 'isoxazol z 1,3-diketonu', 'O a N vedle sebe (P22/16–17)', 'Př', 'R-(=O)--(=O)-R', 1],
       ['S, 600 °C', 'thiofen z buta-1,3-dienu (butanu)', 'cyklizace se sírou (P22/4)', 'Př', '=-=', 1],
       ['H₃O⁺ (−3 H₂O)', 'furfural z pentos', 'kyselá dehydratace (P22/3)', 'Př', 'pentosa', 1],
       ['Ni kat., 280 °C (−CO)', 'furan z furfuralu', 'dekarbonylace (P22/3)', 'Př', 'R5:O,,,,|1,3|2=CHO', 1],
       ['Cu kat., 200 °C (−CO₂)', 'furan z kyseliny furan-2-karboxylové', 'dekarboxylace (P22/3)', 'Př', 'R5:O,,,,|1,3|2=COOH', 1]] },
+    { t: 'Pyrazol a isoxazol z 1,3-diketonu', pv: 4, d: 'Co činidlo přinese, to v kruhu zůstane: hydrazin dva dusíky vedle sebe, hydroxylamin N a O vedle sebe. Z 1,4-diketonu by vznikl pyrrol.', rows: [
+      ['H₂N–NH₂', 'pyrazol', 'každý dusík kondenzuje s jednou C=O, odejdou 2 H₂O (P22/16, 18)', 'Př', 'R5:NH,N,,,|1,3|3=R,5=R'],
+      ['C₆H₅NHNH₂ (fenylhydrazin)', '1-fenylpyrazol', 'fenyl zůstane na N1 (P22/16)', 'Př', 'R5:N,N,,,|1,3|1=C₆H₅,3=R,5=R'],
+      ['NH₂OH', 'isoxazol', 'O a N vedle sebe (P22/16–17)', 'Př', 'R5:O,N,,,|1,3|3=R,5=R']] },
     { t: 'Indol', pv: 1, d: 'Indol je benzen + pyrrol. Elektrofil jde do polohy 3, kation tak nese náboj na dusíku a benzenový kruh zůstane aromatický.', rows: [
       ['Br₂, dioxan, 0 °C', '3-bromindol', 'SE do polohy 3 (P22/21–23)', 'Př', 'IND:3=Br'],
       ['1. POCl₃, DMF\n2. H₂O', 'indol-3-karbaldehyd', 'Vilsmeierova–Haackova formylace, také do polohy 3; v přednáškách není', '+', 'IND:3=CHO']] },
@@ -37479,16 +37483,16 @@ if (/^#analyticka/.test(location.hash)) show();
       ['NaNH₂, NH₃ (2-chlorpyridin)', '2-aminopyridin', 'NH₂⁻ nahradí chlor (P22/30–31)', 'Př', 'py:2=NH₂'],
       ['NaNH₂ (pyridin), pak H₂O', '2-aminopyridin', 'Čičibabinova reakce: odstupuje hydrid (−NaH); stejně reaguje pyrazin (P22/32–33)', 'Př', 'py:2=NH₂']] },
     { t: 'Příprava pyridinu (šipka dovnitř)', pv: 2, prep: 1, d: '', rows: [
-      ['RCHO, 2 β-ketoester, NH₃ (−3 H₂O)\npak oxidace', 'pyridin přes 1,4-dihydropyridin', 'Hantzschova syntéza: Knoevenagelův produkt + enamin, Michaelova adice, cyklizace. NH₃ může dodat octan amonný, NH₃ i HCHO hexamethylentetramin. 1,4-Dihydropyridiny jsou léčiva (nifedipin) (P22/24–27)', 'Př', 'RCHO, 2 β‑ketoester, NH₃', 1]] },
+      ['RCHO, 2 β-ketoester, NH₃ (−3 H₂O)\npak oxidace', 'pyridin přes 1,4-dihydropyridin', 'Hantzschova syntéza: Knoevenagelův produkt + enamin, Michaelova adice, cyklizace. NH₃ může dodat octan amonný, NH₃ i HCHO hexamethylentetramin. 1,4-Dihydropyridiny jsou léčiva (nifedipin) (P22/24–27)', 'Př', 'aldehyd, 2 β‑ketoester, NH₃', 1]] },
     { t: 'Chinolin a isochinolin', pv: 3, d: 'Dusík v poloze 1 = chinolin, v poloze 2 = isochinolin. Elektrofil jde do benzenového kruhu, polohy 5 a 8.', rows: [
       ['Br₂, H₂SO₄, 0 °C', '5- a 8-bromchinolin (51 : 49)', 'pyridinový kruh je protonovaný a deaktivovaný (P22/38)', 'Př', 'CHI:5=Br'],
-      ['HNO₃, H₂SO₄, 0 °C (isochinolin)', '5- a 8-nitroisochinolin (90 : 10)', 'stejně jako u chinolinu (P22/38)', 'Př', 'ICH:5=NO₂']] },
+      ['HNO₃, H₂SO₄, 0 °C\n(isochinolin)', '5- a 8-nitroisochinolin (90 : 10)', 'stejně jako u chinolinu (P22/38)', 'Př', 'ICH:5=NO₂']] },
     { t: 'Příprava chinolinu a isochinolinu (šipky dovnitř)', pv: 3, prep: 1, d: 'Obě syntézy dají nejdřív dihydro-kruh, aromatický vznikne až oxidací HNO₃.', rows: [
       ['1. akrolein, H⁺ (−H₂O)\n2. HNO₃ (oxidace)', 'chinolin z anilinu', 'Skraupova syntéza: Michaelova adice, cyklizace na benzenový kruh, 1,2-dihydrochinolin (P22/34–35); klasicky vzniká akrolein z glycerolu', 'Př', 'Ar:1=NH₂', 1],
       ['1. H₃PO₄, P₂O₅ (−H₂O)\n2. HNO₃ (oxidace)', '1-methylisochinolin z N-acetyl-2-fenylethylaminu', 'Bischlerova–Napieralského cyklizace přes 1-methyl-3,4-dihydroisochinolin (P22/36–37)', 'Př', 'Ar:1=CH₂CH₂NHCOCH₃', 1]] },
     { t: 'Enzymy a biosyntéza (bez pavoučka)', d: 'Příklady z konce přednášky, kde kruh nebo stereocentrum připraví enzym.', rows: [
       ['KCN, mandelonitrillyasa, 2-PrOH/H₂O', '(R)-kyanhydrin z 2-chlorbenzaldehydu', 'enzym řídí konfiguraci (> 83 % e.e.); HCl pak dá kyselinu 2-chlormandlovou, stavební blok klopidogrelu (P22/41)', 'Př', '-'],
-      ['vinyl-chlorformiát, lipasa CAL-B, dioxan; N-methylpiperazin', '(S)-zopiklon', 'enzymatické kinetické dělení racemického alkoholu (P22/39)', 'Př', '-'],
+      ['vinyl-chlorformiát, lipasa CAL-B, dioxan; N-methylpiperazin', '(S)-zopiklon', 'dynamické kinetické dělení, alkohol se samovolně racemizuje (P22/39)', 'Př', '-'],
       ['porfobilinogendeaminasa, uroporfyrinogen-III-syntasa', 'uroporfyrinogen III z porfobilinogenu', 'biosyntéza porfyrinů, čtyři pyrroly do kruhu (P22/42)', 'Př', '-']] }
   ] },
   { id: 'pericyklicke', label: 'Pericyklické reakce', short: 'konjugovaný dien', center: '=-=',
@@ -37498,6 +37502,7 @@ if (/^#analyticka/.test(location.hash)) show();
       ['cykloadice [4 + 2] (Dielsova–Alderova, 3 páry)', 'suprafaciálně, probíhá', 'antarafaciálně'],
       ['cykloadice [2 + 2] (2 páry)', 'antarafaciálně, sterické pnutí: neprobíhá', 'suprafaciálně, probíhá'],
       ['sigmatropní [1,5]-posun H (3 páry)', 'suprafaciálně', '–'],
+      ['sigmatropní [3,3] (Claisen, Cope, 3 páry)', 'suprafaciálně', '–'],
       ['sigmatropní [1,7]-posun H (4 páry)', 'antarafaciálně', '–']] },
     pav: [
       { t: 'konjugovaný dien', center: '=-=', short: 'konjugovaný dien' },
@@ -37505,9 +37510,9 @@ if (/^#analyticka/.test(location.hash)) show();
       { t: 'alken a alkyn', center: 'R-=', short: 'alken (alkyn)' },
       { t: '[3,3]-sigmatropní přesmyky', center: '=-X--=', short: 'X = O (Claisen), C (Cope)' }],
     groups: [
-    { t: 'Dielsova–Alderova reakce [4 + 2]', pv: 0, d: 'Dien musí být s-cis (cyklopentadien a furan jsou napořád), pomáhá donor na dienu a akceptor na dienofilu. Kineticky vzniká endo produkt. Antracen reaguje prostředním kruhem (maleinanhydrid, xylen, 140 °C).', rows: [
-      ['alken, zahřívání', 'cyklohexen', 'LUMO dienu a HOMO alkenu se překryjí suprafaciálně (P23/34)', 'Př PS', 'R6:,,,,,|3|'],
-      ['akrolein (dienofil s akceptorem), zahřívání', 'cyklohex-3-en-1-karbaldehyd', 'endo přístup: CHO cis k sousednímu substituentu dienu, exo trans (P23/40–41)', 'Př PS', 'DA'],
+    { t: 'Dielsova–Alderova reakce [4 + 2]', pv: 0, d: 'Dien musí být v konformaci s-cis (cyklopentadien a furan v ní jsou trvale), pomáhá donor na dienu a akceptor na dienofilu. Kineticky vzniká endo produkt. Antracen reaguje prostředním kruhem (maleinanhydrid, xylen, 140 °C).', rows: [
+      ['alken, zahřívání', 'cyklohexen', 'na slajdu LUMO dienu a HOMO alkenu, suprafaciálně (P23/34); učebnice častěji popisují HOMO dienu + LUMO dienofilu, dovolené je obojí', 'Př PS', 'R6:,,,,,|3|'],
+      ['akrolein (dienofil s akceptorem), zahřívání', 'cyklohex-3-en-1-karbaldehyd', 'akceptor na dienofilu reakci urychlí; endo a exo přístup ukazuje P23/40–41 na 1,4-difenylbutadienu (endo: CHO cis k sousednímu fenylu)', 'Př PS', 'DA'],
       ['diethyl-maleinát (cis), zahřívání', 'cis-diester (z fumarátu trans)', 'stereospecifická, konfigurace dienofilu zůstane (P23/30)', 'Př', 'R6:,,,,,|3|1=COOEt,2=COOEt'],
       ['dimethyl-acetylendikarboxylát (alkyn)', 'cyklohexa-1,4-dien', 'na místě trojné vazby zůstane dvojná (P23/38)', 'Př', 'R6:,,,,,|0,3|1=COOMe,2=COOMe'],
       ['akrolein (dien s R na C1)', '„1,2“ (ortho) produkt', 'R a akceptor vedle sebe, „1,3“ nevzniká (P23/45–46)', 'Př', 'R6:,,,,,|2|1=CHO,2=R'],
@@ -37520,20 +37525,20 @@ if (/^#analyticka/.test(location.hash)) show();
       ['25 °C, [1,5]-posun H (5-methylcyklopentadien)', '1- a 2-methylcyklopentadien', 'H přeskočí suprafaciálně na sousední konec dienu, 3 páry (P23/56, 60)', 'Př', 'R5:,,,,|1,3|2=CH₃']] },
     { t: 'Otevření cyklobutenu (šipka dovnitř)', pv: 0, prep: 1, d: '', rows: [
       ['zahřívání, 175 °C (konrotačně)', 'dien z cyklobutenu', 'cis-3,4-dimethylcyklobuten dá (2E,4Z)-, trans dá (2E,4E)-hexa-2,4-dien (P23/19, 21, 25)', 'Př PS', 'R4:,,,|1|', 1]] },
-    { t: 'Elektrocyklizace trienu', pv: 1, d: 'Konce trienu se spojí σ-vazbou. Rovnováha leží na straně kruhu.', rows: [
+    { t: 'Trien: elektrocyklizace a [1,7]-posun H', pv: 1, d: 'Konce trienu se spojí σ-vazbou. Rovnováha leží na straně kruhu.', rows: [
       ['zahřívání (disrotačně)', 'cyklohexa-1,3-dien', '(2E,4Z,6E)-okta-2,4,6-trien dá cis-5,6-dimethyl, (2E,4Z,6Z) trans (P23/19–20, 24)', 'Př PS', 'R6:,,,,,|0,2|'],
       ['hν (konrotačně)', 'cyklohexa-1,3-dien', 'světlo průběh obrátí: (2E,4Z,6E) dá trans-5,6-dimethyl (P23/20, 28)', 'Př PS', 'R6:,,,,,|0,2|'],
       ['zahřívání (previtamin D₂)\n[1,7]-posun H', 'vitamin D₂', '4 páry, termicky antarafaciálně, vznikne exocyklický CH₂= (P23/66)', 'Př', 'vitamin D₂']] },
     { t: 'Fotochemické otevření kruhu (šipka dovnitř)', pv: 1, prep: 1, d: '', rows: [
-      ['hν (sluneční světlo)', 'previtamin D₂ z ergosterolu', 'cyklohexa-1,3-dien v kruhu B se otevře, přeruší se C9–C10 (P23/66)', 'Př', 'R6:,,,,,|0,2|', 1]] },
+      ['hν (sluneční světlo)', 'previtamin D₂ z ergosterolu', '6π, fotochemicky konrotačně: cyklohexa-1,3-dien v kruhu B se otevře, přeruší se C9–C10 (P23/66)', 'Př', 'R6:,,,,,|0,2|', 1]] },
     { t: 'Cykloadice [2 + 2] a [2 + 1]', pv: 2, d: '[2 + 2] jde jen fotochemicky. Karben vytvoří obě nové vazby na jednom uhlíku (cheletropní [2 + 1]).', rows: [
       ['alken, hν', 'cyklobutan', 'termicky nereaguje (P23/49)', 'Př PS', 'R4:,,,||'],
       ['cyklohex-2-en-1-on, hν', 'bicyklický cyklobutan (40 %)', 'enon + 2-methylpropen dá 7,7-dimethylbicyklo[4.2.0]oktan-2-on (P23/51)', 'Př', 'R4:,,,||'],
-      [':CR₂ (karben)', 'cyklopropan', 'stereospecifická; karben z CH₂I₂, Zn(Cu) nebo z CHCl₃, KOH (P23/67, P6/43–44)', 'Př', 'cp']] },
+      [':CR₂ (karben)', 'cyklopropan', 'stereospecifická; karbenoid z CH₂I₂, Zn(Cu) (Simmons–Smith), :CCl₂ z CHCl₃, KOH (P23/67, P6/43–44)', 'Př', 'cp']] },
     { t: '1,3-Dipolární cykloadice [3 + 2]', pv: 2, d: '1,3-Dipól (4 π-elektrony) + alken nebo alkyn (2 π) dá pětičlenný kruh.', rows: [
       ['1. O₃\n2. (CH₃)₂S', 'dva karbonyly (+ DMSO)', 'ozonolýza: molozonid (1,2,3-trioxolan) se rozpadne a složí na ozonid (1,2,4-trioxolan) (P23/54)', 'Př', 'R-=O + O=-R′'],
       ['R′–N₃, Δ (alkyn)', '1,2,3-triazol (směs 1,4 a 1,5)', 'Huisgenova cykloadice (P23/53)', 'Př', 'R5:N,N,N,,|1,3|1=R′,4=R'],
-      ['R′–N₃, Cu(I) (CuSO₄, askorbát sodný)', '1,4-triazol', 'click reakce, jen 1,4-isomer; v přednáškách není', '+', 'R5:N,N,N,,|1,3|1=R′,4=R'],
+      ['R′–N₃, Cu(I) (CuSO₄, askorbát sodný)', '1,4-disubstituovaný 1,2,3-triazol', 'click reakce, jen 1,4-isomer; v přednáškách není', '+', 'R5:N,N,N,,|1,3|1=R′,4=R'],
       ['CH₂N₂ (diazomethan)', 'pyrazolin', 'všechny tři atomy dipólu přejdou do kruhu; v přednáškách není', '+', 'R5:N,N,,,|0|']] },
     { t: 'Enová reakce', pv: 2, d: 'Allylový H přejde na druhou složku a dvojná vazba se posune.', rows: [
       ['enofil (alken), zahřívání', 'alken s posunutou C=C', 'enová reakce: nová vazba C–C, H z allylové polohy (P23/69)', 'Př', 'R-=---']] },
@@ -37541,8 +37546,8 @@ if (/^#analyticka/.test(location.hash)) show();
       ['HN=NH (diazen)', 'cis-alken z alkynu', 'oba H přejdou naráz z jedné strany, hnací silou je vznik N₂ (P23/68)', 'Př', 'R-#-R′', 1]] },
     { t: '[3,3]-Sigmatropní přesmyky', pv: 3, d: 'Očísluj šest atomů 1–6: vazba 3–4 se přeruší, vznikne 1–6 a dvojné vazby se posunou. Jde suprafaciálně (P23/64–65).', rows: [
       ['zahřívání\n(X = O, allyl(vinyl)ether)', 'γ,δ-nenasycený aldehyd (keton)', 'Claisenův přesmyk, z allyl(vinyl)etheru pent-4-enal (P23/57, 62)', 'Př PS', '=---=O'],
-      ['zahřívání\n(allyl(aryl)ether)', '2-allylfenol', 'Claisenův přesmyk přes cyklohexadienon, tautomerie vrátí aromaticitu; allyl jde vždy do ortho (P14, P23/62)', 'Př PS', 'Ar:1=OH,2=CH₂CH=CH₂'],
-      ['zahřívání\n(X = C, 1,5-dien)', 'nový 1,5-dien', 'Copeho přesmyk, vratný (P23/63)', 'Př PS', '=---='],
+      ['zahřívání\n(allyl(aryl)ether)', '2-allylfenol', 'Claisenův přesmyk přes cyklohexadienon, tautomerie vrátí aromaticitu; allyl jde do ortho, při obsazených ortho polohách až do para (P14, P23/62)', 'Př PS', 'Ar:1=OH,2=CH₂CH=CH₂'],
+      ['zahřívání\n(X = C, 1,5-dien)', 'nový 1,5-dien', 'Copeho přesmyk, vratný (P23/63)', 'Př', '=---='],
       ['zahřívání\n(hexa-1,5-dien-3-ol)', 'hex-5-enal', 'oxy-Copeho přesmyk přes enol; v přednáškách není', '+', '=----=O']] },
     { t: 'Chemiluminiscence (bez pavoučka)', d: 'Z fotochemie na začátku přednášky: energii dodá reakce a excitovaná molekula ji vyzáří jako světlo.', rows: [
       ['1. N₂H₄ (glycerol, zahřívání)\n2. Na₂S₂O₄, NaOH, H₂O', 'luminol z kyseliny 3-nitroftalové', 'cyklický hydrazid, pak redukce NO₂ na NH₂ (P23/6)', 'Př', '-'],
@@ -37597,7 +37602,7 @@ if (/^#analyticka/.test(location.hash)) show();
     ['Huisgenova cykloadice', ['t23:a22'], 'Azid + alkyn na triazol, 1,3-dipolární cykloadice, termicky směs 1,4 a 1,5 (P23/53).'],
     ['Karboxylace Grignardova činidla', ['ck:r7'], 'RMgX + CO₂, pak kyselina: karboxylová kyselina o 1 C delší (P16/16).'],
     ['Karbonylace a proces Monsanto', ['t20:a39', 't20:a40'], 'R–X + CO + nukleofil s Pd; methanol + CO na kyselinu octovou s Rh a HI (P20/33–35).'],
-    ['Jurjevova reakce', ['t22:a6', 't22:a7'], 'Přeměna furanu na pyrrol nebo thiofen s NH₃ nebo H₂S na Al₂O₃ při 450 °C (P22/5).'],
+    ['Jurjevova reakce', ['t22:a6', 't22:a7'], 'Přeměna furanu na pyrrol nebo thiofen s NH₃ nebo H₂S na Al₂O₃ při 450 °C, s NH₃ i thiofen na pyrrol (P22/5).'],
     ['Kilianiho–Fischerova syntéza', ['t24:a19'], 'Prodloužení řetězce aldosy o jeden uhlík (P24).'],
     ['Koenigsova–Knorrova reakce', ['t24:a10'], 'Glykosidová vazba z glykosylhalogenidu a Ag₂O (P24).'],
     ['Kolbeho–Schmittova reakce', ['ck:r9'], 'Fenolát + CO₂ na kyselinu salicylovou (P16).'],
@@ -37712,15 +37717,19 @@ if (/^#analyticka/.test(location.hash)) show();
     add(m, i, q.x + ux, q.y + uy, dbl ? l.slice(1) : l, dbl ? 2 : 1);
   };
   const subsAll = (m, txt, pos) => {
-    const all = (txt || '').split(',').filter(Boolean).map(t => { const j = t.indexOf('='); return [+t.slice(0, j), t.slice(j + 1)]; });
-    all.forEach(([p, l]) => { const same = all.filter(x => x[0] === p), k = same.findIndex(x => x[1] === l); const [i, cx, cy] = pos(p); subOut(m, i, cx, cy, l, same.length > 1 ? (k ? 35 : -35) : 0); });
+    const all = (txt || '').split(',').filter(t => t.indexOf('=') > 0).map(t => { const j = t.indexOf('='); return [+t.slice(0, j), t.slice(j + 1)]; });
+    all.forEach(([p, l], n) => {
+      const same = all.map((x, j) => x[0] === p ? j : -1).filter(j => j >= 0), k = same.indexOf(n), r = pos(p);
+      if (!r || !m.a[r[0]]) { console.warn('Činidla: neznámá poloha', p, txt); return; }
+      subOut(m, r[0], r[1], r[2], l, same.length > 1 ? (k - (same.length - 1) / 2) * 70 : 0);
+    });
   };
   const ringN = k => {
     const [lab, dbl, sub] = k.slice(3).split('|'), n = +k[1], R = .5 / Math.sin(Math.PI / n);
     const a0 = { 3: 90, 4: 135, 5: 90, 6: -90 }[n], dir = n === 6 ? 1 : -1, labs = lab.split(',');
     const m = { a: [], b: [] };
     for (let i = 0; i < n; i++) { const t = (a0 + dir * i * 360 / n) * Math.PI / 180; m.a.push({ x: R * Math.cos(t), y: R * Math.sin(t), l: labs[i] || '' }); m.b.push([i, (i + 1) % n, 1]); }
-    (dbl || '').split(',').filter(Boolean).forEach(j => { m.b[+j][2] = 2; });
+    (dbl || '').split(',').filter(Boolean).forEach(j => { if (m.b[+j]) m.b[+j][2] = 2; });
     subsAll(m, sub, p => [p - 1, 0, 0]);
     return m;
   };
@@ -37739,7 +37748,7 @@ if (/^#analyticka/.test(location.hash)) show();
       c2 = [1.732, 0];
       if (t === 'CHI') { m.a[b3].l = 'N'; pos = { 1: b3, 2: b2, 3: b1, 4: b0, 5: 0, 6: 5, 7: 4, 8: 3 }; } else { m.a[b2].l = 'N'; pos = { 1: b3, 2: b2, 3: b1, 4: b0, 5: 0, 6: 5, 7: 4, 8: 3 }; }
     }
-    subsAll(m, k.slice(4), p => { const i = pos[p]; return [i, ...(i < 6 ? [0, 0] : c2)]; });
+    subsAll(m, k.slice(4), p => { const i = pos[p]; return i === undefined ? null : [i, ...(i < 6 ? [0, 0] : c2)]; });
     return m;
   };
   const mol = k => (MOL[k] ? MOL[k]() : k.startsWith('Ar:') ? arene(k) : /^R[3-6]:/.test(k) ? ringN(k) : k.startsWith('py:') ? pyr(k) : /^(IND|CHI|ICH):/.test(k) ? fused(k) : chain(k));
@@ -37771,7 +37780,7 @@ if (/^#analyticka/.test(location.hash)) show();
     }));
     sp.sort((x, y) => (x.inw ? 1 : 0) - (y.inw ? 1 : 0));
     const n = sp.length, sm = n <= 5, W = sm ? 1400 : 1800, H = sm ? 1120 : 1520, cx = W / 2, cy = H / 2, R0 = 125, RX = sm ? 560 : 760, RY = sm ? 440 : 640, boxes = [];   // malý pavouček na menší plátno
-    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pavouček: ${ch.label}, ${n} reakcí kolem výchozí látky">
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Pavouček: ${ch.label}, ${n} ${n === 1 ? 'reakce' : n < 5 ? 'reakce' : 'reakcí'} kolem výchozí látky">
       <defs><marker id="ciO${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 10,5 0,10z" style="fill:var(--pink)"/></marker>
       <marker id="ciI${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 10,5 0,10z" style="fill:var(--accent)"/></marker></defs>
       <circle cx="${cx}" cy="${cy}" r="${R0}" style="fill:var(--foam);stroke:var(--pink)" stroke-width="2"/>`;
@@ -37830,8 +37839,8 @@ if (/^#analyticka/.test(location.hash)) show();
       ${ch.deg ? `<section class="ci-deg"><h3>${ch.deg.h ? (ch.deg.hd || 'Srovnání') : 'Primární, sekundární, terciární'}</h3><p>${ch.deg.d}</p><div class="ci-dr${dh.length === 2 ? ' c2' : ''} hd" aria-hidden="true"><span>${ch.deg.t}</span>${dh.map(h => `<span>${h}</span>`).join('')}</div>${ch.deg.rows.map(r => `<div class="ci-dr${dh.length === 2 ? ' c2' : ''}"><span class="r">${r[0]}</span>${dk.map((h, k) => `<span><b class="k">${h}</b>${r[k + 1]}</span>`).join('')}</div>`).join('')}</section>` : ''}
       ${ch.groups.map(g => `<section class="ci-grp${g.prep ? ' prep' : ''}"><h3>${g.t}</h3><p>${g.d}</p>${g.rows.map(r => `<div class="ci-row"><span class="r">${r[0]}</span><span class="p">→ ${r[1]}</span><span class="n">${r[2]}</span><span class="s">${src(r[3])}</span></div>`).join('')}</section>`).join('')}
       <h2 class="fam-h">${ch.pav ? `Pavoučci: ${ch.label}` : `Pavouček: ${ch.label}`}</h2>
-      <p class="hint" style="margin:0;color:var(--muted)">Růžové šipky vedou ven (reakce), tyrkysové dovnitř (příprava). Na šipkách jsou všechna činidla z tabulky výše, „nebo“ odděluje jiné cesty ke stejnému produktu.${ch.pav ? ` Kapitola má ${pavs.length} pavoučky, každý pro jinou výchozí látku.` : ''} Na telefonu pavouček posuneš prstem do strany.</p>
-      ${pavs.map((p, i) => `${ch.pav ? `<h3 class="ci-pav-h">${i + 1}. ${p.label}</h3>` : ''}<div class="ci-pav">${spider(p, 'w' + i)}</div>`).join('')}`;
+      <p class="hint" style="margin:0;color:var(--muted)">Růžové šipky vedou ven (reakce), tyrkysové dovnitř (příprava). Na šipkách jsou všechna činidla z tabulky výše, „nebo“ odděluje jiné cesty ke stejnému produktu.${ch.pav ? ` Kapitola má ${pavs.length} ${pavs.length < 5 ? 'pavoučky' : 'pavoučků'}, každý pro jinou výchozí látku.` : ''} Na telefonu pavouček posuneš prstem do strany.</p>
+      ${pavs.map((p, i) => `${ch.pav ? `<h3 class="ci-pav-h">${i + 1}. ${p.label}</h3>` : ''}<div class="ci-pav" tabindex="0" role="region" aria-label="Pavouček: ${p.label}">${spider(p, 'w' + i)}</div>`).join('')}`;
   };
   /* --- jmenné reakce: karty s mechanismem z lekcí organické chemie (REACTIONS), mechanismus se rozklikne --- */
   const rxBy = k => REACTIONS.find(r => r.topic + ':' + r.id === k);
